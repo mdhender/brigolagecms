@@ -14,7 +14,7 @@ func main() {
 		publicRoot = val
 		fmt.Printf("[about] %-30s == %q\n", "ABOUT_PUBLIC_ROOT", val)
 	}
-	if err := os.Chdir(publicRoot) ; err != nil {
+	if err := os.Chdir(publicRoot); err != nil {
 		fmt.Printf("%+v\n", err)
 		os.Exit(2)
 	}
