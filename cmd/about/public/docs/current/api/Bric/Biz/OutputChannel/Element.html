@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::OutputChannel::Element</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Element.html#Name">Name</a></li>
+  <li><a href="Element.html#Synopsis">Synopsis</a></li>
+  <li><a href="Element.html#Description">Description</a></li>
+  <li><a href="Element.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Element.html#Constructors">Constructors</a></li>
+      <li><a href="Element.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Element.html#Notes">Notes</a></li>
+  <li><a href="Element.html#Author">Author</a></li>
+  <li><a href="Element.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::OutputChannel::Element - Maps Output Channels to Element Types.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::OutputChannel::Element;
+
+# Constructors.
+my $oce = Bric::Biz::OutputChannel-&gt;new($init);
+my $oces_href = Bric::Biz::OutputChannel-&gt;href($params);
+
+# Instance methods.
+my $element_type_id = $oce-&gt;get_element_type_id;
+$oce-&gt;set_element_type_id($element_type_id);
+$oce-&gt;set_enabled_on;
+$oce-&gt;set_enabled_off;
+if ($oce-&gt;is_enabled) { } # do stuff.
+$oce-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Biz::OutputChannel manages the relationship between output channels and elements (Bric::Biz::ElementType objects). It does so by providing accessors to properties relevant to the relationship, as well as an <code>href()</code> method to help along the use of a Bric::Util::Coll object.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<p>This class inherits the majority of its interface from <a rel="section" href="../../../../../2.0/api/Bric/Biz/OutputChannel.html" name="Bric::Biz::OutputChannel">Bric::Biz::OutputChannel</a>. Only additional methods are documented here.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $oce = Bric::Biz::OutputChannel::Element-&gt;new($init);</dt>
+<dd>
+
+<p>Constructs a new Bric::Biz::OutputChannel::Element object intialized with the values in the <code>$init</code> hash reference and returns it. The suported values for the <code>$init</code> hash reference are the same as those supported by <code>Bric::Biz::OutputChannel::Element-&gt;new</code>, with the addition of the following:</p>
+
+<dl>
+
+<dt><code>oc_id</code></dt>
+<dd>
+
+<p>The ID of the output channel object on which the new Bric::Biz::OutputChannel::Element will be based. The relevant Bric::Biz::OutputChannel object will be looked up from the database. Note that all of the <code>$init</code> parameters documented in <a rel="section" href="../../../../../2.0/api/Bric/Biz/OutputChannel.html" name="Bric::Biz::OutputChannel">Bric::Biz::OutputChannel</a> will be ignored if this parameter is passed.</p>
+
+</dd>
+<dt><code>oc</code></dt>
+<dd>
+
+<p>The output channel object on which the new Bric::Biz::OutputChannel::Element will be based. Note that all of the <code>$init</code> parameters documented in <a rel="section" href="../../../../../2.0/api/Bric/Biz/OutputChannel.html" name="Bric::Biz::OutputChannel">Bric::Biz::OutputChannel</a> will be ignored if this parameter is passed.</p>
+
+</dd>
+<dt><code>element_type_id</code></dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType object to which this output channel is mapped.</p>
+
+</dd>
+<dt><code>enabled</code></dt>
+<dd>
+
+<p>A boolean value indicating whether the output channel will have assets output to it by default.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If you pass in an output channel object via the <code>oc</code> parameter, that output channel object will be converted into a Bric::Biz::OutputChannel::Element object.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $oce_href = Bric::Biz::OutputChannel::Element-&gt;href({ element_type_id =&gt; $eid });</dt>
+<dd>
+
+<p>Returns a hash reference of Bric::Biz::OutputChannel::Element objects. Each hash key is a Bric::Biz::OutputChannel::Element ID, and the values are the corresponding Bric::Biz::OutputChannel::Element objects. Only a single parameter argument is allowed, <code>element_type_id</code>, though <code>ANY</code> may be used to specify a list of element type IDs. All of the output channels associated with that element type ID will be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<p>##############################################################################</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $eid = $oce-&gt;get_element_type_id</dt>
+<dd>
+
+<p>Returns the ID of the Element Type definition with which this output channel is associated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;set_element_type_id($eid)</dt>
+<dd>
+
+<p>Sets the ID of the Element type definition with which this output channel is associated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;set_enabled_on</dt>
+<dd>
+
+<p>Enables this output channel to have assets ouptut to it by default.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;set_enabled_off</dt>
+<dd>
+
+<p>Sets this output channel to not have assets ouptut to it by default.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;is_enabled</dt>
+<dd>
+
+<p>Returns true if the this output channel is set to have assets output to it by default, and false if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;remove</dt>
+<dd>
+
+<p>Marks this output channel-element type association to be removed. Call the <code>save()</code> method to remove the mapping from the database.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oce = $oce-&gt;save</dt>
+<dd>
+
+<p>Saves the output channel.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric/Biz/OutputChannel.html" name="Bric::Biz::OutputChannel">Bric::Biz::OutputChannel</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>,</p>
+
+</body>
+</html>
+

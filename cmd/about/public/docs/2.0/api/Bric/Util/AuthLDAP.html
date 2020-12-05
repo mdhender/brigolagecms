@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::AuthLDAP</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="AuthLDAP.html#Name">Name</a></li>
+  <li><a href="AuthLDAP.html#Synopsis">Synopsis</a></li>
+  <li><a href="AuthLDAP.html#Description">Description</a></li>
+  <li><a href="AuthLDAP.html#Interface">Interface</a>
+    <ul>
+      <li><a href="AuthLDAP.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="AuthLDAP.html#authenticate">authenticate</a></li>
+          <li><a href="AuthLDAP.html#set_password">set_password</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="AuthLDAP.html#Author">Author</a></li>
+  <li><a href="AuthLDAP.html#See-Also">See Also</a></li>
+  <li><a href="AuthLDAP.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::AuthLDAP - Bricolage LDAP authentication</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>In <i>bricolage.conf</i></p>
+
+<pre><code>AUTH_ENGINES = LDAP</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides an interface for the Bricolage to authenticate users against an LDAP server. If one of the authentication engines assigned to the <code>AUTH_ENGINES</code> <i>bricolage.conf</i> directive is &quot;LDAP&quot;, then this module will be loaded by the user class and used for authentication. See the Bric::Admin <a href="http://search.cpan.org/perldoc?Authentication Configuration">Bric::Admin/&quot;Authentication Configuration&quot;</a> section for more in-depth information on authentication engines, as well as its <a href="http://search.cpan.org/perldoc?LDAP Configuration">Bric::Admin/&quot;LDAP Configuration&quot;</a> section for the specifics on configuring Bricolage to authenticate against your LDAP server.</p>
+
+<p>This module is used internally by <a rel="section" href="../Biz/Person/User.html" name="Bric::Biz::Person::User">Bric::Biz::Person::User</a>; it should not be used directly.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="authenticate">authenticate</h3>
+
+<pre><code>Bric::Util::AuthLDAP-&gt;authenticate($user, $password);</code></pre>
+
+<p>Pass a user object and a password to this method to authenticate the user to an LDAP server with the password. Returns true if the password validates, and false if it does not.</p>
+
+<p>Note that a user may successfully authenticate to the LDAP server but still not successfully authenticate to Bricolage if you&#39;ve set the <a href="http://search.cpan.org/perldoc?LDAP_GROUP">LDAP_GROUP</a> directive to the DN of a user grop on your LDAP server. In such a case, the user must also be a member of that group to use Bricolage. This provides a simple allow and disallow users to access Bricolage from within LDAP. Users must still exist within Bricolage with the same username, however. A user that can successfully authenticate to the LDAP server will not be able to authenticate in Bricolage until a the corresponding Bricolage user object has been created.</p>
+
+<h3 id="set_password">set_password</h3>
+
+<pre><code>Bric::Util::AuthLDAP-&gt;set_password($user, $password);</code></pre>
+
+<p>This method is a no-op; it simply returns the invocant. It is not currently possible to change LDAP passwords from Bricolage. This functionality may be added in the future.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt>Bric::Admin: <a href="http://search.cpan.org/perldoc?Authentication Configuration">Bric::Admin/&quot;Authentication Configuration&quot;</a></dt>
+<dd>
+
+<p>Provides a description of the Bricolage authentication system and details on how to configure it.</p>
+
+</dd>
+<dt>Bric::Admin: <a href="http://search.cpan.org/perldoc?LDAP Configuration">Bric::Admin/&quot;LDAP Configuration&quot;</a></dt>
+<dd>
+
+<p>LDAP authentication configuration information.</p>
+
+</dd>
+<dt><a rel="section" href="AuthInternal.html" name="Bric::Util::AuthInternal">Bric::Util::AuthInternal</a></dt>
+<dd>
+
+<p>Provides Bricolage&#39;s default, internal authentication interface.</p>
+
+</dd>
+<dt><a rel="section" href="../Biz/Person/User.html" name="Bric::Biz::Person::User">Bric::Biz::Person::User</a></dt>
+<dd>
+
+<p>The user class calls out to this module to authenticate users and change passwords.</p>
+
+</dd>
+<dt><a rel="section" href="../Security.html" name="Bric::Security">Bric::Security</a></dt>
+<dd>
+
+<p>Detailed discussion of Bricolage security, including authentication.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2005 Kineticode, Inc. See <a rel="section" href="../License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

@@ -1,0 +1,688 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.10.0 Changes</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.10.0" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.10.0 Changes</h2>
+	<div id="articlemeta">
+            <p class="date">2006.01.23</p>
+          </div>
+          <h3>Major New Features</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added support for PHP templates. It is now possible to write Bricolate
+templates in Mason, Template Toolkit, HTML::Template, and PHP. The addition of
+PHP supports was made possible by the creation of a new Perl module,
+<a href="http://search.cpan.org/dist/PHP-Interpreter" title="PHP::Interpreter on CPAN">
+PHP::Interpreter</a>, that loads a PHP 5 interpreter into
+Perl. PHP templates in Bricolage are thus pure PHP, with access to all the
+features that PHP has to offer, while allowing transparent access to the Perl-
+based Bricolage API for for retreiving and outputting content.
+PHP::Interpreter was implemented by George Schlossnagle of Omni TI consulting,
+and the whole PHP/Perl project, including PHP::Interpreter and support for
+Bricolage PHP templating, was sponsored by SAPO--Portugal Online.</p></li>
+            <li><p>Added support for authentication to Bricolage against an LDAP server. The new
+<code>LDAP_*</code> <em>bricolage.conf</em> directives make it simple to configure Bricolage
+to authenticate against any LDAP server. Includes support for authenticating
+users only if they are members of a specific user group in the LDAP directory.
+Users must still exist in Bricolage, however. The LDAP authentication support
+was made possible thanks to the addition of a pluggable authentication system.
+Contributed by Kineticode.</p></li>
+            <li><p>Converted <q>Bulk Edit</q> in the UI to use a new format based on <q>Plain Old
+Documentation</q> (POD), and eliminated the old <q>Super Bulk Edit</q> interface since
+it became redundant. The POD syntax enables a the complete hierarchy of a
+story to be edited, including links to related stories and media, in a single
+text field. Contributed by Kineticode.</p></li>
+            <li><p>Added the <code>RELATED_MEDIA_UPLOAD</code> <em>bricolage.conf</em> directive, which allows
+editors to upload media files directly into a related media element profile if
+they have permission to create media and to access a media workflow. This
+makes it a much simpler process for editors to quickly associate media with
+story documents. The uploaded media files will be created based on the media
+type element selected from a select list, and given the same category, cover
+date, and priority as the current document. Users then have the opportunity to
+adjust these attributes before continuing to edit their stories. Contributed
+by SAPO--Portugal Online and Kineticode.</p></li>
+            <li><p>Added support for sub-second precision to date and time management in
+Bricolage. This means that dates can be stored in the database with
+microsecond precision. Sponsored by Alinghi.</p></li>
+            <li><p>Added new <q>Precision</q> option to DateTime fields added to elements and
+contributor types. The supported precisions are <q>Year</q>, <q>Month</q>, <q>Day</q>,
+<q>Hour</q>, <q>Minute</q>, <q>Second</q>, <q>Millisecond</q>, and <q>Microsecond</q>. Sponsored by
+Alinghi.</p></li>
+            <li><p>Category and story URIs now all end in a slash. This is so that they all
+behave consistently with root categories and home page URIs, and so that they
+properly indicate directories. Note that this does not apply if the
+<code>STORY_URI_WITH_FILENAME</code> <em>bricolage.conf</em> directive has been enabled.
+B<Note to Templaters:> You may need to modify your templates to take into
+account that story and category URIS now end in a slash, if you were appending
+a slash in your templates or searching on category URIs for related stories.
+Contributed by Kineticode.</p></li>
+            <li><p>The URI formats are now more flexible. You can now use many more parts of the
+cover date in the URI, and in whatever format you like. So you could have a
+format of <q>/%{categories}/%Y-%m-%d/</q> and end up with the URI
+<q>/foo/bar/2004-09-22/</q> if you wanted. Or even <q>/%{categories}/%Y/%V/</q> to get
+the week number as part of the URI. You can also include document UUIDs, and
+even your own text, (e.g. foobar in <q>/%{categories}/%Y/%m/foobar/%{uuid}/</q>.
+Contributed by Marshall Roch.</p></li>
+            <li><p>Added the <code>MEDIA_UNIQUE_FILENAME</code> <em>bricolage.conf</em> directive to allow the
+file name of media documents to be set to a unique, automatically generated
+file name on upload. Also added the <code>MEDIA_FILENAME_PREFIX</code> directive for
+setting a prefix word, such as <q>media</q>, to be prepended to the file name if
+desired. Contributed by Digital Craftsmen.</p></li>
+            <li><p>Added the <code>AUTO_PREVIEW_MEDIA</code> <em>bricolage.conf</em> directive toe allow media
+files uploaded to a media document to be distributed to all relevant preview
+servers as soon as the media document is saved, thus preventing 404s on the
+preview servers when users forget to preview their media documents before
+previewing stories that references them. Sponsored by Alinghi.</p></li>
+            <li><p>Added the new <q>Code Select</q> custom field, which allows users to add arbitrary
+Perl code to generate the items in a select list. This is great for
+dynamically pulling in choices from another database, LDAP directory, or
+anything else you can get at from Perl code. Contributed by Scott Lanning.</p></li>
+            <li><p>Added support for typical Windows character encodings. This means that users
+can select <q>Windows Western (CP1252)</q> as their encoding in order to fix
+gremlin characters pasted from Microsoft Word. Contributed by Kineticode.</p></li>
+            <li><p>New categories now inherit from their parent categories all group memberships
+and permissions granted to access assets with which they are associated. This
+makes it far easier for users with CREATE permission to categories to create
+new categories without having to then edit group memberships and user group
+permissions to make them the same as the parent's permission, which is what is
+usually wanted. Contributed by Kineticode.</p></li>
+            <li><p>Output channels are now associated with burners and can only include other
+output channels associated with the same burners. Element types are no longer
+associated with burners at all. Contributed by Kineticode.</p></li>
+            <li><p>Added diff support to the UI to see changes between versions of templates,
+stories, and media documents. Contributed by Kineticode.</p></li>
+            <li><p>Added JavaScript-powered Find/Replace dialog box to Bulk Edit in the element
+profile and to the template profile. Contributed by Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>Naming Normalization</h3>
+          <p>In an attempt to eliminate the overloading of terminology in Bricolage,
+Kineticode contributed a major refactoring of the code that renames a number
+of classes and attributes--as well as database tables and columns. The result
+is that in Bricolage 1.10, virtually every class is known by the same name,
+from the UI to SOAP to the class package name to the database. The details
+of what was removed and or renamed follows:</p>
+        <div class="list">
+          <ul>
+            <li><p>Renamed <q>Element</q> to <q>Element Type</q> and <q>Element Type</q>
+to <q>Element Type Set</q>. This change overcomes the confusion between of
+element types, which define the structure of elements, and elements, which are
+the objects associated with documents that contain content and which are based
+on element types. The old
+<code>get_element()</code> method and the accessors that get and set <code>element_id</code> or
+<code>element__id</code> have also been renamed to <code>get_element_type()</code> and to access
+<code>element_type_id</code>.</p></li>
+            <li><p>Deprecated Element Type Sets. All of their attributes have been moved to
+Element Types. Management of Element Type Sets (known as <q>Element Type</q> in
+previous releases of Bricolage) has been removed from the UI, but the SOAP
+interface and the class itself remain for now. They will be completely removed
+in a future version of Bricolage.</p></li>
+            <li><p>Renamed <q>Element Data</q> to <q>Field Type</q>. [David]</p></li>
+            <li><p>Renamed the Element and Element Type classes as follows:</p>        <div class="list">
+          <ul>
+            <li><p>Bric::Biz::AssetType is now <a href="https://bricolagecms.org/docs/current/api/Bric::Biz::ElementType" title="Read the
+Bric::Biz::ElementType documentation in the Bricolage API
+browser">Bric::Biz::ElementType</a>.</p></li>
+            <li><p>Bric::Biz::AssetType::Parts::Data is now
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::ElementType::Parts::FieldType" title="Read the
+Bric::Biz::ElementType::Parts::FieldType documentation in the Bricolage API
+browser">Bric::Biz::ElementType::Parts::FieldType</a>.</p></li>
+            <li><p>Bric::Biz::Asset::Busines::Parts::Tile is now
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::Element" title="Read the
+Bric::Biz::Element documentation in the Bricolage API
+browser">Bric::Biz::Element</a>.</p></li>
+            <li><p>Bric::Biz::Asset::Busines::Parts::Tile::Container is now
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::Element::Container" title="Read the
+Bric::Biz::Element::Container documentation in the Bricolage API
+browser">Bric::Biz::Element::Container</a>.</p></li>
+            <li><p>Bric::Biz::Asset::Busines::Parts::Tile::Data is now
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::Element::Container" title="Read the
+Bric::Biz::Element::Container documentation in the Bricolage API
+browser">Bric::Biz::Element::Container</a>.</p></li>
+          </ul>
+        </div>
+
+              <p>They now properly reflect what they're called in the UI, in SOAP, and in the
+database. The old classes have been changed to simply inherit from the new
+classes, so as to maintain backwards compatibility.</p></li>
+            <li><p>Renamed Bric::SOAP::ElementType to Bric::SOAP::ATType (deprecated),
+Bric::SOAP::Element to <a href="https://bricolagecms.org/docs/current/api/Bric:SOAP::ElementType" title="Read the
+Bric:SOAP::ElementType documentation in the Bricolage API
+browser">Bric:SOAP::ElementType</a>, and
+Bric::App::Callback::Profile::ElementData to
+<a href="https://bricolagecms.org/docs/current/api/Bric::App::Callback::Profile::FieldType" title="Read the
+Bric::App::Callback::Profile::FieldType documentation in the Bricolage API
+browser">Bric::App::Callback::Profile::FieldType</a>.</p></li>
+            <li><p>Renamed Bric::Biz::Asset::Formatting to
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::Asset::Template" title="Read the
+Bric::Biz::Asset::Template documentation in the Bricolage API
+browser">Bric::Biz::Asset::Template</a>. The old class now
+inherits from the new in order to maintain backwards compatibility.</p></li>
+            <li><p>Renamed the <code>related_instance_id</code> attribute of elements to
+<code>related_story_id</code>, for parity with <code>related_media_id</code>--not to mention the
+<code>get_related_story()</code> method. The <code>get_related_instance_id()</code> and
+<code>set_related_instance_id()</code> accessor methods remain in place for purposes of
+backwards compatibility.</p></li>
+            <li><p>Changed the attributes and objects that refer to the
+Bric::Biz::ElementType::Parts::FieldType object in Bric::Biz::Element::Field
+from <code>element_data_id</code> and <code>get_element_data()</code> to <code>field_type_id()</code> and
+<code>get_field_type()</code>, respectively.</p></li>
+            <li><p>Renamed a number of database tables and appropriate foreign key columns,
+indexes, constraints, and the like, to better reflect the names used for these
+things in general. The tables renamed are:</p>        <div class="list">
+          <ul>
+            <li><p>element to element_type</p></li>
+            <li><p>at_type to field_type</p></li>
+            <li><p>story_container_tile to story_element</p></li>
+            <li><p>story_data_tile to story_field</p></li>
+            <li><p>media_container_tile to media_element</p></li>
+            <li><p>media_data_tile to media_field</p></li>
+            <li><p>formatting to template</p></li>
+          </ul>
+        </div>
+</li>
+            <li><p>Changed the names of the attributes in Bric::Biz::ElementType and
+Bric::Biz::Elementype::Parts::FieldType that have double underscores to have
+only single underscores. The double underscores are still supported for the
+sake of backwards compatibility, but are no longer required.</p></li>
+          </ul>
+        </div>
+          <h3>Database and Performance Optimizations</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added the <code>ENABLE_GZIP</code> <em>bricolage.conf</em> directive to turn on compression of
+the UI pages through <code>mod_gzip</code>. This results in pages as much as fifteen
+times smaller, with minimal extra server load. If <code>mod_gzip</code> is found during
+installation, the appropriate <code>LoadModule/AddModule</code> lines will be added to
+<em>httpd.conf</em>. Contributed by Marshall Roch.</p></li>
+            <li><p>All of the old <q>NUMERIC</q> columns have been removed from the database and
+replaced with the more appropriate (and faster) <q>INTEGER</q>, <q>SMALLINT</q>, and
+<q>BOOLEAN</q> data types. Contributed by Neil Conway & David Wheeler.</p></li>
+            <li><p>Added the <code>MASON_STATIC_SOURCE</code> <em>bricolage.conf</em> directive
+to enable static sources in the Mason-powered UI. Enabling this directive can
+eliminate many file system stats on every request, thus increasing
+performance. It's disabled by default, but you should turn it on now!
+Contributed by Kineticode.</p></li>
+            <li><p>Moved story, media, and template notes into a column in the appropriate
+instance table, instead using attributes, and then removed the story, media,
+and template attribute objects. This is a much more efficient use of the
+database and eliminates a lot of cruft. Contributed by Kineticode.</p></li>
+            <li><p>Normalized story and media elements and fields so that they no longer store
+copies of their names, key names, and descriptions--and, in the case of
+fields, the <code>autopopulated</code> and <code>sql_type</code>
+attributes--since these are actually element type and field type attributes
+easily referenced in the element type and field type tables. This change
+significantly reduces the size of the database and has the potential to
+increase performance when getting and setting field values, especially during
+publishes. Contributed by Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>User Interface Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Major interface clean-up. The UI is finally mostly valid XHTML and uses CSS
+for all styles. The <code>USE_XHTM</code> directive, added in 1.7.0, is no longer used.
+The file sizes of some pages have been reduced by as much as 70%, offering
+improved page load times. Also, it will now be much easier to customize the
+look and feel of Bricolage simply by modifying the CSS files. Contributed by
+Marshall Roch.</p></li>
+            <li><p>Added <q>Show Alpha Search</q> preference that determines whether the alpha
+search (<q>(A | B | C | ... [All]</q>) directive, added in 1.7.0, is no longer
+used.</p></li>
+            <li><p>Added support for associating secondary categories and output channels when
+cloning a story. Sponsored by Alinghi.</p></li>
+            <li><p>Added support for adding secondary output channels to a new clone by selecting
+a group of output channels. All output channels in that group that are allowed
+by the story element will be associated with the clone. This is an easy and
+accurate way to add a bunch of output channels to a clone at once. Users must
+have READ access to each listed output channel group. Sponsored by Alinghi.</p></li>
+            <li><p>Added a frame on top of the preview window with a <q>Repreview</q> link. This is
+useful for previewing changes when you're developing templates. Rather than
+having to save the template, go back to the workspace, repreview, and then go
+back to the template profile, you can preview the story, then edit the
+template and click <q>Repreview</q> as necessary after each save. Contributed by
+Marshall Roch.</p></li>
+            <li><p>Added <code>MEDIA_UPLOAD_LIMIT</code> <em>bricolage.conf</em> directive for setting a size
+limit on uploaded media files. Contributed by Scott Lanning.</p></li>
+            <li><p>Added support for multiple WYSIWYG editors. You can now choose between
+htmlArea 3 and the new Xinha, a more active fork of htmlArea (recommended).
+Contributed by Marshall Roch.</p></li>
+            <li><p>The <q>User Override</q> screen has been integrated into the <q>Users</q> screen since
+the two pages are mostly redundant except for a few links. Contributed by
+Marshall Roch.</p></li>
+            <li><p>User overrides are now recorded in the event log. Contributed by Marshall Roch.</p></li>
+            <li><p>The UI now shows which user is logged in and includes a link to the user's
+profile at the top of each page. Contributed by Marshall Roch.</p></li>
+            <li><p>Users now must have at least READ permission to sources to add them to
+stories. Contributed by Kineticode.</p></li>
+            <li><p>Added an <q>Include deleted</q> checkbox to Advanced Search in <q>Find Stories,</q>
+<q>Find Media,</q> and <q>Find Templates</q> intefaces; this allows for easy searching
+and reactivation of deleted stories, media, and templates. Contributed by
+Scott Lanning.</p></li>
+            <li><p>Added the <q>Subelement</q> select list to the <q>Find Stories</q> interface, to allow
+searching for stories by the types of subelements they contain. Contributed by
+Scott Lanning.</p></li>
+            <li><p>Added a <q>Cheat Sheet</q> dialog box to Bulk Edit that displays the entire
+hierarchy of available subelements and fields as the pseudo-pod <q>tags</q>
+available for use in bulk editing content. Contributed by Kineticode.</p></li>
+            <li><p>The select list of fields and subelements that can be added to an element now
+lists all of the fields and subelements in alphabetical order. Contributed by
+Kineticode.</p></li>
+            <li><p>Improved JavaScript word and character counts in Bulk Edit so that they're
+actually accurate, including when POD tags are present, and are kept
+up-to-date as you type. Contributed by Kineticode.</p></li>
+            <li><p>Made the scroll bar <q>sticky</q> in the Story Profile, so that when you save a
+story, the reload will gently scroll back to the same spot in the story
+profile where you left off. Contributed by Scott Lanning.</p></li>
+            <li><p>Added fuller management of field types in the Element Type Manager, such as
+allowing the display widget to be changed (from, for example, <q>text</q> to
+<q>textarea</q>), and supporting the setting of a default value in a checkbox field
+in the. Contributed by Kineticode.</p></li>
+            <li><p>The Element Type profile no longer displays the <q>Sites</q> section if there is
+only one site, and no longer displays the output channel section if there is
+only one output channel. Contributed by Kineticode.</p></li>
+            <li><p>The User and Contributor managers in the UI now use the <q>List Name Format</q>
+preference to display the whole names for users and contributors. This allows
+users to easily see whatever name parts they need by simply changing their
+List Name Format preferences. Contributed by Kineticode.</p></li>
+            <li><p>The admin tools in the side navigation of the UI are now listed in
+alphabetical order according to the locale. Contributed by Kineticode.</p></li>
+            <li><p>The UI now remembers searches for each manager in the UI for as long as a
+session lasts. So if you perform a search for element types, and then do a
+search for stories or output channels, the last results you saw in the element
+type manager will be there again when you return to it. Contributed by
+Kineticode.</p></li>
+            <li><p>Media files can now be uploaded at the same time a new media document is
+created, rather than only after it has been created. Contributed by
+Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>Templating Enhancements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added the <code>MASON_INTERP_ARGS</code> <em>bricolage.conf</em> directive to allow arguments
+to be passed to the Mason template interpreter. Contributed by Scott Lanning.</p></li>
+            <li><p>Added the <code>preview_another_all_ocs()</code> and <code>blaze_another()</code> methods to
+<a href="https://bricolagecms.org/docs/current/api/Bric::Util::Burner" title="Read the
+Bric::Util::Burner documentation in the Bricolage API
+browser">Bric::Util::Burner</a>. The former executes a preview for
+all of the output channels a document is associated with. The latter takes a
+document for its argument and calls <code>publish_another()</code> in publish mode and
+<code>preview_another_all_ocs()</code> in preview mode. Contributed by Alinghi.</p></li>
+            <li><p>Creating a template that already exists but is inactive now reactivates it
+instead of just giving an error message. Contributed by Scott Lanning.</p></li>
+            <li><p>The HTML::Template burner now sets parameters for all attributes of a story as
+returned by the <code>my_meths()</code> method of the story class, rather than just the
+story title. So, for example, you can now use <tmpl_var primary_uri> or
+<tmpl_var cover_date> without creating a <em>.pl</em> template to set them up.
+Contributed by Kineticode.</p></li>
+            <li><p>Category templates in the HTML::Template burner now cascade just like in all
+the other burners, rather than stopping at the first category template found
+in the category URI. Contributed by Kineticode.</p></li>
+            <li><p>The HTML::Template burner now has access to both the related story and the
+related media URIs via the <code>rel_story_uri</code> and <code>rel_media_uri</code> variables.
+The old <code>link</code> variable has been deprecated, since it cannot handle an
+element that has both a related media and a related story. Contributed by
+Kineticode.</p></li>
+            <li><p>Added the current element object to the <q>burn error</q> exception object and, by
+extension, the burner <code>throw_error()</code> method. Now a kind of breadcrumb trail
+will illustrate where in the element hierarchy of a story a burn error was
+thrown. Contributed by Scott Lanning.</p></li>
+            <li><p>Arguments can now be passed to the <code>display_element()</code> method of the Template
+Toolkit burner and they will be set up as variables in the stash of the
+execution context of the element template. Contributed by Kineticode.</p></li>
+            <li><p>Added the <code>TT_OPTIONS</code> <em>bricolage.conf</em> directive to allow Bricolage
+administrators to pass Template Toolkit options to the Template object when it
+is instantiated by the Template Toolkit burner. Contributed by Kineticode.</p></li>
+            <li><p>Added the <code>COMPILE_EXT</code> option to the instantiation of the Template Toolkit
+object in the Template Toolkit burner. This will cache compiled versions of
+the templates so that they do not have to be parsed and compiled every time a
+story is published. This should make the TT burner substantially faster.
+Contributed by Kineticode.</p></li>
+            <li><p>Any symbols exported by <code>PERL_LOADER</code> code, plus those exported by
+<code>Bric::Util::DBI qw(:junction)</code>, are now imported into the Template Toolkit
+stash for direct use in Template Toolkit templates, and into the PHP global
+context for direct use in PHP templates. For example, the <code>ANY</code> function can
+now be used directly in TT templates and as <code>$ANY()</code> in PHP templates.
+Contributed by Kineticode.</p></li>
+            <li><p>Completely updated <a href="https://bricolagecms.org/docs/current/api/Bric::Templates" title="Read the
+Bric::Templates documentation in the Bricolage API
+browser">Bric::Templates</a> and
+<a href="https://bricolagecms.org/docs/current/api/Bric::AdvTemplates" title="Read the
+Bric::AdvTemplates documentation in the Bricolage API
+browser">Bric::AdvTemplates</a>, with expanded API documentation and
+examples in Mason, Template Toolkit, and PHP. Contributed by Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>API Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added support for the <code>ANY()</code> function to pass multiple possible values for a
+given parameter to the <code>list()</code>, <code>list_ids()</code>, and, where pertinent,
+<code>href()</code> methods of all Bricolage business classes. Formerly, it was
+supported only by the story, media, and template classes. Contributed by
+Kineticode.</p></li>
+            <li><p>Added UUIDs to story and media documents. A UUID is a universally unique
+identifier. The format for UUIDs has been described in RFC 4122, ITU-T Rec.
+X.667 and ISO/IEC 11578:1996. In Bricolage, they are generated by
+<a href="https://bricolagecms.org/docs/current/api/Data::UUID" title="Read the
+Data::UUID documentation in the Bricolage API
+browser">Data::UUID</a>. Contributed by Kineticode.</p></li>
+            <li><p>Added the <code>exclude_id</code> parameter to the <code>list()</code> methods of the story,
+media, and template classes. This parameter can be used to exclude one or more
+asset IDs from the list of objects returned by the call to <code>list()</code> and
+friends. Contributed by Kineticode.</p></li>
+            <li><p>Added <code>serialize_to_pod()</code> and <code>update_from_pod()</code> methods to the container
+element class. These support a modification of the <q>Plain Old Documentation</q>
+(POD) syntax that enables a complete hierarchy of elements to be edited,
+including links to related stories and media, in a single stream of text. Used
+by the improved <q>Bulk Edit</q> interface. Contributed by Kineticode.</p></li>
+            <li><p>The <code>Order</code> and <code>OrderDirection</code> parameters to the <code>list()</code> methods of the
+story, media, and template classes can now be specified as array references so
+as to sort on more than one attribute. Contributed by Kineticode.</p></li>
+            <li><p>Added the <code>reset()</code> method to <a href="https://bricolagecms.org/docs/current/api/Bric::Util::Job" title="Read the
+Bric::Util::Job documentation in the Bricolage API
+browser">Bric::Util::Job</a> and a
+<q>Reset</q> checkbox in the job profile in the UI so that failed jobs can easily
+be re-attempted. Contributed by Kineticode.</p></li>
+            <li><p>Added <code>related_story_id</code> and <code>related_media_id</code> parameters to the <code>list()</code>
+method of the story and media classes to search for stories and media that
+have a given related story or media ID. Contributed by Rod Taylor.</p></li>
+            <li><p>Added support for searching on URIs in the story class and modified the same
+parameter in the media class to search I<all> possible URIs for media, not
+just the URI associated with the primary output channel. Contributed by Kineticode.</p></li>
+            <li><p>Major refactoring of the field types class,
+<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::ElementType::Parts::FieldType" title="Read the
+Bric::Biz::ElementType::Parts::FieldType documentation in the Bricolage API
+browser">Bric::Biz::ElementType::Parts::FieldType</a>.
+Attributes that describe how fields should be displayed are no longer stored
+in a separate attribute object, but as true attributes of field type objects.
+This makes them much more efficient in terms of database access. Contributed
+by Kineticode.</p></li>
+            <li><p>Changed various <code>get_data()</code>, <code>set_data()</code> <code>del_data()</code> and such methods to
+<code>get_field_types()</code>, <code>get_value()</code>, <code>set_value()</code>, <code>add_field_types()</code>,
+etc., to disambiguate fields from field types more consistently. Contributed
+by Kineticode.</p></li>
+            <li><p>Added <code>get_values()</code> and <code>set_values()</code> methods to the field class
+(<a href="https://bricolagecms.org/docs/current/api/Bric::Biz::Element::Field" title="Read the
+Bric::Biz::Element::Field documentation in the Bricolage API
+browser">Bric::Biz::Element::Field</a>) to make getting and
+setting multivalue fields easier and more centralized. Contributed by Kineticode.</p></li>
+            <li><p>The <code>pre_path</code> and <code>post_path</code> attributes of output channels have been
+eliminated, since arbitrary strings can now be used directly in the URI
+formats, making these attributes obsolete. Contributed by Kineticode.</p></li>
+            <li><p>Added <code>get_primary_category()</code> alias for <code>get_category()</code> in the media
+document class so as to make it more like the story class, thus making
+dispatch simpler. Contributed by Kineticode.</p></li>
+            <li><p>Fixed the <code>get_value()</code> and <code>get_container()</code> element methods so that, in
+list context, they return <code>undef</code> instead of an empty list when there is no
+corresponding field or element. This will be especially useful in templates,
+where it will prevent errors such as Mason's, <q>Odd number of parameters passed
+to component expecting name/value pairs.</q> Contributed by Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>Other Enhancements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added the element type set and output channel modules to the SOAP interface.
+Contributed by Scott Lanning.</p></li>
+            <li><p>Added much more fine-grained field type management to the Element Type SOAP
+interface. More field attributes can now be updated via SOAP. For example, one
+can now change the widget type from <q>text</q> to <q>textarea</q>. These improvements
+are thanks to the normalization of the element type and field type classes.
+Note that there are a number of new XML elements, and some of the existing
+ones have changed names, but we have tried to preserve backwards compatibility
+as much as possible. Contributed by Kineticode.</p></li>
+            <li><p>Now require Perl 5.8.0 or newer. Realistically it should only be 5.8.3 or
+newer. Contributed by Kineticode.</p></li>
+            <li><p><em>bric_republish</em> now uses the <code>published_version</code> Bric::SOAP::Workflow
+parameter to always republish the last published version of a story. This
+means that even if a story is checked out, it can be republished without
+interfering with the checkout. Contributed by Kineticode.</p></li>
+            <li><p>Added <code>$INSTALL_VERBOSITY</code> makefile environment variable that, when set to
+<q>QUIET</q>, eliminates many of the questions asked during installation and
+cloning, falling back on the default values. Contributed by Rod Taylor &
+Andrea Rota.</p></li>
+            <li><p>Added <code>$USE_DEFAULTS</code> makefile environment variable that, when used with
+<code>$INSTALL_VERBOSITY</code>, will use platform-specific answers to all of the
+installation questions. This allows for completely silent, customizable
+installations, which are necessary for packagers. Contributed by Marshall
+Roch.</p></li>
+            <li><p>When using the command line tools, you can now opt to be prompted for your
+password rather than entering it on the command line, which would store your
+plain text password in the shell history. Contributed by Marshall Roch.</p></li>
+            <li><p>Alert emails now use an email address, if one can be found, for the user who
+triggered the alert event for the From header in the alert email. The
+<code>ALERT_FROM</code> <em>bricolage.conf</em> directive is still used as the fallback.
+Contributed by Kineticode.</p></li>
+            <li><p>Story and media cover dates are now versioned. Contributed by Kineticode.</p></li>
+            <li><p>Publish and distribution jobs are now tied to a specific version of a story or
+media document, rather than the media document itself. This will allow a whole
+series of publishes for versions of a document to be scheduled for execution
+over time, as well as help to protect currently checked-out documents from
+being mysteriously removed from workflow by scheduled publishes being
+executed. Sponsored by Freerun Technologies.</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-1.10.0.tar.gz" title="Download Bricolage 1.10.0 Now!">Download Now!</a><br />(Version 1.10.0)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

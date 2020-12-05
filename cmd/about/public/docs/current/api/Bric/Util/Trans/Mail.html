@@ -1,0 +1,699 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Trans::Mail</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Mail.html#Name">Name</a></li>
+  <li><a href="Mail.html#Synopsis">Synopsis</a></li>
+  <li><a href="Mail.html#Description">Description</a></li>
+  <li><a href="Mail.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Mail.html#Constructors">Constructors</a></li>
+      <li><a href="Mail.html#Destructors">Destructors</a></li>
+      <li><a href="Mail.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Mail.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Mail.html#Private">Private</a>
+    <ul>
+      <li><a href="Mail.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Mail.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Mail.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Mail.html#Notes">Notes</a></li>
+  <li><a href="Mail.html#Author">Author</a></li>
+  <li><a href="Mail.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Trans::Mail - Utility class for sending email.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Trans::Mail;
+my $m = Bric::Util::Trans::Mail-&gt;new(
+  { smtp    =&gt; &#39;mail.sourceforge.net&#39;,
+    from    =&gt; &#39;bricolage-devel@lists.sourceforge.net&#39;,
+    to      =&gt; [&#39;joe@example.com&#39;],
+    subject =&gt; &#39;Greetings&#39;,
+    message =&gt; &#39;This is a message sent via Bric::Util::Trans::Mail&#39;
+   });
+$m-&gt;send;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class provides a thin abstraction to the MIME::Entity and Net::SMTP modules. Use it to send email from within Bricolage applications. Or from within other applications. We don&#39;t care.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $mail = Bric::Util::Trans::Mail-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::Trans::Mail object. An anonymous of initial values may be passed. The supported intial value keys are:</p>
+
+<ul>
+
+<li><p>smtp - String with the DNS name of the SMTP server. Defaults to value of the SMTP_SERVER constant in Bric::Config.</p>
+
+</li>
+<li><p>from - String with sender&#39;s email address.</p>
+
+</li>
+<li><p>to - Anonymous array of email addresses to send mail to.</p>
+
+</li>
+<li><p>cc - Anonymous array of email address to Cc email to.</p>
+
+</li>
+<li><p>bcc - Anonymous array of email addresses to Bcc email to.</p>
+
+</li>
+<li><p>content_type - The content type of the email. Defaults to &quot;text/plain&quot; if unspecified.</p>
+
+</li>
+<li><p>subject - The subject of the message.</p>
+
+</li>
+<li><p>message - The message to be sent.</p>
+
+</li>
+<li><p>resources - Anonymous array of Bric::Dist::Resource objects representing files to send as attachments.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $smtp = $mail-&gt;get_smtp</dt>
+<dd>
+
+<p>Returns the DNS name of the SMTP server to which to send email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;smtp&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_smtp($smtp)</dt>
+<dd>
+
+<p>Sets the DNS name of the SMTP server to which to send email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;smtp&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $from = $mail-&gt;get_from</dt>
+<dd>
+
+<p>Returns the email address the message is to be sent from.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;from&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_from($from)</dt>
+<dd>
+
+<p>Sets the email address from which to send the email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;from&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $to_aref = $mail-&gt;get_to</dt>
+<dd>
+
+<p>Returns an anonymous array of email address to which to send the mail.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;to&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_to($to_aref)</dt>
+<dd>
+
+<p>Sets the list of email addresses to which to send the mail. Pass in the list as an anonymous array.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;to&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Parses out the one or more email addresses in each item in the array reference to use as the recipients. The string in each item will be used literally in the &quot;From&quot; header of the outgoing email. To change the recipients, pass in a new array reference rather than edit the existing array reference.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $cc_aref = $mail-&gt;get_cc</dt>
+<dd>
+
+<p>Returns an anonymous array of address to which to Cc the mail.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;cc&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_cc($cc_aref)</dt>
+<dd>
+
+<p>Sets the list of email addresses to which to Cc the mail. Pass in the list as an anonymous array.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;cc&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Parses out the one or more email addresses in each item in the array reference to use as the recipients. The string in each item will be used literally in the &quot;Cc&quot; header of the outgoing email. To change the recipients, pass in a new array reference rather than edit the existing array reference.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bcc_aref = $mail-&gt;get_bcc</dt>
+<dd>
+
+<p>Returns an anonymous array of address to which to Bcc the mail.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;bcc&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_bcc($bcc_aref)</dt>
+<dd>
+
+<p>Sets the list of email addresses to which to Bcc the mail. Pass in the list as an anonymous array.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;bcc&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Parses out the one or more email addresses in each item in the array reference to use as the recipients. To change the recipients, pass in a new array reference rather than edit the existing array reference.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sub = $mail-&gt;get_content_type</dt>
+<dd>
+
+<p>Returns the content type of the mail. Defaults to &quot;text/plain&quot; if unspecified.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;content_type&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_content_type($sub)</dt>
+<dd>
+
+<p>Sets content type of the email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;content_type&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sub = $mail-&gt;get_subject</dt>
+<dd>
+
+<p>Returns the subject of the mail.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_subject($sub)</dt>
+<dd>
+
+<p>Sets subject of the email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $msg = $mail-&gt;get_message</dt>
+<dd>
+
+<p>Returns the message (body) of the email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_message($msg)</dt>
+<dd>
+
+<p>Sets message (body) of the email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $resources_aref = $mail-&gt;get_resources</dt>
+<dd>
+
+<p>Returns an anonymous array of Bric::Dist::Resource objects representing files to send as attachments. Returns <code>undef</code> if no resources are to be attached.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;resources&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;set_resources($resources_aref)</dt>
+<dd>
+
+<p>Sets the anonymous array of Bric::Dist::Resource objects representing files to send as attachments.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;resources&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $mail-&gt;send</dt>
+<dd>
+
+</dd>
+<dt>$self = $mail-&gt;send($debug)</dt>
+<dd>
+
+<p>Sends the email to the addresses stored in to, cc, and bcc. Pass in a true value in order to get debugging statements from Net::SMTP. This is useful to see excactly what&#39;s happening when you send email.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to send mail.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Resource.html" name="Bric::Dist::Resource">Bric::Dist::Resource</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action/Email.html" name="Bric::Dist::Action::Email">Bric::Dist::Action::Email</a>, <a href="http://search.cpan.org/perldoc?Net::SMTP">Net::SMTP</a>, <a href="http://search.cpan.org/perldoc?MIME::Entity">MIME::Entity</a></p>
+
+</body>
+</html>
+

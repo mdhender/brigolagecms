@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_soap</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_soap.html#Name">Name</a></li>
+  <li><a href="bric_soap.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_soap.html#Examples">Examples</a></li>
+  <li><a href="bric_soap.html#ID-Parameters">ID Parameters</a></li>
+  <li><a href="bric_soap.html#Bash-Completion">Bash Completion</a></li>
+  <li><a href="bric_soap.html#Author">Author</a></li>
+  <li><a href="bric_soap.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_soap - a command-line client for the Bricolage SOAP interface</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>bric_soap module command [options] [ids or filenames or -]</p>
+
+<p>Modules:</p>
+
+<pre><code>story
+media
+template
+element_type
+category
+media_type
+site
+keyword
+user
+desk
+workflow
+element_type_set  (being removed)
+output_channel
+contrib_type
+dest
+pref</code></pre>
+
+<p>Commands:</p>
+
+<pre><code>Asset Commands (story, media, template, element_type, category,
+                media_type, site, keyword, user, desk, element_type_set,
+                output_channel, contrib_type, dest, pref):
+
+  list_ids
+  export
+  create  (not &#39;pref&#39;)
+  update
+  delete  (not &#39;pref&#39;)
+
+Workflow Commands:
+
+  publish
+  deploy
+  checkin
+  checkout
+  move</code></pre>
+
+<p>Options:</p>
+
+<pre><code>--help                 - shows this screen
+
+--man                  - shows the full documentation
+
+--server               - specifies the Bricolage server URL, defaults to
+                         the BRICOLAGE_SERVER environment variable if set,
+                         http://localhost otherwise.
+
+--username             - the Bricolage username, defaults to the
+                         BRICOLAGE_USERNAME environment variable if
+                         set, &#39;admin&#39; otherwise
+
+--password             - the password for the Bricolage user.
+                         Default to the BRICOLAGE_PASSWORD
+                         environment variable if set.
+
+--with-related-stories - tell export and publish to include related stories
+
+--with-related-media   - tell export and publish to include related media
+
+--without-file         - tell media export to omit the <code>&lt;file&gt;</code> element
+                         from the output
+
+--use-related-uri      - tell export to use related_story_uri and
+                         related_media_uri instead of related_story_id and
+                         related_media_id
+
+--all                  - synonym for setting --with-related-stories and
+                         --with-related-media
+
+--desk                 - required desk option for move command; optional for
+                         create and update commands
+
+--workflow             - workflow option for move, create, and update commands
+
+--search field=value   - specify a search for list_ids, field must
+                         be a valid search field for the list_ids()
+                         method of the appropriate module.
+
+--verbose              - print a running description to STDERR.  Add
+                         a second --verbose and you&#39;ll get debugging
+                         output too.  Add a third and you&#39;ll see a full
+                         XML trace.
+
+--to-preview           - use to_preview option for workflow publish
+
+--publish-date         - date and time to publish assets for workflow
+                         publish. Use format CCYY-MM-DDThh:mm:ssZ, where
+                         the &quot;Z&quot; stands for UTC (GMT).
+
+--published-only       - for workflow publish, republish the published
+                         version rather than the current version; if the
+                         asset hasn&#39;t been published, don&#39;t publish anything
+
+--timeout              - specify the HTTP timeout for SOAP requests in
+                         seconds.  Defaults to 30.
+
+--save-cookie-file     - specify a file to save cookies to for later use-
+             useful if you do not wish to relogin each time.
+
+--use-cookie-file      - specify a file in which cookies have been saved
+             during a previous session.  If you use this
+             option no username or password are
+             required.
+
+--chunks               - perform actions in chunks of this many ids.
+                         Currently implemented only for the workflow
+                         commands (publish, deploy, checkin,
+                         checkout, move) but may be expanded to
+                         other commands as needed.  Defaults to 0
+                         which means no chunking.
+
+--continue-on-errors   - normally an error returned by a call to the
+                         SOAP interface is fatal and bric_soap stops
+                         immediately.  If this flag is set then the
+                         errror message is printed but processing
+                         continues, if possible.  Currently
+                         implemented only for the workflow commands
+                         (publish, deploy, checkin, checkout, move)
+                         but may be expanded to other commands as
+                         needed.</code></pre>
+
+<h1 id="Examples">Examples</h1>
+
+<p>Here are some example command-lines. The examples assume that you&#39;ve set the BRICOLAGE_USERNAME and BRICOLAGE_PASSWORD environment variables and that your local Bricolage server is running on http://localhost. If this is not the case you&#39;ll need to add --username, --password and --server arguments as appropriate.</p>
+
+<p>Output an XML dump of the story with story_id 1024 into the file 1024.xml:</p>
+
+<pre><code>bric_soap story export 1024 &gt; 1024.xml</code></pre>
+
+<p>Upload that story to the server at some.host.org:</p>
+
+<pre><code>bric_soap story create --server http://some.host.org 1024.xml</code></pre>
+
+<p>A simpler way to do the above two steps:</p>
+
+<pre><code>bric_soap story export 1024 \
+| bric_soap story create --server some.host.org -</code></pre>
+
+<p>Copy all stories from the local Bricolage to the server at some.host.org:</p>
+
+<pre><code>bric_soap story list_ids
+| bric_soap story export - \
+| bric_soap story create --server some.host.org -</code></pre>
+
+<p>Delete all stories (gasp!):</p>
+
+<pre><code>bric_soap story list_ids | bric_soap story delete -</code></pre>
+
+<p>Publish all unpublished stories:</p>
+
+<pre><code>bric_soap story list_ids --search publish_status=0
+| bric_soap workflow publish -</code></pre>
+
+<p>Publish all unpublished stories at a future time:</p>
+
+<pre><code>bric_soap story list_ids --search publish_status=0
+| bric_soap workflow publish --publish-date 2005-01-01T00:00:00Z -</code></pre>
+
+<p>Publish all unpublished stories, in chunks of 5 to avoid timeouts</p>
+
+<pre><code>bric_soap story list_ids --search publish_status=0
+| bric_soap workflow publish --chunks 5 -</code></pre>
+
+<p>Republish all published stories. This is useful when a template change needs to be reflected across a site. The <code>sort -k2 -t_ -n</code> is a crude way to make sure that newer stories overwrite older ones.</p>
+
+<pre><code>bric_soap story list_ids --search publish_status=1 \
+| sort -k2 -t_ -n
+| bric_soap workflow publish -</code></pre>
+
+<p>Copy the story titled &quot;Annoying Ad Turns Man Pro-Whaling&quot; to the server at some.host.org along with any related media and related stories. Then publish the story along with any related stories or media.</p>
+
+<pre><code>bric_soap story list_ids \
+   --search &quot;title=Annoying Ad Turns Man Pro-Whaling&quot; \
+| bric_soap story export --all - \
+| bric_soap story create --server http://some.host.org - \
+| bric_soap workflow publish --server some.host.org -</code></pre>
+
+<h1 id="ID-Parameters">ID Parameters</h1>
+
+<p>Commands that take ids for parameters (delete, export, publish, etc.) always accept fully qualified ids:</p>
+
+<pre><code>bric_soap workflow publish story_1024 media_1028</code></pre>
+
+<p>Conveniently, this is the format produced by commands that output ids.</p>
+
+<p>Some commands also accept unqualified ids when their meaning is obvious:</p>
+
+<pre><code>bric_soap story export 1024</code></pre>
+
+<p>If you try to use an unqualified id parameter with a command that requires qualified ids you will receive an error message.</p>
+
+<h1 id="Bash-Completion">Bash Completion</h1>
+
+<p>There is bash tab-completion for bric_soap. See <i>contrib/bash_completion</i>.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

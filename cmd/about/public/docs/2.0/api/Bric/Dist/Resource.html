@@ -1,0 +1,1580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Resource</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Resource.html#Name">Name</a></li>
+  <li><a href="Resource.html#Synopsis">Synopsis</a></li>
+  <li><a href="Resource.html#Description">Description</a></li>
+  <li><a href="Resource.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Resource.html#Constructors">Constructors</a></li>
+      <li><a href="Resource.html#Destructors">Destructors</a></li>
+      <li><a href="Resource.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Resource.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Resource.html#Private">Private</a>
+    <ul>
+      <li><a href="Resource.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Resource.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Resource.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Resource.html#Notes">Notes</a></li>
+  <li><a href="Resource.html#Author">Author</a></li>
+  <li><a href="Resource.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Resource - Interface to distribution files and directories.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Resource;
+
+# Constructors.
+# Create a new resource.
+my $res = Bric::Dist::Resource-&gt;new;
+# Look up an existing resource.
+$res = Bric::Dist::Resource-&gt;lookup({ id =&gt; 1 });
+# Get a list of resources.
+my @res = Bric::Dist::Resource-&gt;list({ path =&gt; &#39;/tech/feature%&#39; });
+
+# Class methods.
+# Get a list of resource IDs.
+my @res_ids = Bric::Dist::Resource-&gt;list_ids({ path =&gt; &#39;/tech/feature%&#39; });
+# Get an introspection hashref.
+my $int = Bric::Dist::Resource-&gt;my_meths;
+
+# Instance methods.
+my $id = $res-&gt;get_id;
+my $path = $res-&gt;get_path;
+$res = $res-&gt;set_path($path);
+my $uri = $res-&gt;get_uri;
+$res = $res-&gt;set_uri($uri);
+my $tmp_path = $res-&gt;get_tmp_path;
+$res = $res-&gt;set_tmp_path($tmp_path);
+my $size = $res-&gt;get_size;
+$res = $res-&gt;set_size($size);
+my $mod_time = $res-&gt;get_mod_time;
+$res = $res-&gt;set_mod_time($mod_time)
+my $media_type = $res-&gt;get_media_type;
+$res = $res-&gt;set_media_type($media_type)
+print &quot;It&#39;s a directory!\n&quot; if $res-&gt;is_dir;
+
+# Reload size and mod_time, from the resource on the file system.
+$res = $res-&gt;stat_me;
+
+# Story relationships.
+my @story_ids = $res-&gt;get_story_ids;
+$res = $res-&gt;add_story_ids(@story_ids);
+$res = $res-&gt;del_story_ids(@story_ids);
+
+# Media relationships.
+my @media_ids = $res-&gt;get_media_ids;
+$res = $res-&gt;add_media_ids(@media_ids);
+$res = $res-&gt;del_media_ids(@media_ids);
+
+# File relationships.
+if ($res-&gt;is_dir) {
+    my @file_ids = $res-&gt;get_file_ids;
+    $res = $res-&gt;add_file_ids(@file_ids);
+    $res = $res-&gt;del_file_ids(@file_ids);
+}
+
+# Save it!
+$res = $res-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages distribution resources. A resource is a file or directory. Directory resources can be associated with file resources (in order to keep a list of the contents of a directory), but not vice versa. Resources may also track associations with assets, such that they can have story and/or media associations. Other properties of resources are filesystem path, file size, MEDIA type, and last modified date.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $res = Bric::Dist::Resource-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Dist::Resource object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>path</p>
+
+</li>
+<li><p>uri</p>
+
+</li>
+<li><p>media_type</p>
+
+</li>
+<li><p>size</p>
+
+</li>
+<li><p>mod_time</p>
+
+</li>
+</ul>
+
+<p>Call $res-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $res = Bric::Dist::Resource-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>my $res = Bric::Dist::Resource-&gt;lookup({ path =&gt; $path, uri =&gt; $uri })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Dist::Resource object based on the Bric::Dist::Resource object ID or based on the path and uri. If a Bric::Dist::Resource object is not found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Too many Bric::Dist::Resource objects found.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id or $path is found, populates the new Bric::Dist::Resource object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@res || $res_aref) = Bric::Dist::Resource-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Resource objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Resource ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>path</dt>
+<dd>
+
+<p>The path to the resource on the file system. Usually used in combination with uri. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uri</dt>
+<dd>
+
+<p>The URI for a resource. Usually used in combination with path. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>not_uri</dt>
+<dd>
+
+<p>Search for resources with URIs <i>not</i> like the specified URI. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_type</dt>
+<dd>
+
+<p>The resources&#39; MEDIA type. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>mod_time</dt>
+<dd>
+
+<p>The resources&#39; last modified time. If passed as an anonymous array of two values, those values will be used to retreive resources whose mod_times are between the two times. Otherwise, may use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>size</dt>
+<dd>
+
+<p>The size, in bytes, of the file. If passed as an anonymous array of two values, those values will be used to retreive resources whose sizes are between the two sizes. Otherwise, may use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>is_dir</dt>
+<dd>
+
+<p>If true, return only those resources that are directories.</p>
+
+</dd>
+<dt>story_id</dt>
+<dd>
+
+<p>Resources associated with a given story ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_id</dt>
+<dd>
+
+<p>Resources associated with a given media ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_id</dt>
+<dd>
+
+<p>Resources associated with a given media ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>dir_id</dt>
+<dd>
+
+<p>File resources that are associated with a directory Resource&#39;s ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>job_id</dt>
+<dd>
+
+<p>Resources associated with a given job ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>not_job_id</dt>
+<dd>
+
+<p>Resources not associated with a given job ID. Best used in combination with <code>story_id</code> or <code>media_id</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>oc_id</dt>
+<dd>
+
+<p>Resources associated with an output channel ID. Only returns the correct results if the <code>job</code> table has not been cleared, because it joins to <code>job__resource</code>, <code>job__server_type</code>, and <code>server_type__output_channel</code>.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::Resource object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $res_href = Bric::Dist::Resource-&gt;href($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Resource objects based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::Resource object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$res-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@res_ids || $res_ids_aref) = Bric::Dist::Resource-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Resource object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Dist::Resource-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Dist::Resource-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Dist::Resource-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs representing the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $res-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Dist::Resource object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Dist::Resource object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $media_type = $res-&gt;get_media_type</dt>
+<dd>
+
+<p>Returns the MEDIA type of the resource. Returns undef in the resource is a directory.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_media_type($media_type)</dt>
+<dd>
+
+<p>Sets the MEDIA type of the resource. Call Bric::Util::MediaType-&gt;list() to get a list of available MEDIA types. Setting the MEDIA type to &quot;none&quot; will cause is_dir() to return true, while any other MEDIA type setting will cause is_dir() to return false.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $path = $res-&gt;get_path</dt>
+<dd>
+
+<p>Returns the file system path to the resource.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;path&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> For cross-platform portability, we may later want to implement the get_path() and set_path() methods using File::Spec.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_path($path)</dt>
+<dd>
+
+<p>Sets the file system path to the resource. This property cannot be changed in an existing Bric::Dist::Resource object. The resource must exist on the file system to set the path. In addition, once the resource has been found on the file system the media_type, size, and mod_time properties will also be filled out, as best as possible. These settings can be overridden by calling their own set_ methods.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot change path in existing Bric::Dist::Resource object.</p>
+
+</li>
+<li><p>Path does not exist.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> For cross-platform portability, we may later want to implement the get_path() and set_path() methods using File::Spec.</p>
+
+</dd>
+<dt>my $uri = $res-&gt;get_uri</dt>
+<dd>
+
+<p>Returns the resource&#39;s URI.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;uri&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_uri($uri)</dt>
+<dd>
+
+<p>Sets the resource&#39;s URI.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;uri&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $tmp_path = $res-&gt;get_tmp_path</dt>
+<dd>
+
+<p>Returns the file system path to the a temporary copy of the resource. Used by Bric::Util::Job and does not persist to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;tmp_path&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> For cross-platform portability, we may later want to implement the get_path() and set_path() methods using File::Spec.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_tmp_path($tmp_path)</dt>
+<dd>
+
+<p>Sets the file system path to a temporary copy of the resource. Used by Bric::Util::Job and does not persist to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;tmp_path&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> For cross-platform portability, we may later want to implement the get_path() and set_path() methods using File::Spec.</p>
+
+</dd>
+<dt>$self = $res-&gt;stat_me</dt>
+<dd>
+
+<p>Finds the resource on the file system and reloads the size, mod_time, and media_type properties. If the MEDIA type cannot be determined from the file the existing media_type property setting is retained.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Bric::Dist::Resource::stat_me() requires the path property to be set.</p>
+
+</li>
+<li><p>Path does not exist.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> For cross-platform portability, we may later want to implement the get_path() and set_path() methods using File::Spec.</p>
+
+</dd>
+<dt>my $size = $res-&gt;get_size</dt>
+<dd>
+
+<p>Returns the size of the resource in bytes. If the resource is a directory, this method will return 0.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;size&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_size($size)</dt>
+<dd>
+
+<p>Sets the size of the resource in bytes. If the resource is a directory, set the size to 0. Chances are that if you called set_path() first, this property will already be enumerated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;size&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $mod_time = $res-&gt;get_mod_time($format)</dt>
+<dd>
+
+<p>Returns the last modified time of the resource. Pass in a strftime format string to get the last modified time returned in that format.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;set_mod_time($mod_time)</dt>
+<dd>
+
+<p>Sets the mod_time of the resource in bytes. Chances are that if you called set_path() first, this property will already be enumerated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;is_dir</dt>
+<dd>
+
+<p>Returns true if the resources is a directory.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@story_ids || $story_ids_aref) = $res-&gt;get_story_ids</dt>
+<dd>
+
+<p>Returns a list or anonymous array of story IDs representing the stories with which this resources is associated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;add_story_ids(@story_ids)</dt>
+<dd>
+
+<p>Associates this resource with the story IDs passed in.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;del_story_ids(@story_ids)</dt>
+<dd>
+
+<p>Dissociates this resource with the story IDs passed in. If no story IDs are passed, then all story IDs will be dissociated from this resource.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@media_ids || $media_ids_aref) = $res-&gt;get_media_ids</dt>
+<dd>
+
+<p>Returns a list or anonymous array of media IDs representing the stories with which this resources is associated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;add_media_ids(@media_ids)</dt>
+<dd>
+
+<p>Associates this resource with the media IDs passed in.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;del_media_ids(@media_ids)</dt>
+<dd>
+
+<p>Dissociates this resource with the media IDs passed in. If no media IDs are passed, then all media IDs will be dissociated from this resource.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@resource_ids || $resource_ids_aref) = $res-&gt;get_file_ids</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Resource object IDs representing the files that are the contents of this resource, assuming that this resource is a directory. If this resource is a file, this method will return an empty list.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;add_file_ids(@file_ids)</dt>
+<dd>
+
+<p>Associates this resource with the File IDs passed in. Note that is_dir() must return true in order to associate files with this resource.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot associate file resources with another file resource.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;del_file_ids(@file_ids)</dt>
+<dd>
+
+<p>Dissociates this resource with the file IDs passed in. If no file IDs are passed, then all file IDs will be dissociated from this resource. If this is_dir() returns false, then this resource cannot be assocated with files and will return undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $res-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Dist::Resource object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$contents = $res-&gt;get_contents</dt>
+<dd>
+
+<p>Returns the contents of the file represented by the Bric::Dist::Resource object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot open file.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $res_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $res_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Dist::Resource objects or, if called with an optional third argument, returns a listof Bric::Dist::Resource object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>my (@ids || $ids_aref) = &amp;$get_ids($self, $type)</dt>
+<dd>
+
+<p>Returns the Asset IDs associated with this resource. If $type is &#39;story&#39;, it returns Story IDs. If $type is &#39;media&#39;, it returns Media IDs.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>my $bool = &amp;$add_ids($self, $type)</dt>
+<dd>
+
+<p>Associates asset IDs with this resource. If $type is &#39;story&#39;, it associates Story IDs. If $type is &#39;media&#39;, it associates Media IDs. Returns true.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>my $bool = &amp;$del_ids($self, $type)</dt>
+<dd>
+
+<p>Dissociates asset IDs from this resource. If $type is &#39;story&#39;, it dissociates Story IDs. If $type is &#39;media&#39;, it dissociates Media IDs. Returns true.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>my $ids_href = &amp;$load_ids($self, $type)</dt>
+<dd>
+
+<p>Returns the Asset IDs associated with this resource. If $type is &#39;story&#39;, it returns Story IDs. If $type is &#39;media&#39;, it returns Media IDs. The anonymous hash returned has the following keys, each of which contains another anonymous hash where the relevant IDs are the hash keys.</p>
+
+<ul>
+
+<li><p>cur - All new IDs and IDs currently in the database.</p>
+
+</li>
+<li><p>new - IDs to be added to the database.</p>
+
+</li>
+<li><p>del - IDs to be deleted from the database.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$self = &amp;$stat($self, $path)</dt>
+<dd>
+
+<p>Finds $path on the file system and loads the properties size, mod_time, and media_type (if $path is a directory).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Path does not exist.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$bool = &amp;$save_ids($id, $ids, $type)</dt>
+<dd>
+
+<p>Saves the associated Story, Media, or File IDs by deleting those that need deleting and inserting those that need inserting.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Util/Job.html" name="Bric::Util::Job">Bric::Util::Job</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,1222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset::Business::Media</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Media.html#Name">Name</a></li>
+  <li><a href="Media.html#Synopsis">Synopsis</a></li>
+  <li><a href="Media.html#Description">Description</a></li>
+  <li><a href="Media.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Media.html#Constructors">Constructors</a></li>
+      <li><a href="Media.html#Destructors">Destructors</a></li>
+      <li><a href="Media.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Media.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Media.html#Notes">Notes</a></li>
+  <li><a href="Media.html#Author">Author</a></li>
+  <li><a href="Media.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset::Business::Media - The parent class of all media objects</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::Asset::Business::Media;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Media contains all of the data that will result in published media files. It contains the metadata and associations with media documents. It inherits from <a rel="section" href="../Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a></p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$media = Bric::Biz::Asset::Business::Media-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>This will create a new media object with an optionally defined initial state</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>user__id - Required.</p>
+
+</li>
+<li><p>active</p>
+
+</li>
+<li><p>priority</p>
+
+</li>
+<li><p>title - same as name</p>
+
+</li>
+<li><p>name - Will be overridden by title</p>
+
+</li>
+<li><p>description</p>
+
+</li>
+<li><p>workflow_id</p>
+
+</li>
+<li><p>element_type_id - Required unless asset type object passed</p>
+
+</li>
+<li><p>element_type - the object required unless id is passed</p>
+
+</li>
+<li><p>site_id - required</p>
+
+</li>
+<li><p>source__id - required</p>
+
+</li>
+<li><p>cover_date - will set expire date in conjunction with the source</p>
+
+</li>
+<li><p>media_type_id</p>
+
+</li>
+<li><p>category__id</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$pkg = Bric::Biz::Asset::Business::Media-&gt;cache_as</dt>
+<dd>
+
+<p>Returns &quot;Bric::Biz::Asset::Business::Media&quot;, so that even objects blessed into a subclass of the media class will use the same package name when they&#39;re cached.</p>
+
+</dd>
+<dt>$media = Bric::Biz::Asset::Business::Media-&gt;lookup( { id =&gt; $id })</dt>
+<dd>
+
+<p>This will return a media asset that matches the criteria defined</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+<dt>(@media || $media) = Bric::Biz::Asset::Business::Media-&gt;list($param);</dt>
+<dd>
+
+<p>returns a list or list ref of media objects that match the criteria defined</p>
+
+<p>Supported Keys:</p>
+
+<dl>
+
+<dt>title</dt>
+<dd>
+
+<p>The title of the media document. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>Same as <code>title</code>.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Media Document description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>id</dt>
+<dd>
+
+<p>The media document ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uuid</dt>
+<dd>
+
+<p>The media document UUID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>exclude_id</dt>
+<dd>
+
+<p>A media document ID to exclude from the list. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>version</dt>
+<dd>
+
+<p>The media document version number. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>version_id</dt>
+<dd>
+
+<p>The ID of a version of a media document. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>file_name</dt>
+<dd>
+
+<p>The media document file name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>user_id</dt>
+<dd>
+
+<p>Returns the versions that are checked out by the user, otherwise returns the most recent version. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>checked_out</dt>
+<dd>
+
+<p>A boolean value indicating whether to return only checked out or not checked out media.</p>
+
+</dd>
+<dt>checked_in</dt>
+<dd>
+
+<p>If passed a true value, this parameter causes the checked in version of the most current version of the media document to be returned. When a media document is checked out, there are two instances of the current version: the one checked in last, and the one currently being edited. When the <code>checked_in</code> parameter is a true value, then the instance last checked in is returned, rather than the instance currently checked out. This is useful for users who do not currently have a media document checked out and wish to see the media document as of the last check in, rather than as currently being worked on in the current checkout. If a media document is not currently checked out, this parameter has no effect.</p>
+
+</dd>
+<dt>published_version</dt>
+<dd>
+
+<p>Returns the versions of the media documents as they were last published. The <code>checked_out</code> parameter will be ignored if this parameter is passed a true value.</p>
+
+</dd>
+<dt>return_versions</dt>
+<dd>
+
+<p>Boolean indicating whether to return pass version objects for each media document listed.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean indicating whether to return active or inactive media.</p>
+
+</dd>
+<dt>inactive</dt>
+<dd>
+
+<p>Returns only inactive media.</p>
+
+</dd>
+<dt>alias_id</dt>
+<dd>
+
+<p>Returns a list of media aliased to the media ID passed as its value. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>category_id</dt>
+<dd>
+
+<p>Returns a list of media in the category represented by a category ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>category_uri</dt>
+<dd>
+
+<p>Returns a list of media with a given category URI. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>keyword</dt>
+<dd>
+
+<p>Returns media associated with a given keyword string (not object). May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>note</dt>
+<dd>
+
+<p>Returns media with a note matching the value associated with any of their versions. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>workflow_id</dt>
+<dd>
+
+<p>Return a list of media in the workflow represented by the workflow ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>desk_id</dt>
+<dd>
+
+<p>Returns a list of media on a desk with the given ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uri</dt>
+<dd>
+
+<p>Returns a list of media with a given URI. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given site ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site</dt>
+<dd>
+
+<p>Returns a list of media associated with a given site name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given element type ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>source_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given source ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>output_channel_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given output channel ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>primary_oc_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given primary output channel ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>priority</dt>
+<dd>
+
+<p>Returns a list of media associated with a given priority value. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>contrib_id</dt>
+<dd>
+
+<p>Returns a list of media associated with a given contributor ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>Returns a list of media that are members of the group with the specified group ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>publish_status</dt>
+<dd>
+
+<p>Boolean value indicating whether to return published or unpublished media.</p>
+
+</dd>
+<dt>first_publish_date_start</dt>
+<dd>
+
+<p>Returns a list of media first published on or after a given date/time.</p>
+
+</dd>
+<dt>first_publish_date_end</dt>
+<dd>
+
+<p>Returns a list of media first published on or before a given date/time.</p>
+
+</dd>
+<dt>publish_date_start</dt>
+<dd>
+
+<p>Returns a list of media last published on or after a given date/time.</p>
+
+</dd>
+<dt>publish_date_end</dt>
+<dd>
+
+<p>Returns a list of media last published on or before a given date/time.</p>
+
+</dd>
+<dt>cover_date_start</dt>
+<dd>
+
+<p>Returns a list of media with a cover date on or after a given date/time.</p>
+
+</dd>
+<dt>cover_date_end</dt>
+<dd>
+
+<p>Returns a list of media with a cover date on or before a given date/time.</p>
+
+</dd>
+<dt>expire_date_start</dt>
+<dd>
+
+<p>Returns a list of media with a expire date on or after a given date/time.</p>
+
+</dd>
+<dt>expire_date_end</dt>
+<dd>
+
+<p>Returns a list of media with a expire date on or before a given date/time.</p>
+
+</dd>
+<dt>unexpired</dt>
+<dd>
+
+<p>A boolean parameter. Returns a list of media without an expire date, or with an expire date set in the future.</p>
+
+</dd>
+<dt>element_key_name</dt>
+<dd>
+
+<p>The key name for the media type element. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>subelement_key_name</dt>
+<dd>
+
+<p>The key name for a container element that&#39;s a subelement of a media document. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>subelement_id</dt>
+<dd>
+
+<p>The ID for a container element that&#39;s a subelement of a media document. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>related_story_id</dt>
+<dd>
+
+<p>Returns a list of media that have this story ID as a related story. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>related_media_id</dt>
+<dd>
+
+<p>Returns a list of media that have this media ID as a related media document. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>data_text</dt>
+<dd>
+
+<p>Text stored in the fields of the media element or any of its subelements. Only fields that use the &quot;short&quot; storage type will be searched unless the <code>BLOB_SEARCH</code> <i>bricolage.conf</i> directive is enabled, in which case the &quot;blob&quot; storage will also be searched. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>simple</dt>
+<dd>
+
+<p>Triggers a single OR search that hits title, description, uri and keywords.</p>
+
+</dd>
+<dt>Order</dt>
+<dd>
+
+<p>A property name or array reference of property names to order by.</p>
+
+</dd>
+<dt>OrderDirection</dt>
+<dd>
+
+<p>The direction in which to order the records, either &quot;ASC&quot; for ascending (the default) or &quot;DESC&quot; for descending. This value is applied to the property specified by the <code>Order</code> parameter, and may also be an array reference. If no value is supplied for any <code>Order</code> property name, it will default to ascending.</p>
+
+</dd>
+<dt>Limit</dt>
+<dd>
+
+<p>A maximum number of objects to return. If not specified, all objects that match the query will be returned.</p>
+
+</dd>
+<dt>Offset</dt>
+<dd>
+
+<p>The number of objects to skip before listing the remaining objcts or the number of objects specified by <code>Limit</code>.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b> Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>dummy method to not waste the time of AUTOLOAD</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>(@ids||$id_list) = Bric::Biz::Asset::Business::Media-&gt;list_ids( $criteria );</dt>
+<dd>
+
+<p>Returns a list or list ref of media object IDs that match the criteria defined. The criteria are the same as those for the list() method.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+<dt>($fields || @fields) = Bric::Biz::Asset::Business::Media::autopopulated_fields()</dt>
+<dd>
+
+<p>Returns a list of the names of fields that are registered in the database as being autopopulatable for a given sub class</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset::Business::Media-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $hashref = Bric::Biz::Asset::Business::Media-&gt;thumbnail_uri()</dt>
+<dd>
+
+<p>This method returns a local URI pointing to an icon representing the media type of the media document. If no file has been uploaded to the media document, <code>thumbnail_uri()</code> will return <code>undef</code>.</p>
+
+<p>This method is only enabled if the <code>USE_THUMBNAILS</code> <i>bricolage.conf</i> directive is enabled. It may be overridden in subclasses to return a different URI value (See Bric::Biz::Asset::Business::Media::Image for an example).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Asset::Business::Media-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Asset::Business::Media-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Asset::Business::Media-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$class_id = Bric::Biz::Asset::Business::Media-&gt;get_class_id()</dt>
+<dd>
+
+<p>Returns the class id of the Media object or class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $wf_type = Bric::Biz::Asset::Business::Media-&gt;workflow_type</dt>
+<dd>
+
+<p>Returns the value of the Bric::Biz::Workflow <code>MEDIA_WORKFLOW</code> constant.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$media = $media-&gt;set_category__id($id)</dt>
+<dd>
+
+<p>Associates this media asset with the given category</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Updates the media document&#39;s URI and group associations.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$category_id = $media-&gt;get_category_id()</dt>
+<dd>
+
+<p>Returns the category id that has been associated with this media object</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $media-&gt;set_cover_date($cover_date)</dt>
+<dd>
+
+<p>Sets the cover date and updates the URI.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Changes the media document&#39;s URI.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$category = $media-&gt;get_category_object()</dt>
+<dd>
+
+</dd>
+<dt>$category = $media-&gt;get_category()</dt>
+<dd>
+
+</dd>
+<dt>$category = $media-&gt;get_primary_category()</dt>
+<dd>
+
+<p>Returns the object of the category that this is a member of</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $uri = $media-&gt;get_uri</dt>
+<dd>
+
+</dd>
+<dt>my $uri = $media-&gt;get_uri($oc)</dt>
+<dd>
+
+<p>Returns the URI for the media object. If the <code>$oc</code> output channel parameter is passed in, then the URI will be returned in the output channel&#39;s preferred format.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Output channel not associated with media.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$uri = $media-&gt;get_local_uri()</dt>
+<dd>
+
+<p>Returns the uri of the media object for the Bricolage application server.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$uri = $media-&gt;get_path()</dt>
+<dd>
+
+<p>Returns the path of the media object on the Bricolage file system.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$mt_obj = $media-&gt;get_media_type()</dt>
+<dd>
+
+<p>Returns the media type object associated with this object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$media = $media-&gt;upload_file($file_handle, $file_name)</dt>
+<dd>
+
+</dd>
+<dt>$media = $media-&gt;upload_file($imgager, $file_name, $media_type)</dt>
+<dd>
+
+</dd>
+<dt>$media = $media-&gt;upload_file($file_handle, $file_name, $media_type, $size)</dt>
+<dd>
+
+<p>Reads a file from the passed $file_handle or <a href="http://search.cpan.org/perldoc?Imager">Imager</a> object and stores it in the media object under $file_name. If $media_type is passed, it will be used to set the media type of the file. Otherwise, <code>upload_file()</code> will use Bric::Util::MediaType to determine the media type. If $size is passed, its value will be used for the size of the file; otherwise, <code>upload_file()</code> will figure out the file size itself.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Closes the <code>$file_handle</code> after reading. Updates the media document&#39;s URI.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$file_name = $media-&gt;get_file_name()</dt>
+<dd>
+
+<p>Returns the name of the file for this given media object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$file_handle = $media-&gt;get_file()</dt>
+<dd>
+
+<p>Returns the file handle for this given media object</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error getting File.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$location = $media-&gt;get_location()</dt>
+<dd>
+
+<p>The will return the location of the file on the file system, relative to MEDIA_FILE_ROOT.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$size = $media-&gt;get_size()</dt>
+<dd>
+
+<p>This is the size of the media file in bytes</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to retrieve category__id of this media.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$media = $media-&gt;revert();</dt>
+<dd>
+
+<p>Reverts the current version to a prior version</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$media = $media-&gt;clone()</dt>
+<dd>
+
+<p>Clones the media object</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;save()</dt>
+<dd>
+
+<p>Saves the object to the database doing either an insert or an update</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$contribs = $self-&gt;_get_contributors()</dt>
+<dd>
+
+<p>Returns the contributors from a cache or looks em up</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_contributor( $id, $role)</dt>
+<dd>
+
+<p>Inserts a row into the mapping table for contributors.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_contributor($id, $role)</dt>
+<dd>
+
+<p>Updates the contributor mapping table</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_contributors($id)</dt>
+<dd>
+
+<p>Deletes the rows from these mapping tables</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>($fields) = $self-&gt;_get_auto_fields($biz_pkg)</dt>
+<dd>
+
+<p>returns a hash ref of the fields that are to be autopopulated from this type of media object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_media()</dt>
+<dd>
+
+<p>Inserts a media record into the database</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_media()</dt>
+<dd>
+
+<p>Preforms the SQL that updates the media table</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_instance()</dt>
+<dd>
+
+<p>Preforms the sql that inserts a record into the media instance table</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_instance()</dt>
+<dd>
+
+<p>Preforms the sql that updates the media_instance table</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_media()</dt>
+<dd>
+
+<p>Removes the media row from the database</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_instance()</dt>
+<dd>
+
+<p>Removes the instance row from the database</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_file()</dt>
+<dd>
+
+<p>Deletes the version directory for the current version if it exists.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> If the <code>AUTO_PREVIEW_MEDIA</code> <i>bricolage.conf</i> directive is enabled, the previous version of the media document will be looked up and its media file previewed, so as to replace the deleted media preview.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_select_media($where, @bind);</dt>
+<dd>
+
+<p>Populates the object from a database row</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_do_update()</dt>
+<dd>
+
+<p>Updates the row in the data base</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_preview()</dt>
+<dd>
+
+<p>Previews the media document.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;_can_expire()</dt>
+<dd>
+
+<p>Returns true if the media document can be expired. Specifically, if the media document has been published and has a URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>Some additional fields may be needed here such as a field for what kind of object this represents etc.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>&quot;Michael Soderstrom&quot; &lt;miraso@pacbell.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a>, <a rel="section" href="../Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a></p>
+
+</body>
+</html>
+

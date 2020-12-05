@@ -1,0 +1,852 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::EventType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="EventType.html#Name">Name</a></li>
+  <li><a href="EventType.html#Synopsis">Synopsis</a></li>
+  <li><a href="EventType.html#Description">Description</a></li>
+  <li><a href="EventType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="EventType.html#Constructors">Constructors</a></li>
+      <li><a href="EventType.html#Destructors">Destructors</a></li>
+      <li><a href="EventType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="EventType.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="EventType.html#Private">Private</a>
+    <ul>
+      <li><a href="EventType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="EventType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="EventType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="EventType.html#Notes">Notes</a></li>
+  <li><a href="EventType.html#Author">Author</a></li>
+  <li><a href="EventType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::EventType - Interface to Types of Events</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Constructors
+my $et = Bric::Util::EventType-&gt;lookup({name =&gt; &#39;Story Published&#39;});
+my @ets = Bric::Util::EventType-&gt;list($params);
+
+# Class Methods.
+my @et_ids = Bric::Util::EventType-&gt;list_ids($params);
+my $trig_meths = Bric::Util::EventType-&gt;my_trig_meths;
+
+# Instance Methods
+my $id = $et-&gt;get_id;
+my $key_name = $et-&gt;get_key_name;
+my $name = $et-&gt;get_name;
+my $desc = $et-&gt;get_description;
+my $class = $et-&gt;get_class;
+my @attr = $et-&gt;get_attr;
+$et = $ae-&gt;activate;
+$et = $ae-&gt;deactivate;
+$et = $ae-&gt;is_active;
+my $event = $et-&gt;log_event($user, $obj);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Bric::Util::EventType is designed to be the interface to the different types of events Bricolage. New events cannot be created; they are defined ahead of time in the database. Thus, the primary purpose of this class is to offer up a list of events for which alerts can be set by Bric::Util::AlertType. Internally, it can be used by the Bricolage APIs to log individual events.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $et = Bric::Util::EventType-&gt;lookup({id =&gt; $et_id})</dt>
+<dd>
+
+</dd>
+<dt>my $et = Bric::Util::EventType-&gt;lookup({key_name =&gt; $key_name})</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Util::EventType object based on a Bric::Util::EventType object ID or name. If the existing object is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::EventType objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id or $key_name is found, populates the new Bric::Util::EventType object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@ets || $ets_aref) = Bric::Util::EventType-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::EventType objects based on the search parameters passed via a hashref. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Event type ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+<p>Event type key name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>Event type name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Event type description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>class</dt>
+<dd>
+
+<p>Class package name to which event types apply. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>class_id</dt>
+<dd>
+
+<p>ID of class object to which event types apply. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Util::EventType object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@et_ids || $et_ids_aref) = Bric::Util::EventType-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::EventType object IDs based on the search parameters passed via anonymous hash. The search parameters are the same as those for list() above.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@classes || $classes_aref) = Bric::Util::EventType-&gt;list_classes()</dt>
+<dd>
+
+<p>Returns a list or an anonymous array of anonymous arrays of Bricolage classes for which types of events have been defined in the database. The each array ref in the list contains two values: the first is the ID of the class, and the second is its display name.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Util::EventType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::EventType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::EventType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $meths = Bric::Util::EventType-&gt;my_trig_meths</dt>
+<dd>
+
+</dd>
+<dt>my @meths = Bric::Util::EventType-&gt;my_trig_meths(1)</dt>
+<dd>
+
+<p>Functions similarly to the my_meths() method on most business objects, except that it returns that metadata for accessing data on users.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $et-&gt;get_id</dt>
+<dd>
+
+<p>Returns the event type object ID.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $key_name = $et-&gt;get_key_name</dt>
+<dd>
+
+<p>Returns the event type key name.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;key_name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $name = $et-&gt;get_name</dt>
+<dd>
+
+<p>Returns the event type name.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $et-&gt;get_description</dt>
+<dd>
+
+<p>Returns the event type description.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;description&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $class = $et-&gt;get_class</dt>
+<dd>
+
+<p>Returns name of the class of object for which events of this type may be logged.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;class&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $attr_href = $et-&gt;get_attr</dt>
+<dd>
+
+<p>Returns an anonymous hash of the attributes required of Bric::Util::Event objects of this Bric::Util::EventType type. The keys are the attribute names and the values are the default values.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Util::Grp::Event objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Uses Bric::Util::Grp::Event internally.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p>################################################################################</p>
+
+</dd>
+<dt>$self = $et-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Util::EventType object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $event = $et-&gt;log_event($user, $obj)</dt>
+<dd>
+
+</dd>
+<dt>my $event = $et-&gt;log_event($user, $obj, $ettr)</dt>
+<dd>
+
+<p>A shortcut to <code>Bric::Util::Event-&gt;new</code>. Pass in a Bric::Biz::Person::User object and an object of the type defined by get_class(), along with any attribute/value pairs, and a new event of this type will be logged for the object passed. Note that not all attributes need to be explicitly passed in order to log a new event. Any that can be called via a get_ accessor on $obj, where the method combines &#39;get_&#39; with an attribute&#39;s name, will automatically call that accessor.</p>
+
+<p>See Bric::Util::Event for more information and for details on how it expects arugments to be passed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>No Bric::Util::EventType object, ID, or name passed to Bric::Util::Event::new().</p>
+
+</li>
+<li><p>Too many Bric::Util::EventType objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bric::Util::Event::new() expects an object of type $class.</p>
+
+</li>
+<li><p>No Bric::Biz::Person::User object passed to Bric::Util::Event::new().</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Uses Bric::Util::Event-&gt;new() internally.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@props || $props_aref) = $et-&gt;get_alert_props</dt>
+<dd>
+
+<p>Returns a list or anonymous array of anonymous arrays that define properties that a user can use to refine which events of a specific type will trigger alerts. Each anonymous array within the list of alert properties contains two values. The first is the name of the property, and the second is the display name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $event_types_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $event_types_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Util::EventType objects or, if called with an optional third argument, returns a listof Bric::Util::EventType object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $et = &amp;$make_obj( $pkg, $init )</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::EventType object. Used by &amp;$get_em().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="Event.html" name="Bric::Util::Event">Bric::Util::Event</a>, <a rel="section" href="AlertType.html" name="Bric::Util::AlertType">Bric::Util::AlertType</a>, <a rel="section" href="Alert.html" name="Bric::Util::Alert">Bric::Util::Alert</a></p>
+
+</body>
+</html>
+

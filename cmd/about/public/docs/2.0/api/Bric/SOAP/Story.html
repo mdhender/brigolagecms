@@ -1,0 +1,495 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Story</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Story.html#Name">Name</a></li>
+  <li><a href="Story.html#Synopsis">Synopsis</a></li>
+  <li><a href="Story.html#Description">Description</a></li>
+  <li><a href="Story.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Story.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Story.html#Private-Class-Methods">Private Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Story.html#Author">Author</a></li>
+  <li><a href="Story.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Story - SOAP interface to Bricolage stories.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use SOAP::Lite;
+import SOAP::Data &#39;name&#39;;
+
+# setup soap object to login with
+my $soap = new SOAP::Lite
+  uri      =&gt; &#39;http://bricolage.sourceforge.net/Bric/SOAP/Auth&#39;,
+  readable =&gt; DEBUG;
+$soap-&gt;proxy(&#39;http://localhost/soap&#39;,
+             cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+# login
+$soap-&gt;login(name(username =&gt; USER),
+             name(password =&gt; PASSWORD));
+
+# set uri for Story module
+$soap-&gt;uri(&#39;http://bricolage.sourceforge.net/Bric/SOAP/Story&#39;);
+
+# get a list of story_ids for published stories w/ &quot;foo&quot; in their title
+my $story_ids = $soap-&gt;list_ids(name(title          =&gt; &#39;%foo%&#39;),
+                                name(publish_status =&gt; 1)     )-&gt;result;
+
+# export a story
+my $xml = $soap-&gt;export(name(story_id =&gt; $story_id)-&gt;result;
+
+# create a new story from an xml document
+my $story_ids = $soap-&gt;create(name(document =&gt; $xml_document)
+                              -&gt;type(&#39;base64&#39;))-&gt;result;
+
+# update an existing story from an xml document
+my $story_ids = $soap-&gt;update(name(document =&gt; $xml_document)-&gt;type(&#39;base64&#39;),
+                              name(update_ids =&gt;
+                                   [ name(story_id =&gt; 1024) ]))-&gt;result;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a SOAP interface to manipulating Bricolage stories.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>list_ids</dt>
+<dd>
+
+<p>This method queries the story database for matching stories and returns a list of ids. If no stories are found an empty list will be returned.</p>
+
+<p>This method can accept the following named parameters to specify the search. Some fields support matching and are marked with an (M). The value for these fields will be interpreted as an SQL match expression and will be matched case-insensitively. Other fields must specify an exact string to match. Match fields combine to narrow the search results (via ANDs in an SQL WHERE clause).</p>
+
+<dl>
+
+<dt>title (M)</dt>
+<dd>
+
+<p>The story&#39;s title.</p>
+
+</dd>
+<dt>description (M)</dt>
+<dd>
+
+<p>The story&#39;s description.</p>
+
+</dd>
+<dt>slug (M)</dt>
+<dd>
+
+<p>The story&#39;s slug.</p>
+
+</dd>
+<dt>category</dt>
+<dd>
+
+<p>A category containing the story, given as the complete category path from the root. Example: &quot;/news/linux&quot;.</p>
+
+</dd>
+<dt>keyword (M)</dt>
+<dd>
+
+<p>A keyword associated with the story.</p>
+
+</dd>
+<dt>simple (M)</dt>
+<dd>
+
+<p>a single OR search that hits title, description, primary_uri and keywords.</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>The name of the workflow containing the story. (ex. Story)</p>
+
+</dd>
+<dt>no_workflow</dt>
+<dd>
+
+<p>Set to 1 to return only stories that are out of workflow. This is true after stories are published and until they are recalled into workflow for editing.</p>
+
+</dd>
+<dt>primary_uri (M)</dt>
+<dd>
+
+<p>The primary uri of the story.</p>
+
+</dd>
+<dt>priority</dt>
+<dd>
+
+<p>The priority of the story.</p>
+
+</dd>
+<dt>publish_status</dt>
+<dd>
+
+<p>Stories that have been published have a publish_status of &quot;1&quot;, otherwise &quot;0&quot;. This value never changes after being turned on. For a more accurate read on a story&#39;s current status see no_workflow above.</p>
+
+</dd>
+<dt>element</dt>
+<dd>
+
+<p>The name of the top-level element for the story. Also known as the &quot;Story Type&quot;. This value corresponds to the element attribute on the story element in the asset schema.</p>
+
+</dd>
+<dt>site</dt>
+<dd>
+
+<p>The name of the site which the story is in.</p>
+
+</dd>
+<dt>publish_date_start</dt>
+<dd>
+
+<p>Lower bound on publishing date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>publish_date_end</dt>
+<dd>
+
+<p>Upper bound on publishing date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>first_publish_date_start</dt>
+<dd>
+
+<p>Lower bound on the first date a story was published. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>first_publish_date_end</dt>
+<dd>
+
+<p>Upper bound on the first date a story was published. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>cover_date_start</dt>
+<dd>
+
+<p>Lower bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>cover_date_end</dt>
+<dd>
+
+<p>Upper bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>expire_date_start</dt>
+<dd>
+
+<p>Lower bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>expire_date_end</dt>
+<dd>
+
+<p>Upper bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>element_key_name (M)</dt>
+<dd>
+
+<p>The key name of the top-level element for the story. This is more accurate than the <code>element</code> parameter, since there can be multiple elements with the same name.</p>
+
+</dd>
+<dt>unexpired</dt>
+<dd>
+
+<p>Set to a true value to get a list of only unexpired stories.</p>
+
+</dd>
+<dt>subelement_key_name (M)</dt>
+<dd>
+
+<p>The key name for a container element that&#39;s a subelement of a story.</p>
+
+</dd>
+<dt>data_text (M)</dt>
+<dd>
+
+<p>Text stored in the fields of the story element or any of its subelements. Only fields that use the &quot;short&quot; storage type will be searched.</p>
+
+</dd>
+<dt>output_channel</dt>
+<dd>
+
+<p>The name of an ouput channel that stories must be associated with.</p>
+
+</dd>
+<dt>contrib_id</dt>
+<dd>
+
+<p>A Bricolage contributor object ID. Only stories associated with that contributor will have their IDs listed.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: In addition to the parameters listed above, you can use most of the parameters listed in the documentation for the list method in Bric::Biz::Asset::Business::Story.</p>
+
+</dd>
+<dt>export</dt>
+<dd>
+
+<p>The export method retrieves a set of stories from the database, serializes them and returns them as a single XML document. See <a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for the schema of the returned document.</p>
+
+<p>Accepted paramters are:</p>
+
+<dl>
+
+<dt>story_id</dt>
+<dd>
+
+<p>Specifies a single story_id to be retrieved.</p>
+
+</dd>
+<dt>story_ids</dt>
+<dd>
+
+<p>Specifies a list of story_ids. The value for this option should be an array of interger &quot;story_id&quot; elements.</p>
+
+</dd>
+<dt>export_related_media</dt>
+<dd>
+
+<p>If set to 1 any related media attached to the story will be included in the exported document. The story will refer to these included media objects using the relative form of related-media linking. (see the XML Schema document in <a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for details)</p>
+
+</dd>
+<dt>export_related_stories</dt>
+<dd>
+
+<p>If set to 1 then the export will work recursively across related stories. If export_media is also set then media attached to related stories will also be returned. The story element will refer to the included story objects using relative references (see the XML Schema document in <a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for details).</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>create</dt>
+<dd>
+
+<p>The create method creates new objects using the data contained in an XML document of the format created by export().</p>
+
+<p>The create will fail if your story element contains non-relative related_story_ids or related_media_ids that do not refer to existing stories or media in the system. Related stores and media can be identified by either an ID (set the &quot;relative&quot; attribute to 1 if it refers to an ID elsewhere in the same XML file) or by URI (primary URI for stories) and site ID. If <code>related_story_uri</code> or <code>related_media_uri</code> is specified without an accompanying <code>related_site_id</code> the related document&#39;s site is assumed to be the same as the current story or media document.</p>
+
+<p>Returns a list of new story_ids and media_ids created in the order of the assets in the document.</p>
+
+<p>Available options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document containing objects to be created. The document must contain at least one story and may contain any number of related media objects.</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>Specifies the initial workflow the story is to be created in</p>
+
+</dd>
+<dt>desk</dt>
+<dd>
+
+<p>Specifies the initial desk the story is to be created on</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: The setting for publish_status in the incoming story is ignored and always 0 for new stories.</p>
+
+<p>New stories are put in the first &quot;story workflow&quot; unless you pass in the --workflow option. The start desk of the workflow is used unless you pass the --desk option.</p>
+
+</dd>
+<dt>update</dt>
+<dd>
+
+<p>The update method updates stories using the data in an XML document of the format created by export(). A common use of update() is to export() a selected story, make changes to one or more fields and then submit the changes with update().</p>
+
+<p>Returns a list of new story_ids and media_ids updated or created in the order of the assets in the document.</p>
+
+<p>Takes the following options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document where the objects to be updated can be found. The document must contain at least one story and may contain any number of related media objects.</p>
+
+</dd>
+<dt>update_ids (required)</dt>
+<dd>
+
+<p>A list of &quot;story_id&quot; integers for the assets to be updated. These must match id attributes on story elements in the document. If you include objects in the document that are not listed in update_ids then they will be treated as in create(). For that reason an update() with an empty update_ids list is equivalent to a create().</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>Specifies the workflow to move the story to</p>
+
+</dd>
+<dt>desk</dt>
+<dd>
+
+<p>Specifies the desk to move the story to</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: The setting for publish_status in a newly created story is ignored and always 0 for new stories. Updated stories do get publish_status set from the document setting.</p>
+
+</dd>
+<dt>delete</dt>
+<dd>
+
+<p>The delete() method deletes stories. It takes the following options:</p>
+
+<dl>
+
+<dt>story_id</dt>
+<dd>
+
+<p>Specifies a single story_id to be deleted.</p>
+
+</dd>
+<dt>story_ids</dt>
+<dd>
+
+<p>Specifies a list of story_ids to delete.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$self-&gt;module</dt>
+<dd>
+
+<p>Returns the module name, that is the first argument passed to bric_soap.</p>
+
+</dd>
+<dt>is_allowed_param</dt>
+<dd>
+
+</dd>
+<dt>$pkg-&gt;is_allowed_param($param, $method)</dt>
+<dd>
+
+<p>Returns true if $param is an allowed parameter to the $method method.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>$pkg-&gt;load_asset($args)</dt>
+<dd>
+
+<p>This method provides the meat of both create() and update(). The only difference between the two methods is that update_ids will be empty on create().</p>
+
+</dd>
+<dt>@related = $pkg-&gt;serialize_asset(writer =&gt; $writer, story_id =&gt; $story_id, args =&gt; $args)</dt>
+<dd>
+
+<p>Serializes a single story into a &lt;story&gt; element using the given writer and args. Returns a list of two-element arrays - [ &quot;media&quot;, $id ] or [ &quot;story&quot;, $id ]. These are the related media objects serialized.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

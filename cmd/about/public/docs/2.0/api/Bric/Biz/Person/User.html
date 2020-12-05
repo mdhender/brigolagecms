@@ -1,0 +1,1009 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Person::User</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="User.html#Name">Name</a></li>
+  <li><a href="User.html#Synopsis">Synopsis</a></li>
+  <li><a href="User.html#Description">Description</a></li>
+  <li><a href="User.html#Interface">Interface</a>
+    <ul>
+      <li><a href="User.html#Constructors">Constructors</a></li>
+      <li><a href="User.html#Destructors">Destructors</a></li>
+      <li><a href="User.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="User.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="User.html#Private">Private</a>
+    <ul>
+      <li><a href="User.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="User.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="User.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="User.html#Notes">Notes</a></li>
+  <li><a href="User.html#Author">Author</a></li>
+  <li><a href="User.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Person::User - Interface to Bricolage User Objects</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::Person::User;
+
+# Constructors.
+my $u = Bric::Biz::Person::User-&gt;new;
+my $u = Bric::Biz::Person::User-&gt;lookup({ id =&gt; $id })
+my $u = Bric::Biz::Person::User-&gt;lookup({ login =&gt; $login })
+my @users = Bric::Biz::Person::User-&gt;list($search_href)
+
+# Class Methods.
+my @uids = Bric::Biz::Person::User-&gt;list_ids($search_href)
+
+# Instance Methods - in addition to those inherited from Bric::Biz::Person.
+my $login = $u-&gt;get_login;
+$u = $login-&gt;set_login($login);
+$u = $u-&gt;set_password($password);
+$u = $u-&gt;chk_password($password);
+
+$u = $u-&gt;can_do($obj, READ);
+$u = $u-&gt;no_can_do($obj, CREATE);
+
+$u = $u-&gt;activate;
+$u = $u-&gt;deactivate;
+$u = $u-&gt;is_active;
+
+my @gids = $u-&gt;get_grp_ids;
+my @groups = $u-&gt;get_grps;
+
+$u = $u-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This Class provides the basic interface to all Bricolage and users. Bric::Biz::Person::User objects are special Bric::Biz::Person objects that represent members of the Bric::Util::Group::Person group &quot;User&quot;. Only members of this group can actually <i>use</i> the application. All other Bric::Biz::Person objects cannot use Bricolage, although they can be associated with Bricolage objects (e.g., writers can be associated with stories).</p>
+
+<p>Bric::Biz::Person::User extends the Bric::Biz::Person interface to allow the setting and checking of passwords, the setting of login names, and the activation or deactivation of the person as a user. It also offers methods by which to set permissions for individual users, although these permissions really should be assigned via membership in other groups. (For example, put editors in an editors group, and allow members of that group to edit stories. See Bric::Util::Group::Person for more information.)</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $u = Bric::Biz::Person::User-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Biz::Person::User object. An anonymous hash of intial values may be passed. The supported intial hash keys are:</p>
+
+<ul>
+
+<li><p>lname</p>
+
+</li>
+<li><p>fname</p>
+
+</li>
+<li><p>mname</p>
+
+</li>
+<li><p>prefix</p>
+
+</li>
+<li><p>suffix</p>
+
+</li>
+<li><p>login</p>
+
+</li>
+</ul>
+
+<p>Call $u-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $p = Bric::Biz::Person-&gt;lookup($params)</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::Person::User object based on the Bric::Biz::Person::User object ID or login name. If the existing object is not found in the database, <code>lookup()</code> returns <code>undef</code>. The two possible lookup parameters are:</p>
+
+<ul>
+
+<li><p>id - Returns the User with that ID, if it exists.</p>
+
+</li>
+<li><p>login - Returns the active User with that login, if it exists. Inactive users with that login will be ignored.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::Person::User objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If id or login name is found, populates the new Bric::Biz::Person object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> This method is overriding the lookup() method of the Bric::Biz::Person object, including all of its SQL. Thus, the Bric::Biz::Person::lookup method will not be called here, and it&#39;s SQL queries will not be executed.</p>
+
+</dd>
+<dt>my (@users || $users_aref) = Bric::Biz::Person::User-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Person::User objects based on the search criteria passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>User ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>prefix</dt>
+<dd>
+
+<p>A name prefix, such as &quot;Mr.&quot; May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>lname</dt>
+<dd>
+
+<p>Last name or surname. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>fname</dt>
+<dd>
+
+<p>First name or given name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>mname</dt>
+<dd>
+
+<p>Middle name or second name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>suffix</dt>
+<dd>
+
+<p>Name suffix, such as &quot;Jr.&quot; May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>The ID of a Bric::Util::Grp object of which person objects may be a member. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>login</dt>
+<dd>
+
+<p>The user&#39;s username. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Biz::Person::User object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> This method is overriding the list() method of the Bric::Biz::Person object, including all of its SQL. Thus, the Bric::Biz::Person::list method will not be called here, and it&#39;s SQL queries will not be executed.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p>Throws:&gt; NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@uids || $uids_aref) = Bric::Biz::Person::User-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Person::User object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method is overriding the list_ids() method of the Bric::Biz::Person object, including all of its SQL. Thus, the Bric::Biz::Person::list_ids method will not be called here, and it&#39;s SQL queries will not be executed.</p>
+
+</dd>
+<dt>$self = $u-&gt;login_avail($login)</dt>
+<dd>
+
+<p>Returns true if $login is not already in use by an active user, and undef if it is. Use this method to make ensure that a login is available for use before actually using it. A login is considered available even if a deactivated user has the same login.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Person::User-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Person::User-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Person::User-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>Bric::Biz::Person::User inherits from Bric::Biz::Person and makes available all Bric::Biz::Person instance methods. See the Bric::Biz::Person documentation for a description of those methods. Additional methods available for Bric::Biz::Person::User objects only are documented here.</p>
+
+<dl>
+
+<dt>my $id = $u-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Person::User object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Biz::Person::User object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>$self = $u-&gt;set_person($person)</dt>
+<dd>
+
+<p>Sets the ID representing Bric::Biz::Person object from which the Bric::Biz::Person::User object inherits.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot change ID of existing user.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $login = $u-&gt;get_login</dt>
+<dd>
+
+<p>Returns the login name of the user.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;login&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $u-&gt;set_login($login)</dt>
+<dd>
+
+<p>Sets the login name of the user. Be sure to call $u-&gt;save to save the change to the database. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $u-&gt;set_password($password)</dt>
+<dd>
+
+<p>Sets the user&#39;s password. The internal authentication engine uses a double MD-5 hash algorithm to encrypt it. Be sure to call $u-&gt;save to save the change to the database. Returns $self on success and <code>undef</code> on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $u-&gt;chk_password($password)</dt>
+<dd>
+
+<p>Returns true if $password matches the password stored for this user. Returns undef if they don&#39;t match. Uses a double MD-5 hash algorithm to encrypt $password and then compare it to the value stored in the database. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See notes for set_password().</p>
+
+</dd>
+<dt>$priv = $u-&gt;what_can($obj || $pkg)</dt>
+<dd>
+
+</dd>
+<dt>$priv = $u-&gt;what_can(($obj || $pkg), @group_ids)</dt>
+<dd>
+
+<p>Takes an object $obj or package name $pkg and returns the permission (as exported by Bric::Util::Priv::Parts::Const) that the user object has to $obj, or to the &quot;All&quot; group in $pkg. A false value is no permission.</p>
+
+<p>Pass in a list of group IDs and they will be treated as if they are groups to which $obj is a member. Thus you can affect the permission returned by $obj by passing in the IDs of groups it&#39;s not necessarily a member of. The reason to do this is to check, for example, a user&#39;s permission to a workflow or a desk before an asset is created and put on that desk.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> In the future, the implementation of this method may use caching, where the first time this or another privilege method is called, the entire ACL is either fetched from cache or recomputed from the database and then cached.</p>
+
+<p>For now, however, getting the ACL is one simple query, which probably is not any slower than caching, since it also takes a single query to get the last modified time for a user&#39;s ACL and compare it to the last modified time of the cached copy of the ACL. But it may become necessary to do the caching if we create a more complex privilege system that requires many or very complex queries to create an ACL.</p>
+
+</dd>
+<dt>$self = $u-&gt;can_do($obj, $priv)</dt>
+<dd>
+
+<p>Checks to see if the user has the privilege to perform an action. $obj is the object for which the user&#39;s privilege must be checked and $priv is the privilege required to perform the action. Returns $self if the user has the privilege and undef it the user does not. Intended primarily to be used by other API calls to check that the user triggering the API call actually has the privileges to do so.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See what_can() above.</p>
+
+</dd>
+<dt>$self = $u-&gt;no_can_do($obj, $priv)</dt>
+<dd>
+
+<p>Exactly the same as $u-&gt;can_do, except that it returns $self if the user does <b>not</b> have the permission on the object, and undef if the user does have the permission on the object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Just does !can_do() internally. ;-)</p>
+
+</dd>
+<dt>$self = $u-&gt;activate</dt>
+<dd>
+
+<p>Flags the Bric::Biz::Person::User object as an active user in Bricolage. Be sure to call $u-&gt;save to save the change to the database. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Person, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> The activate(), deactivate(), and is_active() methods differ from those found in Bric::Biz::Person. In Bric::Biz::Person, they determine whether a person is active in the entire database, across groups. In Bric::Biz::Person::User, they determine only whether the person is an active user of the system. A person may be an inactive user but still an active person. Returns $self on success and undef on failure.</p>
+
+</dd>
+<dt>$self = $u-&gt;deactivate</dt>
+<dd>
+
+<p>Flags the Bric::Biz::Person::User object as an inactive user in Bricolage. Be sure to call $u-&gt;save to save the change to the database. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Person, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> See the notes for the activate() method above.</p>
+
+</dd>
+<dt>$self = $u-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Biz::Person::User object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Person, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> See the notes for the activate() method above.</p>
+
+<p>################################################################################</p>
+
+</dd>
+<dt>my (@gids || $gids_aref) = $u-&gt;get_grp_ids</dt>
+<dd>
+
+</dd>
+<dt>my (@gids || $gids_aref) = Bric::Biz::Person::User-&gt;get_grp_ids</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Group object ids representing the groups of which this Bric::Biz::Person::User object is a member.</p>
+
+<p><b>Throws:</b> See Bric::Util::Grp::list().</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method returns the group IDs for the current object both as a Bric::Biz::Person object and as a Bric::Biz::Person::User object. [Actually, I&#39;ve commented this out for now, since it seems more likely at this point that we&#39;ll want only the user group IDs, not also the person IDs. We can uncomment this later if we decide we need it, though.]</p>
+
+</dd>
+<dt>my (@groups || $groups_aref) = $u-&gt;get_grps</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Group::User objects representing the groups of which this Bric::Biz::Person::User object is a member.</p>
+
+<p>Use the Bric::Biz::Group::User instance method calls add_members() and delete_members() to associate and dissociate Bric::Biz::Person::User objects with any given Bric::Biz::Group::Person::User object.</p>
+
+<p><b>Throws:</b> See Bric::Util::Grp::Person::list().</p>
+
+<p><b>Side Effects:</b> Uses Bric::Util::Grp::User internally.</p>
+
+<p><b>Notes:</b> This method differs from the Bric::Biz::Person-&gt;get_grps() method in that it returns only those groups of which the person is a member as a user, rather than as a person.</p>
+
+</dd>
+<dt>my $pref_value = $u-&gt;get_pref($pref_name)</dt>
+<dd>
+
+<p>Given a preference name, such as &quot;Language&quot; or &quot;Time Zone&quot;, this method returns the corresponding value, for this user. It first checks to see if the user has overridden the global value for this preference. If not, the global setting is returned.</p>
+
+<p>Preference values are cached after the first lookup.</p>
+
+<p><b>Throws:</b> I do not have a clue</p>
+
+</dd>
+<dt>$self = $u-&gt;save</dt>
+<dd>
+
+<p>Saves the properties of the Bric::Biz::Person::User object to the database, including all changes made via the methods inherited from Bric::Biz::Person. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Also calls Bric::Biz::Person save() method.</p>
+
+<p><b>Notes:</b> See also Bric::Biz::Person save() method documentation.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $users_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $user_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Biz::Person::User objects or, if called with an optional third argument, returns a list of Bric::Biz::Person::User object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> SQL in this function overrides the SQL used in the same function in Bric::Biz::Person.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Person.html" name="Bric::Biz::Person">Bric::Biz::Person</a></p>
+
+</body>
+</html>
+

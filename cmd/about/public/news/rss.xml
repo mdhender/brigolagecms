@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns="http://purl.org/rss/1.0/"
+ xmlns:cc="http://web.resource.org/cc/"
+ xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+ xmlns:admin="http://webns.net/mvcb/"
+>
+  <channel rdf:about="http://www.bricolagecms.org/news/">
+    <title><![CDATA[News]]></title>
+    <link>http://bricolagecms.org/news/</link>
+    <description><![CDATA[News]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:language>en-us</dc:language>
+    <dc:rights>Copyright 2011 Bricolage Developers</dc:rights>
+    <dc:publisher>www@bricolagecms.org</dc:publisher>
+    <dc:creator>www@bricolagecms.org</dc:creator>
+    <items>
+      <rdf:Seq>
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2011/03/28/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2011/02/09/bricolage-2.0.1/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2010/10/29/blogger-to-bricolagecms/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2010/07/21/install-bricolage-on-ubuntu-lucid/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2010/06/28/bricolage-presentations-at-yapc/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2010/05/19/bricolage-2-at-yapc-ohio/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2010/04/12/bricolage-2.0.0/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/pr/2010/04/12/2.0-presskit/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2010/04/11/bricolage-1.10.10/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/2010/04/08/google-summer-of-code-2010/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2010/03/29/bricolage-1.11.4/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.10.9/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.11.3/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.11.2/" />
+        <rdf:li rdf:resource="http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.10.8/" />
+      </rdf:Seq>
+    </items>
+  </channel>
+  <item rdf:about="http://www.bricolagecms.org/news/2011/03/28/">
+    <title><![CDATA[The Output Channel for Spring 2011]]></title>
+    <link>http://www.bricolagecms.org/news/2011/03/28/</link>
+    <description><![CDATA[<p>Welcome back to the Output Channel: a relatively regular review of what&rsquo;s shakin&rsquo; in the Bricolage ecosystem. If you have submissions or corrections that you&#8217;d like to see included in the next issue, please e-mail them to <a href="mailto:&#116;&#104;&#101;&#45;o&#x63;&#64;&#x62;&#114;i&#x63;&#x6F;&#108;&#97;&#103;&#x65;&#99;&#x6D;&#115;&#x2E;&#111;&#114;&#x67;" title="Send in your submissions">&#116;&#104;&#101;&#45;o&#x63;&#64;&#x62;&#114;i&#x63;&#x6F;&#108;&#97;&#103;&#x65;&#99;&#x6D;&#115;&#x2E;&#111;&#114;&#x67;</a>.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2011-03-28T13:30:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2011/02/09/bricolage-2.0.1/">
+    <title><![CDATA[Bricolage 2.0.1 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2011/02/09/bricolage-2.0.1/</link>
+    <description><![CDATA[<p>The Bricolage development team is pleased to announce that Bricolage 2.0.1 is available for download. This maintenance release
+contains a wealth of bugfixes and some exciting new features, and it slightly (but elegantly) tweaks the user interface. It's the best Bricolage yet.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2011-02-09T20:55:00-0800</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/2010/10/29/blogger-to-bricolagecms/">
+    <title><![CDATA[Blogger to Bricolage 2.0]]></title>
+    <link>http://www.bricolagecms.org/news/2010/10/29/blogger-to-bricolagecms/</link>
+    <description><![CDATA[<p>Bricoleur Matt Rolf shares his experience migrating from Blogger to Bricolage 2.0. He details the installation, content migration, woes and successes of his journey.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-10-29T14:46:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/2010/07/21/install-bricolage-on-ubuntu-lucid/">
+    <title><![CDATA[Installing Bricolage on Ubuntu Lucid server]]></title>
+    <link>http://www.bricolagecms.org/news/2010/07/21/install-bricolage-on-ubuntu-lucid/</link>
+    <description><![CDATA[<p>Long-time Bricoleur <a href="http://staff.adams.edu/~cdmiller">Cameron Miller</a> writes in about installing Bricolage on Ubuntu Lucid server.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-07-21T09:06:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/2010/06/28/bricolage-presentations-at-yapc/">
+    <title><![CDATA[Bricolage 2 presentations at YAPC 2010]]></title>
+    <link>http://www.bricolagecms.org/news/2010/06/28/bricolage-presentations-at-yapc/</link>
+    <description><![CDATA[<p>Long-time bricoleur Matthew Rolf reports back from YAPC 2010.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-06-28T07:22:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/2010/05/19/bricolage-2-at-yapc-ohio/">
+    <title><![CDATA[Bricolage 2 presentations at YAPC 2010 Columbus Ohio June 21-23]]></title>
+    <link>http://www.bricolagecms.org/news/2010/05/19/bricolage-2-at-yapc-ohio/</link>
+    <description><![CDATA[<p>Long-time Bricoleur Matthew Rolf sends us news that there will be Bricolage 2 presentations at YAPC 2010 Columbus Ohio June 21-23.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-05-19T08:11:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2010/04/12/bricolage-2.0.0/">
+    <title><![CDATA[Bricolage 2.0 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2010/04/12/bricolage-2.0.0/</link>
+    <description><![CDATA[<p>After years of incubation, refinement and testing, the Bricolage
+development team is thrilled to announce the release of Bricolage 2. The
+new Bricolage boasts a sleeker interface, a wealth of new features for
+content authors and administrators, and a wider range of platform
+options.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-04-12T20:55:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/pr/2010/04/12/2.0-presskit/">
+    <title><![CDATA[Bricolage 2.0 Press Kit]]></title>
+    <link>http://www.bricolagecms.org/news/pr/2010/04/12/2.0-presskit/</link>
+    <description><![CDATA[<p>The Bricolage development community is pleased to announce the release of Bricolage 2.0. The new version includes a completely revamped user interface, finer control over content structure, and support for MySQL and Apache 2.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-04-12T16:47:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2010/04/11/bricolage-1.10.10/">
+    <title><![CDATA[Bricolage 1.10.10 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2010/04/11/bricolage-1.10.10/</link>
+    <description><![CDATA[<p>The latest in the stable 1.10 line, Bricolage 1.10.10 addresses numerous bugs found in the run-up to Bricolage 2.0.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-04-11T13:44:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/2010/04/08/google-summer-of-code-2010/">
+    <title><![CDATA[Google Summer of Code: Students, apply by tomorrow!]]></title>
+    <link>http://www.bricolagecms.org/news/2010/04/08/google-summer-of-code-2010/</link>
+    <description><![CDATA[<p>The Bricolage project is pleased to be a part of the Google Summer of Code Initiative as a sub-project of The Perl Foundation. We are currently looking for student volunteers to propose Bricolage development projects.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-04-08T09:29:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2010/03/29/bricolage-1.11.4/">
+    <title><![CDATA[Bricolage 1.11.4 (Beta 2 for 2.0.0)]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2010/03/29/bricolage-1.11.4/</link>
+    <description><![CDATA[<p>Bricolage 1.11.4, the second beta release towards the imminent Bricolage 2.0, is now available for download. Try out the new features, the improved stability and the refined user interface. </p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-03-29T23:04:00-0700</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.10.9/">
+    <title><![CDATA[Bricolage 1.10.9 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.10.9/</link>
+    <description><![CDATA[<p>As the Bricolage community gears up for the release of 2.0, this maintenance release fixes a few bugs and improves a few things.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-01-28T15:44:00-0800</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.11.3/">
+    <title><![CDATA[Bricolage 1.11.3 (Beta for 2.0.0) Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2010/01/28/bricolage-1.11.3/</link>
+    <description><![CDATA[<p>Bricolage 1.11.3, the first beta release towards the imminent Bricolage 2.0, is now available for download. Try out the new features, the improved stability and the refined user interface. </p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2010-01-28T14:50:00-0800</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.11.2/">
+    <title><![CDATA[Bricolage-Devel 1.11.2 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.11.2/</link>
+    <description><![CDATA[<p>Bricolage 1.11.2, the third developer release towards the imminent Bricolage 2.0, is now available for download. Try out the new features, the improved stability and the refined user interface. </p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2009-11-15T04:34:00-0800</dc:date>
+  </item>
+  <item rdf:about="http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.10.8/">
+    <title><![CDATA[Bricolage 1.10.8 Released]]></title>
+    <link>http://www.bricolagecms.org/news/announce/2009/11/15/bricolage-1.10.8/</link>
+    <description><![CDATA[<p>As the Bricolage community gears up for the release of 2.0, this maintenance release fixes several bugs and offers a number of stability, interface and documentation improvements.</p>]]></description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/2.0" />
+    <dc:date>2009-11-15T04:30:00-0800</dc:date>
+  </item>
+  <License rdf:about="http://creativecommons.org/licenses/by-nc/2.0/">
+    <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+    <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+    <requires rdf:resource="http://web.resource.org/cc/Notice" />
+    <requires rdf:resource="http://web.resource.org/cc/Attribution" />
+    <prohibits rdf:resource="http://web.resource.org/cc/CommercialUse" />
+    <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+  </License>
+</rdf:RDF>

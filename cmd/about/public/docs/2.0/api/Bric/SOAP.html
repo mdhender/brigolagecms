@@ -1,0 +1,1706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="SOAP.html#Name">Name</a></li>
+  <li><a href="SOAP.html#Synopsis">Synopsis</a></li>
+  <li><a href="SOAP.html#Description">Description</a></li>
+  <li><a href="SOAP.html#Functional-Specification">Functional Specification</a>
+    <ul>
+      <li><a href="SOAP.html#Supported-Functionality">Supported Functionality</a></li>
+      <li><a href="SOAP.html#Use-Cases">Use Cases</a></li>
+    </ul>
+  </li>
+  <li><a href="SOAP.html#Technical-Specification">Technical Specification</a>
+    <ul>
+      <li><a href="SOAP.html#Technologies">Technologies</a></li>
+      <li><a href="SOAP.html#Modules">Modules</a></li>
+      <li><a href="SOAP.html#SOAP-Details">SOAP Details</a></li>
+      <li><a href="SOAP.html#Example-Asset-Documents">Example Asset Documents</a></li>
+      <li><a href="SOAP.html#Example-Clients">Example Clients</a></li>
+    </ul>
+  </li>
+  <li><a href="SOAP.html#See-Also">See Also</a></li>
+  <li><a href="SOAP.html#Author">Author</a></li>
+  <li><a href="SOAP.html#POD-ERRORS">POD ERRORS</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP - The Bricolage SOAP interface</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::SOAP;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module serves as a root class for the Bric::SOAP classes. It also contains the functional and technical specifications for the Bricolage SOAP interface.</p>
+
+<h1 id="Functional-Specification">Functional Specification</h1>
+
+<p>The Bricolage SOAP interface expose key Bricolage systems to automation. This section describes intended functionality -- implementation details are described below in the <a rel="subsection" href="SOAP.html#Technical-Specification" name="Bric::SOAP">Technical Specification section</a>.</p>
+
+<h2 id="Supported-Functionality">Supported Functionality</h2>
+
+<p>The Bricolage SOAP interface supports the following features:</p>
+
+<dl>
+
+<dt>Stories and Media</dt>
+<dd>
+
+<p>Clients can create new stories and media and update existing stories and media in the system. Clients can also export existing stories and media in the format accepted for creation. Finally, clients may delete stories or media.</p>
+
+</dd>
+<dt>Element Types</dt>
+<dd>
+
+<p>Clients can create, update, delete and export element types.</p>
+
+</dd>
+<dt>Templates</dt>
+<dd>
+
+<p>Clients can create, update, delete and export templates.</p>
+
+</dd>
+<dt>Workflow</dt>
+<dd>
+
+<p>Clients can move stories and media between desks. Clients can also publish stories and media and deploy templates.</p>
+
+</dd>
+</dl>
+
+<h2 id="Use-Cases">Use Cases</h2>
+
+<p>The functionality described above exposes a great deal power. Here are some potential use cases:</p>
+
+<dl>
+
+<dt>Importing Content From Legacy Systems</dt>
+<dd>
+
+<p>Using the Story and Media interfaces, content can be moved from legacy CMS systems into Bricolage.</p>
+
+</dd>
+<dt>Automated Publishing</dt>
+<dd>
+
+<p>With access to workflow and publishing, one can write an auto-publishing daemon that publishes a selection of stories on a schedule.</p>
+
+</dd>
+<dt>Story and Media Synchronization</dt>
+<dd>
+
+<p>It is often desirable to move stories and media between instances of Bricolage. The SOAP interface can be used by a clients to automatically synchronize stories and media in a group of Bricolage instances. Synchronization can be made according to selection criteria similar to that exposed by the <code>list()</code> method in Bricolage classes.</p>
+
+</dd>
+<dt>Element and Template Distribution</dt>
+<dd>
+
+<p>A centrally-developed library of elements and templates has many advantages. With the SOAP interface, one can automatically update Bricolage instances with new versions of elements and templates.</p>
+
+</dd>
+<dt>XML Syndication</dt>
+<dd>
+
+<p>An XML syndication system can be written to pull stories from the SOAP interface and transform them into the target XML DTD. Syndication can also be accomplished using output channels and templates.</p>
+
+</dd>
+</dl>
+
+<h1 id="Technical-Specification">Technical Specification</h1>
+
+<p>This section describes the implementation of the Bricolage SOAP functional specification described above.</p>
+
+<h2 id="Technologies">Technologies</h2>
+
+<dl>
+
+<dt>SOAP</dt>
+<dd>
+
+<p>Bricolage provides a <a href="http://www.w3.org/TR/SOAP">SOAP 1.1</a> compatible interface. The SOAP server uses <a href="http://www.soaplite.com">SOAP::Lite</a> for its SOAP implementation. Clients may use any SOAP 1.1 compatible library, although only SOAP::Lite clients have been tested during development.</p>
+
+</dd>
+<dt>XML Schema</dt>
+<dd>
+
+<p>The format of XML documents used by the SOAP interface are specified in <a href="http://www.w3.org/XML/Schema">XML Schema</a> format. The schema is <a rel="subsection" href="SOAP.html#XML-Schema-For-Asset-Documents" name="Bric::SOAP">provided below</a>.</p>
+
+</dd>
+</dl>
+
+<h2 id="Modules">Modules</h2>
+
+<p>The following modules support the SOAP interface. See the documentation for each module for interface details, including XML Schemas and SOAP client examples.</p>
+
+<dl>
+
+<dt><a rel="section" href="SOAP/Handler.html" name="Bric::SOAP::Handler">Bric::SOAP::Handler</a></dt>
+<dd>
+
+<p>This module provides the Apache/mod_perl SOAP handler. It is responsible for dispatching requests to individual Bric::SOAP modules.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Auth.html" name="Bric::SOAP::Auth">Bric::SOAP::Auth</a></dt>
+<dd>
+
+<p>Handles authentication for SOAP clients. Authentication will be cookie-based -- clients can call a <code>login()</code> function and get an HTTP cookie to use with calls to the other SOAP interfaces.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Story.html" name="Bric::SOAP::Story">Bric::SOAP::Story</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Story objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Media.html" name="Bric::SOAP::Media">Bric::SOAP::Media</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Media objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Template.html" name="Bric::SOAP::Template">Bric::SOAP::Template</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Templates.</p>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::SOAP::Element">Bric::SOAP::ElementType</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Element types.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Category.html" name="Bric::SOAP::Category">Bric::SOAP::Category</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Category objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/MediaType.html" name="Bric::SOAP::MediaType">Bric::SOAP::MediaType</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for MediaType objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Site.html" name="Bric::SOAP::Site">Bric::SOAP::Site</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Site objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Keyword.html" name="Bric::SOAP::Keyword">Bric::SOAP::Keyword</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Keyword objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/User.html" name="Bric::SOAP::User">Bric::SOAP::User</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for User objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Desk.html" name="Bric::SOAP::Desk">Bric::SOAP::Desk</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Desk objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Workflow.html" name="Bric::SOAP::Workflow">Bric::SOAP::Workflow</a></dt>
+<dd>
+
+<p>Provides the ability to move Story, Media and Template objects between desks. Also provides checkin, checkout, publish, and deploy. And now list_ids, export, create, update, and delete.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/ATType.html" name="Bric::SOAP::ATType">Bric::SOAP::ATType</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Element Type Set objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/OutputChannel.html" name="Bric::SOAP::OutputChannel">Bric::SOAP::OutputChannel</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for OutputChannel objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/ContribType.html" name="Bric::SOAP::ContribType">Bric::SOAP::ContribType</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for ContribType objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Destination.html" name="Bric::SOAP::Destination">Bric::SOAP::Destination</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Destination objects.</p>
+
+</dd>
+<dt><a rel="section" href="SOAP/Preference.html" name="Bric::SOAP::Preference">Bric::SOAP::Preference</a></dt>
+<dd>
+
+<p>Provides query, export, update, create, and delete for Preference objects.</p>
+
+</dd>
+</dl>
+
+<h2 id="SOAP-Details">SOAP Details</h2>
+
+<p>All of the Bricolage SOAP modules described above share a common SOAP serialization strategy described here.</p>
+
+<dl>
+
+<dt>Namespace</dt>
+<dd>
+
+<p>The namespace for all Bric::SOAP calls is:</p>
+
+<pre><code>http://bricolage.sourceforge.net</code></pre>
+
+<p>To specify a module within that namespace, append the pieces as path components. For example, to call methods in Bric::SOAP::Story use the namespace:</p>
+
+<pre><code>http://bricolage.sourceforge.net/Bric/SOAP/Story</code></pre>
+
+<p>For the SOAP::Lite users in the audience, this is the &quot;uri&quot; setting.</p>
+
+</dd>
+<dt>Parameters</dt>
+<dd>
+
+<p>All Bric::SOAP methods use a named-parameter style call syntax. This syntax is mapped to XML elements where the name is the name of the element and the value is the value contained inside the element. For example, a Perl call like:</p>
+
+<pre><code>Bric::SOAP::Story-&gt;list_ids({ title =&gt; &#39;%foo%&#39;, publish_status =&gt; 1 });</code></pre>
+
+<p>Is called through SOAP as:</p>
+
+<pre><code>&lt;SOAP-ENV:Body&gt;
+  &lt;namesp2:list_ids
+   xmlns:namesp2=&quot;http://bricolage.sourceforge.net/Bric/SOAP/Story&quot;&gt;
+    &lt;title xsi:type=&quot;xsd:string&quot;&gt;%foo%&lt;/title&gt;
+    &lt;publish_status xsi:type=&quot;xsd:int&quot;&gt;1&lt;/publish_status&gt;
+  &lt;/namesp2:list_ids&gt;
+&lt;/SOAP-ENV:Body&gt;</code></pre>
+
+<p>SOAP::Lite clients can generate this call using <code>SOAP::Data::name()</code> to name the parameters:</p>
+
+<pre><code>import SOAP::Data &#39;name&#39;;
+my $result = $soap-&gt;list_ids(name(title          =&gt; &#39;%foo%&#39;),
+                             name(publish_status =&gt; 1)       );</code></pre>
+
+<p>In most cases, Perl doesn&#39;t distinguish between strings and numbers. When writing a SOAP client you should feel free to type your parameters in whatever way makes most sense in your implementation language.</p>
+
+</dd>
+<dt>Return Values</dt>
+<dd>
+
+<p>All Bric::SOAP methods return a single named parameter. If a method needs to return multiple values then a SOAP array is returned containing the values. For example, <code>Bric::SOAP::Story-&gt;list_ids()</code> returns a list of story IDs in this structure:</p>
+
+<pre><code>&lt;namesp2:list_idsResponse
+ xmlns:namesp2=&quot;http://bricolage.sourceforge.net/Bric/SOAP/Story&quot;&gt;
+  &lt;story_ids SOAP-ENC:arrayType=&quot;xsd:int[4]&quot; xsi:type=&quot;SOAP-ENC:Array&quot;&gt;
+     &lt;story_id xsi:type=&quot;xsd:int&quot;&gt;1027&lt;/story_id&gt;
+     &lt;story_id xsi:type=&quot;xsd:int&quot;&gt;1028&lt;/story_id&gt;
+     &lt;story_id xsi:type=&quot;xsd:int&quot;&gt;1029&lt;/story_id&gt;
+     &lt;story_id xsi:type=&quot;xsd:int&quot;&gt;1030&lt;/story_id&gt;
+  &lt;/story_ids&gt;
+&lt;/namesp2:list_idsResponse&gt;</code></pre>
+
+<p>And an empty response returns an empty array:</p>
+
+<pre><code>&lt;namesp1:list_idsResponse
+ xmlns:namesp1=&quot;http://bricolage.sourceforge.net/Bric/SOAP/Story&quot;&gt;
+  &lt;story_ids SOAP-ENC:arrayType=&quot;xsd:ur-type[0]&quot; xsi:type=&quot;SOAP-ENC:Array&quot;/&gt;
+&lt;/namesp1:list_idsResponse&gt;</code></pre>
+
+<p>SOAP::Lite clients can access this return value as an array reference:</p>
+
+<pre><code>my $story_ids = $response-&gt;result;
+foreach my $id (@$story_ids) {
+    frobnicate($id);
+}</code></pre>
+
+</dd>
+<dt>XML Document Encoding</dt>
+<dd>
+
+<p>The Bric::SOAP system uses complete XML documents as parameters and return values to many methods (<code>create()</code> and <code>export()</code>, for example). These documents must be encoded in Base64 for performance reasons. See the PERFORMANCE section of the <a href="http://search.cpan.org/perldoc?SOAP::Lite">SOAP::Lite</a> documentation for a full explanation of why this is necessary. This is not a limitation of SOAP::Lite in particular but the explanation is particularly lucid.</p>
+
+<p>For SOAP::Lite clients, generating Base64 parameters is very easy:</p>
+
+<pre><code>my $document = name(document =&gt; $xml)-&gt;type(&#39;base64&#39;);</code></pre>
+
+<p>And on decoding, returned base64 will be done automatically.</p>
+
+<p>The XML Schema for these documents is included below.</p>
+
+</dd>
+<dt>Error Handling</dt>
+<dd>
+
+<p>Errors are returned as SOAP faults using fault strings produced by the method called. If you use SOAP::Lite as your client library you can check for errors using the <code>fault()</code> method and access the error message with <code>faultstring()</code>:</p>
+
+<pre><code>my $response = $soap-&gt;list_ids(...);
+die &quot;SOAP Error: &quot; . $response-&gt;faultstring if $response-&gt;fault;</code></pre>
+
+</dd>
+<dt>XML Schema For Asset Documents</dt>
+<dd>
+
+<p>This is the XML Schema for asset documents used in the Bricolage SOAP interface.</p>
+
+<p>The XSD source:</p>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xs:schema targetNamespace=&quot;http://bricolage.sourceforge.net/assets.xsd&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns=&quot;http://bricolage.sourceforge.net/assets.xsd&quot; elementFormDefault=&quot;qualified&quot; attributeFormDefault=&quot;unqualified&quot;&gt;
+  &lt;xs:element name=&quot;assets&quot;&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:documentation&gt;a set of Bricolage assets&lt;/xs:documentation&gt;
+    &lt;/xs:annotation&gt;
+    &lt;xs:complexType mixed=&quot;0&quot;&gt;
+      &lt;xs:sequence maxOccurs=&quot;unbounded&quot;&gt;
+        &lt;xs:element ref=&quot;story&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;media&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;template&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;element_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;category&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;media_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;site&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;keyword&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;desk&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;user&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;element_type_set&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;output_channel&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+        &lt;xs:element ref=&quot;workflow&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; /&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;story&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;1024&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;slug&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;primary_uri&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;priority&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:int&quot;&gt;
+              &lt;xs:minInclusive value=&quot;1&quot;/&gt;
+              &lt;xs:maxInclusive value=&quot;5&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;publish_status&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;source&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;cover_date&quot; type=&quot;xs:dateTime&quot;/&gt;
+        &lt;xs:element name=&quot;expire_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if no expire date&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;first_publish_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if not published&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;publish_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if not published&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;categories&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;category&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;primary&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;output_channels&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;output_channel&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;site&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;keywords&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;keyword&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is just a list of keyword names. if we ever start using the full capabilities of Bric::Biz::Keyword then this will need expansion.  It would probably make sense to do a Bric::SOAP::Keyword in that case.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;contributors&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;contributor&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is incomplete...  Either this element should be expanded to properly serialize all the available contributor data or it should reference a top-level contributor element serviced by Bric::SOAP::Contrib.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;fname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;mname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;lname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;type&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;role&quot; type=&quot;xs:string&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;elements&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;field&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;field_type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+                      &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name=&quot;container&quot; type=&quot;container_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name=&quot;related_story_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;related_story_uri&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;related_media_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;related_media_uri&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;related_site_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;relative&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+            &lt;xs:attribute name=&quot;displayed&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;element_type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;alias_id&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;uuid&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;media&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;1024&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;uri&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;priority&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:int&quot;&gt;
+              &lt;xs:minInclusive value=&quot;1&quot;/&gt;
+              &lt;xs:maxInclusive value=&quot;5&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;publish_status&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;source&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;cover_date&quot; type=&quot;xs:dateTime&quot;/&gt;
+        &lt;xs:element name=&quot;expire_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if no expire date&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;publish_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if not published&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;category&quot; type=&quot;xs:string&quot;/&gt;
+        &lt;xs:element name=&quot;contributors&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;contributor&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is incomplete...  Either this element should be expanded to properly serialize all the available contributor data or it should reference a top-level contributor element serviced by Bric::SOAP::Contrib.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;fname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;mname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;lname&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;type&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;role&quot; type=&quot;xs:string&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;elements&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;field&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;element&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+                      &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name=&quot;container&quot; type=&quot;container_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;file&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;name&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+                    &lt;xs:maxLength value=&quot;256&quot;/&gt;
+                  &lt;/xs:restriction&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name=&quot;media_type&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+                    &lt;xs:maxLength value=&quot;256&quot;/&gt;
+                  &lt;/xs:restriction&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name=&quot;size&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:integer&quot;&gt;
+                    &lt;xs:minInclusive value=&quot;0&quot;/&gt;
+                    &lt;xs:maxInclusive value=&quot;9999999999&quot;/&gt;
+                  &lt;/xs:restriction&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name=&quot;data&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:base64Binary&quot;&gt;
+                    &lt;xs:minLength value=&quot;0&quot;/&gt;
+                      &lt;xs:maxLength value=&quot;2147483647&quot;/&gt;
+                  &lt;/xs:restriction&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;element_type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;alias_id&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+      &lt;xs:attribute name=&quot;uuid&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;template&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;element_type&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;type&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;20&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;file_name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;1024&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;priority&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:int&quot;&gt;
+              &lt;xs:minInclusive value=&quot;1&quot;/&gt;
+              &lt;xs:maxInclusive value=&quot;5&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;deploy_status&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;category&quot; type=&quot;xs:string&quot;/&gt;
+        &lt;xs:element name=&quot;output_channel&quot; type=&quot;xs:string&quot;/&gt;
+        &lt;xs:element name=&quot;expire_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if no expire date&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;deploy_date&quot; type=&quot;xs:dateTime&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;omitted if not deployed&lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;data&quot; type=&quot;xs:base64Binary&quot; minOccurs=&quot;0&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;element_type&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;key_name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;burner&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;top_level&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;paginated&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;fixed_uri&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;related_story&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;related_media&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;displayed&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;is_media&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;biz_class&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;sites&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;site&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;primary_oc&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;output_channels&quot; minOccurs=&quot;0&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;output_channel&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;keywords&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;keyword&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is just a list of keyword names. if we ever start using the full capabilities of Bric::Biz::Keyword then this will need expansion.  It would probably make sense to do a Bric::SOAP::Keyword in that case.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;subelement_types&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;subelement_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;key_name&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;min_occur&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;max_occur&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;place&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;field_types&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;field_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;key_name&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;name&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;description&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;required&quot; type=&quot;xs:boolean&quot;/&gt;
+                    &lt;xs:element name=&quot;repeatable&quot; type=&quot;xs:boolean&quot;/&gt;
+                    &lt;xs:element name=&quot;autopopulated&quot; type=&quot;xs:boolean&quot;/&gt;
+                    &lt;xs:element name=&quot;multiple&quot; type=&quot;xs:boolean&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;max_size&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;widget_type&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;sql_type&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;default_val&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;options&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;length&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;rows&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;cols&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;precision&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+                    &lt;xs:element name=&quot;min_occur&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;max_occur&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:integer&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;category&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;path&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;adstring&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;adstring2&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;keywords&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;keyword&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is just a list of keyword names. if we ever start using the full capabilities of Bric::Biz::Keyword then this will need expansion.  It would probably make sense to do a Bric::SOAP::Keyword in that case.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;media_type&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;exts&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;ext&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:annotation&gt;
+                  &lt;xs:documentation&gt;This is just a list of extensions.&lt;/xs:documentation&gt;
+                &lt;/xs:annotation&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;site&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;domain_name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;keyword&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;screen_name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;sort_name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;desk&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;publish&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;user&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;prefix&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;32&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;fname&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;mname&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;lname&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;suffix&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;32&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;login&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;password&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:annotation&gt;
+              &lt;xs:documentation&gt;password isn&#39;t implemented yet&lt;/xs:documentation&gt;
+            &lt;/xs:annotation&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;32&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;contacts&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;contact&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;element_type_set&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;top_level&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;paginated&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;fixed_url&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;related_story&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;related_media&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;is_media&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;biz_class&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;output_channel&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;protocol&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;16&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;pre_path&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;post_path&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;filename&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;32&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;file_ext&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;32&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;uri_format&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;fixed_uri_format&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;uri_case&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;16&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;use_slug&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;/&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;includes&quot;&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;A list of output channels for template includes.
+            &lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;include&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;site&quot; type=&quot;xs:string&quot; use=&quot;required&quot; /&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;contrib_type&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;    &lt;!-- \d grp --&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;   &lt;!-- \d grp --&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;field_types&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;field_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;!-- returned by $ct-&gt;all_for_member_subsys,
+                         \d attr_grp_meta for max lengths (2048)
+                         (need to make element ref restricting to 2048, use here) --&gt;
+                    &lt;xs:element name=&quot;key_name&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;default_val&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;multiple&quot; type=&quot;xs:boolean&quot; minOccurs=&quot;0&quot;/&gt; &lt;!-- minOccurs? --&gt;
+                    &lt;xs:element name=&quot;cols&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;length&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;max_size&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;name&quot; type=&quot;xs:string&quot;/&gt;
+                    &lt;xs:element name=&quot;options&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;place&quot; type=&quot;xs:int&quot;/&gt;
+                    &lt;xs:element name=&quot;precision&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;rows&quot; type=&quot;xs:int&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;widget_type&quot; type=&quot;xs:string&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;dest&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;    &lt;!-- \d server_type --&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;move_method&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;128&quot;/&gt;    &lt;!-- \d class (disp_name) --&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;can_copy&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;can_publish&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;can_preview&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;site&quot; type=&quot;xs:string&quot; /&gt;    &lt;!-- \d site --&gt;
+        &lt;xs:element name=&quot;output_channels&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;output_channel&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:simpleType&gt;
+                  &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+                    &lt;xs:maxLength value=&quot;64&quot;/&gt;    &lt;!-- \d output_channel --&gt;
+                  &lt;/xs:restriction&gt;
+                &lt;/xs:simpleType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;actions&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;action&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;!-- These are only when type=&quot;Email&quot;.
+                         XXX: don&#39;t know how to properly constrain this --&gt;
+                    &lt;xs:element name=&quot;from&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;to&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;cc&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;bcc&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;subject&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;content_type&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;handle_text&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;handle_other&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name=&quot;type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;  &lt;!-- restriction? --&gt;
+            &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;servers&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;server&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;host_name&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;os&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;doc_root&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;login&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;password&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;cookie&quot; type=&quot;xs:string&quot; /&gt;
+                    &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot; /&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute name=&quot;type&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;  &lt;!-- restriction? --&gt;
+            &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;pref&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;    &lt;!-- \d pref --&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;can_be_overridden&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;opt_type&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;16&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;manual&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;default&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;value&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;opts&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;opt&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;value&quot;&gt;
+                      &lt;xs:simpleType&gt;
+                        &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+                          &lt;xs:maxLength value=&quot;256&quot;/&gt;     &lt;!-- \d pref_opt --&gt;
+                        &lt;/xs:restriction&gt;
+                      &lt;/xs:simpleType&gt;
+                    &lt;/xs:element&gt;
+                    &lt;xs:element name=&quot;val_name&quot;&gt;
+                      &lt;xs:simpleType&gt;
+                        &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+                          &lt;xs:maxLength value=&quot;256&quot;/&gt;
+                        &lt;/xs:restriction&gt;
+                      &lt;/xs:simpleType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name=&quot;workflow&quot;&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name=&quot;name&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;description&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;256&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;site&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:maxLength value=&quot;64&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;type&quot;&gt;
+          &lt;xs:simpleType&gt;
+            &lt;xs:restriction base=&quot;xs:string&quot;&gt;
+              &lt;xs:enumeration value=&quot;Story&quot;/&gt;
+              &lt;xs:enumeration value=&quot;Media&quot;/&gt;
+              &lt;xs:enumeration value=&quot;Template&quot;/&gt;
+            &lt;/xs:restriction&gt;
+          &lt;/xs:simpleType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name=&quot;active&quot; type=&quot;xs:boolean&quot;/&gt;
+        &lt;xs:element name=&quot;desks&quot;&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name=&quot;desk&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                      &lt;xs:attribute name=&quot;start&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+                      &lt;xs:attribute name=&quot;publish&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name=&quot;id&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+
+  &lt;xs:complexType name=&quot;container_type&quot; mixed=&quot;0&quot;&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:documentation&gt;An element data container - a recursive type.&lt;/xs:documentation&gt;
+    &lt;/xs:annotation&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name=&quot;field_type&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:simpleContent&gt;
+            &lt;xs:extension base=&quot;xs:string&quot;&gt;
+              &lt;xs:attribute name=&quot;element&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+              &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+            &lt;/xs:extension&gt;
+          &lt;/xs:simpleContent&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name=&quot;container&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:complexContent&gt;
+            &lt;xs:extension base=&quot;container_type&quot;/&gt;
+          &lt;/xs:complexContent&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name=&quot;element&quot; type=&quot;xs:string&quot; use=&quot;required&quot;/&gt;
+    &lt;xs:attribute name=&quot;order&quot; type=&quot;xs:int&quot; use=&quot;required&quot;/&gt;
+    &lt;xs:attribute name=&quot;related_story_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;related_story_uri&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;related_media_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;related_media_uri&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;related_site_id&quot; type=&quot;xs:int&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;relative&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+    &lt;xs:attribute name=&quot;displayed&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot;/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</code></pre>
+
+</dd>
+</dl>
+
+<h2 id="Example-Asset-Documents">Example Asset Documents</h2>
+
+<p>Here&#39;s a simple story with some keywords and no contributors:</p>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
+
+&lt;assets xmlns=&quot;http://bricolage.sourceforge.net/assets.xsd&quot;&gt;
+ &lt;story id=&quot;1024&quot; uuid=&quot;0C071854-03E7-11DA-B4F2-BC394F2854A1&quot; element=&quot;Book Review&quot;&gt;
+  &lt;site&gt;Default Site&lt;/site&gt;
+  &lt;name&gt;Story One&lt;/name&gt;
+  &lt;description&gt;a description of story one&lt;/description&gt;
+  &lt;slug&gt;one&lt;/slug&gt;
+  &lt;primary_uri&gt;/2004/02/22/one&lt;/primary_uri&gt;
+  &lt;priority&gt;3&lt;/priority&gt;
+  &lt;publish_status&gt;0&lt;/publish_status&gt;
+  &lt;active&gt;1&lt;/active&gt;
+  &lt;source&gt;Internal&lt;/source&gt;
+  &lt;cover_date&gt;2004-02-22T22:18:00
+  &lt;categories&gt;
+   &lt;category primary=&quot;1&quot;&gt;/&lt;/category&gt;
+  &lt;/categories&gt;
+  &lt;output_channels&gt;
+   &lt;output_channel primary=&quot;1&quot;&gt;Web&lt;/output_channel&gt;
+  &lt;/output_channels&gt;
+  &lt;keywords&gt;
+   &lt;keyword&gt;key one&lt;/keyword&gt;
+   &lt;keyword&gt;key two&lt;/keyword&gt;
+  &lt;/keywords&gt;
+  &lt;contributors&gt;&lt;/contributors&gt;
+  &lt;elements&gt;
+   &lt;data order=&quot;2&quot; element=&quot;deck&quot;&gt;deck one&lt;/data&gt;
+   &lt;container order=&quot;3&quot; element=&quot;page&quot;&gt;
+  &lt;data order=&quot;0&quot; element=&quot;paragraph&quot;&gt;para one&lt;/data&gt;
+  &lt;data order=&quot;1&quot; element=&quot;paragraph&quot;&gt;para two&lt;/data&gt;
+  &lt;container order=&quot;2&quot; element=&quot;inset&quot;&gt;
+   &lt;data order=&quot;0&quot; element=&quot;copy&quot;&gt;inset copy&lt;/data&gt;
+  &lt;/container&gt;
+   &lt;/container&gt;
+  &lt;/elements&gt;
+ &lt;/story&gt;
+&lt;/assets&gt;</code></pre>
+
+<h2 id="Example-Clients">Example Clients</h2>
+
+<dl>
+
+<dt>Command-Line Client</dt>
+<dd>
+
+<p>This script -- <i>bric_soap</i> -- provides command-line access to all available SOAP methods. For more information read the <code>bric_soap</code> manual by running:</p>
+
+<pre><code>bric_soap --man</code></pre>
+
+<p>or, if Bricolage&#39;s bin directory isn&#39;t in your path:</p>
+
+<pre><code>/usr/local/bricolage/bin/bric_soap --man</code></pre>
+
+</dd>
+<dt>Auto-Publisher</dt>
+<dd>
+
+<p>A script that publishes a set of stories based on a simple criteria entered on the command line. Designed to be used in cron jobs..</p>
+
+<p>See <i>bric_republish</i> in <i>bin/</i> for an implementation that republishes already published stories. More general automated publishing can be performed through <i>bric_soap</i>.</p>
+
+</dd>
+<dt>Dev Sync Tool</dt>
+<dd>
+
+<p>A script that grabs the element tree and templates from a source server and updates a list of target servers to match.</p>
+
+<p>See <i>bric_dev_sync</i> in <i>bin/</i> for a complete implementation.</p>
+
+</dd>
+</dl>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="SOAP/Handler.html" name="Bric::SOAP::Handler">Bric::SOAP::Handler</a></p>
+
+<p><a rel="section" href="SOAP/Auth.html" name="Bric::SOAP::Auth">Bric::SOAP::Auth</a></p>
+
+<p><a rel="section" href="SOAP/Story.html" name="Bric::SOAP::Story">Bric::SOAP::Story</a></p>
+
+<p><a rel="section" href="SOAP/Media.html" name="Bric::SOAP::Media">Bric::SOAP::Media</a></p>
+
+<p><a rel="section" href="SOAP/Template.html" name="Bric::SOAP::Template">Bric::SOAP::Template</a></p>
+
+<p><a rel="section" href="SOAP/Workflow.html" name="Bric::SOAP::Workflow">Bric::SOAP::Workflow</a></p>
+
+<p><a href="http://search.cpan.org/perldoc?Bric::SOAP::Element">Bric::SOAP::Element</a></p>
+
+<p><a rel="section" href="SOAP/Category.html" name="Bric::SOAP::Category">Bric::SOAP::Category</a></p>
+
+<p><a rel="section" href="SOAP/MediaType.html" name="Bric::SOAP::MediaType">Bric::SOAP::MediaType</a></p>
+
+<p><a rel="section" href="SOAP/Site.html" name="Bric::SOAP::Site">Bric::SOAP::Site</a></p>
+
+<p><a rel="section" href="SOAP/Keyword.html" name="Bric::SOAP::Keyword">Bric::SOAP::Keyword</a></p>
+
+<p><a rel="section" href="SOAP/User.html" name="Bric::SOAP::User">Bric::SOAP::User</a></p>
+
+<p><a rel="section" href="SOAP/Desk.html" name="Bric::SOAP::Desk">Bric::SOAP::Desk</a></p>
+
+<p><a rel="section" href="SOAP/ATType.html" name="Bric::SOAP::ATType">Bric::SOAP::ATType</a></p>
+
+<p><a rel="section" href="SOAP/OutputChannel.html" name="Bric::SOAP::OutputChannel">Bric::SOAP::OutputChannel</a></p>
+
+<p><a rel="section" href="SOAP/ContribType.html" name="Bric::SOAP::ContribType">Bric::SOAP::ContribType</a></p>
+
+<p><a rel="section" href="SOAP/Destination.html" name="Bric::SOAP::Destination">Bric::SOAP::Destination</a></p>
+
+<p><a rel="section" href="SOAP/Preference.html" name="Bric::SOAP::Preference">Bric::SOAP::Preference</a></p>
+
+<p><a rel="section" href="../bric_soap.html" name="bric_soap">bric_soap</a></p>
+
+<p><a rel="section" href="../bric_dev_sync.html" name="bric_dev_sync">bric_dev_sync</a></p>
+
+<p><a rel="section" href="../bric_republish.html" name="bric_republish">bric_republish</a></p>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="POD-ERRORS">POD ERRORS</h1>
+
+<p>Hey! <b>The above document had some coding errors, which are explained below:</b></p>
+
+<dl>
+
+<dt>Around line 1544:</dt>
+<dd>
+
+<p>A non-empty Z&lt;&gt;</p>
+
+</dd>
+</dl>
+
+</body>
+</html>
+

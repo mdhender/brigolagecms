@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Trans::SFTP</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="SFTP.html#Name">Name</a></li>
+  <li><a href="SFTP.html#Synopsis">Synopsis</a></li>
+  <li><a href="SFTP.html#Description">Description</a></li>
+  <li><a href="SFTP.html#Interface">Interface</a>
+    <ul>
+      <li><a href="SFTP.html#Constructors">Constructors</a></li>
+      <li><a href="SFTP.html#Destructors">Destructors</a></li>
+      <li><a href="SFTP.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="SFTP.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="SFTP.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="SFTP.html#Private">Private</a>
+    <ul>
+      <li><a href="SFTP.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="SFTP.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="SFTP.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="SFTP.html#Notes">Notes</a></li>
+  <li><a href="SFTP.html#Author">Author</a></li>
+  <li><a href="SFTP.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Trans::SFTP - SFTP Client interface for distributing resources.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Trans::SFTP</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The distribution API uses this class to distribute resources to other servers via SFTP.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my $bool = Bric::Util::Trans::SFTP-&gt;put_res($resources, $st)</dt>
+<dd>
+
+<p>Puts the files specified by the $resources object on the servers specified by $st.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to login to remote server.</p>
+
+</li>
+<li><p>Unable to create directory on remote server.</p>
+
+</li>
+<li><p>Unable to put resource on remote server.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Net::SFTP internally.</p>
+
+</dd>
+<dt>my $bool = Bric::Util::Trans::SFTP-&gt;del_res($resources, $st)</dt>
+<dd>
+
+<p>Deletes the files specified by the $resources object from the servers specified by $st.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to login to remote server.</p>
+
+</li>
+<li><p>Unable to delete resource from remote server.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See put_res(), above.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>_connect_to</dt>
+<dd>
+
+<p>Establishes an SSH2 connection.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;slanning@theworld.com&gt; Sarah Mercier &lt;mercie_s@denison.edu&gt; Charlie Reitsma &lt;reitsma@denison.edu&gt; Matt Rolf &lt;rolfm@denison.edu&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a>, <a rel="section" href="../../Dist/Action/Mover.html" name="Bric::Dist::Action::Mover">Bric::Dist::Action::Mover</a>, <a rel="section" href="FS.html" name="Bric::Util::Trans::FS">Bric::Util::Trans::FS</a>, <a href="http://search.cpan.org/perldoc?Net::SSH2">Net::SSH2</a>, <a href="http://search.cpan.org/perldoc?Net::SSH::Perl">Net::SSH::Perl</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,820 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Workflow</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Workflow.html#Name">Name</a></li>
+  <li><a href="Workflow.html#Synopsis">Synopsis</a></li>
+  <li><a href="Workflow.html#Description">Description</a></li>
+  <li><a href="Workflow.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Workflow.html#Constructors">Constructors</a></li>
+      <li><a href="Workflow.html#Destructors">Destructors</a></li>
+      <li><a href="Workflow.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Workflow.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Workflow.html#Private-Methods">Private Methods</a>
+    <ul>
+      <li><a href="Workflow.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Workflow.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Workflow.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Workflow.html#Notes">Notes</a></li>
+  <li><a href="Workflow.html#Author">Author</a></li>
+  <li><a href="Workflow.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Workflow - Controls the progress of an asset through a series of desks.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>my $flow = new Bric::Biz::Workflow($param);
+
+$id    = $flow-&gt;get_id;
+
+$name  = $flow-&gt;get_name;
+$flow  = $flow-&gt;set_name($name);
+
+$site_id = $flow-&gt;get_site_id;
+$flow    = $flow-&gt;set_site_id($site_id);
+
+$desc  = $flow-&gt;get_description;
+$flow  = $flow-&gt;set_description($desc);
+
+$flow  = $flow-&gt;add_desk($param);
+
+# Returns a list of allowed desks.
+@desks = $flow-&gt;allowed_desks();
+
+# Lists the required desks
+@desks = $flow-&gt;required_desks();</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>A workflow is something that guides an asset through a set of desks, where an asset is any kind of creative content (a story, an image, a sound file, etc) and a desk performs and kind of validation or transformation upon an asset needed before it can be published. Example desks might be a &#39;legal&#39; desk where users can verify any legal issue for a particular asset, or an &#39;edit&#39; desk where users can check consistancy and presentation for an asset.</p>
+
+<p>A workflow might be as simple as a linear path through a set of desks or as complex as requiring certain desks be visited with other desks optional and a route through the desks that can be arbitrarily complex.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$success = $obj = new Bric::Biz::Workflow($param);</dt>
+<dd>
+
+<p>Keys for $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name for this workflow</p>
+
+</li>
+<li><p>site_id</p>
+
+<p>The site this workflow belongs to</p>
+
+</li>
+<li><p>description</p>
+
+<p>A description for this workflow</p>
+
+</li>
+<li><p>start_desk</p>
+
+<p>The starting desk for this workflow</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $wf = Bric::Biz::Workflow-&gt;lookup({ id =&gt; $id });</dt>
+<dd>
+
+</dd>
+<dt>my $wf = Bric::Biz::Workflow-&gt;lookup({ name =&gt; $name });</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::Workflow object based on an Bric::Biz::Workflow object ID or name. If no output channelobject is found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(@all || $all) = Bric::Biz::Workflow-&gt;list($params);</dt>
+<dd>
+
+<p>Return a list of all known workflow types. Keys of the $params hash reference are:</p>
+
+<dl>
+
+<dt><code>id</code></dt>
+<dd>
+
+<p>Workflow ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>name</code></dt>
+<dd>
+
+<p>Return all workflows matching a certain name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>site_id</code></dt>
+<dd>
+
+<p>Return all workflows matching a certain site id. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>description</code></dt>
+<dd>
+
+<p>Return all workflows with a matching description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>description</code></dt>
+<dd>
+
+<p>Return all workflows with a matching description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>active</code></dt>
+<dd>
+
+<p>Boolean; Return all in/active workflows.</p>
+
+</dd>
+<dt><code>type</code></dt>
+<dd>
+
+<p>Return all workflows of a particular type. The types are integers accessible via the <code>STORY_WORKFLOW</code>, <code>MEDIA_WORKFLOW</code>, and <code>TEMPLATE_WORKFLOW</code> constants. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>&lt;desk_id&gt;</dt>
+<dd>
+
+<p>Return all workflows containing a desk with this desk ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt><code>grp_id</code></dt>
+<dd>
+
+<p>Return all workflows in the group corresponding to this group ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Seaches against <code>name</code> and <code>description</code> use the LIKE operator, so &#39;%&#39; can be used for substring searching.</p>
+
+</dd>
+<dt>(@ids || $ids) = Bric::Biz::Workflow-&gt;list_ids($params);</dt>
+<dd>
+
+<p>Return a list of workflow IDs. See <code>list()</code> for a list of the relevant keys in the <code>$params</code> hash reference.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Seaches against <code>name</code> and <code>description</code> use the LIKE operator, so &#39;%&#39; can be used for substring searching.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $meths = Bric::Biz::Workflow-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Workflow-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Workflow-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$id = $workflow-&gt;get_id</dt>
+<dd>
+
+<p>Returns the workflow&#39;s ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$site_id = $workflow-&gt;get_site_id</dt>
+<dd>
+
+<p>Returns the ID of the site this Workflow is a part of</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$workflow = $workflow-&gt;set_site_id($site_id)</dt>
+<dd>
+
+<p>Set the ID of the site this Workflow should be a part of</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$flow-&gt;add_desk($param);</dt>
+<dd>
+
+<p>Add a desk to this workflow. Keys to param are:</p>
+
+<ul>
+
+<li><p>allowed</p>
+
+<p>Add a list of desks as part of the allowed desks.</p>
+
+</li>
+<li><p>required</p>
+
+<p>Add a list of desks as required desks.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$flow-&gt;del_desk([$desk || $desk_id]);</dt>
+<dd>
+
+<p>Delete a desk from this workflow.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$flow-&gt;allowed_desks();</dt>
+<dd>
+
+<p>Returns a list of allowed desks.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$bool = $flow-&gt;desk_in_allowed($desk_obj);</dt>
+<dd>
+
+<p>Returns true if desk is in the list of allowed desks.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>@desks = $flow-&gt;required_desks();</dt>
+<dd>
+
+<p>Lists the required desks</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$bool = $flow-&gt;desk_in_required($desk_obj);</dt>
+<dd>
+
+<p>Returns true if the deskref given is in the required list</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$desk = $flow-&gt;get_start_desk();</dt>
+<dd>
+
+</dd>
+<dt>($flow || undef) = $flow-&gt;set_start_desk($desk_id);</dt>
+<dd>
+
+</dd>
+<dt>$self = $flow-&gt;is_start_desk();</dt>
+<dd>
+
+<p>Get/Set the start desk.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$desk || undef = $desk-&gt;is_active;</dt>
+<dd>
+
+</dd>
+<dt>$desk = $desk-&gt;activate;</dt>
+<dd>
+
+</dd>
+<dt>$desk = $desk-&gt;deactivate;</dt>
+<dd>
+
+<p>Get/Set the active flag.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$desk-&gt;remove;</dt>
+<dd>
+
+<p>Get/Set the active flag.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>This method is deprecated.</p>
+
+</dd>
+<dt>$save = $workflow-&gt;save;</dt>
+<dd>
+
+<p>Save this workflow</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Private-Methods">Private Methods</h1>
+
+<p>NONE.</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$desk = $desk-&gt;_remove_workflow</dt>
+<dd>
+
+<p>Remove this workflow</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $wf_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $wf_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by <code>lookup()</code> and <code>list()</code> to return a list of Bric::Biz::Workflow objects or, if called with an optional third argument, returns a list of Bric::Biz::Workflow object IDs (used by <code>list_ids()</code>).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/Workflow/Parts/Desk.html" name="Bric::Biz::Workflow::Parts::Desk">Bric::Biz::Workflow::Parts::Desk</a>, <a href="http://search.cpan.org/perldoc?perl">perl</a></p>
+
+</body>
+</html>
+

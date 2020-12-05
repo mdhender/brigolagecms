@@ -1,0 +1,585 @@
+/* @override 
+	http://preview.bricolagecms.org/ui/css/bricolagecms-org.css?v04112010
+	http://bricolagecms.org/ui/css/bricolagecms-org.css?v04112010
+*/
+
+/* COLOUR PALETTE
+=================
+Light grey backgrounds:	rgb(250, 250, 250)
+Dark grey borders:		rgb(229, 229, 229)
+Dark grey text:			rgb(100, 100, 100)
+Light grety text:		rgb(180, 180, 180)
+=================
+ */
+
+/* @group Global */
+
+body {
+	background-color: #fff;
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+
+body.page #content {
+	font-size: 115%;
+}
+
+
+a {
+	text-decoration: none;
+	color: #0F376A;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#content a {
+	border-bottom: dotted 1px;
+	border-color:  rgb(160, 160, 160);
+}
+#content a:hover {
+	text-decoration: none;
+	border-bottom: solid 1px;
+	border-color:  rgb(0, 0, 0);
+}
+
+.center {
+	text-align: center;
+}
+
+ul.group {
+	padding: 0;
+	margin: 0;
+	float: left;
+	border-bottom: 1px solid rgb(229, 229, 229);
+	margin: 20px 0 30px 0;
+}
+
+ul.group  li {
+	display: inline;
+	float: left;
+	margin-bottom: 14px;
+}
+
+ul.group li p {
+	border-right: 1px solid rgb(229, 229, 229);
+	padding: 0 8px 0 10px;
+	margin: 0;
+}
+
+ul.group li.last p {
+	padding: 0 0px 0 10px;
+	border: none;
+}
+
+ul.items-3 li {
+	width: 33%;
+}
+
+ul.items-4 li {
+	width: 25%;
+}
+
+#content ul li p {
+	margin-bottom: 5px;
+}
+
+#announcement {
+	background: rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
+	padding: 0 20px 0 40px;
+}
+#announcement a {
+	color: rgb(255, 255, 255);
+}
+
+/* @end */
+
+/* @group Typography */
+
+@font-face {
+	font-family: 'DeliciousHeavy';
+	src: url('type/Delicious-Heavy.eot');
+	src: local('Delicious Heavy'), local('Delicious-Heavy'), 		url('type/Delicious-Heavy.woff') format('woff'), 
+	url('type/Delicious-Heavy.otf') format('opentype'), 			url('type/Delicious-Heavy.svg') format('svg');
+}
+
+/* A font by Jos Buivenga (exljbris) -> www.exljbris.nl */
+
+h1, h2, h3, h4 {
+	font-family: "DeliciousHeavy", "Trebuchet MS", Verdana, sans-serif;
+}
+
+h2 {
+	font-size: 28px;
+	line-height: 29px;
+}
+
+#content h2 {
+	margin-bottom: 5px;	
+}
+
+h3 {
+	background: url(../img/stripe.png) repeat;
+	border-top: solid 2px rgb(229, 229, 229);
+	color: rgb(255, 255, 255);
+	padding: 5px;
+	font-size: 24px;
+	line-height: 25px;
+
+}
+
+body.news h3 {
+	background: none;
+	border: none;
+	color: black;
+	font-size: 24px;
+	line-height: 20px;	
+	padding: 0;
+	margin-bottom: 10px;
+}
+
+h4 {
+	font-size: 20px;
+}
+
+body.news blockquote {
+	background: url(../img/quote_dark.png) no-repeat left top;
+	color: rgb(0, 0 , 0);
+	margin: 0;
+	padding: 20px 0 20px 0;
+}
+
+body.news blockquote p {
+	padding-left: 80px;
+}
+
+body.news blockquote cite {
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	color: rgb(150, 150, 150);
+	font-style: italic;
+}
+
+/*
+
+ @end */
+
+/* @group Header */
+
+#header {
+	height: 42px;
+	background: url(../img/bg_header.png) repeat-x;
+	margin-bottom: 40px;
+}
+
+.header {
+	height: 42px;
+}
+
+#header h1 {
+	text-indent: -5000px;
+	margin: 0;
+	padding: 0;
+	background: url(../img/bricolage-logo-w-on-trans.png) no-repeat scroll 41px 8px;
+	width: 200px;
+}
+
+#header ul {
+	padding: 0;
+	margin: 0;
+	text-align: right;
+	position: relative;
+	top: -24px;
+	right: 43px;
+	height: 30px;
+}
+
+#header ul {
+	float: right;
+	width: 50%;
+}
+#header li {
+	list-style: none;
+	display: inline;
+	text-transform: uppercase;
+	margin-left: 12px;
+}
+
+#header ul li a {
+	color: rgb(255,255,255);
+}
+
+/* @end */
+
+/* @group Footer */
+
+#footer {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+#footer .menu {
+	background: url(../img/bg_footer.png) repeat-x bottom;
+	border-top: 1px solid rgb(229, 229, 229);
+	border-bottom: 1px solid rgb(229, 229, 229);
+	margin-bottom: 20px;
+}
+
+#footer ul {
+	float: left;
+	list-style: none;
+	margin: 6px 20px 6px 0;
+}
+
+#footer ul li a {
+	color: rgb(100, 100, 100);
+}
+
+#footer ul li a:hover {
+	color: rgb(0, 0, 0);
+}
+
+#footer .logo {
+	background: url(../img/bricolage-b-on-trans.png) no-repeat 730px 40px;
+	height: 100px;
+}
+
+#footer #tagline {
+	font-style: bold;
+	text-align: center;
+	text-transform: uppercase;
+	color: #fff;
+	background-color: #000;
+	padding: 4px;
+}
+
+#footer #copyright {
+	color: rgb(180, 180, 180);
+}
+
+/* @end */
+
+/* @group Front page */
+
+.entry {
+	margin-bottom: 40px;
+}
+
+h4 {
+	margin-bottom: 4px;
+}
+
+.published {
+	color: rgb(160, 160, 160);
+}
+
+/* @end */
+
+/* @group Teaser */
+
+#teaser {
+	background: url(../img/bg_sidebar.png) repeat-x left top;
+	margin-top: 40px;
+	padding: 20px 20px 0 20px;
+	height: 280px;
+}
+
+#teaser-content {
+	width: 50%;
+	float: left;
+}
+
+#teaser-content form input.button {
+	border: 1px solid black;
+	background: url(../img/bg_button.png) repeat-x top left;
+	width: 130px;
+	height: 30px;
+	float: left;
+	margin-right: 20px;
+	color: rgb(255, 255, 255);
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+#teaser-content form input.button:hover {
+	cursor: pointer; 
+	cursor: hand;	
+}
+
+#teaser-slideshow {
+	width: 370px;
+	float: left;
+	position: relative;
+	top: -40px;
+	left: 90px;
+}
+
+.slide img {
+	-webkit-box-shadow:  0 4px 10px rgba(0,0,0,.5);
+	-moz-box-shadow:  0 4px 10px rgba(0,0,0,.5);
+	box-shadow:  0 4px 10px rgba(0,0,0,.5);
+}
+.slide p {
+	color: rgb(150, 150, 150);
+	font-style: italic;
+	margin: 30px 0 0px 0;
+	width:  320px;
+}
+
+#teaser-content ul {
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+#teaser-content p {
+	font-size: 16px;
+	margin-top: 0px;
+}
+
+
+/* @end */
+
+/* @group Enterprise block */
+
+#enterprise {
+	background-color: rgb(250, 250, 250);
+	border: 1px solid rgb(229, 229, 229);
+}
+
+#enterprise dl {
+	float: left;
+	padding: 8px 0 0 8px;
+	width: 60%;
+}
+
+#enterprise dt {
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+}
+
+#enterprise dl dd {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+#enterprise p {
+	float: left;
+	padding: 8px 8px 0 0;
+	width: 38%;
+}
+
+#enterprise dl.technologies dd {
+	margin-right: 5px;
+}
+
+#enterprise dl dd.apache {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl dd.postgresql {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl.technologies dd.mysql {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl dd.mason {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl.technologies dd.modperl {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl.technologies dd.php {
+	position: relative;
+	top: 14px;
+}
+
+#enterprise dl.technologies dd.perl {
+	position: relative;
+	top: 14px;
+}
+
+/* @end */
+
+/* @group Pitch & Pitch more */
+
+#pitch strong, #pitch-more strong {
+	text-shadow: 1px 1px 1px rgba(0,0,0,.1);
+}
+
+#pitch-more img {
+	float: left;
+	-webkit-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	-moz-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	margin: 0 16px 20px 0;
+}
+
+#pitch-more blockquote {
+	background: url(../img/quote.png) no-repeat left top;
+	font-family: "DeliciousHeavy", "Trebuchet MS", Verdana, sans-serif;
+	font-style: normal;
+	font-size: 28px;
+	color: rgb(0, 0 , 0);
+	line-height: 30px;
+	float: left;
+	margin: 10px 0 0 0;
+	padding: 30px 0 0 20px;
+	width: 250px;
+	height: 120px;
+}
+#pitch-more blockquote p {
+	margin: 0;
+}
+
+#pitch-more blockquote p.attribution {
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	font-size: 12px;
+	color: rgb(150, 150, 150);
+	font-style: italic;
+}
+
+#pitch ul li p a {
+	font-weight: bold;
+}
+
+/* @end */
+
+/* @group Blog */
+
+.article {
+	padding-left: 5px;
+}
+
+.entry img {
+	border: 1px solid rgb(100, 100, 100);
+	box-shadow: 0 4px 10px rgba(0,0,0,.1);
+	float: left;
+	padding: 2px;
+	margin: 5px 10px 30px 0;
+	-webkit-box-shadow: 0 1px 10px rgba(0,0,0,.3);
+	-moz-box-shadow: 0 1px 10px rgba(0,0,0,.3);
+	box-shadow: 0 1px 10px rgba(0,0,0,.3);
+}
+
+#pagenav {
+	font-size: 16px;
+}
+
+p.byline {
+	color: rgb(160, 160, 160);
+	margin: 0;
+}
+
+
+/* @end */
+
+/* @group Sidebar */
+
+#sidebar a {
+	color: rgb(100, 100, 100);
+}
+
+#sidebar dl {
+	background: url(../img/bg_sidebar.png) repeat-x left top;
+	border: 1px solid rgb(229, 229, 229);
+	border-top: none;
+	padding: 0 0 10px 0;
+}
+
+#sidebar dl dt {
+	background: url(../img/bg_header.png) repeat-x center;
+	color: rgb(255, 255, 255);
+	border-top: 1px solid rgb(20, 40, 83);
+	border-left: 1px solid rgb(20, 40, 83);
+	border-right: 1px solid rgb(20, 40, 83);
+	padding: 2px 0 2px 4px;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+	font-size: 13px;
+}
+
+#sidebar dl dd {
+	margin: 0 0 0 6px;
+	padding: 10px 6px 0 20px;
+	background: url(../img/icons/bullet_go.png) no-repeat left;
+}
+
+#sidebar dl dd.more {
+	background: none;
+}
+
+#sidebar dl#downloads dt, #sidebar dl#related-links dt  {
+	background: url(../img/stripe.png) repeat;
+
+}
+
+/* @end */
+
+/* @group Showcase */
+
+.showcase-item img {
+	float: left;
+	width: 500px;
+	margin-right: 30px;
+	margin-bottom: 40px;
+	-webkit-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	-moz-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	box-shadow: 0 4px 10px rgba(0,0,0,.5);
+}
+.showcase-item p {
+	width: 300px;
+	float: left;
+}
+
+.showcase-item p {
+
+}
+
+/* @end */
+
+/* @group Tour */
+
+.tour-item img {
+	float: left;
+	width: 500px;
+	margin-right: 30px;
+	margin-bottom: 40px;
+	-webkit-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	-moz-box-shadow: 0 4px 10px rgba(0,0,0,.5);
+	box-shadow: 0 4px 10px rgba(0,0,0,.5);
+}
+.tour-item p {
+	width: 300px;
+	float: left;
+}
+
+/* @end */
+
+/* @group Disqus */
+
+div#disqus_thread {
+	padding:1.5em;
+	margin-bottom:1.5em;
+	background:rgb(245, 245,245);
+}
+
+#disqus_thread h3 {
+	background: none;
+	border: none;
+	color: black;
+}
+
+/* @end */
+

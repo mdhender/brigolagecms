@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Callback</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Callback.html#Name">Name</a></li>
+  <li><a href="Callback.html#Synopsis">Synopsis</a></li>
+  <li><a href="Callback.html#Description">Description</a></li>
+  <li><a href="Callback.html#Class-Interface">Class Interface</a>
+    <ul>
+      <li><a href="Callback.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Callback.html#lang">lang</a></li>
+          <li><a href="Callback.html#cache">cache</a></li>
+        </ul>
+      </li>
+      <li><a href="Callback.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="Callback.html#set_redirect">set_redirect</a></li>
+          <li><a href="Callback.html#add_message">add_message</a></li>
+          <li><a href="Callback.html#raise_status">raise_status</a></li>
+          <li><a href="Callback.html#raise_conflict">raise_conflict</a></li>
+          <li><a href="Callback.html#raise_forbidden">raise_forbidden</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Callback.html#Author">Author</a></li>
+  <li><a href="Callback.html#See-Also">See Also</a></li>
+  <li><a href="Callback.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Callback - The Bricolage callback base class</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Callback::Foo;
+use Bric::App::Callback::Bar;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This is the base class from which all Bricolage callback classes inherit. Callback classes are created by simply subclassing Bric::App::Callback, registering themselves, and then creating callback methods using the <code>Callback</code> attribute on methods:</p>
+
+<pre><code>sub save : Callback {
+    my $cb = shift;
+    # ...do the saving.
+}</code></pre>
+
+<p>See the subclasses for examples.</p>
+
+<h1 id="Class-Interface">Class Interface</h1>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="lang">lang</h3>
+
+<pre><code>my $lang = Bric::App::Callback-&gt;lang;
+$lang = $cb-&gt;lang;</code></pre>
+
+<p>Returns the currently active <a rel="section" href="../Util/Language.html" name="Bric::Util::Language">Bric::Util::Language</a> localization object. Can also be used as an instance method.</p>
+
+<h3 id="cache">cache</h3>
+
+<pre><code>my $cache = Bric::App::Callback-&gt;cache;
+$cache = $cb-&gt;cache;</code></pre>
+
+<p>Returns the currently active <a rel="section" href="Cache.html" name="Bric::App::Cache">Bric::App::Cache</a> object. Can also be used as an instance method.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="set_redirect">set_redirect</h3>
+
+<pre><code>$cb-&gt;set_redirect($url);</code></pre>
+
+<p>Sets the URL to redirect to after all callbacks have finished executing, but before the request is turned over to Mason for processing.</p>
+
+<h3 id="add_message">add_message</h3>
+
+<pre><code>$cb-&gt;add_message( &#39;Template &quot;[_1]&quot; deployed.&#39;, $template-&gt;get_uri );</code></pre>
+
+<p>Add a status message to be displayed to the user. Pass in a list of values suitable for passing through <code>$lang-&gt;maketext</code>.</p>
+
+<h3 id="raise_status">raise_status</h3>
+
+<pre><code>$cb-&gt;raise_status( HTTP_FORBIDDEN, &#39;Ya canna do that, captain!&#39; );</code></pre>
+
+<p>In a non-Ajax request, this method simply passes the error message on to <code>Bric::App::Util::add_msg()</code>. In an Ajax request, however, it rolls back the current transaction sends the error message to the browser, along with the status, and aborts the request. This is useful for situations where a requested action cannot be carried out for one reason or another, such as the user not having the appropriate permission.</p>
+
+<h3 id="raise_conflict">raise_conflict</h3>
+
+<pre><code>$cb-&gt;raise_conflict( q{You cannot move a story from a desk it&#39;s not on.} );</code></pre>
+
+<p>A shortcut for calling <code>raise_status()</code> and passing <code>HTTP_CONFLICT</code> as the furst argument.</p>
+
+<h3 id="raise_forbidden">raise_forbidden</h3>
+
+<pre><code>$cb-&gt;raise_forbidden( q{I can&#39;t let you do that, Dave.} );</code></pre>
+
+<p>A shortcut for calling <code>raise_status()</code> and passing <code>HTTP_FORBIDDEN</code> as the furst argument.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;lannings@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a href="http://search.cpan.org/perldoc?Params::CallbackRequest">Params::CallbackRequest</a></dt>
+<dd>
+
+<p>This module provides a generalized parameter triggering callback architecture. Bric::App::Callback inherits from its Params::Callback class.</p>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?MasonX::Interp::WithCallbacks">MasonX::Interp::WithCallbacks</a></dt>
+<dd>
+
+<p>This module provides the interface for adding callback processing to Mason requests.</p>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bricolage::App::Handler">Bricolage::App::Handler</a></dt>
+<dd>
+
+<p>This module handles all Bricolage Apache requests, and loads all of the callback modules.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2003-2004 World Health Organization and Kineticode, Inc. See <a rel="section" href="../License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

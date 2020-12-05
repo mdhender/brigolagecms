@@ -1,0 +1,1341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Org::Parts::Addr</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Addr.html#Name">Name</a></li>
+  <li><a href="Addr.html#Synopsis">Synopsis</a></li>
+  <li><a href="Addr.html#Description">Description</a></li>
+  <li><a href="Addr.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Addr.html#Constructors">Constructors</a></li>
+      <li><a href="Addr.html#Destructors">Destructors</a></li>
+      <li><a href="Addr.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Addr.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Addr.html#Private">Private</a>
+    <ul>
+      <li><a href="Addr.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Addr.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Addr.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Addr.html#Notes">Notes</a></li>
+  <li><a href="Addr.html#Author">Author</a></li>
+  <li><a href="Addr.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Org::Parts::Addr - Organizational Addresses</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Constructors are private - construct from Bric::Biz::Org objects.
+my $org = Bric::Biz::Org-&gt;lookup({ id =&gt; $org_id });
+my @addr = $org-&gt;get_addresses;
+my $addr = $org-&gt;new_address;
+
+# Instance Methods.
+my $id $addr-&gt;get_id;
+my $type = $addr-&gt;get_type;
+$addr = $addr-&gt;set_type($type);
+my $city = $addr-&gt;get_city;
+$addr = $addr-&gt;set_city($city);
+my $state = $addr-&gt;get_state;
+$addr = $addr-&gt;set_state($state);
+my $code = $addr-&gt;get_code;
+$addr = $addr-&gt;set_code($code);
+my $country = $addr-&gt;get_country;
+$addr = $addr-&gt;set_country($country);
+my @lines = $addr-&gt;get_lines;
+$addr = $addr-&gt;set_lines(@lines);
+
+$addr = $addr-&gt;activate;
+$addr = $addr-&gt;deactivate;
+$addr = $addr-&gt;is_active;
+
+# Print Address Labels.
+my $p = Bric::Biz::Person-&gt;lookup({ id =&gt; $person_id });
+foreach my $porg ($p-&gt;get_orgs) {
+    foreach my $addr ($porg-&gt;get_addresses($id)) {
+        print $p-&gt;format_name(&quot;%f% M% l&quot;), &quot;\n&quot;;
+        print $porg-&gt;title, &quot;\n&quot; if $porg-&gt;title;
+        print $porg-&gt;dept, &quot;\n&quot; if $porg-&gt;dept;
+        map { print &quot;$_\n&quot; } $addr-&gt;get_lines;
+        print $addr-&gt;get_city, &quot;, &quot;, $addr-&gt;get_state, &quot;\n&quot;;
+        print $addr-&gt;get_code, &quot;  &quot;, $addr-&gt;get_country, &quot;\n\n&quot;;
+    }
+}</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class represents organizational addresses as objects. Organizations are represented as Bric::Biz::Org or subclassed Bric::Biz::Org objects, and a given Bric::Biz::Org object may have an unlimited number of addresses associated with it, each represented by a Bric::Biz::Org::Parts::Addr object.</p>
+
+<p>Bric::Biz::Org::Parts::Addr objects can only be instantiated via the Bric::Biz::Org get_addresses() or add_address() method calls. The Bric::Biz::Org::Parts::Addr constructors are therefore private.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$addr = Bric::Biz::Org::Parts::Addr-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Biz::Org::Parts::Addr object. A hashref of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>org_id</p>
+
+</li>
+<li><p>type</p>
+
+</li>
+<li><p>city</p>
+
+</li>
+<li><p>state</p>
+
+</li>
+<li><p>code</p>
+
+</li>
+<li><p>country</p>
+
+</li>
+<li><p>lines</p>
+
+</li>
+</ul>
+
+<p>If lines is passed, a single line may be passed, and multiple lines may be passed as an anonymous array. Call $add-&gt;_save to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> To be called from Bric::Biz::Org only.</p>
+
+</dd>
+<dt>my $addr = Bric::Biz::Org::Parts::Addr-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::Org::Parts::Addr object based on the Bric::Biz::Org::Parts::Addr object ID passed. If $id is not found in the database, lookup() returns undef. If the ID is found more than once, lookup() returns zero (0). This should not happen.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::Org::Parts::Addr objects found.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Biz::Org object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> There may actually be no use for this method, since Bric::Biz::Org::Parts::Addr objects will be stored internally in a Bric::Biz::Org object, and therefore may not need to be implemented.</p>
+
+</dd>
+<dt>my (@orgs || $orgs_aref) = Bric::Biz::Org::Parts::Addr-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list of Bric::Biz::Org::Parts::Addr objects based on the search criteria passed via a hashref. The lookup searches are case-insensitive. The supported lookup parameter keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Address ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of address. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>city</dt>
+<dd>
+
+<p>The address city. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>state</dt>
+<dd>
+
+<p>The address state. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>code</dt>
+<dd>
+
+<p>The address postal code. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>country</dt>
+<dd>
+
+<p>The address country. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>org_id</dt>
+<dd>
+
+<p>The ID for a Bric::Biz::Org object with which addresses may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>person_id</dt>
+<dd>
+
+<p>The ID of a Bric::Biz::Person object with which addresses may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Biz::Org::Parts::Addr object with data from the database before returning them all. To be called from Bric::Biz::Org only.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::Biz::Org::Parts::Addr-&gt;href($params)</dt>
+<dd>
+
+<p>Exactly the same as list(), except that it returns all the Bric::Biz::Org::Parts::Addr objects in an anonymous hash, where the hash keys are the object IDs and the values are the objects. See list() for syntax.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$addr-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@aids || $aids_aref) = Bric::Biz::Org::Parts::Addr-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Org::Parts::Addr object IDs based on the search criteria passed. The search parameters are the same as those for list() above.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@parts || $parts_aref) Bric::Biz::Org::Parts::Addr-&gt;list_parts</dt>
+<dd>
+
+<p>Returns a list of active address parts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = Bric::Biz::Org::Parts::Addr-&gt;add_parts(@parts)</dt>
+<dd>
+
+<p>Adds new address parts to the Bric::Biz::Org::Parts::Addr object. These parts will be available exclusively through the get_parts() instance method.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = Bric::Biz::Org::Parts::Addr-&gt;del_parts(@parts)</dt>
+<dd>
+
+<p>Deletes address parts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $meths = Bric::Biz::Org::Parts::Addr-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Org::Parts::Addr-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Org::Parts::Addr-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $addr-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Org::Parts::Addr object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Biz::Org::Parts::Addr object has been instantiated via the new() private constructor and has not yet been saved, via the Bric::Biz::Org save() method, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $type = $addr-&gt;get_type</dt>
+<dd>
+
+<p>Returns the type of address it is. Intended to distinguish between different addresses for a given organization. Examples might be &quot;New York Shipping&quot; or &quot;San Francisco Billing.&quot;</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;type&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_type($type)</dt>
+<dd>
+
+<p>Sets the type attributte. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ = $addr-&gt;get_city</dt>
+<dd>
+
+<p>Returns the address city.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_city($city)</dt>
+<dd>
+
+<p>Sets the address city. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $state = $addr-&gt;get_state</dt>
+<dd>
+
+<p>Returns the address state.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_state($state)</dt>
+<dd>
+
+<p>Sets the address state. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $code = $addr-&gt;get_code</dt>
+<dd>
+
+<p>Returns the address postal code, such as US Zip Code.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_code($code)</dt>
+<dd>
+
+<p>Sets the address postal code, such as US Zip Code. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $country = $addr-&gt;get_country</dt>
+<dd>
+
+<p>Returns the addresse country.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_country($country)</dt>
+<dd>
+
+<p>Sets the address country. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Countries are stored in the database by their ISO 3166 code names. See http://wmbr.mit.edu/stations/ISOcodes.html. We&#39;ll need to finagle some sort of database lookup, perhaps through a trigger.</p>
+
+</dd>
+<dt>my @lines = $addr-&gt;get_lines</dt>
+<dd>
+
+<p>Returns an ordered list of individual address lines for the addres. An infinite number of address lines are supported, though it is assumed that most addresses will have 1-3 address lines.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_lines(@lines)</dt>
+<dd>
+
+<p>Sets the address lines for the address. An infinite number of address lines are supported, though it is assumed that most addresses will have 1-3 address lines.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Stores new address lines internally to the object. The lines will not persist until the address object is saved via the Bric::Biz::Org object&#39;s save() method.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (%parts || $parts_href) = $addr-&gt;get_parts;</dt>
+<dd>
+
+<p>Returns a hash (list) or anonymous hash of the parts of this address.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;parts&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;set_part($part, $value);</dt>
+<dd>
+
+<p>Sets a part to a value. The part must exist in the database. To add a part, use the add_parts() class method.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> I could grab a list of all the parts from the database here (using list_parts() and then make sure each part exists before assigning it, but I didn&#39;t want to waste the query. Instead, there&#39;ll be a failure when save() is called and there&#39;s a non-valid part name.</p>
+
+</dd>
+<dt>$self = $addr-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Biz::Org::Parts::Addr object. The change will not persist until the Bric::Biz::Org object&#39;s save() method is called. Bric::Biz::Org::Parts::Addr objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Biz::Org::Parts::Addr object. The change will not persist until the Bric::Biz::Org object&#39;s save() method is called.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Biz::Org::Parts::Addr object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $addr-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Biz::Org::Parts::Addr object, including changes to associated address (Bric::Biz::Org::Parts::Addr) objects. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Cleans out internal cache of address lines and parts to reflect what is in the database.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $orgs_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $org_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Biz::Org objects or, if called with an optional third argument, returns a list of Bric::Biz::Org object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $addr = &amp;$make_obj($pkg, $init)</dt>
+<dd>
+
+<p>Instantiates a new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = &amp;$set_part($self, $part, $value)</dt>
+<dd>
+
+<p>Sets an address part.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = &amp;$get_part($self, $part)</dt>
+<dd>
+
+<p>Gets an address part.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = &amp;$save_main($self)</dt>
+<dd>
+
+<p>Saves the primary properties of the object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = &amp;$save_parts($self, $parts)</dt>
+<dd>
+
+<p>Saves the address parts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = &amp;$save_lines($self)</dt>
+<dd>
+
+<p>Saves the address lines.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>($ins, $upd, $del) = &amp;$part_sql</dt>
+<dd>
+
+<p>Prepares and returns SQL statements for inserting, updating, and deleting address parts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../Org.html" name="Bric::Biz::Org">Bric::Biz::Org</a>, <a rel="section" href="../../Person.html" name="Bric::Biz::Person">Bric::Biz::Person</a></p>
+
+</body>
+</html>
+

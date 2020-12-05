@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Coll</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Coll.html#Name">Name</a></li>
+  <li><a href="Coll.html#Synopsis">Synopsis</a></li>
+  <li><a href="Coll.html#Description">Description</a></li>
+  <li><a href="Coll.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Coll.html#Constructors">Constructors</a></li>
+      <li><a href="Coll.html#Destructors">Destructors</a></li>
+      <li><a href="Coll.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Coll.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Coll.html#Private">Private</a>
+    <ul>
+      <li><a href="Coll.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Coll.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Coll.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Coll.html#Notes">Notes</a></li>
+  <li><a href="Coll.html#Author">Author</a></li>
+  <li><a href="Coll.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Coll - Interface for managing collections of objects.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Coll::Foo;
+my $foo_coll = Bric::Util::Coll::Foo-&gt;new($params);
+
+# Get all the objects in the collection.
+foreach my $foo ($foo_coll-&gt;get_objs) {
+    # Do stuff with Foo objects.
+}
+
+# Create a new object in the collection.
+my Foo $foo = $foo_coll-&gt;new_obj($init);
+
+# Add existing objects to the collection.
+$foo_coll-&gt;add_objs(@objs);
+
+# Delete an object from the collection by reference to its ID.
+$foo_coll-&gt;del_objs($foo-&gt;get_id);
+
+# See if existing members of the collection have been looked up in the
+# database.
+my $bool = $foo_coll-&gt;is_populated;
+
+# Save all the changes. None will have propagated to the database until save()
+# is called.
+$foo_coll-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclassable class assists in the management of collections of objects. It provides a simple interface that&#39;s useful for composition, where there&#39;s a need to store a collection of objects and do things to them, e.g., create new ones, fetch them, and delete them.</p>
+
+<p>The subclasses of Bric::Util::Coll just have to implement two methods: class_name(), a class method that returns the name of the class of objects that make up the collection; and save(), an instance method that takes all the objects in the collection and saves their changes. The only other requirement for using this class is the addition of the class method href() to the class whose objects make up the collection. The href() method functions exactly as does list(), except that it returns an anonymous hash of objects instead of a list. The hash keys are the object IDs and the values are the objects themselves.</p>
+
+<p>You must implement a subclass of Bric::Util::Coll to use it; it cannot be used on its own.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $coll = Bric::Util::Coll-&gt;new($params)</dt>
+<dd>
+
+<p>Instanticates a new collection. When data is required from the database, the collection object will call the href() method of the class managed by the collection (as defined by the class_name() method of the Bric::Util::Coll subclasses), passing in the $params hash reference as an argument. If $params is not defined, no data will be retreived from the database.</p>
+
+<p>The class name identified by the class_name() method of Bric::Util::Coll subclasses must must have an href() class method that works like the list() method, but returns an anonymous hash instead of a list, where the hash keys uniquely identify the objects returned (usually IDs).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $org = Bric::Util::Coll-&gt;lookup()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::Util::Coll::lookup() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::Util::Coll-&gt;list()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::Util::Coll::list() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll-&gt;list_ids()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::Util::Coll::list_ids() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::Util::Coll-&gt;class_name()</dt>
+<dd>
+
+<p>Returns the name of the class of objects this collection manages. Must be overridden in subclasses.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::Util::Coll::class_name() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Method must be overridden by subclasses.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my (@objs || $objs_aref) = $coll-&gt;get_objs</dt>
+<dd>
+
+</dd>
+<dt>my (@objs || $objs_aref) = $coll-&gt;get_objs(@obj_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the objects stored in the collection.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@objs || $objs_aref) = $coll-&gt;get_new_objs</dt>
+<dd>
+
+<p>Returns a list or array reference of all of the objects that have been added to the collection via <code>new_objs()</code>. Note that, once <code>save()</code> has been called, the new objects are themselves saved, and are no longer considered new objects. If there are no new objects, <code>get_new_objs()</code> will return an empty list in an array context, and undef in a scalar context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $obj = $coll-&gt;new_obj($init_href)</dt>
+<dd>
+
+<p>Returns a new object that has been added to the collection.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $coll-&gt;add_objs(@objs)</dt>
+<dd>
+
+<p>Adds existing objects to the collection.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $coll-&gt;add_new_objs(@objs)</dt>
+<dd>
+
+<p>Adds existing objects to the collection as new objects.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $coll-&gt;del_objs(@objs)</dt>
+<dd>
+
+</dd>
+<dt>$self = $coll-&gt;del_objs(@obj_ids)</dt>
+<dd>
+
+<p>Deletes the objects in <code>@objs</code> or identified by the IDs in <code>@obj_ids</code> from the collection, if they&#39;re a part of the collection, even if they&#39;ve been added by <code>add_new_objs()</code> and the collection has not yet been <code>save()</code>d. All arguments can be either objects or object IDs; however, if you&#39;ve constructed an object already, pass it in rather than the ID, as <code>del_objs()</code> likely will have to construct the object from the ID, anyway.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$coll = $coll-&gt;is_populated</dt>
+<dd>
+
+<p>Returns true if the collection has been populated with existing objects from the database, and false if it has not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $coll-&gt;save</dt>
+<dd>
+
+<p>Saves the changes made to all the objects in the collection. Must be overridden.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::Util::Coll::save() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Method must be overridden by subclasses.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll-&gt;_sort_objs($objs_href)</dt>
+<dd>
+
+<p>Sorts a list of objects into an internally-specified order. The default is to sort them by IDs (which are the hash keys in $objs_href), but this method may be overridden in subclasses to profile different sorting algorithms.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$self = $self-&gt;_populate</dt>
+<dd>
+
+<p>Populates the collection if it has not yet been populated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

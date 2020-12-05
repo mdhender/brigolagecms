@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Action::HTMLClean</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="HTMLClean.html#Name">Name</a></li>
+  <li><a href="HTMLClean.html#Synopsis">Synopsis</a></li>
+  <li><a href="HTMLClean.html#Description">Description</a></li>
+  <li><a href="HTMLClean.html#Interface">Interface</a>
+    <ul>
+      <li><a href="HTMLClean.html#Constructors">Constructors</a></li>
+      <li><a href="HTMLClean.html#Destructors">Destructors</a></li>
+      <li><a href="HTMLClean.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="HTMLClean.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="HTMLClean.html#Private">Private</a>
+    <ul>
+      <li><a href="HTMLClean.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="HTMLClean.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="HTMLClean.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="HTMLClean.html#Notes">Notes</a></li>
+  <li><a href="HTMLClean.html#Author">Author</a></li>
+  <li><a href="HTMLClean.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Action::HTMLClean - Class to Clean up and reformat HTML files.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Action::HTMLClean;
+
+my $id = 1; # Assume that this is an HTMLClean action.
+# This line will automatically instantiate the correct subclass.
+my $action = Bric::Dist::Action-&gt;lookup({ id =&gt; $id });
+
+# Perform the action on a list of resources.
+action = $action-&gt;do_it($resources_href);
+# Undo the action on a list of resources.
+action = $action-&gt;undo_it($resources_href);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Dist::Action can be used to clean up and reformat HTML pages. No additional properties are required, though we may choose to add more later.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Dist::Action.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$ak-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>See Bric::Dist::Action.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>See Bric::Dist::Action.</p>
+
+<dl>
+
+<dt>$self = $action-&gt;do_it($job, $server_type)</dt>
+<dd>
+
+<p>Cleans the HTML files for a given job and server type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$action = $action-&gt;_clear_attr</dt>
+<dd>
+
+<p>Deletes all attributes from this Bric::Dist::Action::HTMLClean instance. Called by Bric::Dist::Action::set_type() above so that all the attributes can be cleared before reblessing the action into a different action subclass.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a></p>
+
+</body>
+</html>
+

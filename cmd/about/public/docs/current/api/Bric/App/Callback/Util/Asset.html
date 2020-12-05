@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Callback::Util::Asset</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Asset.html#Name">Name</a></li>
+  <li><a href="Asset.html#Synopsis">Synopsis</a></li>
+  <li><a href="Asset.html#Description">Description</a></li>
+  <li><a href="Asset.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Asset.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Asset.html#new">new</a></li>
+        </ul>
+      </li>
+      <li><a href="Asset.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Asset.html#cancel_checkout">cancel_checkout</a></li>
+          <li><a href="Asset.html#remove">remove</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Asset.html#Author">Author</a></li>
+  <li><a href="Asset.html#See-Also">See Also</a></li>
+  <li><a href="Asset.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Callback::Util::Asset - Asset utilities for callbacks</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Callback::Util::Asset;
+Bric::App::Callback::Util::Asset-&gt;cancel_checkout($asset);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides utility methods for managing Bricolage assets.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="new">new</h3>
+
+<pre><code>my $au = Bric::App::Callback::Util::Asset-&gt;new;</code></pre>
+
+<p>Constructs a new Bric::App::Callback::Util::Asset object.</p>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="cancel_checkout">cancel_checkout</h3>
+
+<pre><code>Bric::App::Callback::Util::Asset-&gt;cancel_checkout($asset);</code></pre>
+
+<p>Cancels the checkout of <code>$asset</code>. This method does its best to remove all vestiges of the current checkout of the asset. If the asset is a template, it will be undeployed from the user&#39;s sandbox.</p>
+
+<h3 id="remove">remove</h3>
+
+<pre><code>Bric::App::Callback::Util::Asset-&gt;remove($asset);</code></pre>
+
+<p>Checks in an asset (if it&#39;s checked out), removes it from workflow, and deactivates it. If the asset is a template, it will be undeployed.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David E. Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Desk">Bric::App::Callback::Desk</a></dt>
+<dd>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Story">Bric::App::Callback::Story</a></dt>
+<dd>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Media">Bric::App::Callback::Media</a></dt>
+<dd>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Template">Bric::App::Callback::Template</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2010 Kineticode, Inc. See <a rel="section" href="../../../../../../2.0/api/Bric/License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

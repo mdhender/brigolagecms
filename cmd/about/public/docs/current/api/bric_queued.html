@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_queued</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_queued.html#Name">Name</a></li>
+  <li><a href="bric_queued.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_queued.html#Description">Description</a></li>
+  <li><a href="bric_queued.html#Options">Options</a>
+    <ul>
+      <li><a href="bric_queued.html#username">--username</a></li>
+      <li><a href="bric_queued.html#password">--password</a></li>
+      <li><a href="bric_queued.html#p-file---pid-file">-p &lt;file&gt; | --pid &lt;file&gt;</a></li>
+      <li><a href="bric_queued.html#d-number---delay-number">-d &lt;number&gt; | --delay &lt;number&gt;</a></li>
+      <li><a href="bric_queued.html#s-type---single-type-">-s [type] | --single [type]</a></li>
+      <li><a href="bric_queued.html#v---verbose">-v | --verbose</a></li>
+      <li><a href="bric_queued.html#l-file---log-file">-l &lt;file&gt; | --log &lt;file&gt;</a></li>
+      <li><a href="bric_queued.html#h---help">-h | --help</a></li>
+    </ul>
+  </li>
+  <li><a href="bric_queued.html#Dependencies">Dependencies</a>
+    <ul>
+      <li><a href="bric_queued.html#BRICOLAGE_ROOT"><code>$BRICOLAGE_ROOT</code></a></li>
+      <li><a href="bric_queued.html#Perl-Modules">Perl Modules</a></li>
+    </ul>
+  </li>
+  <li><a href="bric_queued.html#Author">Author</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_queued - Bricolage jobs queue daemon</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>bric_queud [options]</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p><i>bric_queued</i> runs as a daemon that polls a Bricolage jobs queue and executes any unexecuted jobs with current or past scheduled times. Normally, (see <code>-s</code>) it executes all of the jobs found in a given poll in order of their scheduled times with distribution and publish jobs handled by seperate sub-processes--since distribution is normally an order of magnitude faster than publishing.</p>
+
+<p>In cases where the program finds no jobs in the queue it will wait a specified amount of time (defaulting to 30 seconds) and then re-poll.</p>
+
+<p><b>Note:</b></p>
+
+<p>Unlike <a rel="section" href="../../2.0/api/bric_dist_mon.html" name="bric_dist_mon">bric_dist_mon</a>, <i>bric_queued</i> is a stand-alone program that makes no HTTP requests to the Bricolage Apache/mod_perl server. This allows it to to publish and distribute resources in its own process without bogging down the Apache/mod_perl server and therefore its UI.</p>
+
+<h1 id="Options">Options</h1>
+
+<h2 id="username">--username</h2>
+
+<p>The username to use for the distribution.</p>
+
+<h2 id="password">--password</h2>
+
+<p>The password for the user specified by the <code>--username</code> option.</p>
+
+<h2 id="p-file---pid-file">-p &lt;file&gt; | --pid &lt;file&gt;</h2>
+
+<p>Specifies a pid file.</p>
+
+<h2 id="d-number---delay-number">-d &lt;number&gt; | --delay &lt;number&gt;</h2>
+
+<p>Specifies a delay in seconds after finding the queue empty.</p>
+
+<h2 id="s-type---single-type-">-s [type] | --single [type]</h2>
+
+<p>Run a single job of <code>type</code> where <code>type</code> is one of &#39;pub&#39; or &#39;dist&#39;. Implies -verbose.</p>
+
+<h2 id="v---verbose">-v | --verbose</h2>
+
+<p>Turn on verbose mode for debugging.</p>
+
+<h2 id="l-file---log-file">-l &lt;file&gt; | --log &lt;file&gt;</h2>
+
+<p>Specifies a file to which to send debugging information. There is no need to use this option for normal operation since Bricolage stores this information in its database in much greater detail.</p>
+
+<h2 id="h---help">-h | --help</h2>
+
+<p>Print usage information and exit.</p>
+
+<h1 id="Dependencies">Dependencies</h1>
+
+<h2 id="BRICOLAGE_ROOT"><code>$BRICOLAGE_ROOT</code></h2>
+
+<p>Set this environment variable as usual to indicate where to find the Bricolage libraries.</p>
+
+<h2 id="Perl-Modules">Perl Modules</h2>
+
+<dl>
+
+<dt>Getopt::Long</dt>
+<dd>
+
+</dd>
+<dt>Pod::Usage</dt>
+<dd>
+
+</dd>
+<dt>POSIX</dt>
+<dd>
+
+</dd>
+<dt>File::Spec::Functions</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Mark Jaroski &lt;jaroskim@who.int&gt;</p>
+
+</body>
+</html>
+

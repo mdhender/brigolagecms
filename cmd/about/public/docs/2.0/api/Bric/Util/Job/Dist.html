@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Job::Dist</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Dist.html#Name">Name</a></li>
+  <li><a href="Dist.html#Synopsis">Synopsis</a></li>
+  <li><a href="Dist.html#Description">Description</a>
+    <ul>
+      <li><a href="Dist.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Dist.html#my-jobs-jobs_aref-Bric::Util::Job::Dist-list-params-">my (@jobs || $jobs_aref) = Bric::Util::Job::Dist-&gt;list($params)</a></li>
+          <li><a href="Dist.html#my-job_ids-job_ids_aref-Bric::Util::Job-list_ids-params-">my (@job_ids || $job_ids_aref) = Bric::Util::Job-&gt;list_ids($params)</a></li>
+        </ul>
+      </li>
+      <li><a href="Dist.html#Private-Instance-Methods">Private Instance Methods</a>
+        <ul>
+          <li><a href="Dist.html#self-job-_do_it">$self = $job-&gt;_do_it</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Dist.html#Notes">Notes</a></li>
+  <li><a href="Dist.html#Author">Author</a></li>
+  <li><a href="Dist.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Job::Dist - Manages Bricolage distribution jobs.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Job::Dist;
+
+my $id = 1;
+my $format = &quot;%D %T&quot;;
+
+# Constructors.
+my $job = Bric::Util::Job::Dist-&gt;new($init);
+$job = Bric::Util::Job::Dist-&gt;lookup({ id =&gt; $id });
+my @jobs = Bric::Util::Job::Dist-&gt;list($params);
+
+# Class Methods.
+my @job_ids = Bric::Util::Job::Dist-&gt;list_ids($params);
+
+# Instance Methods
+my $id = $job-&gt;get_id;
+
+my $type = $job-&gt;get_type;
+$job = $job-&gt;set_type($type);
+
+my $sched_time = $job-&gt;get_sched_time($format);
+$job = $job-&gt;set_sched_time($sched_time);
+my $comp_time = $job-&gt;get_comp_time($format);
+
+my @resources = $job-&gt;get_resources;
+my @resource_ids = $job-&gt;get_resource_ids;
+$job = $job-&gt;set_resource_ids(@resource_ids);
+
+my @server_types = $job-&gt;get_server_types;
+my @server_type_ids = $job-&gt;get_server_type_ids;
+$job = $job-&gt;set_server_type_ids(@server_type_ids);
+
+# Save the job.
+$job = $job-&gt;save;
+
+# Cancel the job.
+$job = $job-&gt;cancel;
+
+# Execute the job.
+$job = $job-&gt;execute_me;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages distribution jobs. A job is a list of things to be transformed by actions and moved out, all at a scheduled time. The idea is that Bricolage will schedule a job and then it will be executed at its scheduled times. There are two types of jobs, &quot;Deliver&quot; and &quot;Expire&quot;.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="my-jobs-jobs_aref-Bric::Util::Job::Dist-list-params-">my (@jobs || $jobs_aref) = Bric::Util::Job::Dist-&gt;list($params)</h3>
+
+<p>Inherited from <a rel="section" href="../Job.html" name="Bric::Util::Job">Bric::Util::Job</a></p>
+
+<h3 id="my-job_ids-job_ids_aref-Bric::Util::Job-list_ids-params-">my (@job_ids || $job_ids_aref) = Bric::Util::Job-&gt;list_ids($params)</h3>
+
+<p>Inherited from <a rel="section" href="../Job.html" name="Bric::Util::Job">Bric::Util::Job</a></p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<h3 id="self-job-_do_it">$self = $job-&gt;_do_it</h3>
+
+<p>Carries out the actions that constitute the job. This method is called by <code>execute_me()</code> in Bric::Dist::Job and should therefore never be called directly.</p>
+
+<p>For each of the server types associated with this job, the list of actions will be performed on each file, hopefully culminating in the distribution of the resources to the servers associated with the server type. At the end of the process, a completion time will be saved to the database. Attempting to execute a job before its scheduled time will throw an exception.</p>
+
+<p><b>Throws:</b> Quite a few exceptions can be thrown here. Check the do_it() methods on all Bric::Dist::Action subclasses, as well as the put_res() methods of the mover classes (e.g., Bric::Util::Trans::FS). Here are the exceptions thrown from withing this method itself.</p>
+
+<ul>
+
+<li><p>Cannot execute job before its scheduled time.</p>
+
+</li>
+<li><p>Cannot execute job that has already been executed.</p>
+
+</li>
+<li><p>Can&#39;t get a lock on job.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<p>Mark Jaroski &lt;jaroskim@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Job.html" name="Bric::Util::Job">Bric::Util::Job</a></p>
+
+</body>
+</html>
+

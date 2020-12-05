@@ -1,0 +1,924 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::DBI</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="DBI.html#Name">Name</a></li>
+  <li><a href="DBI.html#Synopsis">Synopsis</a></li>
+  <li><a href="DBI.html#Description">Description</a></li>
+  <li><a href="DBI.html#Interface">Interface</a>
+    <ul>
+      <li><a href="DBI.html#Constructors">Constructors</a></li>
+      <li><a href="DBI.html#Destructors">Destructors</a></li>
+      <li><a href="DBI.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="DBI.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="DBI.html#Functions">Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="DBI.html#Private">Private</a>
+    <ul>
+      <li><a href="DBI.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="DBI.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="DBI.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="DBI.html#Notes">Notes</a></li>
+  <li><a href="DBI.html#Author">Author</a></li>
+  <li><a href="DBI.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::DBI - The Bricolage Database Layer</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::DBI qw(:standard);
+
+my @cols = qw(id lname fname mname title email phone foo bar bletch);
+
+my $select = prepare_c(qq{
+    SELECT @cols
+    FROM   person
+    WHERE  person_id = ?
+}, undef);
+
+$self-&gt;_set(\@cols, row_aref($select, $id));</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module exports a number of database functions for use by Bricolage object classes. These functions have been designed to maximize database independence by implementing separate driver modules for each database platform. These modules, Bric::DBD::*, export into Bric::Util::DBI the variables and functions necessary to provide database-independent functions for getting and setting primary keys and dates in the format required by the database (but see Bric::Util::Time for the time formatting functions).</p>
+
+<p>Bric::Util::DBI also provides the principal avenue to querying the database. No other Bricolage module should <code>use DBI</code>. The advantage to this approach (other than some level of database independence) is that the $dbh is stored in only one place in the entire application. It will not be generated in every module, or stored in every object. Indeed, objects themselves should have no knowledge of the database at all, but should rely on their methods to query, insert, update, and delete from the database using the functions exported by Bric::Util::DBI.</p>
+
+<p>Bric::Util::DBI is not a complete database-independent solution, however. In particular, it does nothing to translate between the SQL syntaxes supported by different database platforms. As a result, you are encouraged to write your queries in as generic a way as possible, and to comment your code copiously when you must use proprietary or not-widely supported SQL syntax (such as outer joins).</p>
+
+<p><b>NOTE:</b> Bric::Util::DBI is intended only for internal use by Bricolage modules. It must not be <code>use</code>d anywhere else in the application (e.g., in an Apache startup file) or users of the application may be able to gain access to our database.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<p>There are several ways to <code>use Bric::Util::DBI</code>. Some options include:</p>
+
+<pre><code># Get the standard db functions.
+use Bric::Util::DBI qw(:standard);
+
+# Get standard and transactional functions.
+use Bric::Util::DBI qw(:standard :trans);
+
+# Get all the functions.
+use Bric::Util::DBI qw(:all);
+
+# Get specific functions.
+use Bric::Util::DBI qw(prepare_c execute fetch);</code></pre>
+
+<p>The first example imports all the functions you are likely to need in the normal course of writing a Bricolage class. The second example imports the standard functions plus functions needed for managing transactions. The third example imports all the functions and variables provided by Bric::Util::DBI. These should cover all of your database needs. The last example imports only a few key functions and variables. You may explicitly import as many functions and variables as you wish in this way. Specifying no parameters, e.g.,</p>
+
+<pre><code>use Bric::Util::DBI;</code></pre>
+
+<p>will compile DBI, but will provide no database access functions. You are not going to want to do this.</p>
+
+<p>Here are the functions and variables imported with each import list:</p>
+
+<dl>
+
+<dt>standard</dt>
+<dd>
+
+<ul>
+
+<li><p>prepare_c()</p>
+
+</li>
+<li><p>row_aref()</p>
+
+</li>
+<li><p>fetch()</p>
+
+</li>
+<li><p>execute()</p>
+
+</li>
+<li><p>next_key()</p>
+
+</li>
+<li><p>last_key()</p>
+
+</li>
+<li><p>bind_columns()</p>
+
+</li>
+</ul>
+
+</dd>
+<dt>trans</dt>
+<dd>
+
+<ul>
+
+<li><p>begin()</p>
+
+</li>
+<li><p>commit()</p>
+
+</li>
+<li><p>rollback()</p>
+
+</li>
+</ul>
+
+</dd>
+<dt>all</dt>
+<dd>
+
+<p>all of the above, plus</p>
+
+<ul>
+
+<li><p>prepare()</p>
+
+</li>
+<li><p>prepare_ca()</p>
+
+</li>
+<li><p>col_aref()</p>
+
+</li>
+<li><p>db_date_parts()</p>
+
+</li>
+<li><p>bind_col()</p>
+
+</li>
+<li><p>bind_param()</p>
+
+</li>
+<li><p>DB_DATE_FORMAT - the strftime format for the date format used by the database. Used by Bric::Util::Time; you should not need this - use the functions exported by Bric::Util::Time instead.</p>
+
+</li>
+</ul>
+
+</dd>
+</dl>
+
+<p>Each of the functions below that will directly access the database will first check for a connection to the database and establish the connection if it does not exist. There is no need to worry about accessing or storing a $dbh in any Bricolage module. Plus, each function handles all aspects of database exception handling so that you do not have to. The exception is with the transactional functions; see Begin() below for more information.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Functions">Functions</h2>
+
+<dl>
+
+<dt>ANY</dt>
+<dd>
+
+<pre><code>my @p = Bric::Biz::Person-&gt;list({ lname =&gt; ANY( &#39;wall&#39;, &#39;conway&#39;) });</code></pre>
+
+<p>Use this function when you want to perform a query comparing more than one value, and you want objects returned that match any of the values passed.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>No parameters passed to ANY()&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>NONE</dt>
+<dd>
+
+<pre><code>my @p = Bric::Biz::Person-&gt;list({ lname =&gt; NONE( &#39;wall&#39;, &#39;conway&#39;) });</code></pre>
+
+<p>Use this function when you want to perform a query comparing more than one value, and you want objects returned that don&#39;t match any of the values passed (c.f. <a rel="subsection" href="DBI.html#ANY" name="Bric::Util::DBI">&quot;ANY&quot;</a>; <code>NONE</code> can be used anywhere that <code>ANY</code> can be)</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>No parameters passed to NONE()&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = is_num(@values)</dt>
+<dd>
+
+<p>Alias for DBI::looks_like_number() to determine whether or not the values passed are numbers. Returns true for each value that looks like a number, and false for each that does not. Returns undef for each element that is undefined or empty.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$sth = prepare($sql)</dt>
+<dd>
+
+</dd>
+<dt>$sth = prepare($sql, $attr)</dt>
+<dd>
+
+<p>Returns an $sth from $dbh-&gt;prepare. Pass any attributes you want associated with your $sth via the $attr hashref. In general, use prepare_c() instead of prepare().</p>
+
+<p><b>IMPORTANT:</b> We strongly encourage only very specific uses of statement handles. It is easy to use them inefficiently, but the following guidelines should keep your code as speedy as possible. But the main point is: Use only functions exported by Bric::Util::DBI, not statement handle methods.</p>
+
+<ul>
+
+<li><p>Use prepare_c() whenever possible, as it will cache the $sth for future use, even if your copy of it goes out of scope. This will save a lot of time for frequently-used queries, as they will only be compiled once per process. If you find that you are frequently doing only partial fetches from a statement handle, use prepare_ca().</p>
+
+</li>
+<li><p>Always use placeholders. If you have got a query you want to stick a variable in to the WHERE clause, do not put in the variable! Put in a placeholder (?) instead! Doing so allows the same statement to be used over and over without recompiling in the database. Placeholders also eliminate the need to use the DBI quote() method (which, you will notice, is not exported by this module).</p>
+
+</li>
+<li><p>When fetching values back from the statement handle, always bind variables to columns (using bind_col($select) or bind_columns($select)), and fetch each row with the fetch($select) function (see below). Do not use statement handle methods yourself; avoid using the $select-&gt;fetchrow_array() method, and <i>especially</i> the $select-&gt;fetchrow_hashref() methods, as they are much slower than fetch($select) with bound columns. If you need to use one of these methods let me know and we will see about adding them as functions to Bric::Util::DBI. But it should not be necessary. Better yet, anytime you find yourself wanting to use $select-&gt;fetchrow_hashref(), take it as a cue to go back, look at your code design, and decide whether you are making the best design decisions.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;prepare().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sth = prepare_c($sql, $attr)</dt>
+<dd>
+
+<p>Returns an $sth from $dbh-&gt;prepare_cached. Pass any attributes you want associated with your $sth via the $attr hashref. A warning will also be issued if the $sth returned is already active.</p>
+
+<p>See also the important note in the prepare() documentation above.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;prepare_cached().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sth = prepare_ca($sql, $attr)</dt>
+<dd>
+
+<p>Returns an $sth from $dbh-&gt;prepare_cached, and will not issue a warning if the $sth returned is already active. Pass any attributes you want associated with your $sth via the $ATTR hashref.</p>
+
+<p>See also the important note in the prepare() documentation above.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;prepare_cached() with the active flag set to true.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = begin()</dt>
+<dd>
+
+<pre><code>begin();
+eval {
+    execute($ins1);
+    execute($ins2);
+    execute($upd);
+    commit();
+};
+if (my $err = $@) {
+    rollback();
+    rethrow_exception($err);
+}</code></pre>
+
+<p>Sets $dbh-&gt;{AutoCommit} = 0. Use before a series of database transactions so that none of them is committed to the database until commit() is called. If there is a problem, call rollback() instead. Each of these two functions will also turn AutoCommit back on, so if you need to more transactional control, be sure to call begin() again. Also, be sure to always call either commit() or rollback() when you are done with your transactions, or AutoCommit will not be switched back on and future database activity will have unexpected results (nothing will be committed - except you, you insane hacker!).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to turn AutoCommit off.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;{AutoCommit} = 0.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = commit()</dt>
+<dd>
+
+<p>Call this function after calling begin() and executing a series of database transactions. It commits the transactions to the database, and then sets AutoCommit to true again. See begin() for an example.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to commit transactions.</p>
+
+</li>
+<li><p>Unable to turn on AutoCommit.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;commit.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = rollback()</dt>
+<dd>
+
+<p>Call this function after calling begin() and executing a series of database transactions, where one or more of the transactions fails and they all need to be rolled back. See begin() for an example.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to rollback transactions.</p>
+
+</li>
+<li><p>Unable to turn on AutoCommit.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;commit.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>fetch_objects( $pkg, $sql, $fields, $grp_col_cnt, $args )</dt>
+<dd>
+
+<p>This function takes a package name, a reference to an SQL statement, an arrayref of fields, a count of the number of columns containing lists of group IDs, a list of arguments. It uses the results from the SQL statement to construct objects of the specified package.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>build_query($cols, $tables, $where_clause, $order);</dt>
+<dd>
+
+<p>Builds a and returns a reference to a query.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$params = clean_params($params)</dt>
+<dd>
+
+<p>Parameters for Asset objects should be run through this before sending them to the query building functions.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Bric::Util::Time must be loaded before this method is called.</p>
+
+</dd>
+<dt>tables</dt>
+<dd>
+
+<p>The from clause for the main select is built here.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>where_clause</dt>
+<dd>
+
+<p>The where clause for the main select is built here.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>any_where</dt>
+<dd>
+
+<pre><code>my $where = any_where($value, $where_expression, \@params);</code></pre>
+
+<p>Examines $value to determine whether it is a single value or an <code>ANY</code> or a <code>NONE</code> value. If it is an <code>ANY</code> or a <code>NONE</code> value, then each of those values is pushed on to the end of the <code>$params</code> array reference and the <code>where</code> expression is grouped together in parentheses and <code>OR</code>ed together the same number of times as there are values (and in the case of <code>NONE</code>, the word &quot;NOT&quot; comes before the parentheses). Otherwise, a single value is pushed onto the <code>$params</code> array reference and the <code>where</code> expression simply returned.</p>
+
+<p>For example, if called like so:</p>
+
+<pre><code>my @params;
+my $where = any_where(ANY(1, 2, 3), &quot;f.name = ?&quot;, \@params);</code></pre>
+
+<p>Then <code>@params</code> will contain <code>(1, 2, 3)</code> and the string &quot;(f.name = ? OR f.name = ? OR f.name = ?)&quot; will be assigned to <code>$where</code>. If called with <code>NONE</code> instead of <code>ANY</code>, the string would be &quot;NOT(f.name = ? OR f.name = ? OR f.name = ?)&quot;.</p>
+
+<p>However, if the value is not an <code>ANY</code> or a <code>NONE</code> value:</p>
+
+<pre><code>my @params;
+my $where = any_where(1, &quot;f.name = ?&quot;, \@params);</code></pre>
+
+<p>Then <code>@params</code> will of course contain only <code>(1)</code> and the string &quot;f.name = ?&quot; will be assigned to <code>$where</code>.</p>
+
+<p>This function is useful in classes that wish to add <code>ANY</code>/<code>NONE</code> support to specific <code>list()</code> method parameters.</p>
+
+</dd>
+<dt>my $order_by = order_by</dt>
+<dd>
+
+<p>Builds up the ORDER BY clause.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Bad Order parameter.</dt>
+<dd>
+
+</dd>
+<dt>OrderDirection parameter must either ASC or DESC.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $group_by = group_by</dt>
+<dd>
+
+<p>Builds up the GROUP BY clause.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = execute($sth, @params)</dt>
+<dd>
+
+<p>Executes the prepared statement. Use this instead of $sth-&gt;execute(@params) and it will take care of exception handling for you. Returns the value returned by $sth-&gt;execute().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls <code>$sth-&gt;execute</code>.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = bind_columns($sth, @args)</dt>
+<dd>
+
+<p>Binds variables to the columns in the statement handle. Functions exactly the same as $sth-&gt;bind_columns, only it handles the exception handling for you. Returns the value returned by $sth-&gt;bind_columns.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $sth-&gt;bind_columns().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = bind_col($sth, @args)</dt>
+<dd>
+
+<p>Binds a variable to a columns in the statement handle. Functions exactly the same as $sth-&gt;bind_col, only it handles the exception handling for you. Returns the value returned by $sth-&gt;bind_col.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to bind to column to statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $sth-&gt;bind_columns().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = bind_param($sth, @args)</dt>
+<dd>
+
+<p>Binds parameter to the columns in the statement handle. Functions exactly the same as $sth-&gt;bind_param, only it handles the exception handling for you. Returns the value returned by $sth-&gt;bind_param.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to bind parameters to columns in statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $sth-&gt;bind_columns().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = fetch($sth)</dt>
+<dd>
+
+<p>Performs $sth-&gt;fetch() and returns the result. Functions exactly the same as $sth-&gt;fetch, only it handles the exception handling for you.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $sth-&gt;bind_columns().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ret = finish($sth)</dt>
+<dd>
+
+<p>Performs $sth-&gt;finish() and returns the result. Functions exactly the same as $sth-&gt;finish, only it handles the exception handling for you.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to finish statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $sth-&gt;finish().</p>
+
+<p><b>Notes:</b> Do <b>not</b> confuse this function with finishing transactions. It simply tells a SELECT statement handle that you are done fetching records from it, so it can free up resources in the database. If you have started a series of transactions with begin(), finish() will not commit them; only commit() will commit them, and rollback() will roll them back.</p>
+
+</dd>
+<dt>my $row = row_aref($select, @params)</dt>
+<dd>
+
+<p>Executes the SELECT statement in $select and returns the first row of values in an array reference. Preferred for use fetching just one row, but if passed a multi-row query, will return the first row only. If placeholders have been used in $select, pass the parameters that map to them. This function <b>will</b> prepare() the query in $select, but it will not prepare_c() it. Thus it is generally prefered to prepare_c($select) yourself and then pass it to row_aref() as an $sth. See the Synopsis above for an example.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;selectrow_arrayref().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @row = row_array($select, @params)</dt>
+<dd>
+
+<p>Executes the SELECT statement in $select and returns the first row of values in an array. Preferred for use fetching just one row, but if passed a multi-row query, will return the first row only. If placeholders have been used in $select, pass the parameters that map to them. This function <b>will</b> prepare() the query in $select, but it will not prepare_c() it. Thus it is generally prefered to prepare_c($select) yourself and then pass it to row_array() as an $sth. For an example, see how the Synopsis above does this for row_aref().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;selectrow_array().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $data = all_aref($select, @params)</dt>
+<dd>
+
+<p>Executes $dbh-&gt;selectall_arrayref($select) and returns the data structure returned by that DBI method. See DBI(2) for details on the data structure. If placeholders have been used in $select, pass the parameters that map to them. This function <b>will</b> prepare() the query in $select, but it will not prepare_c() it. Thus it is generally prefered to prepare_c($select) yourself and then pass it to all_aref() as an $sth. For an example, see how the Synopsis above does this for row_aref().</p>
+
+<p>This function is not generally recommended for use except for grabbing a very few, simple rows and you do not need to change the data structure. If you do need to change the data structure, it would probably be faster to fetch($select) with bound variables and construct the data structure yourself.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select all.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;selectall_arrayref().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $col = col_aref($select, @params)</dt>
+<dd>
+
+<p>Executes the SELECT statement in $select and returns the values of the first column from every row in an array reference. Preferred for fetching many rows for just one column. If placeholders have been used in $select, pass the parameters that map to them. This function <b>will</b> prepare() the query in $select, but it will not prepare_c() it. Thus it is generally prefered to prepare_c($select) yourself and then pass it to col_aref() as an $sth. For an example, see how the Synopsis above does this for row_aref().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls $dbh-&gt;selectcol_arrayref().</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $id = next_key($table_name)</dt>
+<dd>
+
+</dd>
+<dt>my $id = next_key($table_name, $db_name)</dt>
+<dd>
+
+<p>Returns an SQL string for inserting the next available key into $db_name.$table_name within the context of a larger INSERT statement. If $db_name is not passed, it defaults to the value stored in $Bric::Cust.</p>
+
+<pre><code>my @cols = qw(id lname fname mname title email phone foo bar bletch);
+
+local $&quot; = &#39;, &#39;;
+my $insert = prepare_c(qq{
+    INSERT INTO person (@cols)
+    VALUES (${\next_key(&#39;person&#39;)}, ${\join &#39;, &#39;, map &#39;?&#39;, @cols[1..$#cols]})
+}, undef);
+
+# Don&#39;t try to set ID - it will fail!
+execute($insert, $self-&gt;_get(@cols[1..$#cols));
+
+# Now grab the ID!
+$self-&gt;_set({id =&gt; last_key(&#39;person&#39;)});</code></pre>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>last_key($table_name)</dt>
+<dd>
+
+</dd>
+<dt>last_key($table_name, $db_name)</dt>
+<dd>
+
+<p>Returns the last sequence number inserted into $db_name.$table_name by the current process. If $db_name is not passed, it defaults to the value stored in $Bric::Cust. Will return undef if this process has not yet inserted anything into $table_name. Use for retreiving an object ID immediately after executing an INSERT statement. See next_key() above for an example.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Gets the last sequence number by using prepare_c() to prepare the query, and row_aref() to fetch the result.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<p>NONE.</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>_connect()</dt>
+<dd>
+
+<p>Returns a connection to the database using <code>DBI-&gt;connect_cached()</code>. Should be called at the start of every function that does database access.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>_disconnect()</dt>
+<dd>
+
+<p>Disconnects from the database. Called by an END block installed by this package.</p>
+
+</dd>
+<dt>_debug_prepare(\$sql)</dt>
+<dd>
+
+<p>Prints out debugging messages for a prepare call. Should be called by functions that prepare statements when DEBUG (DBI_DEBUG) is true.</p>
+
+</dd>
+<dt>_debug_execute(\@args, $sth)</dt>
+<dd>
+
+<p>Prints out debugging messages for an execute call. Should be called by functions that execute statements when DEBUG (DBI_DEBUG) is true.</p>
+
+</dd>
+<dt>_debug_prepare_and_execute(\@args, \$sql)</dt>
+<dd>
+
+</dd>
+<dt>_debug_prepare_and_execute(\@args, \$sth)</dt>
+<dd>
+
+<p>Prints out debugging messages for a call that prepares and executes in one call. Should be called by functions that prepare and execute when DEBUG (DBI_DEBUG) is true.</p>
+
+</dd>
+<dt>_statement_signature(\$sql)</dt>
+<dd>
+
+</dd>
+<dt>_statement_signature(\$sth)</dt>
+<dd>
+
+<p>Returns a fingerprint for an sql statement or statement handle. Used in debug output to match prepares to executes.</p>
+
+</dd>
+<dt>_print_call_trace</dt>
+<dd>
+
+<p>Writes out a call trace to STDERR. Should be called by functions that prepare statements when CALL_TRACE (DBI_CALL_TRACE) is true.</p>
+
+</dd>
+<dt>_profile_start()</dt>
+<dd>
+
+<p>Starts a timer used to profile database calls. Should be called before query execution when DBI_PROFILE is true.</p>
+
+</dd>
+<dt>_profile_stop()</dt>
+<dd>
+
+<p>Stops the profile timer and writes out the timing results to STDERR. Should be called immediately after query execution when DBI_PROFILE is true.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David E. Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?DBI">DBI</a>, <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Time.html" name="Bric::Util::Time">Bric::Util::Time</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/DBD/Oracle.html" name="Bric::Util::DBD::Oracle">Bric::Util::DBD::Oracle</a></p>
+
+</body>
+</html>
+

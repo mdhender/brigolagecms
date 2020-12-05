@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Handler</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Handler.html#Name">Name</a></li>
+  <li><a href="Handler.html#Synopsis">Synopsis</a></li>
+  <li><a href="Handler.html#Description">Description</a></li>
+  <li><a href="Handler.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Handler.html#Constructors">Constructors</a></li>
+      <li><a href="Handler.html#Destructors">Destructors</a></li>
+      <li><a href="Handler.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Handler.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Handler.html#Private">Private</a>
+    <ul>
+      <li><a href="Handler.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Handler.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Handler.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Handler.html#Notes">Notes</a></li>
+  <li><a href="Handler.html#Author">Author</a></li>
+  <li><a href="Handler.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Handler - The center of the application, as far as Apache is concerned.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>&lt;Perl&gt;
+use lib &#39;/usr/local/bricolage/lib&#39;;
+&lt;/Perl&gt;
+PerlModule Bric::App::Handler
+DocumentRoot &quot;/usr/local/bricolage/comp&quot;
+&lt;Directory &quot;/usr/local/bricolage/comp&quot;&gt;
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+    SetHandler perl-script
+    PerlAccessHandler Bric::App::AccessHandler
+    PerlHandler Bric::App::Handler
+    PerlCleanupHandler Bric::App::CleanupHandler
+&lt;/Directory&gt;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This package is the main package used by Apache for managing the Bricolage application. It loads all the necessary Mason and Bricolage libraries and sets everything up for use in Apache. It is one function is handler(), which is called by mod_perl for every request.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my $status = handler()</dt>
+<dd>
+
+<p>Handles the apache request.</p>
+
+<p><b>Throws:</b> None - the buck stops here!</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$status = handle_err($r, $@)</dt>
+<dd>
+
+<pre><code>$status = handle_err($r, $@) if $@;</code></pre>
+
+<p>Handles errors when they&#39;re thrown by a main handler. Logs the error to the Apache error log and formats the error screen for the browser.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

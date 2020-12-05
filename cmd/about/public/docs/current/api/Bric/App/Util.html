@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Util</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Util.html#Name">Name</a></li>
+  <li><a href="Util.html#Synopsis">Synopsis</a></li>
+  <li><a href="Util.html#Description">Description</a></li>
+  <li><a href="Util.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Util.html#Constructors">Constructors</a></li>
+      <li><a href="Util.html#Destructors">Destructors</a></li>
+      <li><a href="Util.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Util.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Util.html#Private-Methods">Private Methods</a></li>
+      <li><a href="Util.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Util.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Util.html#Notes">Notes</a></li>
+  <li><a href="Util.html#Author">Author</a></li>
+  <li><a href="Util.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Util - A class to house general application functions.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Util;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Utility functions.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>(1 || undef) = add_msg($txt)</dt>
+<dd>
+
+<p>Add a new warning message to the current list of messages.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b> Adds the message to the session.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$txt = get_msg($num)</dt>
+<dd>
+
+</dd>
+<dt>(@txt_list || $txt_list) = get_msg()</dt>
+<dd>
+
+<p>Return warning message number &#39;$num&#39; or if $num is not given return all error messages.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($txt || undef) = next_msg</dt>
+<dd>
+
+<p>Returns the next warning message in the list. If there are no more messages, it will return undef.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$num = num_msg</dt>
+<dd>
+
+<p>Returns the current number of warning messages.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>clear_msg</dt>
+<dd>
+
+<p>Clears out all the error messages remaining. This should be called after all messages have been processed.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $aref = mk_aref($arg)</dt>
+<dd>
+
+<p>Returns an array reference. If $arg is an anonymous array, it is simply returned. If it&#39;s a defined scalar, it&#39;s returned as the single value in an anonymous array. If it&#39;s undef, an empty anonymous array will be returned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $value = get_pref($pref_name)</dt>
+<dd>
+
+<p>Returns a preference value.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to instantiate preference cache.</p>
+
+</li>
+<li><p>Unable to populate preference cache.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Unable to get cache value.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Pref-&gt;lookup_val() internally.</p>
+
+</dd>
+<dt>my $pkg = get_package_name</dt>
+<dd>
+
+<p>Returns the package name given a short name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(1 || 0) = set_redirect($loc)</dt>
+<dd>
+
+</dd>
+<dt>$loc = get_redirect</dt>
+<dd>
+
+</dd>
+<dt>$loc = del_redirect</dt>
+<dd>
+
+<p>Get/Set/Delete a redirect to happen during the next page load that includes the &#39;header.mc&#39; header element.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>This only works with pages that use the &#39;header.mc&#39; element.</p>
+
+</dd>
+<dt>(1 || 0) = do_queued_redirect</dt>
+<dd>
+
+<p>If there is a redirected set, then redirect the browser, otherwise return.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(1 || 0) = redirect</dt>
+<dd>
+
+<p>Redirect to a different location.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(1 || 0) = redirect_onload()</dt>
+<dd>
+
+<pre><code>redirect(&#39;/&#39;);
+redirect(&#39;/&#39;, $cbh);</code></pre>
+
+<p>Uses a JavaScript function call to redirect the browser to a different location. Will not clear out the buffer first, so stuff sent ahead will still draw in the browser. If a Params::Callback object is passed in as the second argument, the Apache request object will be used to send the JavaScript to the Browser and the callback handler object will be used to abort the request. Otherwise, the Mason request object will be used to send the JavaScript to the browser and to abort the request.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Because <code>redirect_onload()</code> executes immediately, if it is called from a callback, note that no further callbacks will be executed, not even post-callback request callbacks.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>status_msg($msg)</dt>
+<dd>
+
+</dd>
+<dt>severe_status_msg($msg)</dt>
+<dd>
+
+<p>Sometimes there&#39;s a long process executing, and you want to send status messages to the browser so that the user knows what&#39;s happening. These functions will do this for you. Call <code>status_msg()</code> each time you want to send a status messages, and it&#39;ll take care of the rest for you. The <code>severe_status_msg()</code> will do the same, but convert the message into a red, bold-fased message before sending it to the browser. When you&#39;re done sending status messages, you can either redirect to another page, or simply finish drawing the current page. It will draw in below the status messages. This function will work both in callbacks and in Mason UI code.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>log_history($args)</dt>
+<dd>
+
+<p>Log the current URL for historical purposes.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Populates the history key of the session data.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$uri = last_page($n);</dt>
+<dd>
+
+<p>Grab the $n-th page visited. Argument $n defaults to 1, or the very last page (A $n value of 0 is the current page). Only MAX_HISTORY pages are saved.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$uri = pop_page;</dt>
+<dd>
+
+<p>Pops the last page visited off of the page history and returns it.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($section, $mode, $type, ...) = parse_uri($uri);</dt>
+<dd>
+
+<p>Returns $section (e.g. admin), $mode (e.g. manager, profile) and $type (e.g. user, media, etc). This is centralized here in case it becomes a complicated thing to do. And, centralizing is nice.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>Was comp/lib/util/parseUri.mc.</p>
+
+</dd>
+<dt>my $wf = find_workflow($site_id, $type, $perm);</dt>
+<dd>
+
+<p>Returns a workflow of a particular type in a given site for which the user has a given permission to the documents and/or templates in that workflow. Returns <code>undef</code> if no workflow is found.</p>
+
+</dd>
+<dt>my $desk = find_desk($wf, $doc_perm)</dt>
+<dd>
+
+<p>Returns the desk in the given workflow for which the user has the permission to access its documents and/or templates. Returns <code>undef</code> if no desk is found.</p>
+
+</dd>
+<dt>my @sites = site_list($perm)</dt>
+<dd>
+
+<p>Returns a list or array reference of sites to which the user has the specified permission.</p>
+
+</dd>
+<dt>my $select_options = eval_codeselect($code, $field)</dt>
+<dd>
+
+<p>Returns a hash reference or reference to an array of arrays as returned by the code in <code>$code</code>. If the code just returns a list, it will be converted to a reference of array references, unless it has an odd number of items, in which case an error message will be displayed.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Methods">Private Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt; David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

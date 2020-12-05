@@ -1,0 +1,2245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Admin</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Admin.html#Name">Name</a></li>
+  <li><a href="Admin.html#Description">Description</a></li>
+  <li><a href="Admin.html#Quick-Installation-Instructions">Quick Installation Instructions</a>
+    <ul>
+      <li><a href="Admin.html#Installation-Variables">Installation Variables</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#Packages">Packages</a></li>
+  <li><a href="Admin.html#Installation">Installation</a>
+    <ul>
+      <li><a href="Admin.html#Perl">Perl</a></li>
+      <li><a href="Admin.html#OpenSSL-optional-">OpenSSL (optional)</a></li>
+      <li><a href="Admin.html#Apache-SSL-Support-Optional-">Apache SSL Support (Optional)</a>
+        <ul>
+          <li><a href="Admin.html#Apache-Interface-to-OpenSSL-mod_ssl-">Apache Interface to OpenSSL (mod_ssl)</a></li>
+          <li><a href="Admin.html#Apache-SSL">Apache-SSL</a></li>
+        </ul>
+      </li>
+      <li><a href="Admin.html#Apache-Perl-mod_perl-">Apache/Perl (mod_perl)</a></li>
+      <li><a href="Admin.html#Apache">Apache</a></li>
+      <li><a href="Admin.html#PostgreSQL">PostgreSQL</a></li>
+      <li><a href="Admin.html#Perl-Modules">Perl Modules</a></li>
+      <li><a href="Admin.html#Bricolage">Bricolage</a></li>
+      <li><a href="Admin.html#Bricolage-Manual-Installation-">Bricolage (Manual Installation)</a></li>
+      <li><a href="Admin.html#htmlArea-Optional-">htmlArea (Optional)</a></li>
+      <li><a href="Admin.html#Xinha-Optional-">Xinha (Optional)</a></li>
+      <li><a href="Admin.html#FCKeditor-Optional-">FCKeditor (Optional)</a></li>
+      <li><a href="Admin.html#JS-Quicktags-Optional-">JS-Quicktags (Optional)</a></li>
+      <li><a href="Admin.html#GNU-Aspell-Optional-">GNU Aspell (Optional)</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#Upgrading">Upgrading</a>
+    <ul>
+      <li><a href="Admin.html#Switching-to-Apache-2">Switching to Apache 2</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#Configuration">Configuration</a>
+    <ul>
+      <li><a href="Admin.html#Apache-Configuration">Apache Configuration</a></li>
+      <li><a href="Admin.html#Database-Configuration">Database Configuration</a></li>
+      <li><a href="Admin.html#System-User-Configuration">System User Configuration</a></li>
+      <li><a href="Admin.html#Temp-Directory-Configuration">Temp Directory Configuration</a></li>
+      <li><a href="Admin.html#Mason-Configuration">Mason Configuration</a></li>
+      <li><a href="Admin.html#Burner-Configuration">Burner Configuration</a></li>
+      <li><a href="Admin.html#Authentication-Configuration">Authentication Configuration</a></li>
+      <li><a href="Admin.html#LDAP-Configuration">LDAP Configuration</a></li>
+      <li><a href="Admin.html#Distribution-Configuration">Distribution Configuration</a></li>
+      <li><a href="Admin.html#UI-Configuration">UI Configuration</a></li>
+      <li><a href="Admin.html#Media-Configuration">Media Configuration</a></li>
+      <li><a href="Admin.html#UI-Configuration1">UI Configuration</a></li>
+      <li><a href="Admin.html#Language-Configuration">Language Configuration</a></li>
+      <li><a href="Admin.html#Time-Zone-Configuration">Time Zone Configuration</a></li>
+      <li><a href="Admin.html#Alert-Configuration">Alert Configuration</a></li>
+      <li><a href="Admin.html#Image-Thumbnail-Configuration">Image Thumbnail Configuration</a></li>
+      <li><a href="Admin.html#File-Naming-Configuration">File Naming Configuration</a></li>
+      <li><a href="Admin.html#Relateds-POD-Tag">Relateds POD Tag</a></li>
+      <li><a href="Admin.html#Story-URI-configuration">Story URI configuration</a></li>
+      <li><a href="Admin.html#Perl-Loading-Configuration">Perl Loading Configuration</a></li>
+      <li><a href="Admin.html#Virtual-FTP-Server-Configuration">Virtual FTP Server Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#Directory-Permissions">Directory Permissions</a></li>
+  <li><a href="Admin.html#Installation-Issues">Installation Issues</a>
+    <ul>
+      <li><a href="Admin.html#Building-SSL-Certificate">Building SSL Certificate</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#System-Administration">System Administration</a>
+    <ul>
+      <li><a href="Admin.html#Database">Database</a></li>
+      <li><a href="Admin.html#Application">Application</a></li>
+    </ul>
+  </li>
+  <li><a href="Admin.html#Cloing-an-Installation">Cloing an Installation</a></li>
+  <li><a href="Admin.html#Installation-Startup-Problems">Installation/Startup Problems</a></li>
+  <li><a href="Admin.html#Author">Author</a></li>
+  <li><a href="Admin.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Admin - Bricolage System Administration Guide.</p>
+
+<h1 id="Description">Description</h1>
+
+<p>This guide is intended for the system administrator in charge of installing, configuring, or tuning a Bricolage system.</p>
+
+<h1 id="Quick-Installation-Instructions">Quick Installation Instructions</h1>
+
+<p>For the really impatient you can just download a VMWare image with Bricolage already set up for you running under Ubuntu. See <a href="http://www.bricolagecms.org/news/announce/2008/06/01/vmware/">the announcement</a> for more details.</p>
+
+<p>There are lots of hints and tips for installation at the <a href="http://wiki.github.com/bricoleurs/bricolage/">Bricolage Wiki</a>, along with other tutorials and useful bits.</p>
+
+<p>Don&#39;t forget to read the README for your OS first for known issues and helpful tips. These can be found in the root of the unpacked Bricolage tarball.</p>
+
+<ol>
+
+<li><p>Install Perl 5.8.0 or greater.</p>
+
+</li>
+<li><p>Install Apache 1.3.34 or greater -- or Apache 2.0.55 or greater -- with mod_perl, mod_log_config, mod_mime, mod_alias.</p>
+
+<p>On Apache 2 you will also need to install mod_apreq and make sure that it and all the modules above appear in the list in the mods-enabled directory in your apache2 base directory. You will also need to use the prefork mpm rather than the threaded worker mpm in Apache 2.</p>
+
+<p>For SSL also install mod_ssl or (on Apache 1 only apache-ssl).</p>
+
+</li>
+<li><p>Install PostgreSQL 8.1 or greater or MySQL 5.0.3 or greater.</p>
+
+</li>
+<li><p>In the Bricolage source directory:</p>
+
+<pre><code>perl Makefile.PL
+make
+make test</code></pre>
+
+<p>And then as root:</p>
+
+<pre><code>make install</code></pre>
+
+</li>
+</ol>
+
+<p>If you run into problems then read below for the details.</p>
+
+<p>In order to prevent the Bricolage installer from asking any questions, simply set the environment variable <code>$INSTALL_VERBOSITY</code> to &quot;QUIET&quot;:</p>
+
+<pre><code>make INSTALL_VERBOSITY=QUIET
+make test
+make INSTALL_VERBOSITY=QUIET install</code></pre>
+
+<p>Bricolage will do its best to discover most information by itself, and exit with an error when it cannot. Default values will be selected from the appropriate defaults file for your system. See <i>inst/defaults</i> for a list of supported systems. <i>inst/defaults/standard</i> contains all of the default values, and other system-specific files can override those values.</p>
+
+<h2 id="Installation-Variables">Installation Variables</h2>
+
+<p>You can override many of those values during the install by passing the appropriate environment variables to <code>make</code>. The supported environment variables include:</p>
+
+<ul>
+
+<li><p>BRICOLAGE_ROOT</p>
+
+<p>The location where Bricolage should be installed. Defaults to <i>/usr/local/bricoage</i>.</p>
+
+</li>
+<li><p>BRICOLAGE_INSTALL_STYLE</p>
+
+<p>One of two values describing where to install all of the Bricolage files:</p>
+
+<dl>
+
+<dt>m</dt>
+<dd>
+
+<p>All files, including Perl libraries, temp files, programs, etc., will be installed under <code>$BRICOLAGE_ROOT</code>. This is the default and recommended option.</p>
+
+</dd>
+<dt>s</dt>
+<dd>
+
+<p>Most files will be installed under <code>$BRICOLAGE_ROOT</code>, but Perl libraries, programs, and man pages will be stored where Perl libraries and scripts usually go (e.g., <i>/usr/local/lib/perl</i>, <i>/usr/local/bin</i>, and <i>/usr/local/man</i>), temporary files will be stored in the system temp directory (e.g., <code>/tmp</code>, etc.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p>BRICOLAGE_TEMP_DIR</p>
+
+<p>The location to use for temporary files when bricolage is running. Defaults to <code>$BRICOLAGE_ROOT/tmp</code>. Ignored when <code>$BRICOLAGE_INSTALL_STYLE</code> is set to &quot;s&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_MODULE_DIR</p>
+
+<p>The directory under which to install Bricolage&#39;s Perl modules. Defaults to <code>$BRICOLAGE_ROOT/lib</code>. Ignored when <code>$BRICOLAGE_INSTALL_STYLE</code> is set to &quot;s&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_BIN_DIR</p>
+
+<p>The directory under which to install Bricolage&#39;s programs. Defaults to <code>$BRICOLAGE_ROOT/bin</code>. Ignored when <code>$BRICOLAGE_INSTALL_STYLE</code> is set to &quot;s&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_MAN_DIR</p>
+
+<p>The directory under which to install Bricolage&#39;s <code>man</code> pages. Defaults to <code>$BRICOLAGE_ROOT/man</code>. Ignored when <code>$BRICOLAGE_INSTALL_STYLE</code> is set to &quot;s&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_COMP_ROOT</p>
+
+<p>The directory under which to install Bricolage&#39;s UI Mason components. Defaults to <code>$BRICOLAGE_ROOT/comp</code>.</p>
+
+</li>
+<li><p>BRICOLAGE_DATA_DIR</p>
+
+<p>The directory for Bricolage to use for its UI Mason data. Defaults to <code>$BRICOLAGE_ROOT/data</code>.</p>
+
+</li>
+<li><p>BRICOLAGE_LOG_DIR</p>
+
+<p>The directory for Bricolage to use for its log files. Defaults to <code>$BRICOLAGE_ROOT/data</code>.</p>
+
+</li>
+<li><p>BRICOLAGE_PID</p>
+
+<p>The file name Bricolage should use for its PID file. Defaults to <code>$BRICOLAGE_ROOT/log/httpd.pid</code>.</p>
+
+</li>
+<li><p>BRICOLAGE_DB_TYPE</p>
+
+<p>The type of database to use. Must be one of the following:</p>
+
+<dl>
+
+<dt>Pg</dt>
+<dd>
+
+<p>PostgreSQL. This is the default choice.</p>
+
+</dd>
+<dt>mysql</dt>
+<dd>
+
+<p>MySQL.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p>BRICOLAGE_PG_CONFIG_PATH</p>
+
+</li>
+<li><p>BRICOLAGE_MYSQL_CONFIG_PATH</p>
+
+<p>The path to the database config program. This would an implmentation of <code>pg_config</code> for PostgreSQL or <code>mysql_config</code> for MySQL. Bricolage will try to find the appropriate one to use for the default.</p>
+
+</li>
+<li><p>BRICOLAGE_CREATE_DB</p>
+
+<p>A boolean indicating whether or not the databse should be created. Defaults to true. If you set this to a false value, the database should already exist and the Bricolage database user will need to have permission to create objects in it (tables, indexes, sequences, etc.).</p>
+
+</li>
+<li><p>BRICOLAGE_PG_SUPERUSER</p>
+
+<p>The name of the PostgreSQL super user. Defaults to &quot;postgres&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_PG_SUPERPASS</p>
+
+<p>The password for the PostgreSQL super user. Defaults to an empty string, which works for a locally-installed PostgreSQL using &quot;trust&quot; or &quot;ident&quot; authentication.</p>
+
+</li>
+<li><p>BRICOLAGE_PG_BECOME_USER</p>
+
+<p>A boolean indicating whether or not the installer should become the PostgreSQL system user (usually named &quot;postgres&quot;) before connecting to the database and making changes to it. Such is required if your PostgreSQL server uses ident authentication, as is the default for Debian builds of PostgreSQL. Defaults to false.</p>
+
+</li>
+<li><p>BRICOLAGE_PG_BRICUSER</p>
+
+<p>The name of the PostgreSQL user for Bricolage itself to use. Defaults to &quot;bric&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_PG_DB</p>
+
+<p>The name of the database for Bricolage to use. Defaults to &quot;bric&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_PG_HOSTNAME</p>
+
+<p>The name of the host for the PostgreSQL database server. Defaults to &quot;localhost&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_MYSQL_SUPERUSER</p>
+
+<p>The name of the MySQL super user. Defaults to &quot;root&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_MYSQL_BRICUSER</p>
+
+<p>The name of the MySQL user for Bricolage itself to use. Defaults to &quot;bric&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_MYSQL_DB</p>
+
+<p>The name of the database for Bricolage to use. Defaults to &quot;bric&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_HTTPD_VERSION</p>
+
+<p>The version of Apache to use. Must be one of the following:</p>
+
+<dl>
+
+<dt>apache</dt>
+<dd>
+
+<p>Apache 1.3.x. This is the default choice, although that&#39;s subject to change in a future release.</p>
+
+</dd>
+<dt>apache2</dt>
+<dd>
+
+<p>Apache 2.x.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p>APACHE_EXE</p>
+
+</li>
+<li><p>APACHE2_EXE</p>
+
+<p>The base name of the Apache executable, usually &quot;httpd&quot;, which happens to be the default.</p>
+
+</li>
+<li><p>APACHE_PATH</p>
+
+</li>
+<li><p>APACHE2_PATH</p>
+
+<p>A <code>$PATH</code> environment variable-style list of directories to search for the Apache executable. Defaults to the value returned by <code>File::Spec::Functions::path</code>.</p>
+
+</li>
+<li><p></p>
+
+</li>
+<li><p>BRICOLAGE_SSL</p>
+
+<p>A boolean value indicating whether or not Bricolage should use SSL. Defaults to true if the detected Apache server supports SSL, and false if it does not.</p>
+
+</li>
+<li><p>BRICOLAGE_SSL_CERT</p>
+
+<p>The location of the SSL certificate file that Bricolage should use. Defaults to <i>$HTTPD_ROOT/conf/ssl.key/server.cert</i>, where <code>$HTTPD_ROOT</code> is collected from the <code>httpd</code> executable.</p>
+
+</li>
+<li><p>BRICOLAGE_SSL_KEY</p>
+
+<p>The location of the SSL key file that Bricolage should use. Defaults to <i>$HTTPD_ROOT/conf/ssl.key/server.key</i>, where <code>$HTTPD_ROOT</code> is collected from the <code>httpd</code> executable.</p>
+
+</li>
+<li><p>BRICOLAGE_SSL_KEY</p>
+
+<p>The location of the SSL key file that Bricolage should use.</p>
+
+</li>
+<li><p>BRICOLAGE_APACHE_USER</p>
+
+<p>The name of the Apache super user, usually &quot;nobody&quot; or &quot;daemon&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_APACHE_GROUP</p>
+
+<p>The name of the Apache super user, usually &quot;nobody&quot; or &quot;daemon&quot;.</p>
+
+</li>
+<li><p>BRICOLAGE_APACHE_PORT</p>
+
+<p>The port for Bricolage to use for its Apache server. Defaults to 80.</p>
+
+</li>
+<li><p>BRICOLAGE_APACHE_SSL_PORT</p>
+
+<p>The SSL port for Bricolage to use for its Apache server. Defaults to 443. This option is ignored of SSL is not used.</p>
+
+</li>
+<li><p>BRICOLAGE_APACHE_HOSTNAME</p>
+
+<p>The host name that Bricolage should use when it configures itself to run on a virtual host inside of Apache. Default to the value retuned by <code>`hostname`</code>.</p>
+
+</li>
+<li><p>EXPAT_PATH</p>
+
+<p>A <code>$PATH</code> environment variable-style list of directories to search for expat. Defaults to the value returned by <code>File::Spec::Functions::path</code>.</p>
+
+</li>
+</ul>
+
+<h1 id="Packages">Packages</h1>
+
+<p>Bricolage requires a lot of other components to be installed; here&#39;s a list of them:</p>
+
+<ul>
+
+<li><p>Perl 5.8.0.</p>
+
+</li>
+<li><p>Perl Modules:</p>
+
+<dl>
+
+<dt>Storable</dt>
+<dd>
+
+</dd>
+<dt>Time::HiRes</dt>
+<dd>
+
+</dd>
+<dt>Unix::Syslog</dt>
+<dd>
+
+</dd>
+<dt>Net::Cmd</dt>
+<dd>
+
+</dd>
+<dt>Devel::Symdump</dt>
+<dd>
+
+</dd>
+<dt>DBI 1.49</dt>
+<dd>
+
+</dd>
+<dt>Error</dt>
+<dd>
+
+</dd>
+<dt>Cache::Cache</dt>
+<dd>
+
+</dd>
+<dt>Cache::Mmap</dt>
+<dd>
+
+</dd>
+<dt>Digest::MD5</dt>
+<dd>
+
+</dd>
+<dt>Digest::SHA1 2.01</dt>
+<dd>
+
+</dd>
+<dt>URI</dt>
+<dd>
+
+</dd>
+<dt>HTML::Tagset</dt>
+<dd>
+
+</dd>
+<dt>HTML::Parser</dt>
+<dd>
+
+</dd>
+<dt>MIME::Base64</dt>
+<dd>
+
+</dd>
+<dt>MIME::Tools</dt>
+<dd>
+
+</dd>
+<dt>Mail::Address</dt>
+<dd>
+
+</dd>
+<dt>XML::Writer</dt>
+<dd>
+
+</dd>
+<dt>LWP</dt>
+<dd>
+
+</dd>
+<dt>Image::Info</dt>
+<dd>
+
+</dd>
+<dt>MLDBM</dt>
+<dd>
+
+</dd>
+<dt>Params::Validate</dt>
+<dd>
+
+</dd>
+<dt>Exception::Class 1.12</dt>
+<dd>
+
+</dd>
+<dt>Class::Container 0.09</dt>
+<dd>
+
+</dd>
+<dt>HTML::Mason 1.37</dt>
+<dd>
+
+</dd>
+<dt>DB_File</dt>
+<dd>
+
+</dd>
+<dt>Apache::Session 1.54</dt>
+<dd>
+
+</dd>
+<dt>Test::Harness 2.03</dt>
+<dd>
+
+</dd>
+<dt>Test::Simple</dt>
+<dd>
+
+</dd>
+<dt>Test::MockModule 0.04</dt>
+<dd>
+
+</dd>
+<dt>Test::File::Contents 0.02</dt>
+<dd>
+
+</dd>
+<dt>Test::File</dt>
+<dd>
+
+</dd>
+<dt>Text::Balanced</dt>
+<dd>
+
+</dd>
+<dt>XML::Parser 2.34</dt>
+<dd>
+
+</dd>
+<dt>XML::Simple</dt>
+<dd>
+
+</dd>
+<dt>IO::Stringy</dt>
+<dd>
+
+</dd>
+<dt>SOAP::Lite</dt>
+<dd>
+
+</dd>
+<dt>File::Temp</dt>
+<dd>
+
+</dd>
+<dt>Text::LevenshteinXS</dt>
+<dd>
+
+</dd>
+<dt>Locale::Maketext</dt>
+<dd>
+
+</dd>
+<dt>Test::Class 0.04</dt>
+<dd>
+
+</dd>
+<dt>Params::CallbackRequest 1.16</dt>
+<dd>
+
+</dd>
+<dt>MasonX::Interp::WithCallbacks 1.10</dt>
+<dd>
+
+</dd>
+<dt>Safe 2.09</dt>
+<dd>
+
+</dd>
+<dt>DateTime 0.21</dt>
+<dd>
+
+</dd>
+<dt>DateTime::TimeZone 0.2601</dt>
+<dd>
+
+</dd>
+<dt>Term::ReadPassword</dt>
+<dd>
+
+</dd>
+<dt>Data::UUID</dt>
+<dd>
+
+</dd>
+<dt>List::Util</dt>
+<dd>
+
+</dd>
+<dt>List::MoreUtils</dt>
+<dd>
+
+</dd>
+<dt>Text::Diff</dt>
+<dd>
+
+</dd>
+<dt>Text::Diff::HTML 0.02</dt>
+<dd>
+
+</dd>
+<dt>Text::WordDiff</dt>
+<dd>
+
+</dd>
+<dt>URI::Escape</dt>
+<dd>
+
+</dd>
+<dt>Scalar::Util</dt>
+<dd>
+
+</dd>
+<dt>Clone</dt>
+<dd>
+
+</dd>
+<dt>Imager</dt>
+<dd>
+
+</dd>
+<dt>HTML::Template (optional)</dt>
+<dd>
+
+</dd>
+<dt>HTML::Template::Expr (optional)</dt>
+<dd>
+
+</dd>
+<dt>Template 2.14 (optional)</dt>
+<dd>
+
+</dd>
+<dt>PHP::Interpreter (optional)</dt>
+<dd>
+
+</dd>
+<dt>Encode (optional)</dt>
+<dd>
+
+</dd>
+<dt>Pod::Simple (optional)</dt>
+<dd>
+
+</dd>
+<dt>Test::Pod 1.42 (optional)</dt>
+<dd>
+
+</dd>
+<dt>Net::FTPServer (optional)</dt>
+<dd>
+
+</dd>
+<dt>Net::SSH2 0.28 (optional)</dt>
+<dd>
+
+</dd>
+<dt>HTTP::DAV (optional)</dt>
+<dd>
+
+</dd>
+<dt>Crypt::SSLeay (optional)</dt>
+<dd>
+
+</dd>
+<dt>Text::Aspell (optional)</dt>
+<dd>
+
+</dd>
+<dt>XML::DOM (optional)</dt>
+<dd>
+
+</dd>
+<dt>CGI (optional)</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Note that you also have some required categories of modules, but you must pick from among them. Depending on your choice of database, you will need to install one of:</p>
+
+<dl>
+
+<dt>DBD::Pg 1.22</dt>
+<dd>
+
+</dd>
+<dt>DBD::mysql 3.0007</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>And depending on whether you&#39;re using Apache 1 or Apache 2, you&#39;ll need to install one of:</p>
+
+<dl>
+
+<dt>Apache::Request</dt>
+<dd>
+
+</dd>
+<dt>Apache2::Request</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>The fact that these are marked &quot;(optional)&quot; is just to help the installer determine CPAN dependencies. Trust us, one or the other of these <b>is</b> required. Either one of these is optional, however:</p>
+
+<dl>
+
+<dt>Apache::SizeLimit (optional)</dt>
+<dd>
+
+</dd>
+<dt>Apache2::SizeLimit (optional)</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>Apache 1.3.34 or later or Apache 2.0.55 or later</p>
+
+</li>
+<li><p>mod_perl 2.xx or mod_perl 1.xx - Apache/Perl Integration</p>
+
+</li>
+<li><p>PostgreSQL 7.3.0 or MySQL 5.0.3</p>
+
+</li>
+<li><p>Expat 1.95.0</p>
+
+</li>
+<li><p>OpenSSL 0.9.6b (optional)</p>
+
+</li>
+<li><p>mod_ssl 2.8.4-1.3.xx - Apache Interface to OpenSSL (optional)</p>
+
+</li>
+<li><p>apache_ssl 1.3.xx+ssl_1.xx Apache SSL (optional)</p>
+
+</li>
+<li><p>mod_gzip - Gzip page compression (optional)</p>
+
+</li>
+<li><p>htmlArea 3.0 or later (optional)</p>
+
+</li>
+<li><p>Xinha WYSIWYG editor (optional)</p>
+
+</li>
+<li><p>FCKeditor WYSIWYG editor (optional)</p>
+
+</li>
+<li><p>JS-Quicktags WYSIWYG editor (optional)</p>
+
+</li>
+<li><p>GNU Aspell 0.50 or later (optional)</p>
+
+</li>
+</ul>
+
+<h1 id="Installation">Installation</h1>
+
+<p>Follow these instructions to prepare your system for Bricolage. If you&#39;re upgrading from an older version of Bricolage see the <a rel="subsection" href="Admin.html#UPGRADING" name="Bric::Admin">&quot;UPGRADING&quot;</a> section below.</p>
+
+<h2 id="Perl">Perl</h2>
+
+<p>The standard Perl installation should apply with no problems. If your system comes with a package manager (ex. Redhat Linux RPM, FreeBSD ports, etc.) then you can use that to install Perl.</p>
+
+<p>Here is how to install Perl from source:</p>
+
+<ul>
+
+<li><p>Download the Perl source tarball from www.perl.com.</p>
+
+</li>
+<li><p>Gunzip and untar the sources.</p>
+
+</li>
+<li><p>Change to the source directory and execute these commands:</p>
+
+<pre><code>sh Configure -Umymalloc -Dinstallusrbinperl -des
+make
+make test
+make install</code></pre>
+
+<p>For the curious, the options used with Configure above are:</p>
+
+<dl>
+
+<dt>-Umymalloc</dt>
+<dd>
+
+<p>This Configure command will build perl without perl&#39;s malloc. This is necessary to prevent segfaults with XML::Parser under mod_perl. This is the default on most systems already.</p>
+
+</dd>
+<dt>-Dinstallusrbinperl</dt>
+<dd>
+
+<p>This Configure command will arrange for /usr/bin/perl to be linked to the current version of perl. If you don&#39;t specify this command, configure will prompt you to find out whether to link /usr/bin/perl to the current version of perl. We strongly suggest that you answer &quot;yes&quot;.</p>
+
+</dd>
+<dt>-des</dt>
+<dd>
+
+<p>This optional command tells Configure that you accept all the other defaults, and it will therefore provide terse output during the configuration.</p>
+
+</dd>
+</dl>
+
+</li>
+</ul>
+
+<h2 id="OpenSSL-optional-">OpenSSL (optional)</h2>
+
+<p>You&#39;ll need to install OpenSSL if you want to use Bricolage&#39;s SSL support to run a more secure server, otherwise you can skip this step. Installation of OpenSSL follows the usual conventions. Here&#39;s an example:</p>
+
+<ul>
+
+<li><p>Download the OpenSSL source tarball from www.openssl.org.</p>
+
+</li>
+<li><p>Gunzip and untar the sources.</p>
+
+</li>
+<li><p>Change into the source directory, read the INSTALL file to see if you need to use any Configure commands, and execute these commands:</p>
+
+<pre><code>sh config &lt;commands&gt;
+make
+make test</code></pre>
+
+</li>
+</ul>
+
+<p><code>make install</code> generally isn&#39;t necessary because the sources will be compiled into Apache, but may be necessary to generate your own test certificates or certificates to be signed by a public certificate authority.</p>
+
+<h2 id="Apache-SSL-Support-Optional-">Apache SSL Support (Optional)</h2>
+
+<p>You&#39;ll need to install mod_ssl or apache_ssl if you want to use Bricolage&#39;s SSL support to run a more secure server; otherwise you can skip this step.</p>
+
+<h3 id="Apache-Interface-to-OpenSSL-mod_ssl-">Apache Interface to OpenSSL (mod_ssl)</h3>
+
+<p>Installation of mod_ssl follows the usual conventions. Here&#39;s an example:</p>
+
+<ul>
+
+<li><p>Download the mod_ssl source tarball from <a href="http://www.modssl.org/">modssl.org</a>.</p>
+
+</li>
+<li><p>Gunzip and untar the sources.</p>
+
+</li>
+<li><p>Change into the source directory, read the INSTALL file to see if you need to use any Configure commands. The only one required here is <code>--with-apache</code>, so you&#39;ll need to have already downloaded, gunzipped, and untarred the Apache sources (see below). If you already have a server certificate and a server key, use the <code>--with-crt</code> and <code>--with-key</code> commands to point to them. You might also want to consider including the optional MM library (see mod_ssl&#39;s INSTALL file for details). Then, execute this command:</p>
+
+<pre><code>./configure --with-apache=/usr/local/src/bricolage/apache_1.3.xx</code></pre>
+
+<p>Where &quot;apache_1.3.xx&quot; represents the version of Apache you will be installing (see the &quot;Packages&quot; section above for a recommended version number.</p>
+
+</li>
+</ul>
+
+<p><code>make</code> and <code>make install</code> aren&#39;t necessary because the sources will be compiled into Apache.</p>
+
+<h3 id="Apache-SSL">Apache-SSL</h3>
+
+<ul>
+
+<li><p>Download the apache_ssl source tarball from <a href="http://www.apache-ssl.org/">apache-ssl.org</a>.</p>
+
+</li>
+<li><p>Copy the tarball into the apache directory, gunzip and untar.</p>
+
+</li>
+<li><p>Run the FixPatch script.</p>
+
+</li>
+<li><p>Now build Apache in the normal fashion. The only difference is the added configuration directives for SSL, see SSLconf/conf/ for comprehensive examples. Bricolage handles most of the configuration for you.</p>
+
+</li>
+</ul>
+
+<h2 id="Apache-Perl-mod_perl-">Apache/Perl (mod_perl)</h2>
+
+<p>Installation of mod_perl follows the usual conventions for installing Perl modules. It does require a number of Makefile.PL parameters, however. The most important parameter is APACHE_SRC, which points to the Apache sources. You will need to have already downloaded, gunzipped, and untarred the Apache sources before compiling mod_perl. Here&#39;s the routine:</p>
+
+<ul>
+
+<li><p>Download the Apache source tarball from httpd.apache.org. Make sure you choose the 1.3.x rather than the new 2.x version.</p>
+
+</li>
+<li><p>Download the mod_perl source tarball from perl.apache.org.</p>
+
+</li>
+<li><p>Gunzip and untar the Apache and mod_perl sources.</p>
+
+</li>
+<li><p>Change into the mod_perl source directory, read the INSTALL file to see if you need to use any Configure commands other than those specified below. Then execute the commands:</p>
+
+<pre><code>perl Makefile.PL \
+  APACHE_SRC=../apache_1.3.*/src \
+  DO_HTTPD=1 \
+  USE_APACI=1 \
+  PREP_HTTPD=1 \
+  EVERYTHING=1
+make
+make install</code></pre>
+
+</li>
+</ul>
+
+<h2 id="Apache">Apache</h2>
+
+<p>Before continuing, consult the <i>README.configure</i> file that comes with the Apache distribution. It contains a very helpful (and short) bit of documentation and covers a lot of good information, particularly with respect to DSO use (a topic not covered here).</p>
+
+<p>By now you&#39;ve downloaded Apache and gunzipped and untarred its sources. There are a lot of Configure commands supported by Apache. We recommend that you use the following for Bricolage:</p>
+
+<dl>
+
+<dt>--with-layout=Apache</dt>
+<dd>
+
+<p>This option selects the classical Apache path layout.</p>
+
+</dd>
+<dt>--disable-rule=EXPAT</dt>
+<dd>
+
+<p>This option prevents incompatibilities between Apache&#39;s implementation of the Expat XML parser, and that used by Perl&#39;s XML::Parser module.</p>
+
+</dd>
+<dt>--enable-module=ssl (optional)</dt>
+<dd>
+
+<p>If you&#39;re including SSL support via mod_ssl, this option compiles it in.</p>
+
+</dd>
+<dt>--enable-module=rewrite</dt>
+<dd>
+
+<p>This option enables the mod_rewrite module that ships with the Apache sources. While mod_rewrite is not currently used in Bricolage, it may be in future versions.</p>
+
+</dd>
+<dt>--activate-module=src/modules/perl/libperl.a</dt>
+<dd>
+
+<p>This option compiles in mod_perl. The library it points to was installed by the mod_perl make process.</p>
+
+</dd>
+<dt>--disable-shared=perl</dt>
+<dd>
+
+<p>This option ensures that mod_perl will be statically compiled into Apache, rather than as a DSO.</p>
+
+</dd>
+</dl>
+
+<ul>
+
+<li><p>The commands you&#39;ll execute, therefore, should look something like this:</p>
+
+<pre><code>./configure               \
+  --with-layout=Apache    \
+  --disable-rule=EXPAT    \
+  --enable-module=rewrite \
+  --activate-module=src/modules/perl/libperl.a \
+  --disable-shared=perl
+make</code></pre>
+
+<p>Or if you&#39;re planning to use mod_ssl:</p>
+
+<pre><code>./configure               \
+  --with-layout=Apache    \
+  --disable-rule=EXPAT    \
+  --enable-module=ssl     \
+  --enable-module=rewrite \
+  --activate-module=src/modules/perl/libperl.a \
+  --disable-shared=perl
+make</code></pre>
+
+</li>
+<li><p>If you plan to use SSL you&#39;ll need to install the SSL certificates before you install Apache. If you compiled OpenSSL with the <code>--with-crt</code> and <code>--with-key</code> commands, you can skip this step.</p>
+
+<p>If you don&#39;t have a formal certificate from a certificate authority such as VeriSign then you can make a dummy certificate with the command:</p>
+
+<pre><code>make certificate TYPE=dummy</code></pre>
+
+<p>If you do have a formal certificate then can make a certificate with the command:</p>
+
+<pre><code>make certificate TYPE=custom</code></pre>
+
+<p>Near the end of the certificate creation process, you will be prompted to enter information for the certificate. Here you&#39;ll enter the information for your certificate. See the OpenSSL documentation for a description of the certificate data.</p>
+
+<p>You&#39;ll be prompted to enter the certificate information twice. Afterward, you&#39;ll see this prompt for each of the two new certificates:</p>
+
+<pre><code>Encrypt the private key now? [Y/n]:</code></pre>
+
+<p>Enter &quot;n&quot; to avoid having to type in a passphrase every time you start Apache. Enter &quot;y&quot; if you really don&#39;t trust your system users.</p>
+
+</li>
+<li><p>Finally, install Apache:</p>
+
+<pre><code>make install</code></pre>
+
+</li>
+<li><p>Don&#39;t forget to install the Apache::Session and Apache::Request perl modules now (See &quot;Perl Modules,&quot; above). If your Apache is in a non-standard loation, you might need to set the <code>APXS</code> environment variable while installing it so that tests pass:</p>
+
+<pre><code>% export APXS=/some/nonstandard/apache/bin/apxs</code></pre>
+
+</li>
+</ul>
+
+<p>And you&#39;re done! You can test the installation by calling</p>
+
+<pre><code>/usr/local/apache/bin/apachectl configtest</code></pre>
+
+<h2 id="PostgreSQL">PostgreSQL</h2>
+
+<p>PostgreSQL is an integral part of Bricolage: it&#39;s where all of your assets are stored! Its installation is pretty straight-forward and typical, but it requires a number of extra steps that one might not expect.</p>
+
+<p>If you&#39;re using Redhat Linux you may already have Postgres installed. If so, all you need to do to get it ready for use with Bricolage is edit your postgresql.conf file (run <code>locate postgresql.conf</code> to find it) and turn on the tcpip_socket option:</p>
+
+<pre><code>tcpip_socket = true</code></pre>
+
+<p>Otherwise, here are the installation details:</p>
+
+<ul>
+
+<li><p>Download the PostgreSQL source tarball from www.postgresql.org.</p>
+
+</li>
+<li><p>Gunzip and untar the sources.</p>
+
+</li>
+<li><p>Create a new system user named &quot;postgres&quot;. This is the user that will start the PostgreSQL server. The startup scripts that come with PostgreSQL mostly seem to expect that the postgres user will use the tcsh shell (note: I use bash with no problem), so you may wish to set that shell now. Here&#39;s an example under Linux:</p>
+
+<pre><code>/usr/sbin/useradd -d /home/postgres postgres -s /bin/tcsh</code></pre>
+
+</li>
+<li><p>Change into the source directory and read the INSTALL file to see if you need to use any Configure commands. One Configure command is required by Bricolage: <code>--enable-multibyte=UNICODE</code>. Because Bric stores all of its textual data in Unicode format, this command is not optional. If you require the use of a different character set for your installation, this can be configured as part of the system preferences, via the Admin interface.</p>
+
+</li>
+<li><p>Install PostgreSQL:</p>
+
+<pre><code>./configure --enable-multibyte=UNICODE
+make
+make install</code></pre>
+
+</li>
+<li><p>Now make a directory in which you want to keep your PostgreSQL databases, including the Bricolage database. Make the &quot;postgres&quot; user the owner of that directory. Think carefully about where you want this directory to be, and on what partition. The Bricolage database will get to be quite large, and will require a great deal of disk accessing, so we recommend you put it on its own partition. This example just demonstrates the default:</p>
+
+<pre><code>mkdir /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data</code></pre>
+
+</li>
+<li><p>Initialize the PostgreSQL database. Be sure to pass the directory you just created to the <code>-D</code> command.</p>
+
+<pre><code>su - postgres -c &quot;/usr/local/pgsql/bin/initdb --no-locale \
+  -D /usr/local/pgsql/data&quot;</code></pre>
+
+<p>You might find it easier to set PostgreSQL default encoding for new databases to UNICODE when initializing the database cluster, using the following command instead of the former one:</p>
+
+<pre><code>su - postgres -c &quot;/usr/local/pgsql/bin/initdb --no-locale \
+  --encoding UNICODE -D /usr/local/pgsql/data&quot;</code></pre>
+
+</li>
+<li><p>Start the PostgreSQL &quot;postmaster&quot;. You can use one of the scripts in contrib/start-scripts.</p>
+
+</li>
+<li><p>Make the PostgreSQL documentation. This step is optional, if you don&#39;t need the docs or have them available elsewhere:</p>
+
+<pre><code>cd docs
+make install</code></pre>
+
+</li>
+<li><p>Don&#39;t forget to install the DBD::Pg perl module! If its <i>Makefile.PL</i> can&#39;t find your installed version of PostgreSQL, you&#39;ll need to set the <code>POSTGRES_INCLUDE</code> and <code>POSTGRES_LIB</code> environment variables, first:</p>
+
+<pre><code>export POSTGRES_INCLUDE=/usr/local/include
+export POSTGRES_LIB=/usr/local/lib</code></pre>
+
+<p>Then you can build the module:</p>
+
+<pre><code>cd /path/to/DBD-Pg-1.xx
+perl Makefile.PL
+make
+make test
+make install</code></pre>
+
+</li>
+</ul>
+
+<p>And now PostgreSQL is ready to go!</p>
+
+<h2 id="Perl-Modules">Perl Modules</h2>
+
+<p>There are quite a few Perl modules required by Bricolage (see <a rel="subsection" href="Admin.html#PACKAGES" name="Bric::Admin">&quot;PACKAGES&quot;</a> above for a list). The easiest way to install them all is to let Bricolage&#39;s installation system handle it using the CPAN.pm module (see below for details).</p>
+
+<p>Another option is to use CPAN.pm yourself to download the latest Bundle::Bricolage package and use it to install all the required packages:</p>
+
+<pre><code>perl -MCPAN -e &#39;install Bundle::Bricolage&#39;</code></pre>
+
+<p>However, this is unlikely to succeed without manual intervention since some of the modules required by Bricolage have problems with CPAN.pm.</p>
+
+<p>Finally, manual installation of each of the required modules follows the usual perl module installation process:</p>
+
+<ul>
+
+<li><p>Download the package sources.</p>
+
+</li>
+<li><p>Gunzip and untar the sources.</p>
+
+</li>
+<li><p>Change to the source directory and execute these commands:</p>
+
+<pre><code>perl Makefile.PL
+make
+make test
+make install</code></pre>
+
+</li>
+</ul>
+
+<h2 id="Bricolage">Bricolage</h2>
+
+<p>With the 1.4.0 release, Bricolage now can be installed using the new installation system.</p>
+
+<ul>
+
+<li><p>Download the latest <a href="http://www.bricolagecms.org/downloads/">Bricolage sources</a>.</p>
+
+</li>
+<li><p>Decompress the Bricolage sources into a directory of your choice and change into that directory.</p>
+
+</li>
+<li><p>Build Bricolage:</p>
+
+<pre><code>perl Makefile.PL</code></pre>
+
+<p>This step will check your system for all required packages. It will also ask you questions regarding your installation. In most cases the default answer will be correct and you can just press return. Most of these answers can be overridden in <i>conf/bricolage.conf</i> or <i>conf/httpd.conf</i>. Here is more information on some of the questions (some obvious questions were skipped):</p>
+
+<dl>
+
+<dt>Apache User</dt>
+<dd>
+
+<p>The Apache user, set by the &#39;User&#39; directive in <i>conf/httpd.conf</i>.</p>
+
+</dd>
+<dt>Apache Group</dt>
+<dd>
+
+<p>The Apache group, set by the &#39;Group&#39; directive in <i>conf/httpd.conf</i>.</p>
+
+</dd>
+<dt>Apache Port</dt>
+<dd>
+
+<p>The Apache port, set by the &#39;Port&#39; directive in <i>conf/httpd.conf</i>.</p>
+
+</dd>
+<dt>Apache Server Name</dt>
+<dd>
+
+<p>The Apacher server name, set by the &#39;ServerName&#39; directive in <i>conf/httpd.conf</i>.</p>
+
+</dd>
+<dt>Do you want to use SSL?</dt>
+<dd>
+
+<p>If the installation program found either <i>mod_ssl</i> or <i>mod_apache_ssl</i>, it will ask this question. If you use one of these modules, your Bricolage will be served over a secure connection. See the <a rel="subsection" href="Admin.html#INSTALLATION" name="Bric::Admin">INSTALLATION</a>, <a rel="subsection" href="Admin.html#Apache-Configuration" name="Bric::Admin">Apache Configuration</a>, and <a rel="subsection" href="Admin.html#INSTALLATION-ISSUES" name="Bric::Admin">INSTALLATION ISSUES</a> sections of this document for more information on SSL support.</p>
+
+</dd>
+<dt>Postgres Root Username</dt>
+<dd>
+
+<p>A postgresql user which has permissions to CREATE DATABASE, CREATE USER, and GRANT a user permissions in the database.</p>
+
+</dd>
+<dt>Postgres System Username</dt>
+<dd>
+
+<p>I&#39;m not sure how this is different from the root user.</p>
+
+</dd>
+<dt>Bricolage Postgres Username</dt>
+<dd>
+
+<p>The postgresql user that you normally run Bricolage under. This user only has CREATE, DELETE, UPDATE, and SELECT permissions on the objects <b>within</b> the bricolage database.</p>
+
+<p>Note that if you use &#39;IDENT sameuser&#39; authentication in PostgreSQL, you have to 1) use the same username for &#39;Bricolage Postgres Username&#39; as you did for &#39;Apache User&#39; (so that the apache process has permission to access the database), and 2) enter a bogus password for &#39;Bricolage Postgres Password&#39;.</p>
+
+</dd>
+<dt>Bricolage Database Name</dt>
+<dd>
+
+<p>Any (valid postgresql) name you want for your bricolage database.</p>
+
+</dd>
+<dt>Postgres Database Server Hostname &amp; Port</dt>
+<dd>
+
+<p>The hostname and port of the server where your postgresql database is located. The default is localhost, through local (non TCP) sockets.</p>
+
+</dd>
+<dt>Single vs. Multi Installation</dt>
+<dd>
+
+<p>It has nothing to do with multi-sites. If you choose &#39;s&#39;, that means that it&#39;ll be difficult to install more than one bricolage on the same machine because it&#39;ll put the libraries, perldocs, etc. in standard locations (<i>/usr/lib/perl5</i>, <i>/usr/man/man</i>? or something); whereas if you choose &#39;m&#39;, it&#39;ll put everything under one directory, like <i>/usr/local/bricolage</i>, so the second bricolage you install could be under <i>/usr/local/bric2</i> or whatever and they won&#39;t conflict. I&#39;d recommend &#39;m&#39; just because it&#39;s centralized so you know where everything is installed.</p>
+
+</dd>
+<dt>Bricolage Root Directory</dt>
+<dd>
+
+<p>What $ENV{BRICOLAGE_ROOT} will be set to.</p>
+
+</dd>
+<dt>Temporary Directory</dt>
+<dd>
+
+<p>Where temporary files, like cache files, are written.</p>
+
+</dd>
+<dt>Perl Module Directory</dt>
+<dd>
+
+<p>Where Perl modules will be installed.</p>
+
+</dd>
+<dt>Executable Directory</dt>
+<dd>
+
+<p>Where executables like bric_soap will be installed.</p>
+
+</dd>
+<dt>Man-Page Directory</dt>
+<dd>
+
+<p>Where man pages for the Perl modules will be installed. You can put &#39;!&#39; in order to not install the man pages (this is intended more for developers, not users, of Bricolage).</p>
+
+</dd>
+<dt>Log Directory</dt>
+<dd>
+
+<p>Where <i>access_log</i> and <i>error_log</i> will be written to.</p>
+
+</dd>
+<dt>PID File Location</dt>
+<dd>
+
+<p>Where Apache&#39;s PID file will be written each time Bricolage is started (and removed when it&#39;s not running).</p>
+
+</dd>
+<dt>Mason Component Directory</dt>
+<dd>
+
+<p>Where Mason components for the Bricolage UI are put. Also, its <i>data/media</i> subdirectory is where media files are stored. See also the <code>MASON_COMP_ROOT</code> directive in <i>conf/bricolage.conf</i>. The Apache User has to have write permission to this directory.</p>
+
+</dd>
+<dt>Mason Data Directory</dt>
+<dd>
+
+<p>Where the Mason data directory is located. This stores things like cached Mason components See also the <code>MASON_COMP_ROOT</code> directive in <i>conf/bricolage.conf</i>. The Apache User has to have write permission to this directory.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p>Install Bricolage (as root):</p>
+
+<pre><code>make
+make install</code></pre>
+
+</li>
+</ul>
+
+<p>If you run into a problem, the fastest way of getting help is to search the <a href="http://marc.theaimsgroup.com/?l=bricolage-general">bricolage-general archive</a>. Failing that, please send an email to the mailing list itself at <a href="mailto:users@lists.bricolage.cc">users@lists.bricolage.cc</a>. Please make sure that you describe your problem as concisely as possible. Questions like &quot;My installation fails, please help&quot; will not help other users to help you. If other uses confirm that the problem you&#39;re experiencing is a bug and suggest that you send a bug report, file it via our <a href="http://bugs.bricolagecms.org/">bug tracker</a>. Include a copy of all <i>*.db</i> files generated by the Makefile as well as a complete description of where the process failed. Then, either wait for us to fix the problem or try the manual installation instructions below.</p>
+
+<p>If the installation procedure completes successfully you&#39;ll receive a message describing how to start the Bricolage server.</p>
+
+<h2 id="Bricolage-Manual-Installation-">Bricolage (Manual Installation)</h2>
+
+<p>Here&#39;s how to install Bricolage manually.</p>
+
+<ul>
+
+<li><p>Download the latest <a href="http://www.bricolagecms.org/downloads/">Bricolage sources</a>. Decompress them into <i>/usr/local/bricolage</i>.</p>
+
+</li>
+<li><p>Change directories into /usr/local/bricolage/bin and run bric_pgimport as follows:</p>
+
+<pre><code>./bric_pgimport -u postgres -p postgres -d dbname -c -m db_user:db_password</code></pre>
+
+<p>Where &#39;dbname&#39; is the name you want the Bricolage database to be called in PostgreSQL, and &#39;db_user&#39; and &#39;db_password&#39; are the user name and password to be created in the PostgreSQL database, and under which the Bricolage application will run. Note that the -u argument must represent a PostgreSQL user with CREATE DATABASE and CREATE USER permissions. The &#39;db_user&#39; user will be created without these permissions (the &#39;dbname&#39; database will be owned by the user passed in via the -u argument), but will be granted full CREATE, DELETE, UPDATE, and SELECT permissions on all objects in the Bricolage database.</p>
+
+<p>See <a rel="section" href="../../../2.0/api/Bric/DBA.html" name="Bric::DBA">Bric::DBA</a> for more information on database security. You may want to alter the default security policy. Also, bric_import uses a TCP/IP connection so you may need to run postmaster with the <i>-i</i> option.</p>
+
+</li>
+<li><p>Configure Apache to use Bricolage. To have Bricolage run as the main server process on your Apache server, simply add the following two lines to your <i>httpd.conf</i> file (an example is provided in <i>conf/httpd.conf</i>):</p>
+
+<pre><code>PerlPassEnv BRICOLAGE_ROOT
+PerlModule Bric::App::ApacheConfig</code></pre>
+
+<p>Bricolage will automatically pass the necessary configuration directives to the Apache daemon. As of mod_perl 1.27, Bricolage uses Apache::ReadConfig to configure the httpd daemon. There is no httpd include file. If you wish to have Bricolage generate and use an httpd include file, or if you wish to manually configure your httpd daemon, set the <code>MANUAL_APACHE</code> directive in <i>conf/bricolage.conf</i>. This directive will force the startup process to write out the Bricolage virtual host configuration to <i><code>$BRICOLAGE_ROOT</code>/conf/vhosts.conf</i>, and then this file will be automatically rewritten and included on each startup operation. If you change this line</p>
+
+<pre><code>PerlModule Bric::App::ApacheConfig</code></pre>
+
+<p>to</p>
+
+<pre><code>PerlModule Bric::App::ApacheStartup</code></pre>
+
+<p>then only the contents of the <i>httpd.conf</i> file specified in <i>bricolage.conf</i> via the <code>APACHE_CONF</code> direcive will be passed to the httpd daemon.</p>
+
+<p>You can also configure Bricolage to run on a virtual host. See <a rel="subsection" href="Admin.html#CONFIGURATION" name="Bric::Admin">&quot;CONFIGURATION&quot;</a> below.</p>
+
+</li>
+<li><p>Start Apache. Use one of the scripts in scripts/ if you like. You can manually start it via the following command:</p>
+
+<pre><code>/usr/local/bricolage/bin/bric_apachectl start</code></pre>
+
+</li>
+<li><p>Try to hit the web server. If you&#39;re prompted for a login, you&#39;re in! If not, check the Apache error log to figure out what might have gone wrong.</p>
+
+<p>To start using Bricolage, log in as the default user. The user name is &quot;admin&quot; and the password is &quot;change me now!&quot;. This user is not special, so you can change it however you like. The first thing you should do is to <b>change the admin login password</b> so that others who download the Bricolage sources can&#39;t just use that login to get into <i>your</i> installation! Now use the admin login to create other user accounts.</p>
+
+</li>
+</ul>
+
+<h2 id="htmlArea-Optional-">htmlArea (Optional)</h2>
+
+<p>To install htmlArea, an optional application that offers WYSIWYG editing in the Bricolage UI, simply <a href="http://www.dynarch.com/projects/htmlarea/">download it</a>, decompress the files, and move them to the <i>comp/media/wysiwyg/htmlarea</i> directory in your Bricolage root.</p>
+
+<p>As of 2005-03-25, there is a bug in htmlArea regarding form handling that requires a patch. After installing, apply the patch while in your Bricolage root: <code>patch -p0 &lt; inst/patches/xinha.diff</code></p>
+
+<p>You will also need to enable the <code>ENABLE_WYSIWYG</code> and <code>WYSIWYG_EDITOR</code> <i>bricolage.conf</i> directives (see <a rel="subsection" href="Admin.html#UI-Configuration" name="Bric::Admin">UI Configuration</a>).</p>
+
+<h2 id="Xinha-Optional-">Xinha (Optional)</h2>
+
+<p>To install Xinha, an optional application that offers WYSIWYG editing in the Bricolage UI, simply <a href="http://www.xinha.org/">download it</a>, decompress the files, and move them to the <i>comp/media/wysiwyg/xinha</i> directory in your Bricolage root.</p>
+
+<p>You will also need to enable the <code>ENABLE_WYSIWYG</code> and <code>WYSIWYG_EDITOR</code> <i>bricolage.conf</i> directives (see <a rel="subsection" href="Admin.html#UI-Configuration" name="Bric::Admin">UI Configuration</a>).</p>
+
+<p>For Bricolage 2.0 you will need Xinha release 0.91beta or higher.</p>
+
+<h2 id="FCKeditor-Optional-">FCKeditor (Optional)</h2>
+
+<p>To install FCKeditor, an optional application that offers WYSIWYG editing in the Bricolage UI, simply <a href="http://sourceforge.net/projects/fckeditor/">download it</a>, decompress the files, and move them to the <i>comp/media/wysiwyg/fckeditor</i> directory in your Bricolage root.</p>
+
+<p>You will also need to enable the <code>ENABLE_WYSIWYG</code> and <code>WYSIWYG_EDITOR</code> <i>bricolage.conf</i> directives (see <a rel="subsection" href="Admin.html#UI-Configuration" name="Bric::Admin">UI Configuration</a>).</p>
+
+<p>If you intend to use FCKeditor&#39;s SpellerPages support for spellchecking, you&#39;ll need to change two files in the FCKeditor source to get it to work with Bricolage. First in <i>comp/media/wysiwyg/fckeditor/editor/dialog/fck_spellerpages/spellerpages/spellChecker.js</i>, change this line:</p>
+
+<pre><code>this.spellCheckScript = &#39;server-scripts/spellchecker.php&#39;;</code></pre>
+
+<p>To this:</p>
+
+<pre><code>this.spellCheckScript = &#39;server-scripts/spellchecker.pl&#39;;</code></pre>
+
+<p>And second, in <i>comp/media/wysiwyg/fckeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.pl</i>, you will likely need to change this line:</p>
+
+<pre><code>my $aspell_cmd = &#39;&quot;C:\Program Files\Aspell\bin\aspell.exe&quot;&#39;;</code></pre>
+
+<p>To point to the correct loation of aspell:</p>
+
+<pre><code>my $aspell_cmd = &#39;/usr/bin/aspell&#39;;</code></pre>
+
+<p>Execute <code>which aspell</code> on your system if you&#39;re not sure where <code>aspell</code> is. You will also need to modify a couple of lines from this file (although a patch has been submitted to the SpellerPages project, so it may be fixed by the time you read this). Change these lines:</p>
+
+<pre><code>print &lt;&lt;EOF;
+Content-type: text/html; charset=utf-8
+
+&lt;html&gt;
+&lt;head&gt;</code></pre>
+
+<p>To these:</p>
+
+<pre><code>print header, &lt;&lt;EOF;
+&lt;html&gt;
+&lt;head&gt;</code></pre>
+
+<p>And finally, you might also need to make the <i>spellchecker.pl</i> file executable:</p>
+
+<pre><code>chmod +x comp/media/wysiwyg/fckeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.pl</code></pre>
+
+<h2 id="JS-Quicktags-Optional-">JS-Quicktags (Optional)</h2>
+
+<p>To install JS-Quicktags, an optional JavaScript libary that off buttons to make adding tags to text eadier in the Bricolage UI, simply <a href="http://alexking.org/projects/js-quicktags/">download it</a>, decompress the files, and move them to the <i>comp/media/wysiwyg/js-quicktags</i> directory in your Bricolage root.</p>
+
+<p>You will also need to enable the <code>ENABLE_WYSIWYG</code> and <code>WYSIWYG_EDITOR</code> <i>bricolage.conf</i> directives (see <a rel="subsection" href="Admin.html#UI-Configuration" name="Bric::Admin">UI Configuration</a>).</p>
+
+<h2 id="GNU-Aspell-Optional-">GNU Aspell (Optional)</h2>
+
+<p>To use the spell-checking feature of htmlArea, the GNU Aspell library must be installed, along with the appropriate distionaries. These must be installed before the Text::Aspell module is installed from CPAN. <a href="http://aspell.net/">Download</a> GNU Aspell and the associated dictionaries.</p>
+
+<h1 id="Upgrading">Upgrading</h1>
+
+<p>If you&#39;re upgrading an installation of Bricolage that was previously installed via <code>make install</code>, then simply upgrade using <code>make upgrade</code>. If, however, you&#39;re upgrading an older installation of Bricolage that didn&#39;t have a build system, or it was simply used as-is from Git, you&#39;ll need to follow the directions below.</p>
+
+<p>To upgrade a manual installation of Bricolage, first set the <code>$BRICOLAGE_ROOT</code> environment variable to the root of your Bricolage installation if it&#39;s something other than the default (<i>/usr/local/bricolage</i>), e.g.:</p>
+
+<pre><code>export BRICOLAGE_ROOT=/opt/bricolage</code></pre>
+
+<p>Next, stop the server:</p>
+
+<pre><code>$BRICOLAGE_ROOT/bin/bric_apachectl stop</code></pre>
+
+<p>Save copies of your <i>bricolage.conf</i> and <i>httpd.conf</i> files, so that you don&#39;t overwrite them:</p>
+
+<pre><code>cp $BRICOLAGE_ROOT/conf/bricolage.conf $BRICOLAGE_ROOT/conf/bricolage.conf.old
+cp $BRICOLAGE_ROOT/conf/httpd.conf $BRICOLAGE_ROOT/conf/httpd.conf.old</code></pre>
+
+<p>Install the latest Bundle::Bricolage from CPAN to make sure that you have all the needed modules (or read through the list of required modules above and do it yourself).</p>
+
+<p>Delete all existing Mason object files and temporary files:</p>
+
+<pre><code>rm -rf $BRICOLAGE_ROOT/data/obj/bric_ui/*
+rm -rf /tmp/bricolage/*</code></pre>
+
+<p>Run the upgrade scripts needed for upgrading to the new version. The upgrade scripts are in the <i>inst/upgrade/</i> directory. Run each script in all of the version number directories in the order given in <i>inst/versions.txt</i>. For example, to upgrade from 1.6.13 to 1.8.1, run each of the scripts in <i>1.6.13/</i>, <i>1.7.5/</i>, <i>1.6.14/</i>, <i>1.8.0/</i>, and <i>1.8.1/</i> -- <b>in that order</b>. Furthermore, the scripts within each directory are run in alphabetical order.</p>
+
+<p>Next, copy in the new sources from the distribution into your Bricolage directory. Be sure <b>not</b> to copy example templates, as they may overwrite your own templates. You&#39;re best off moving the contents of <i>data/</i> out of the way.</p>
+
+<pre><code>mv data /tmp/bric_data_tmp
+cp -r /path/to/new/bricolage/* $BRICOLAGE_ROOT/
+mv /tmp/bric_data_tmp data</code></pre>
+
+<p>Now edit the new <i>bricolage.conf</i> file to match your old settings using the <i>bricolage.conf.old</i> settings you saved as a guide. Do the same thing with <i>httpd.conf</i>. Don&#39;t just copy the old settings back into place -- there may be new configuration variables that you&#39;ll need to set for the new version. See the <a rel="subsection" href="Admin.html#CONFIGURATION" name="Bric::Admin">&quot;CONFIGURATION&quot;</a> section below for details.</p>
+
+<p>Now, start up Bricolage and enjoy the new features!</p>
+
+<pre><code>$BRICOLAGE_ROOT/bin/bric_apachectl start</code></pre>
+
+<h2 id="Switching-to-Apache-2">Switching to Apache 2</h2>
+
+<p>As of version 2.0, Bricolage supports the Apache 2 Web server. If you&#39;d like to upgrade your existing, Apache 1-powered Bricolage install to run on Apache 2, first install Apache 2, mod_perl 2, and Apache2::Request (apreq 2). Then, just run <code>make upgrade</code> as usual, but select &quot;apache2&quot; instead of &quot;apache&quot;. Once the upgrade has finished, just execute these commands:</p>
+
+<pre><code>cd $BRICOLAGE_ROOT/conf
+mv httpd.conf httpd.conf.orig
+cp httpd.conf.def httpd.conf
+mv bricolage.conf bricolage.conf.orig
+cp bricolage.conf.def bricolage.conf</code></pre>
+
+<p>If you&#39;ve customized your <i>httpd.conf</i> or <i>bricolage.conf</i> settings, you will likely have to edit the new files to sync up with your original settings. Once that&#39;s done, just start Bricolage and you&#39;ll be good to go on Apache 2.</p>
+
+<h1 id="Configuration">Configuration</h1>
+
+<p>Configuration of Bricolage is handled via two interfaces. The first is the user interface, where application administrators can set preferences such as Time Zone and Date Format. The second interface -- and the one of interest to us here -- is the Bricolage configuration file, which you&#39;ll find at /usr/local/bricolage/conf/bricolage.conf. This file is designed for system configuration, and thus to be edited by system administrators -- in other words, the audience of for this document.</p>
+
+<p>The Bricolage configuration file contains a number of configuration options, each of which falls roughly into a number of categories, described below. Edit this document to tweak the functionality of Bricolage. The vast majority of configuration issues can be resolved by editing this document alone.</p>
+
+<p><b>Note:</b> Bricolage uses the <code>BRICOLAGE_ROOT</code> environment variable to determine where to find all of its libraries and configuration files. If this environment variable is not defined in the shell before starting Bricolage, Bricolage will default to &#39;/usr/local/bricolage&#39;. If you have installed Bricolage in any other location, you will need to set this environment variable before you start Bricolage or use any of its tools. The value of this environment variable is important for many of the configuration directives, as well. You will find it represented in this document as <code>$BRICOLAGE_ROOT</code>.</p>
+
+<p>And now, on with the descriptions of the Bricolage configuration directives.</p>
+
+<h2 id="Apache-Configuration">Apache Configuration</h2>
+
+<p>These settings relate the similarly-named Apache run-time configuration directives. (In fact, the descriptions here are largely cribbed from the Apache documentation.) Read the Apache documentation for more information on these and other Apache directives. Depending on your environment, changing some of these may help improve performance.</p>
+
+<p><b>Note:</b> These configuration settings are used directly in the Apache configuration file. Thus, advanced users can configure Apache themselves by editing the httpd.conf file directly. This is not recommended in most cases, however, as Bricolage uses Perl to configure Apache, and some of the configurations are used elsewhere, too. If you decide to edit the httpd.conf file yourself, however, be sure to also update the bricolage.conf file, so that the settings stay in sync.</p>
+
+<ul>
+
+<li><p><b>APACHE_BIN:</b> This directive sets the location of the Apache server binary. Defaults to <code>/usr/local/apache/bin/httpd</code> if not specified. This isn&#39;t portable, so we recommend you set it! Used only in bric_apachectl.</p>
+
+</li>
+<li><p><b>APACHE_CONF:</b> This directive sets the location of the Apache server configuration file. Defaults to <code>/usr/local/apache/conf/httpd.conf</code> if not specified. This isn&#39;t portable, so we recommend you set it! Used only in bric_apachectl.</p>
+
+</li>
+<li><p><b>LISTEN_PORT:</b> The TCP/IP Port on which the Bricolage server should listen for requests. Defaults to 80 if not specified. You must also tell Apache to listen on this port in the configuration file specified in <code>APACHE_CONF</code> (using Listen, Port, or BindAddress).</p>
+
+</li>
+<li><p><b>SSL_ENABLE:</b> Set this directive to enable SSL support. The possible values are &quot;Off&quot;, &quot;mod_ssl&quot;, or &quot;apache_ssl&quot;. The Apache OpenSSL interface (mod_ssl or apache_ssl) is an optional part of the Bricolage application. Not only does it enable secure logins to the system, but it also allows completely secure access to the entire application, should you need it (and not need to worry about the performance overhead). Make sure you&#39;ve followed the installation instructions for building a mod_ssl or apache_ssl. Disabled by default. <b>Note:</b> The <code>LISTEN_PORT</code> directive <i>must</i> be set to 80 if <code>SSL_ENABLE</code> is on. The Bricolage server will not start if <code>SSL_ENABLE</code> is on and <code>LISTEN_PORT</code> is set to a value other than 80.</p>
+
+</li>
+<li><p><b>SSL_CERTIFICATE_FILE</b>: If you have enabled SSL, use this directive to set the location of the SSL certificate file. This file will be used by the Bricolage virtual host (if specified via the <code>NAME_VHOST</code> and <code>VHOST_SERVER_NAME</code> parameters) for the SSL encryption support. Use in tandem with the <code>SSL_CERTIFICATE_KEY_FILE</code> direcive Defaults to an empty value.</p>
+
+</li>
+<li><p><b>SSL_CERTIFICATE_KEY_FILE</b>: If you have enabled SSL, use this directive to set the location of the SSL certificate key file. This file will be used by the Bricolage virtual host (if specified via the <code>NAME_VHOST</code> and <code>VHOST_SERVER_NAME</code> parameters) for the SSL encryption support. Use in tandem with the <code>SSL_CERTIFICATE_FILE</code> direcive. Defaults to an empty value.</p>
+
+</li>
+<li><p><b>ALWAYS_USE_SSL:</b> With <code>SSL_ENABLE</code> set to &quot;mod_ssl&quot; or &quot;apache_ssl&quot;, this directive removes the choice of using SSL from the user&#39;s control and forces all access to the application server to use the https protocol. This approach may be valuable in those organizations that need to guarantee 100% encrypted access to Bricolage and can afford the overhead. Disabled by default. If you&#39;re using Briciolage behind a reverse proxy server and using SSL, you will also have to enable <b>ALWAYS_USE_SSL</b> so that recirects will work properly.</p>
+
+</li>
+<li><p><b>SKIP_SSL_REDIRECT:</b> When SSL is enabled and <code>ALWAYS_USE_SSL</code> is not, Bricolage will switch back and forth between SSL and non-SSL connections as appropriate. Mostly this means that it uses SSL for pages with password information, and non-SSL otherwise. If you don&#39;t want Bricolage to do this kind of switching, enable <code>SKIP_SSL_REDIRECT</code>. This will be most useful if Bricolage lives behind a reverse proxy server that handles the SSL stuff itself.</p>
+
+</li>
+<li><p><b>NAME_VHOST:</b> The IP address on which the virtual host name specified in the <code>VHOST_SERVER_NAME</code> directive will respond. Note that the syntax for this directive is identical to the syntax for Apache&#39;s <code>NameVirtualHost</code> directive. Also note that the VirtualHost record that Bricolage creates will be for <code>NAME_VHOST . &#39;:&#39; . LISTEN_PORT</code>, so if you want to identify your own virtual hosts to listen for on the same IP address, you will need to include the port number in your <code>VirtualHost</code> declarations. Also note that if the <code>SSL_ENABLE</code> is turned on, then a <code>NAME_VHOST . &#39;:443&#39;</code> VirtualHost directive will also be created by Bricolage. The upshot is to remember to always use the port number in your own VirtualHost declarations. Defaults to &quot;*&quot; if not specified.</p>
+
+</li>
+<li><p><b>VHOST_SERVER_NAME:</b> The host name under which Bricolage will run as a virtual host in the Apache server. Defaults to the default host if not specified.</p>
+
+</li>
+<li><p><b>CHECK_PROCESS_SIZE:</b> Turn on this feature to limit the size of Apache child processes. <code>MAX_PROCESS_SIZE</code> determines the maximum size in KBs to which the processes will be allowed to grow. <code>CHECK_FREQUENCY</code> determines how many requests will be handled before a process&#39; candidacy for termination is evaluated. <code>MIN_SHARE_SIZE</code> Indicates the minimum amount of shared memory the process must employ to not be a candidate for termination. <code>MAX_UNSHARED_SIZE</code> Sets a limit on the amount of unshared memory a process may consume to not be a candidate for termination. Set <code>MIN_SHARE_SIZE</code> or <code>MAX_UNSHARE_SIZE</code> to &#39;0&#39; to disable either respective test. All size settings are in KBs. See <b>Apache::SizeLimit</b> for more information.</p>
+
+</li>
+<li><p><b>MANUAL_APACHE:</b> Choose the Apache configuration method. As of mod_perl 1.27, Bricolage uses Apache::ReadConfig to configure the httpd daemon. If you wish have Bricolage generate an Apache configuration include file, or if you wish to manually configure your Apache server for Bricolage, set this directive to a true value. Doing so will cause Bricolage to generate <i><code>$BRICOLAGE_ROOT</code>/conf/vhosts.conf</i> and include it in the configuration using the Apache <code>Include</code> directive. If no changes are made to <i><code>$BRICOLAGE_ROOT</code>/conf/httpd.conf</i>, then this file will be automatically included on each startup by the last line of the <i>httpd.conf</i> file:</p>
+
+<pre><code>PerlModule Bric::App::ApacheConfig</code></pre>
+
+<p>If this line is changed to</p>
+
+<pre><code>PerlModule Bric::App::ApacheStartup</code></pre>
+
+<p>then only the contents of the <i>httpd.conf</i> specified by the <code>APACHE_CONF</code> directive will be passed to the httpd daemon -- Bricolage will do no dynamic configuration. In such a case, you&#39;ll want to either <code>Include</code> the generated <i>vhosts.conf</i> file (which you can edit as you wish), or incorporate its contents directly into your <i>httpd.conf</i> file.</p>
+
+<p>Note that under Apache 2, the <i>vhosts.conf</i> file is <b>always</b> created, regardles of the setting of <code>MANUAL_APACHE</code>.</p>
+
+</li>
+<li><p><b>ENABLE_GZIP:</b> Turn on this feature if you have the mod_gzip Apache 1 module or the mod_deflate Apache 2 module installed and loaded in your <i>httpd.conf</i> file and want it to compress the the UI pages. Pages will be as much as fifteen times smaller, with minimal extra server load, resulting in faster load times and less bandwidth consumption. Disabled by default.</p>
+
+</li>
+</ul>
+
+<h2 id="Database-Configuration">Database Configuration</h2>
+
+<p>The database configuration directives tell Bricolage where to find its data, and how to get it. Specifically, you want to assign to these directives the values you passed to the <code>-d</code> and <code>-m</code> arguments of <code>pgimport</code> (see above).</p>
+
+<ul>
+
+<li><p><b>DB_NAME:</b> The name of the Bricolage database. Defaults to &quot;sharky&quot; if not specified.</p>
+
+</li>
+<li><p><b>DB_HOST:</b> The host name of the server that hosts the Bricolage database. Defaults to the relevant value used by the DBD driver if not specified.</p>
+
+</li>
+<li><p><b>DB_PORT:</b> The port on which the server database server that hosts the Bricolage database listens. Defaults to the relevant value used by the DBD driver if not specified.</p>
+
+</li>
+<li><p><b>DBI_USER:</b> The name of the PostgreSQL user as whom Bricolage should connect to the DB_NAME database. This should be the same as the username passed to the first half of the -m argument to <code>pgimport</code> (see above). Defaults to &quot;castellan&quot; if not specified.</p>
+
+</li>
+<li><p><b>DBI_PASS:</b> The password of the PostgreSQL user as whom Bricolage should connect to the DB_NAME database. This should be the same as the password passed to the second half of the -m argument to <code>pgimport</code> (see above). Defaults to &quot;nalletsac&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="System-User-Configuration">System User Configuration</h2>
+
+<p>This is the name and group of the system user as whom Bricolage and Apache run.</p>
+
+<ul>
+
+<li><p><b>SYS_USER:</b> The system user as whom Bricolage runs. Must be the same as the <code>User</code> directive used in the Apache configuration file specified in the <code>APACHE_CONF</code> configuration directive. Defaults to &quot;nobody&quot; if not specified.</p>
+
+</li>
+<li><p><b>SYS_GROUP:</b> The system group of which SYS_USER is a member. Must be the same as the <code>Group</code> directive used in the Apache configuration file specified in the <code>APACHE_CONF</code> configuration directive. Defaults to &quot;nobody&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Temp-Directory-Configuration">Temp Directory Configuration</h2>
+
+<ul>
+
+<li><p><b>TEMP_DIR:</b> The system will create a sub-directory below this directory where Bricolage will store temporary files. Must be writable by <code>SYS_USER</code> described above. May be overridden by a <code>$BRIC_TEMP_DIR</code> environment variable. Defaults to the return value from <code>File::Spec-&gt;tempdir</code> if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Mason-Configuration">Mason Configuration</h2>
+
+<p>There are two parts to the Mason configuration. The first is for the Bricolage UI environment, and thus it needs to point to the Bricolage UI Mason elements. The second is for the Bricolage Publish environment, which is a separate environment from the Bricolage UI environment. The directives for the Publish environment will need to point to the directories where Bricolage Templates are stored.</p>
+
+<ul>
+
+<li><p><b>MASON_COMP_ROOT:</b> Mason&#39;s element root. This is the directory in which all the Bricolage UI elements are stored. Defaults to <code>$BRICOLAGE_ROOT/comp</code> if not specified.</p>
+
+</li>
+<li><p><b>MASON_DATA_ROOT:</b> Mason&#39;s data root. This where Mason stores the Bricolage UI elements once they&#39;ve been compiled. Defaults to <code>$BRICOLAGE_ROOT/data</code> if not specified. Make sure that SYS_USER has permission to write to this directory.</p>
+
+</li>
+<li><p><b>MASON_STATIC_SOURCE:</b> Set this directive to a true value (1, Yes, or On) to enable static source caching in the Bricolage UI. This can save many stats per request, and thus increase the performance of Bricolage. Disabled by default.</p>
+
+</li>
+</ul>
+
+<h2 id="Burner-Configuration">Burner Configuration</h2>
+
+<ul>
+
+<li><p><b>BURN_ROOT:</b> The staging area directory where the burn system places content files upon publication or preview. Defaults to <code>$MASON_DATA_ROOT/burn</code> if not specified. Make sure that SYS_USER has permission to write to this directory.</p>
+
+</li>
+<li><p><b>TEMPLATE_QA_MODE:</b> When enabled, this directive causes more verbose error messages to be displayed when there is an exception thrown during a publish or preview. This may be useful for debugging templates while developing them. Defaults to off if unspecified.</p>
+
+</li>
+<li><p><b>INCLUDE_XML_WRITER:</b> This directive, when switched on, causes Bricolage to instantiate an XML::Writer object and to include it in all templates as a global variable named $writer. See the XML::Writer documentation for more information. Defaults to off if unspecified.</p>
+
+<p><b>Note</b>: Only the Mason burner supports XML::Writer.</p>
+
+</li>
+<li><p><b>XML_WRITER_ARGS:</b> If INCLUDE_XML_WRITER is switched on, then this directive is passed to the instantiation method of the XML::Writer object. All arguments to XML::Writer-&gt;new() are supported except the OUTPUT argument, which Bricolage handles internally to ensure that data is sent directly to the template&#39;s output file. Defaults to no arguments if not specified.</p>
+
+<p><b>Note</b>: Only the Mason burner supports XML::Writer.</p>
+
+</li>
+<li><p><b>MASON_INTERP_ARGS:</b> This directive passes arguments to the <a href="http://search.cpan.org/perldoc?HTML::Mason::Interp">HTML::Mason::Interp</a> constructor in <a rel="section" href="../../../2.0/api/Bric/Util/Burner/Mason.html" name="Bric::Util::Burner::Mason">Bric::Util::Burner::Mason</a>&#39;s <code>burn_one</code> method, which means it affects the Mason interpreter for your templates. See <a href="http://search.cpan.org/perldoc?HTML::Mason::Interp">HTML::Mason::Interp</a> for the list of parameters you can pass to the <code>new</code> method. Defaults to no arguments if not specified.</p>
+
+<p><b>Note</b>: Only the Mason burner supports the HTML::Mason::Interp arguments.</p>
+
+<p><b>TT_OPTIONS:</b> This directive passes arguments to the <a href="http://search.cpan.org/perldoc?Template">Template</a> constructor in <a rel="section" href="../../../2.0/api/Bric/Util/Burner/TemplateToolkit.html" name="Bric::Util::Burner::TemplateToolkit">Bric::Util::Burner::TemplateToolkit</a>&#39;s <code>burn_one</code> method, which means it affects the Template Toolkit object for your templates. See <a href="http://search.cpan.org/perldoc?Template">Template</a> for the list of parameters you can pass to the <code>new</code> method. Defaults to no arguments if not specified.</p>
+
+<p><b>Note</b>: Only the Template Tooolkit burner supports the Template Toolkit options.</p>
+
+</li>
+</ul>
+
+<h2 id="Authentication-Configuration">Authentication Configuration</h2>
+
+<p>These directives set rules for Bricolage user authentication.</p>
+
+<ul>
+
+<li><p><b>AUTH_ENGINES:</b> A space-delimited list of the authentication engines to try, in the order listed, when a user attemptes to login to Bricolage. The supported engines are &quot;Internal&quot;, for Bricolage&#39;s default, internal authentication scheme, and &quot;LDAP&quot;, for authentication against an LDAP server. If you include &quot;LDAP&quot; in your list of authentication engines, you must also configure the <a href="http://search.cpan.org/perldoc?LDAP directives#LDAP-Configuration">&quot;LDAP Configuration&quot; in LDAP directives</a>. Defaults to &quot;Internal&quot;.</p>
+
+<p>Note that the <code>AUTH_ENGINES</code> directive can contain any number of supported authentication engines, and each will be used by the user class in turn. For example, if have this line in <i>bricolage.conf</i>:</p>
+
+<pre><code>AUTH_ENGINES = Internal LDAP</code></pre>
+
+<p>Then, when the <code>check_password()</code> method is called on a user object, the user class will first attmpt to authenticate the user using <a rel="section" href="../../../2.0/api/Bric/Util/AuthInternal.html" name="Bric::Util::AuthInternal">Bric::Util::AuthInternal</a> module&#39;s <code>authenticate()</code> method. If it returns true, then <code>check_password()</code> will return true and the user will be considered to be authenticated. If <code>authenticate()</code> returns false, the user class will then call the <code>authenticate()</code> method on the <a rel="section" href="../../../2.0/api/Bric/Util/AuthLDAP.html" name="Bric::Util::AuthLDAP">Bric::Util::AuthLDAP</a> module, and return true or false depending on whether the call to the <code>authenticate()</code> method returns true or false.</p>
+
+<p>On the other hand, if you have this line in <i>bricolage.conf</i>:</p>
+
+<pre><code>AUTH_ENGINES = LDAP Internal</code></pre>
+
+<p>Then the user class will attempt to authenticate using the LDAP auth module and then fall back to the Internal auth module if the LDAP authentication fails.</p>
+
+</li>
+<li><p><b>AUTH_TTL:</b> The amount of time, in seconds, a user is allowed to be idle before he/she is automatically logged out. Defaults to 8 hours (28,800 seconds) if not specified.</p>
+
+</li>
+<li><p><b>AUTH_SECRET:</b> A random string that&#39;s used to encrypt the authentication cookie information in a double-MD5 hashing scheme. It&#39;s a good idea to change this value periodically so that anyone who might have seen it before can&#39;t reverse-engineer the authentication cookie. If you&#39;re running the distribution monitor (see below) on a different machine, be sure that this directive is exactly the same as on the machine running the Bricolage distribution server. Defaults to the following string if not specified:</p>
+
+<pre><code>^eFH5D,~3!f9o&amp;3f_=dwePL3f:/.Oi|FG/3sd9=45oi%8GF*)4#0gn3)34tf\`3~fdIf^ N:</code></pre>
+
+</li>
+<li><p><b>LOGIN_LENGTH:</b> The minimum length of login name allowed to users. Defaults to &quot;5&quot; if not specified.</p>
+
+</li>
+<li><p><b>PASSWD_LENGTH:</b> The minimum length of password allowed to users. Note that passwords can be of infinite length. Defaults to &quot;5&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="LDAP-Configuration">LDAP Configuration</h2>
+
+<p>These directives only need to be configured if you intend to use LDAP configuration with Bricolage, and have thus included &quot;LDAP&quot; in the list of authentication engines in the <code>AUTH_ENGINES</code> directive.</p>
+
+<p>Note that if you use LDAP authentication, changing your password in Bricolage will not change your password in the LDAP server. If you&#39;re also using Internal authentication, the Bricolage password will be changed. But if you&#39;re not using Internal authentication with LDAP authentication, then no password will be changed at all.</p>
+
+<p>Furthermore, when you use LDAP authentication, the users must already exist in Bricolage with the same unique username as in the LDAP database. When you login to Bricolage with LDAP support enabled, the user object is first instantiated by looking it up by username. Then the authentication is sent to the LDAP server. If a user exists in the LDAP server but not in Bricolage, she will not be able to authenticate.</p>
+
+<p>You can further limit who can authenticate to Bricolage by adding their user DNs to a single LDAP group. See the <code>LDAP_GROUP</code> and <code>LDAP_MEMBER_ATTR</code> directives below for more information.</p>
+
+<ul>
+
+<li><p><b>LDAP_SERVER:</b> The domain name or IP address of the server running the LDAP service. Defaults to &quot;localhost&quot;.</p>
+
+</li>
+<li><p><b>LDAP_VERSION:</b> The version of the LDAP standard supported by the server specified in the <code>LDAP_SERVER</code> directive. Defaults to 3.</p>
+
+</li>
+<li><p><b>LDAP_USER and LDAP_PASS:</b> By default, Bricolage will bind to the LDAP server anonymously before attempting to authenticate a user. If your LDAP server does not allow anonymous bindings, set <code>LDAP_USER</code> to the DN of a user who can bind to the LDAP server and search for users. Set <code>LDAP_PASS</code> to the password for that user. If an anonymous bind can search for users, leave these two directives unspecified or set to 0 (zero). Both are unspecified by default.</p>
+
+</li>
+<li><p><b>LDAP_BASE:</b> The base DN to use when searching for user records, usually something like &quot;ou=Users,dc=example,dc=com&quot;. Defaults to an empty string.</p>
+
+</li>
+<li><p><b>LDAP_UID_ATTR:</b> The attribute of user records that contains the user ID. Defaults to &quot;uid&quot;.</p>
+
+</li>
+<li><p><b>LDAP_FILTER:</b> A filter to use when searching for user records. Defaults to &quot;(objectclass=*)&quot;.</p>
+
+</li>
+<li><p><b>LDAP_GROUP and LDAP_MEMBER_ATTR:</b> If you&#39;d like to allow only the members of a particular LDAP group to login to Bricolage, set <code>LDAP_GROUP </code> to the DN of that group (Something like &quot;cn=Bricolage,ou=Group,dc=example,dc=com&quot;), and set <code>LDAP_MEMBER_ATTR</code> to the name of the Attribute of that group that represents members, such as the default, &quot;uniqueMember&quot;. If these directives are not specified or are set to 0 (Zero). <code>LDAP_GROUP</code> is unspecified by default.</p>
+
+</li>
+<li><p><b>LDAP_TLS and LDAP_SSL_VERSION:</b> Enable this boolean directive if your LDAP server supports TLS and you&#39;d like Bricolage to use encrypted communications with the LDAP server. Disabled by default. Set <code>LDAP_SSL_VERSION</code> to the version of SSL supported by your LDAP server. Defaults to 3.</p>
+
+</li>
+</ul>
+
+<h2 id="Distribution-Configuration">Distribution Configuration</h2>
+
+<p>These directives affect the how distribution is handled by Bricolage. There are two basic ways to handle distribution. The first, default approach is to let the Bricolage application server also handle distribution. In this case, the same Apache processes that handle the UI will also handle distribution responsibilities. The second approach is to set up a separate Apache server just to handle distribution. That server will need access to <code>$BRICOLAGE_ROOT/stage</code> in order to read the files there and distribute them elsewhere. Making <code>$BRICOLAGE_ROOT/stage</code> an NFS mount will do the trick.</p>
+
+<ul>
+
+<li><p><b>ENABLE_DIST:</b> This directive indicates whether the Bricolage server will also handle distribution responsibilities. If set to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot;, the Bricolage server will handle distribution. If set to any other value, it will not. In this latter case, be sure you set up another server to do it. Note that this directive has no effect on previews, as those need to be immediate and will thus always be handled by the Bricolage server. Defaults to &quot;1&quot; if not specified.</p>
+
+</li>
+<li><p><b>DIST_ATTEMPTS:</b> This directive tells the distribution engine how many times to attempt to distribute a resource before giving up. This number can range from &quot;1&quot; to &quot;10&quot;, and defaults to &quot;3&quot; if not specified.</p>
+
+</li>
+<li><p><b>PREVIEW_LOCAL:</b> This directive tells Bricolage to use its own Apache server to preview stories. If set to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot;, Bricolage will use its own Apache server to serve preview pages (using a directory prefix from the root). If it&#39;s set to any other value, it will use a server from a destination with the &#39;Preview&#39; checkbox checked. For large Bricolage installations where performance is important, we recommend that you use a separate server for previews, as using the Bricolage server itself adds a fair bit of overhead to every request -- including requests outside of the preview directory. Defaults to &quot;1&quot; if not specified.</p>
+
+</li>
+<li><p><b>PREVIEW_MASON:</b> This directive tells Bricolage to use Mason for local story previews. If set to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot;, Bricolage will use its own Apache server and Mason to serve preview pages. If it&#39;s set to any other value, it will not use Mason for local previews. For large Bricolage installations, we recommend that you not use Bricolage&#39;s built-in previewing support (see above), and even when you do, enabling Mason for local previews adds even more overhead to every request -- including requests outside of the preview directory. Defaults to &quot;0&quot; if not specified, and has no affect unless the PREVIEW_LOCAL directive has been activated (see above).</p>
+
+</li>
+<li><p><b>DEF_MEDIA_TYPE:</b> Designates the default media type for assets where Bricolage cannot ascertain the media type. The value of this directive must be present in the database -- see Bric::Util::MediaType for more information. Defaults to &quot;text/html&quot; if not specified.</p>
+
+</li>
+<li><p><b>ENABLE_SFTP_MOVER:</b> This directive indicates whether the Bricolage server may distribute resources using the SFTP mover. Setting this to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot; will enable the SFTP mover. In order to use the SFTP mover, you must manually install <a href="http://www.libssh2.org/">libssh2</a>. You will also need to install the Net::SSH2 module from the CPAN. If you&#39;ve installed your own SSL toolkit such as OpenSSL, make sure that libssh2 is using the same version as your Bricolage instance.</p>
+
+<p>Login to the remote server in order to initialize <i>~/.ssh/known_hosts</i> before using the SFTP mover. You might also need to create the directory <i>/.ssh</i> on the Bricolage server (and possibly on the destination server, too) with write permission for &quot;nobody&quot;, in case nobody&#39;s home directory is something like <i>/bin/false</i> and ssh falls back to <i>/</i> as the home directory).</p>
+
+</li>
+<li><p><b>SFTP_MOVER_CIPHER:</b> This directive forces the SFTP mover (if enabled by the <code>ENABLE_SFTP_MOVER</code> directive) to use a particular encryption cipher. This can be useful for tuning SFTP distribution for speed. The default is 0, which allows the default cipher to be used. Consult the Net::SSH2 documentation for a complete list of supported ciphers for SSH-2. As of this writing, the suppported ciphers are &quot;aes256-cbc&quot;, &quot;aes192-cbc&quot;, &quot;aes128-cbc&quot;, &quot;blowfish-cbc&quot; &quot;arcfour&quot;, &quot;cast128-cbc&quot;, &quot;3des-cbc&quot; and &quot;none&quot;. The default SSH-2 cipher is &quot;aes256-cbc&quot;.</p>
+
+</li>
+<li><p><b>SFTP_KEY_TYPE, SFTP_PUBLIC_KEY_FILE, and SFTP_PRIVATE_KEY_FILE:</b> These directives set the key-based authentication variables. As of this writing, Net::SSH2 supports SFTP_KEY_TYPE values of &#39;ssh-rsa&#39; and &#39;ssh-dss&#39;. You may need to adjust the permissions of the key files so they are readable by <code>SYS_USER</code>. The username and private key password (if any) must be entered in the Bricolage interface when setting up the destination.</p>
+
+</li>
+<li><p><b>ENABLE_WEBDAV_MOVER:</b> Bricolage also supports resource distribution through the WebDAV protocol. Set this directive to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot; to enable it. You need to have installed HTTP::DAV from the CPAN, in order to use WebDAV from Bricolage. Please note that currently due to restrictions in the perl www client library (LWP), a resource must be fully loaded into memory before being uploaded to the WebDAV server. It&#39;s recommended not to use the WebDAV transport to transfer large files, such as movies. Check the <a href="http://www.webdav.org/">WebDAV site</a> for information on the WebDAV protocol.</p>
+
+</li>
+<li><p><b>QUEUE_PUBLISH_JOBS:</b> This directive indicates that all publishing should be run from a queue. If this is set to &quot;On&quot; or &quot;Yes&quot; or &quot;1&quot; then a request for publication either from a publish desk or from the story profile page will result in the creation of a Bric::Util::Job::Pub object, which will be tracked in the job list. Publish jobs can fail on <code>DIST_ATTEMPTS</code> or more errors, wether caused by a template error or some other fault. In this case they will be left in the queue but marked failed to prevent further execution attempts, and the error message will be stored for debugging.</p>
+
+<p>This feature can be used with either <a rel="section" href="../../../2.0/api/bric_queued.html" name="bric_queued">bric_queued</a> or with a specially tuned instance of Bricolage to limit the system resources given over to publishing.</p>
+
+<p>The new queue daemon, <i>bric_queued</i>, always executes publish jobs one at a time, while maintaining a seperate thread for distribution jobs.</p>
+
+<p>If you prefer to run publish jobs from the queue concurrently, you can still control the use of system resources by running a second instance of Bricolage, setting the Apache MaxClients configuration directive to control the number of Apache processes which will be used for publishing, and thus the amount of memory and processor cycles.</p>
+
+</li>
+<li><p><b>FTP_UNLINK_BEFORE_MOVE:</b> This directive must be set to Yes for some FTP and SFTP servers (e.g. pure-ftpd has been reported to need this and sshd less then version 5 requires this) to correctly handle uploads of already existing files: when publishing via FTP, Bricolage first creates a temporary file, than moves this temp file over the existing, older file, overwriting it. Some servers do not support renaming to existing files, so the original one must be deleted first.</p>
+
+</li>
+<li><p><b>PUBLISH_RELATED_ASSETS:</b> Set <code>PUBLISH_RELATED_ASSETS</code> to no/off/0 so that, when publishing from a publish desk, related assets will not be published. Defaults to &quot;yes&quot;.</p>
+
+</li>
+<li><p><b>PUBLISH_RELATED_FAIL_BEHAVIOR:</b> When <code>PUBLISH_RELATED_ASSETS</code> is enabled, the publish process will fail if any of the related assets cannot be published automatically, due to being checked out or not on a publish desk. If you want the process to just supply warnings but otherwise allow the publish to succeed, then set <code>PUBLISH_RELATED_FAIL_BEHAVIOR</code> to &quot;warn&quot;. Defaults to &quot;fail&quot;.</p>
+
+</li>
+</ul>
+
+<h2 id="UI-Configuration">UI Configuration</h2>
+
+<ul>
+
+<li><p><b>DISABLE_NAV_LAYER:</b> Rather than have the UI&#39;s left side navigation menu rendered in its own separate layer, make it a part of the raw HTML of the page. This may be necessary if you encounter problems with the side navigation layer in your browser. Note that by setting this directive to a true value, any changes made to a form in the UI will be lost by clicking a menu item rather than the &quot;Save&quot; button. Defaults to &quot;0&quot; if not specified.</p>
+
+</li>
+<li><p><b>ALLOW_WORKFLOW_TRANSFER:</b> Allow assets to be transfered across workflows via shared desks. By default, a desk that is shared between workflows appears in both workflows, but any asset on that desk can only be transfered to other desks in the workflow from which the asset originated. To allow assets to optionally be able to move to desks in any of the workflows a desk is a member of, set this directive to &quot;Yes&quot;, &quot;On&quot; or &quot;1&quot;. Defaults to &quot;Off&quot; if not specified.</p>
+
+</li>
+<li><p><b>FULL_SEARCH:</b> Enables Bricolage to perform sub-string searches in its database queries, rather than merely to search at the beginning of a string. Full sub-string searches are more expensive, since they cannot use database indexes, but that may not matter if there are few records in your database. Many users find the sub-string searches to be more intuitive, so enable it if you find the trade-off to be worth it. Defaults to &quot;Off&quot; if not specified.</p>
+
+</li>
+<li><p><b>BLOB_SEARCH:</b> Allows the <code>data_text</code> parameter to the <code>list()</code> and friends methods of <a rel="section" href="../../../2.0/api/Bric/Biz/Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a> and <a rel="section" href="../../../2.0/api/Bric/Biz/Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a> to search large fields (such as paragraphs) as well as short fields (like headers). Note that this can make such searches much more expensive if you have more than a few thousand paragraph-type fields in your documents. Defaults to &quot;Off&quot; if not specified.</p>
+
+</li>
+<li><p><b>ALLOW_ALL_SITES_CX:</b> Allow users to select &quot;All Sites&quot; from their site context menu. This will enable them to see the workflows for all sites to which they have at least READ access. Defaults to &quot;Off&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Media-Configuration">Media Configuration</h2>
+
+<ul>
+
+<li><p><b>AUTO_PREVIEW_MEDIA</b>. This directive determines whether files uploaded to Media documents are automatically distributed to all relevant preview servers when the media document is saved, or whether they must be previewed manually after they&#39;re uploaded. Defaults to &quot;Off&quot; if not specified.</p>
+
+</li>
+<li><p><b>MEDIA_UPLOAD_LIMIT:</b> Set this to a number, so that no files larger than that number of kilobytes can be uploaded. Defaults to 0, which means no limit.</p>
+
+</li>
+<li><p><b>MEDIA_UNIQUE_FILENAME:</b> When this directive is enabled, Bricolage will generate a unique eight-character MD5 hash as the name of each new media file. The file name suffix will be retained as it was loaded. Disabled by default.</p>
+
+</li>
+<li><p><b>MEDIA_FILENAME_PREFIX:</b> When set, uses the value as a character string to prefix to unique media filenames. Disabled by default.</p>
+
+</li>
+</ul>
+
+<h2 id="UI-Configuration1">UI Configuration</h2>
+
+<ul>
+
+<li><p><b>YEAR_SPAN_BEFORE and YEAR_SPAN_AFTER:</b> These directives enable you to control how many years before and after the current year to display in the list of years in the date and time select widget. The default values are 10 for each, meaning that if the current year is 2003, then the date span will be from 1993 to 2013.</p>
+
+</li>
+<li><p><b>CATEGORY_MIN_CHARS AND CATEGORY_MIN_CHARS_TMPL:</b> These directives tell the UI how many characters the user needs to type in before it suggests a list of possible options. By default this is 1, since to begin with a Bricolage intallation wont have many categories. But if you start to find that it&#39;s taking to long to suggest categories because there are just too many (and they all start with the first character, &quot;/&quot;), try changing it to 2.</p>
+
+</li>
+<li><p><b>ENABLE_CATEGORY_BROWSER:</b> Category browser setting. Enable this directive to make the Media and Story profiles use the category browser. This is useful if you have a lot of categories, as it prevents them all from being loaded into a big select list each time you edit a Media or Story document. Disabled by default.</p>
+
+</li>
+<li><p><b>RELATED_MEDIA_UPLOAD:</b> This directive allows users to upload media files directly into a related media element profile if they have permission to create media and to access a media workflow. This makes it a much simpler process for editors to quickly associate media with story documents. The uploaded media files will be created based on the media type element selected from a select list, and given the same category, cover date, and priority as the current document. Enabled by default.</p>
+
+</li>
+<li><p><b>ENABLE_WYSIWYG and WYSIWYG_EDITOR:</b> These directives control the WYSIWYG editor in Bricolage. Currently supported are htmlArea, Xinha (a fork of htmlArea), and FCKeditor. After installing the editor of your choice (see dependency info above), set <code>WYSIWYG_EDITOR</code> appropriately.</p>
+
+</li>
+<li><p><b>HTMLAREA_TOOLBAR and XINHA_TOOLBAR:</b> You can specify exactly what shows up in your Xinha/htmlArea toolbar and how it is displayed. This is useful for ensuring that content remains separate from presentation. For example, you usually won&#39;t want to include the font control buttons, as these are generally best managed in templates. Here is a complete list of the available buttons:</p>
+
+<dl>
+
+<dt>fontname</dt>
+<dd>
+
+</dd>
+<dt>fontsize</dt>
+<dd>
+
+</dd>
+<dt>formatblock</dt>
+<dd>
+
+</dd>
+<dt>bold</dt>
+<dd>
+
+</dd>
+<dt>italic</dt>
+<dd>
+
+</dd>
+<dt>underline</dt>
+<dd>
+
+</dd>
+<dt>strikethrough</dt>
+<dd>
+
+</dd>
+<dt>subscript</dt>
+<dd>
+
+</dd>
+<dt>superscript</dt>
+<dd>
+
+</dd>
+<dt>copy</dt>
+<dd>
+
+</dd>
+<dt>cut</dt>
+<dd>
+
+</dd>
+<dt>paste</dt>
+<dd>
+
+</dd>
+<dt>undo</dt>
+<dd>
+
+</dd>
+<dt>redo</dt>
+<dd>
+
+</dd>
+<dt>linebreak</dt>
+<dd>
+
+</dd>
+<dt>justifyleft</dt>
+<dd>
+
+</dd>
+<dt>justifycenter</dt>
+<dd>
+
+</dd>
+<dt>justifyright</dt>
+<dd>
+
+</dd>
+<dt>justifyfull</dt>
+<dd>
+
+</dd>
+<dt>lefttoright</dt>
+<dd>
+
+</dd>
+<dt>righttoleft</dt>
+<dd>
+
+</dd>
+<dt>insertorderedlist</dt>
+<dd>
+
+</dd>
+<dt>insertunorderedlist</dt>
+<dd>
+
+</dd>
+<dt>outdent</dt>
+<dd>
+
+</dd>
+<dt>indent</dt>
+<dd>
+
+</dd>
+<dt>forecolor</dt>
+<dd>
+
+</dd>
+<dt>hilitecolor</dt>
+<dd>
+
+</dd>
+<dt>inserthorizontalrule</dt>
+<dd>
+
+</dd>
+<dt>createlink</dt>
+<dd>
+
+</dd>
+<dt>insertimage</dt>
+<dd>
+
+</dd>
+<dt>inserttable</dt>
+<dd>
+
+</dd>
+<dt>htmlmode</dt>
+<dd>
+
+</dd>
+<dt>popupeditor</dt>
+<dd>
+
+</dd>
+<dt>showhelp</dt>
+<dd>
+
+</dd>
+<dt>about</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>In addition to the button specifications, Xinha and htmlArea configurations support a few other toolbar configuration options:</p>
+
+<dl>
+
+<dt>space</dt>
+<dd>
+
+<p>Inserts a space of 5 pixels (the width is configurable by external CSS) at the current position in the toolbar.</p>
+
+</dd>
+<dt>separator</dt>
+<dd>
+
+<p>Inserts a small vertical separator, for visually grouping related buttons.</p>
+
+</dd>
+<dt>linebreak</dt>
+<dd>
+
+<p>Starts a new line in the toolbar. Subsequent controls will be inserted on the new line.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p><b>FCKEDITOR_CONFIG:</b> You can fully control FCKeditor configuration using this directive. Simply enter all of the JavaScript code to configur FCKeditor on a single line, and Bricolage will tell FCKeditor to use it. Consult the <a href="http://wiki.fckeditor.net/">FCKeditor documenation</a> for details. By default, Bricolage sets up a very simple toolbar for FCKeditor (overriding its &quot;Default&quot; toolbar set).</p>
+
+</li>
+</ul>
+
+<h2 id="Language-Configuration">Language Configuration</h2>
+
+<p>Bricolage offers full support for editing documents in multiple languages and character sets. These directives can help Bricolage to be more efficient in its use of Language resources.</p>
+
+<ul>
+
+<li><p><b>LOAD_LANGUAGES</b> and <b>LOAD_CHAR_SETS:</b> Tell Bricolage which languages and character sets to pre-load. If you plan on using multiple languages and/or character sets, you can save some memory by pre-loading them at server startup. Otherwise, they will be loaded on demand. Multiple entries should be separated by spaces. <code>LOAD_LANGUAGES</code> defaults to &quot;en_us&quot; and <code>LOAD_CHAR_SETS</code> defaults to &quot;UTF-8&quot;.</p>
+
+</li>
+</ul>
+
+<h2 id="Time-Zone-Configuration">Time Zone Configuration</h2>
+
+<ul>
+
+<li><p><b>LOAD_TIME_ZONE:</b> Tell Bricolage which time zones to pre-load. If you plan on using any time zones other than UTC, you can save some memory by pre-loading them at server startup. Otherwise, they will be loaded on demand. Multiple entries should be separated by spaces. Defaults to &quot;UTC&quot;.</p>
+
+</li>
+</ul>
+
+<h2 id="Alert-Configuration">Alert Configuration</h2>
+
+<p>The Bricolage alerting system allows users to receive notifications upon the triggering of certain events within the system (see Bric::Util::AlertType and Bric::Util::Alert for the Alert API documentation). There are a few system-level directives that affect Bricolage Alerting.</p>
+
+<ul>
+
+<li><p><b>SMTP_SERVER:</b> The DNS name of an SMTP server that the Alerting API can send alerts to. All alerts are sent by email, so this directive is important to fill out. Defaults to &quot;localhost&quot; if not specified.</p>
+
+</li>
+<li><p><b>ALERT_FROM:</b> The email address that appears in the &#39;From&#39; header of emailed alerts. Defaults to SERVER_ADMIN directive if not specified.</p>
+
+</li>
+<li><p><b>ALERT_TO_METH:</b> The email header used for addressing alert recipients. Use &quot;to&quot; if you want everyone who receives the same alert to see who else received it. Use &quot;bcc&quot; if you don&#39;t want anyone to see who else got an alert, or if you just want to save the bandwidth. Defaults to &quot;bcc&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Image-Thumbnail-Configuration">Image Thumbnail Configuration</h2>
+
+<p>As of Bricolage 1.8.0, media documents based on an element with its associated element type set to &quot;Image&quot; can have associated thumbnail images. These thumbail images will then be displayed in the &quot;Find Media&quot; interface in the Bricolage UI. This is an optional feature. To use the thumbnail feature, the Imager module must be installed from CPAN, along with any requisite image libraries (libpng, libjpeg, libgif, etc.). Consult the Imager <i>README</i> file and documentation for details.</p>
+
+<ul>
+
+<li><p><b>USE_THUMBNAILS:</b> Enables thumbnail generation and display for image media files in the Bricolage UI, and icon display in the UI for all other media files. See <i>contrib/copy_gnome_icons</i> for a scipt to copy GNOME icons into the Bricolage root for use in the UI. Only one icon is included by default, with thanks to the KDE project&#39;s <a href="http://artist.kde.org/new/license.html#others">license</a> for the graphic. Enabled by default.</p>
+
+</li>
+<li><p><b>THUMBNAIL_SIZE:</b> Sets the size of the thumbnails generated by Bricolage. The largest dimension of the thumbnail will be no greater than this value, ensuring relative uniformity of size for display in the UI. Defaults to &quot;75&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="File-Naming-Configuration">File Naming Configuration</h2>
+
+<p>All files burned to the file system during publishes and previews must be named (of course!), and they&#39;re named for the &quot;File Name&quot; and &quot;File Extension&quot; properties of the Output Channel they&#39;re getting burned to. You can give these properties whatever values you want (as long as they&#39;re legal on your file system!), but here you can set some defaults that all Output channels will start with.</p>
+
+<ul>
+
+<li><p><b>DEFAULT_FILENAME:</b> Sets the default filename that all new Output Channel will start with in their &quot;File Name&quot; property. Combined with DEFAULT_FILE_EXT and a page index number to uniquely name the file for a given story. Defaults to &quot;index&quot; if not specified.</p>
+
+</li>
+<li><p><b>DEFAULT_FILE_EXT:</b> Sets the default file extension that all new Output Channel will start with in their &quot;File Name&quot; property. Combined with DEFAULT_FILENAME and a page index number to uniquely name the file for a given story. Defaults to &quot;html&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Relateds-POD-Tag">Relateds POD Tag</h2>
+
+<ul>
+
+<li><p><b>RELATED_DOC_POD_TAG:</b> Controls the type of related media and related story POD tags that will be generated by the <code>serialize_to_pod()</code> method of <a rel="section" href="../../../2.0/api/Bric/Biz/Element/Container.html" name="Bric::Biz::Element::Container">Bric::Biz::Element::Container</a> and therefore the &quot;Bulk Edit&quot; interface in the UI. The tags have the format of <code>=related_story_*</code> or <code>=related_media_*</code>, where &quot;*&quot; is drawn from this directive and can be any one of: &quot;uuid&quot;, &quot;uri&quot;, &quot;url&quot;, or &quot;id&quot;. Defaults to &quot;uuid&quot; if not specified.</p>
+
+</li>
+</ul>
+
+<h2 id="Story-URI-configuration">Story URI configuration</h2>
+
+<ul>
+
+<li><p><b>STORY_URI_WITH_FILENAME:</b> Enable this directive if you wish for story URIs to always include their file names. This is useful for allowing stories to be in the same category and date but have different file names and still be unique. Off by default.</p>
+
+</li>
+</ul>
+
+<h2 id="Perl-Loading-Configuration">Perl Loading Configuration</h2>
+
+<ul>
+
+<li><p><b>PERL_LOADER:</b> Pass in a line of Perl code, and it will be executed at startup time in the same namespace as your templates run in. This is so that you only have to load stuff that you might often use once, such as <a href="http://search.cpan.org/perldoc?CGI.pm">CGI.pm</a> or <a href="http://search.cpan.org/perldoc?Apache::DBI">Apache::DBI</a>. This should be a complete Perl statement that can simply be loaded, and won&#39;t pause and wait for anything else, as otherwise your server will never start! And be warned that this code is executed at server startup time, so avoid loading any variables that don&#39;t survive forks very well (such as database handles). Defaults to load nothing if not specified.</p>
+
+<p><b>Note</b>: Only the Mason, Template Toolkit, and PHP burners can directly use any symbols exported by code executed in the <code>PERL_LOADER</code> directive. TT can only use unique symbols (that is, if the code that runs exports a hash and a scalar with the same names, only the hash will be available in TT templates), while PHP can use imported functions only with PHP::Interpreter 1.1.0 or later.</p>
+
+</li>
+</ul>
+
+<h2 id="Virtual-FTP-Server-Configuration">Virtual FTP Server Configuration</h2>
+
+<p>Bricolage includes a virtual FTP server that can be used to allow access to Bricolage templates. This may provide a more comfortable development environment for programmers working on templates. Many editors provide FTP modes that make editing files via FTP almost as easy as editing files locally (ange-ftp for Emacs, for example).</p>
+
+<p>Whenever a user uploads a template via the FTP server, the template is checked out to her and put on her workspace and in her sandbox for testing. Repeated uploads of the template merely save it and redploy it to her sandbox. Once a user is satisfied that a template is ready for production and she wishes to deploy it, she merely has to upload it via the FTP server with the string &quot;.deploy&quot; appended to the file name. This behavior allows users to safely make changes to a template and test those changes without interfering with the publication of live documents until a user is sure a template is ready for production.</p>
+
+<p>There are security risks to consider with the Bricolage virtual FTP server: FTP sends passwords unencrypted over the network. If you are running Bricolage behind a firewall this might not be a problem.</p>
+
+<p>To enable the FTP server you&#39;ll need to install the Net::FTPServer Perl module. After that you can configure the FTP server with the following options:</p>
+
+<ul>
+
+<li><p><b>ENABLE_FTP_SERVER:</b> Set this to 1 if you want to use the FTP server. Defaults to 0.</p>
+
+</li>
+<li><p><b>FTP_PORT:</b> The port that the FTP server will run on. Users will need to know this port to connect to the FTP server. Since you won&#39;t be running the server as root you&#39;ll need to choose a port above 1024. Defaults to 2121.</p>
+
+</li>
+<li><p><b>FTP_ADDRESS:</b> Normally the FTP server will bind to all the available IP addresses for your machine. If you set this variable then the server will only bind to the specified address.</p>
+
+</li>
+<li><p><b>FTP_LOG:</b> Set this to the file where you want to FTP logs written to. Defaults to <code>$BRICOLAGE_ROOT/log/ftp.log</code> if not set.</p>
+
+</li>
+<li><p><b>FTP_PID_FILE:</b> Set this to the file where you want to the FTP daemon PID stored. Defaults to <code>$BRICOLAGE_ROOT/log/ftp.pid</code> if not set.</p>
+
+</li>
+<li><p><b>FTP_DEPLOY_ON_UPLOAD:</b> Prior to Bricolage. 1.8.0, the virtual FTP server deployed a template whenever it was uploaded. Beginning with Bricolage 1.8.0, templates are checked out to the user and put on her workspace and in her sandbox for testing, but they are not deployed. Enable this directive to restore the pre-1.8.0 behavior.</p>
+
+</li>
+<li><p><b>FTP_DEBUG:</b> If you set this to 1 you&#39;ll see a lot of useful tracing information in the FTP logfile. This can help diagnose errors but is probably only of interest to developers. Defaults to 0.</p>
+
+</li>
+</ul>
+
+<p>Next you&#39;ll need to start the FTP server as the same user that Apache runs as. For example, if you run Apache as &quot;nobody&quot; you would use this command to start the FTP server:</p>
+
+<pre><code>su nobody -c &quot;/usr/local/bricolage/bin/bric_ftpd -S&quot;</code></pre>
+
+<p>The -S option to ftpd runs the FTP server in the background. For other possibilities see the documentation for Net::FTPServer.</p>
+
+<p>Once the server is up and running connect to it with an FTP client and start editing templates. For more information see <a rel="section" href="../../../2.0/api/Bric/Util/FTP/Server.html" name="Bric::Util::FTP::Server">Bric::Util::FTP::Server</a>.</p>
+
+<h1 id="Directory-Permissions">Directory Permissions</h1>
+
+<p>As noted above, you need to supply the user and group names under which Bricolage will run. It&#39;s important that this user have permission to write to certain directories, as Bricolage will store some data files on the file system. So be sure to grant to SYS_USER and/or SYS_GROUP the necessary permissions to write to the directories identified by the MASON_DATA_ROOT, BURN_ROOT, and BURN_DATA_ROOT configuration directives. Also, Bricolage stores Media asset files in <code>$BRICOLAGE_ROOT/data/media</code>, so be sure the necessary permissions are set on that directory as well. If you&#39;re using the default configuration settings, then you&#39;ll only need to ensure that the following two directories are fully writable by SYS_USER, since the directives point either to one of these directories or to a subdirectory of these directories:</p>
+
+<pre><code>$BRICOLAGE_ROOT/data
+$BRICOLAGE_ROOT/comp/data</code></pre>
+
+<h1 id="Installation-Issues">Installation Issues</h1>
+
+<p>The following addresses a number of installation issues you might face.</p>
+
+<h2 id="Building-SSL-Certificate">Building SSL Certificate</h2>
+
+<p>If you choose to create your own SSL certificate and act as your own certificate authority rather than use a known certificate authority such as VeriSign, it&#39;s possible that you&#39;ll run into issues getting the server to start up with the certificate properly. If so, you&#39;ll see errors in the Apache error log that look like this:</p>
+
+<pre><code>[Wed Jul  4 10:48:25 2001] [error] OpenSSL: error:14094412:SSL
+routines:SSL3_READ_BYTES:sslv3 alert bad certificate [Hint: Subject CN in
+certificate not server name or identical to CA!?]</code></pre>
+
+<p>This issue can be resolved by simply making sure that you enter different values for the &quot;Organization Unit Name&quot; for the certificate authority certificate and the server certificate.</p>
+
+<p>If you&#39;re facing this issue, here&#39;s how to manually build a new certificate:</p>
+
+<ol>
+
+<li><p>Shut down Apache if it&#39;s running:</p>
+
+<pre><code>/usr/local/bricolage/bin/bric_apachectl stop</code></pre>
+
+</li>
+<li><p>Delete the existing installation of Apache:</p>
+
+<pre><code>rm -rf /usr/local/apache*</code></pre>
+
+</li>
+<li><p>Change directories into /usr/local/src/bricolage/apache_build/apache_1.3.xx.</p>
+
+</li>
+<li><p>Execute the following command:</p>
+
+<pre><code>make certificate TYPE=custom</code></pre>
+
+<p>You will be prompted as you were during the initial installation. Follow the same instructions, but be sure to use different values for the &quot;Organization Unit Name&quot; in the two certificates. When you&#39;re prompted to encrypt the CA and Server keys, enter &quot;n&quot; to avoid having to enter a passphrase every time you start Apache, but enter &quot;y&quot; if you really don&#39;t trust your system users.</p>
+
+</li>
+<li><p>Execute the following command:</p>
+
+<pre><code>make install</code></pre>
+
+<p>This will install Apache and the new certificate.</p>
+
+</li>
+<li><p>Start Apache again:</p>
+
+<pre><code>/usr/local/bricolage/bin/bric_apachectl start</code></pre>
+
+</li>
+</ol>
+
+<h1 id="System-Administration">System Administration</h1>
+
+<p>Bricolage is a big application, with big system needs. Thus it&#39;s a good idea to give some thought to system management, including disk partitioning and file maintenance.</p>
+
+<h2 id="Database">Database</h2>
+
+<p>By default, the Bricolage database is stored where all PostgreSQL databases are stored -- /usr/local/pgsql/data by default. Depending on the needs of your environment, the database can become quite large. We therefore recommend you place this directory on a separate partition. Better yet, place it on its own disk in order to optimize disk access time by preventing database access from competing with other disk processes.</p>
+
+<p>A great deal more maintenance is important for the database. See <a rel="section" href="../../../2.0/api/Bric/DBA.html" name="Bric::DBA">Bric::DBA</a> for more detail.</p>
+
+<h2 id="Application">Application</h2>
+
+<p>Bricolage stores all of its application files -- including the UI elements and Perl libraries -- in <code>$BRICOLAGE_ROOT</code>. Bricolage will make a lot of disk accesses to MASON_DATA_ROOT, which is where all of the UI elements are compiled and stored. The Perl libraries are stored in <code>$BRICOLAGE_ROOT/lib</code>, although mostly they will only be read on startup.</p>
+
+<p>Bricolage creates a great many files on the filesystem, too, however. The <code>$BURN_ROOT/comp</code> directory houses the templates that are used to format stories - you&#39;ll want to be sure to back it up regularly. The <code>$BURN_ROOT/stage</code> and <code>$BURN_ROOT/preview</code> directories will get burned files written to them upon publish and preview, respectively. These will be good targets for periodic cleanup if you need to reclaim disk space, as generally the files stored there will not be much accessed after they&#39;re created. If you decide to clean some of them out to reclaim file space, just be sure not to delete any files for which there are executing distribution jobs, otherwise the distribution jobs will fail!</p>
+
+<p>The <code>$MASON_COMP_ROOT/data/preview</code> directory gets formatted story files copied to it from <code>$BURN_ROOT/preview</code> if the PREVIEW_LOCAL directive is set to true. This directory doesn&#39;t need backing up, as these files are used only for previewing purposes.</p>
+
+<p>The <code>$BRICOLAGE_ROOT/comp/data/media</code> directory gets all media asset files written to it. This last directory is perhaps the most important, from a system administration perspective, because if Bricolage is used to manage large documents (e.g., QuickTime movies), this directory will start to use a lot of space -- and especially if the media files themselves are versioned. Thus in environments where many large media assets will be managed, it might make sense to put this directory on its own partition or disk, as well. And remember to back it up to prevent the loss of all of your media assets -- they aren&#39;t stored anywhere else!</p>
+
+<p>Bricolage also creates temporary files for caching user session data and application data. These files are stored in subdirectories of the directory specified by the TEMP_DIR configuration variable. Session files are stored in <code>TEMP_DIR/bricolage/session</code> and <code>TEMP_DIR/bricolage/lock</code>. These directories should stay relatively free of cruft, as the session files are regularly deleted when users logout or their login sessions expire and they attempt to log back in. (However, in some cases we&#39;ve noticed a buildup of files in the lock directory.)</p>
+
+<p>Bricolage also uses a cross-process caching mechanism to share data between Apache processes and applications. The data for this cache is stored in <code>TEMP_DIR/bricolage/cache</code>.</p>
+
+<p>Bricolage comes with a script that cleans out old temporary files. You can use this by adding a line to the crontab for the web server user (often &quot;nobody&quot;) like this:</p>
+
+<pre><code>0 2 * * * /usr/local/bricolage/bin/bric_clean_tmp</code></pre>
+
+<p>This will run nightly at 2AM and clean out all files older than 12 hours. See <a rel="section" href="../../../2.0/api/bric_clean_tmp.html" name="bric_clean_tmp">bric_clean_tmp</a> for more details.</p>
+
+<h1 id="Cloing-an-Installation">Cloing an Installation</h1>
+
+<p>Bricolage includes the ability to clone an existing Bricolage system. This is useful if you&#39;ve developed a working Bricolage and need to copy the system into a production enviornment. Of course, you could setup a new, empty Bricolage and then use Bric::SOAP to copy over your templates, categories, elements and content, but that would still leave a lot of work left to do - users, preferences, distribution settings, workflow, etc.</p>
+
+<p>Instead, you can clone an installation, which produces a distribution tar-ball that you can install on the destination server. This tar-ball includes all the contents of the Bricolage database, all files created by Bricolage and all configuration settings.</p>
+
+<p>To clone an installation, first open up a fresh source distribution for the version that is installed. Then enter the source directory and type:</p>
+
+<pre><code>make clone</code></pre>
+
+<p>This will ask you for the BRICOLAGE_ROOT for the target install. It also asks you to name your clone. The name is used to generate the filename for the generated tar ball. When &quot;make clone&quot; completes it will leave a file create &quot;bricolage-NAME.tar.gz&quot;, where NAME is the name you chose.</p>
+
+<p>To install a cloned distribution, just take the generated tar-ball to the target machine and install it as usual:</p>
+
+<pre><code>tar zxvf bricolage-NAME.tar.gz
+cd bricolage-NAME
+make
+make install</code></pre>
+
+<p>That&#39;s all there is to it! Now your new installation will be an exact replica of the original.</p>
+
+<p>There is a make devclone option that does the same as &#39;make clone&#39; but removes all of the locally previewed files, the obj files, staging and sandboxes. This means a large saving in download / install size of cloned high usage systems. Be warned that you will need to repreview assets like images, stylesheets etc as required.</p>
+
+<h1 id="Installation-Startup-Problems">Installation/Startup Problems</h1>
+
+<p>Some of the most common problems with Bricolage installation are discussed in <a rel="section" href="../../../2.0/api/Bric/FAQ.html" name="Bric::FAQ">Bric::FAQ</a> which is distributed together with your Bricolage instllation. To see it, do <code>perldoc lib/Bric/FAQ.pod</code> in your Bricolage source or installation directory.</p>
+
+<p>There is also an <a href="http://www.bricolagecms.org/docs/Bric/FAQ.html">on-line copy</a>.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

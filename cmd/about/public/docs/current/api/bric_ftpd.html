@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_ftpd</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_ftpd.html#Name">Name</a></li>
+  <li><a href="bric_ftpd.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_ftpd.html#Description">Description</a></li>
+  <li><a href="bric_ftpd.html#Author">Author</a></li>
+  <li><a href="bric_ftpd.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_ftpd - Bricolage virtual FTP server</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>su nobody -c &quot;bric_ftpd -S&quot;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This program controls the Bricolage vitual FTP server, which can be used to allow access to Bricolage templates. This may provide a more comfortable development environment for programmers working on templates. Many editors provide FTP modes that make editing files via FTP almost as easy as editing files locally (ange-ftp for Emacs, for example).</p>
+
+<p>There are security risks to consider - FTP sends passwords unencrypted over the network. If you are running Bricolage behind a firewall this might not be a problem.</p>
+
+<p>To enable the FTP server you&#39;ll need to install the Net::FTPServer Perl module. After that you can configure the FTP server with the following <i>bricolage.conf</i> directives:</p>
+
+<ul>
+
+<li><p><b>ENABLE_FTP_SERVER:</b> Set this to 1 if you want to use the FTP server. Defaults to 0.</p>
+
+</li>
+<li><p><b>FTP_PORT:</b> The port that the FTP server will run on. Users will need to know this port to connect to the FTP server. Since you won&#39;t be running the server as root you&#39;ll need to choose a port above 1024. Defaults to 2121.</p>
+
+</li>
+<li><p><b>FTP_ADDRESS:</b> Normally the FTP server will bind to all the available IP addresses for your machine. If you set this variable then the server will only bind to the specified address.</p>
+
+</li>
+<li><p><b>FTP_LOG:</b> Set this to the file where you want to FTP logs written to. Defaults to <code>$BRICOLAGE_ROOT/ftp.log</code> if not set.</p>
+
+</li>
+<li><p><b>FTP_PID_FILE:</b> Set this to the file where you want to the FTP daemon PID stored. Defaults to <code>$BRICOLAGE_ROOT/ftp.pid</code> if not set.</p>
+
+</li>
+<li><p><b>FTP_DEBUG:</b> If you set this to 1 you&#39;ll see a lot of useful tracing information in the FTP logfile. This can help diagnose errors but is probably only of interest to developers. Defaults to 0.</p>
+
+</li>
+</ul>
+
+<p>Next you&#39;ll need to start the FTP server as the same user that Apache runs as. For example, if you run Apache as &quot;nobody&quot; you would use this command to start the FTP server:</p>
+
+<pre><code>su nobody -c &quot;bric_ftpd -S&quot;</code></pre>
+
+<p>The <code>-S</code> option to ftpd runs the FTP server in the background. For other possibilities see the documentation for Net::FTPServer.</p>
+
+<p>Once the server is up and running connect to it with an FTP client and start editing templates. For more information see <a rel="section" href="../../2.0/api/Bric/Util/FTP/Server.html" name="Bric::Util::FTP::Server">Bric::Util::FTP::Server</a>.</p>
+
+<p>To kill the FTP server in daemon mode, use the <code>-k</code> option:</p>
+
+<pre><code>su nobody -c bric_ftpd -k&quot;</code></pre>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/Admin.html" name="Bric::Admin">Bric::Admin</a>, <a href="http://search.cpan.org/perldoc?Net::FTPServer">Net::FTPServer</a>, <a rel="section" href="../../2.0/api/Bric/Util/FTP/Server.html" name="Bric::Util::FTP::Server">Bric::Util::FTP::Server</a>.</p>
+
+</body>
+</html>
+

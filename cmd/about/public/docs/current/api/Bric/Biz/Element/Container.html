@@ -1,0 +1,1033 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Element::Container</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Container.html#Name">Name</a></li>
+  <li><a href="Container.html#Synopsis">Synopsis</a></li>
+  <li><a href="Container.html#Description">Description</a></li>
+  <li><a href="Container.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Container.html#Constructors">Constructors</a></li>
+      <li><a href="Container.html#Destructors">Destructors</a></li>
+      <li><a href="Container.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Container.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Container.html#Private">Private</a>
+    <ul>
+      <li><a href="Container.html#Private-Class-Methods">Private Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Container.html#Notes">Notes</a></li>
+  <li><a href="Container.html#Authors">Authors</a></li>
+  <li><a href="Container.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Element::Container - Container Element</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Creation of Objects
+my $container = Bric::Biz::Element::Container-&gt;new($init);
+my $container = Bric::Biz::Element::Container-&gt;lookup({
+  id =&gt; $id
+});
+my @containers = Bric::Biz::Element::Container-&gt;list($params);
+my @ids = Bric::Biz::Element::Container-&gt;list_ids($params);
+
+$container = $container-&gt;add_element(\@containers);
+my @elements = $container-&gt;get_elements;
+$container = $container-&gt;delete_elements(\@containers);
+$container = $container-&gt;is_container;
+$container = $container-&gt;reorder-&gt;(@new_order);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class contains the contents of container elements, also known as story type elements, media type elements, and container subelements. These objects can contain one or more subelements, and those subelements can be either data elements or other container elements. This class inherits from <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a>.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $container = Bric::Biz::Element::Container-&gt;new($init)</dt>
+<dd>
+
+<p>Construct a new container element object. The supported initial attributes are:</p>
+
+<dl>
+
+<dt>object_type</dt>
+<dd>
+
+<p>A string identifying the type of document the new container element is associated with. It&#39;s value can be &quot;story &quot; or &quot;media&quot;.</p>
+
+</dd>
+<dt>object_instance_id</dt>
+<dd>
+
+<p>The ID of the story or media document the new container element is associated with.</p>
+
+</dd>
+<dt>place</dt>
+<dd>
+
+<p>The order of this element relative to the other subelements of the parent element.</p>
+
+</dd>
+<dt>object_order</dt>
+<dd>
+
+<p>The order of this element relative to the other container elements based on the same Bric::Biz::AssetType object that are subelements of the parent element.</p>
+
+</dd>
+<dt>displayed</dt>
+<dd>
+
+<p>Boolean indicating whether or not the container element&#39;s display is toggled open in the document profile. Ignored for top-level container elements.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>The ID of the container element that is the parent of the new container element.</p>
+
+</dd>
+<dt>element</dt>
+<dd>
+
+<p>A Bric::Biz::ElementType object that defines the structure of this container element.</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+<p>An ID for the Bric::Biz::ElementType object that defines the structure of this container element.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating whether the container element is active or inactive.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Object of type not allowed.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $container = Bric::Biz::Element-&gt;lookup($params)</dt>
+<dd>
+
+<p>Looks up a container element in the database by its ID and returns it. The lookup parameters are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>The ID of the conainer element to lookup. Required.</p>
+
+</dd>
+<dt>object</dt>
+<dd>
+
+<p>A story or media document object with which the conainer element is associated. Required unless <code>object_type</code> is specified.</p>
+
+</dd>
+<dt>object_type</dt>
+<dd>
+
+<p>The type of document object with which the container element is associated. Must be either &quot;media&quot; or &quot;story&quot;. Required unless <code>object</code> is specified.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Missing required Parameter &#39;id&#39;.</dt>
+<dd>
+
+</dd>
+<dt>Missing required Parameter &#39;object_type&#39; or &#39;object&#39;.</dt>
+<dd>
+
+</dd>
+<dt>Improper type of object passed to lookup.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @containers = Bric::Biz::Element::Container-&gt;list($param)</dt>
+<dd>
+
+<p>Searches for and returns a list or anonymous array of container element objects. The supported parameters that can be searched are:</p>
+
+<dl>
+
+<dt>object</dt>
+<dd>
+
+<p>A story or media object with which the container elements are associated. Required unless <code>object_type</code> is specified.</p>
+
+</dd>
+<dt>object_type</dt>
+<dd>
+
+<p>The type of document with which the container elements are associated. Required unless <code>object</code> is specified.</p>
+
+</dd>
+<dt>object_instance_id</dt>
+<dd>
+
+<p>The ID of a story or container object with wich the container elements are associated. Can only be used if <code>object_type</code> is also specified and <code>object</code> is not specified. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the container elements. Since the SQL <code>LIKE</code> operator is used with this search parameter, SQL wildcards can be used. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+<p>The key name of the container elements. Since the SQL <code>LIKE</code> operator is used with this search parameter, SQL wildcards can be used. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>The description of the container elements. Since the SQL <code>LIKE</code> operator is used with this search parameter, SQL wildcards can be used. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>The ID of the container element that is the parent element of the container elements. Pass <code>undef</code> to this parameter to specify that the <code>parent_id</code> must be <code>NULL</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType object that specifies the structure of the container elements. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>related_story_id</dt>
+<dd>
+
+<p>The ID of a Bric::Biz::Asset::Business::Story object that may be related to container elements. Pass <code>undef</code> to this parameter to specify that the <code>parent_id</code> must be <code>NULL</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>related_media_id</dt>
+<dd>
+
+<p>The ID of a Bric::Biz::Asset::Business::Media object that may be related to container elements. Pass <code>undef</code> to this parameter to specify that the <code>parent_id</code> must be <code>NULL</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>displayed</dt>
+<dd>
+
+<p>A boolean value indicating whether the returned data elements should have their display toggled open in the document profile.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating whether the returned data elements are active or inactive.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$container-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my @ids = Bric::Biz::Element::Container-&gt;list_ids($param)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of container element IDs. The search parameters are the same as for <code>list()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>See also <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a>, from which Bric::Biz::Element::Container inherits.</p>
+
+<dl>
+
+<dt>my $element_type_id = $container-&gt;get_element_type_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::ElementType object that defines the structure of this element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_element_type_id($element_type_id)</dt>
+<dd>
+
+<p>Sets the ID of the Bric::Biz::ElementType object that defines the structure of this element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = $container-&gt;can_relate_story</dt>
+<dd>
+
+<p>Returns a true value if the container is allowed to have a related story, and false if it is not.</p>
+
+</dd>
+<dt>my $bool = $container-&gt;can_relate_media</dt>
+<dd>
+
+<p>Returns a true value if the container is allowed to have a related media document, and false if it is not.</p>
+
+</dd>
+<dt>my $object_order = $container-&gt;get_object_order</dt>
+<dd>
+
+<p>Returns the order number for this object relative to other container elements based on the same Bric::Biz::ElementType object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_object_order($object_order)</dt>
+<dd>
+
+<p>Sets the order number for this object relative to other container elements based on the same Bric::Biz::ElementType object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $displayed = $container-&gt;get_displayed</dt>
+<dd>
+
+<p>Returns boolean value indicating whether or not the container element&#39;s display should be toggled open in the document profile.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_displayed($displayed)</dt>
+<dd>
+
+<p>Sets the boolean value indicating whether or not the container element&#39;s display should be toggled open in the document profile.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $story_id = $container-&gt;get_related_story_id</dt>
+<dd>
+
+</dd>
+<dt>my $story_id = $container-&gt;get_related_instance_id</dt>
+<dd>
+
+<p>Returns the ID of a story related to this container element. <code>get_related_instance_id()</code> is provided for backwards compatability with versions of Bricolage prior to 1.9.1.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_related_story_id($story_id)</dt>
+<dd>
+
+</dd>
+<dt>$container-&gt;set_related_instance_id($story_id)</dt>
+<dd>
+
+<p>Sets the ID of a story related to this container element. <code>set_related_instance_id()</code> is provided for backwards compatability with versions of Bricolage prior to 1.9.1.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Element cannot have a related story</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $media_id = $container-&gt;get_related_media_id</dt>
+<dd>
+
+<p>Returns the ID of a media document related to this container element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_related_media_id($media_id)</dt>
+<dd>
+
+<p>Sets the ID of a media document related to this container element.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Element cannot have a related media</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;get_elem_occurrence($subelement-&gt;get_key_name)</dt>
+<dd>
+
+<p>Returns the number of subelements currently in this container which match the name passed in.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;get_field_occurrence($field_type-&gt;get_key_name)</dt>
+<dd>
+
+<p>Returns the number of fields currently in this container which match the field name passed in.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_related_story($story)</dt>
+<dd>
+
+<p>Creates a relationship between the container element and a story document.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$story = $container-&gt;get_related_story</dt>
+<dd>
+
+<p>If a story is related to this container element, this method returns that story object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;set_related_media($media)</dt>
+<dd>
+
+<p>Creates a relationship between the container element and a media document.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$media = $container-&gt;get_related_media</dt>
+<dd>
+
+<p>If a media document is related to this container element, this method returns that media object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$obj = $container-&gt;get_element_type</dt>
+<dd>
+
+<p>Returns the Bric::Biz::ElementType object that defines the structure of this container element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_element()</code> has been deprecated in favor of this method.</p>
+
+</dd>
+<dt>$name = $container-&gt;get_element_name</dt>
+<dd>
+
+<p>An alias for <code>$container-&gt;get_name</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$key_name = $container-&gt;get_element_key_name</dt>
+<dd>
+
+<p>An alias for <code>$container-&gt;get_key_name</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;get_possible_field_types()</dt>
+<dd>
+
+</dd>
+<dt>$container-&gt;get_possible_data()</dt>
+<dd>
+
+<pre><code>my @field_types = $container-&gt;get_possible_field_types();
+   @field_types = $container-&gt;get_possible_data();</code></pre>
+
+<p>Returns a list or anonymous array of the Bric::Biz::ElementType::Parts::FieldType objects that define the types of data elements that can be subelements of this container element. This list would exclude any data elements that can only be added as subelements to this container element a set number of times, and have already been added that many times. This is the max_occurrence of that FieldType.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_possible_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>my @elementtypes = $container-&gt;get_possible_containers</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the Bric::Biz::ElementType objects that define the types of data elements that can be subelements of this container element. This is synonymous with <code>$container-&gt;get_element_type-&gt;get_containers</code>, with the exception that it will only return those containers that don&#39;t already have the max allowed according to the max_occurrence.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;add_field($field_type, $value, $place);</dt>
+<dd>
+
+</dd>
+<dt>$container-&gt;add_data($field_type, $value, $place);</dt>
+<dd>
+
+<p>Pass a Bric::Biz::ElementType::Parts::FieldType object and a value for a new field element, and that new field element will be created and added as a subelement of the container element. An optional third argument specifies the <code>place</code> for that field element in the order of subelements of this container element. This returns the field that was created/added.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$new_container = $container-&gt;add_container($element_type)</dt>
+<dd>
+
+<p>Adds a new container subelement to this container element. Pass in the required element type (Bric::Biz::ElementType) object specifying the structure of the new container subelement.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $field = $element-&gt;get_field($key_name, $obj_order)</dt>
+<dd>
+
+</dd>
+<dt>my $field = $element-&gt;get_data_element($key_name, $obj_order)</dt>
+<dd>
+
+<p>Returns a specific field subelement of this container element. Pass in the key name of the field to be retreived. By default, the first field with that key name will be returned. Pass in an optional second argument to specify the <code>object_order</code> of the field to be retrieved.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_data_element()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>my @fields = $container-&gt;get_fields</dt>
+<dd>
+
+</dd>
+<dt>my @fields = $container-&gt;get_data_elements</dt>
+<dd>
+
+<pre><code>my @data = $element-&gt;get_fields;
+   @data = $element-&gt;get_fields(@key_names);
+   @data = $element-&gt;get_data_elements;
+   @data = $element-&gt;get_data_elements(@key_names);</code></pre>
+
+<p>Returns a list or anonymous array of the field subelements of this element. If called with no arguments, it returns all of the field subelements. If passed a list of key names, the only the field subelements with those key names will be returned, in the order specified by their <code>place</code> attributes.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_data_elements()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>$value = $element-&gt;get_value($key_name, $obj_order)</dt>
+<dd>
+
+</dd>
+<dt>$value = $element-&gt;get_value($key_name, $obj_order, $date_format)</dt>
+<dd>
+
+</dd>
+<dt>$value = $element-&gt;get_data($key_name, $obj_order)</dt>
+<dd>
+
+</dd>
+<dt>$value = $element-&gt;get_data($key_name, $obj_order, $date_format)</dt>
+<dd>
+
+<p>Returns the value of a specific field subelement of this container element. Pass in the key name of the field element to be retreived. By default, the first field element with that key name will be returned. Pass in an optional second argument to specify the <code>object_order</code> of the field element to be retrieved. Pass in the optional <code>$date_format</code> argument if you expect the value returned from <code>$key_name</code> to be of the date type, and you&#39;d like a format other than that set in the &quot;Date Format&quot; preference.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>my $subelement = $container-&gt;get_container($key_name, $obj_order)</dt>
+<dd>
+
+<p>Returns a specific conainer subelement of this container element. Pass in the key name of the container element to be retreived. By default, the first container element with that key name will be returned. Pass in an optional second argument to specify the <code>object_order</code> of the container element to be retrieved.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @containers = $container-&gt;get_containers</dt>
+<dd>
+
+<pre><code>my @containers = $element-&gt;get_containers;
+@containers = $element-&gt;get_containers(@key_names);</code></pre>
+
+<p>Returns a list or anonymous array of the container subelements of this container subelement. If called with no arguments, it returns all of the container subelements. If passed a list of key names, the only the container subelements with those key names will be returned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @subelements = $container-&gt;get_elements</dt>
+<dd>
+
+</dd>
+<dt>my @subelements = $container-&gt;get_elements(@key_names)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of all of the data and container subelements of this container subelement, in the order specified by their <code>place</code> attributes. If called with no arguments, it returns all of the subelements. If passed a list of key names, the only the subelements with those key names will be returned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @elements = $container-&gt;get_tiles</dt>
+<dd>
+
+<p>An alias for <code>get_elements()</code>, provided for backwards compatability.</p>
+
+</dd>
+<dt>$container-&gt;add_element($subelement)</dt>
+<dd>
+
+<p>Adds an element to the current container element as a subelement. It will be given a <code>place</code> attribute and an <code>object_order</code> attribute relative to the other subelements of this container element. The newly added container element will be returned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;add_tile($subelement)</dt>
+<dd>
+
+<p>An alias for <code>add_element()</code>, provided for backwards compatability.</p>
+
+</dd>
+<dt>$container-&gt;delete_elements(\@subelements)</dt>
+<dd>
+
+<p>Removes the specified subelements from the current element. The arguments that can be passed via the array reference can be either container or data element objects or hash references with the following keys:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The type of element to be deleted. The value of this parameter must be either &quot;data&quot; or &quot;container&quot;.</p>
+
+</dd>
+<dt>id</dt>
+<dd>
+
+<p>The ID of the element to be deleted.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Will shift and reorder the remaining subelements to fit. So if elements with IDs of 2, 4, 7, 8, and 10 are contained and 4 and 8 are removed the new list of elements will be 2, 7, and 10</p>
+
+<p><b>Notes:</b> Doesn&#39;t actually do any deletions, just schedules them. Call <code>save()</code> to complete the deletion.</p>
+
+</dd>
+<dt>$container-&gt;delete_tiles(\@subelements)</dt>
+<dd>
+
+<p>An alias for <code>delete_elements()</code>, provided for backwards compatability.</p>
+
+</dd>
+<dt>$container-&gt;prepare_clone</dt>
+<dd>
+
+<p>Prepares the conainer element to be cloned, such as when a new version of a document is created, or when a document itself is cloned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;reorder_elements(\@subelements)</dt>
+<dd>
+
+<p>Pass in an array reference of subelements in the order they are to be placed relative to one another, and they will be reordered in that order.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;reorder_tiles(\@subelements)</dt>
+<dd>
+
+<p>An alias for <code>reorder_elements()</code>, provided for backwards compatability.</p>
+
+</dd>
+<dt>my $is_container $container-&gt;is_container;</dt>
+<dd>
+
+<p>Returns true, since container elements are, in fact, container elements.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$container-&gt;do_delete</dt>
+<dd>
+
+<p>Prepares this container element and its subelements to be removed.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>$container-&gt;save</dt>
+<dd>
+
+<p>Saves the changes to the container element to the database.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $pod = $container-&gt;serialize_to_pod;</dt>
+<dd>
+
+</dd>
+<dt>my $pod = $container-&gt;serialize_to_pod($field_key_name);</dt>
+<dd>
+
+<p>Serializes the element and all of its subelements into the pseudo-pod format parsable by <code>update_from_pod()</code>. Pass in a field key name and those fields will not have the POD tag, including in subelements that have the same field key name. Subelements will begin with <code>=begin $key_name</code> and end with <code>=end $key_name</code>, and will be indented four spaces relative to their parent elements. Related stories and media will be identified by the tag specifed via the <code>RELATED_DOC_POD_TAG</code> <i>bricolage.conf</i> directive or default to <code>=related_story_uuid</code> and <code>=related_media_uuid</code> tags, respectively.</p>
+
+</dd>
+<dt>$container-&gt;update_from_pod($pod);</dt>
+<dd>
+
+</dd>
+<dt>$container-&gt;update_from_pod($pod, $field_key_name);</dt>
+<dd>
+
+<p>Updates an element and all of its subelements from POD markup such as that output by <code>deserialize_pod()</code>. Any equal signs after two newlines that do <i>not</i> indicate a new field or element must be escaped with a slash. If <code>$field_key_name</code> is passed, then any blocks of text that do not have a POD tag will be assumed to be instances of that field.</p>
+
+<p>Subelements are supported using <code>=begin key_name</code> and <code>=end key_name</code> tags, although the key namee in the <code>=end</code> tag is optional. Subelements may be indented, although the root element must not be indented. Indentation of a subelement is deterimined by the amount of whitespace before the <code>=begin</code> tag. That whitespace will be trimmed from the beginning of all lines in the subelement; any extra whitespace before lines will remain intact, enabling the use of whitespace for formatting.</p>
+
+<p>The contents of $pod will be split on <code>/\r?\n|\r/</code> to be parsed on a line-by-line basis. The line endings will all be replaced with <code>\n</code> only.</p>
+
+<p>Any type of field may be specified in the POD. Dates, however, must be in ISO-8601-compliant format (&quot;YYYY-MM-DD hh:mm:ss&quot;) to be properly parsed. Fields allowing only a limited number of values (such as pulldown or radio fields) must have content corresponding to the available values. Fields that allow multiple values (multiple select lists) are not supported.</p>
+
+<p>Related media and related stories may be identified by using one of the following tags as the first tags to appear in an element, either at the beginning of the POD or just afer a subelement&#39;s <code>=begin</code> tag:</p>
+
+<dl>
+
+<dt>=related_story_uuid</dt>
+<dd>
+
+</dd>
+<dt>=related_media_uuid</dt>
+<dd>
+
+</dd>
+<dt>=related_story_uri</dt>
+<dd>
+
+</dd>
+<dt>=related_media_uri</dt>
+<dd>
+
+</dd>
+<dt>=related_story_id</dt>
+<dd>
+
+</dd>
+<dt>=related_media_id</dt>
+<dd>
+
+</dd>
+<dt>=related_story_url</dt>
+<dd>
+
+</dd>
+<dt>=related_media_url</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>For the last two options, the domain name will be extracted from the URL in order to determine the site to search for the path section of the URL. For example, specifying</p>
+
+<pre><code>=related_story_url http://www.example.com/foo/bar/</code></pre>
+
+<p>will result in <code>update_from_pod()</code> searchging for the URI &quot;/foo/bar/&quot; associated with the site with the domain name &quot;www.example.com&quot;.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Bric::Util::Fault::Error::Invalid</dt>
+<dd>
+
+<ul>
+
+<li><p>No context for content beginning at line [_1].</p>
+
+</li>
+<li><p>No such field &quot;[_1]&quot; at line [_2]. Did you mean &quot;[_3]&quot;?</p>
+
+</li>
+<li><p>No such subelement &quot;[_1]&quot; at line [_2]. Did you mean &quot;[_3]&quot;?</p>
+
+</li>
+<li><p>Non-repeatable field &quot;[_1]&quot; appears more than once beginning at line [_2]. Please remove all but one.</p>
+
+</li>
+<li><p>Unknown tag &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No such site &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No such URI &quot;[_1]&quot; in site &quot;[_2]&quot; at line [_3].</p>
+
+</li>
+<li><p>No story document found for UUID &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No media document found for UUID &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No story document found for ID &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No media document found for ID &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No story document found for URI &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+<li><p>No media document found for URI &quot;[_1]&quot; at line [_2].</p>
+
+</li>
+</ul>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> Existing fields and subelements may be deleted or have their values altered. New fields and subelements may be added.</p>
+
+<p><b>Notes:</b> The values provided for fields allowing only a limited number of values (such as pulldown or radio fields) are not currently enforced to be one of those values.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Biz::Element::Container-&gt;_do_list($class, $param, $ids)</dt>
+<dd>
+
+<p>Called by <code>list()</code> or <code>list_ids()</code>, this method returns either a list of ids or a list of objects, depending on the third argument.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Authors">Authors</h1>
+
+<p>Michael Soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<p>Refactoring and POD serialization and parsing by David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a></p>
+
+</body>
+</html>
+

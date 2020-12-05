@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Burner::PHP</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="PHP.html#Name">Name</a></li>
+  <li><a href="PHP.html#Synopsis">Synopsis</a></li>
+  <li><a href="PHP.html#Description">Description</a></li>
+  <li><a href="PHP.html#Interface">Interface</a>
+    <ul>
+      <li><a href="PHP.html#Constructors">Constructors</a></li>
+      <li><a href="PHP.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="PHP.html#Private">Private</a>
+    <ul>
+      <li><a href="PHP.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="PHP.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="PHP.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="PHP.html#Notes">Notes</a></li>
+  <li><a href="PHP.html#Author">Author</a></li>
+  <li><a href="PHP.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Burner::PHP - Publish stories using PHP templates</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Burner::PHP;
+
+# Create a new PHP burner using the settings from $burner
+my $php_burner = Bric::Util::Burner::PHP-&gt;new($burner);
+
+ # Burn an asset, get back a list of resources
+my $resources = $php_burner-&gt;burn_one($ba, $oc, $cat);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module handles burning business story resources (files) PHP templates.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = Bric::Util::Burner::PHP-&gt;new($burner);</dt>
+<dd>
+
+<p>Creates a new PHP burner object. Takes a single parameters - $burner - which is a Bric::Util::Burner object. The new object will has its attributes initialized by the passed object.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $encoding = $burner-&gt;get_encoding</dt>
+<dd>
+
+<p>Returns the character set encoding to be used to write out the contents of a burn to a file. Defaults to &quot;raw&quot;. Note that this is different than the default for the other burners because the <code>utf8</code> flag on Perl variables is lost in the conversion to PHP. This should effectively be okay, however, as long as your PHP templates use the <code>mb_*</code> functions and identify the encoding as UTF-8. For example:</p>
+
+<pre><code>$sub = mb_substr($element-&gt;get_value(&#39;deck&#39;), 0, 255, &#39;utf-8&#39;);</code></pre>
+
+<p>See the <a href="http://us2.php.net/manual/en/ref.mbstring.php">Multibyte String Functions manual</a> for more information.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner = $burner-&gt;set_encoding($encoding)</dt>
+<dd>
+
+<p>Sets the character set encoding to be used to write out the contents of a burn to a file. Use this attribute if templates are converting output data from Bricolage&#39;s native UTF-8 encoding to another encoding. Use &quot;raw&quot; if your templates are outputting binary data. Defaults to &quot;raw&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$resources = $b-&gt;burn_one($ba, $oc, $cat);</dt>
+<dd>
+
+<p>Publishes an asset. Returns a list of resources burned. Parameters are:</p>
+
+<ul>
+
+<li><p>$ba</p>
+
+<p>A business asset object to publish.</p>
+
+</li>
+<li><p>$oc</p>
+
+<p>An output channel object to use for the publish</p>
+
+</li>
+<li><p>cat</p>
+
+<p>A category in which to publish.</p>
+
+</li>
+</ul>
+
+</dd>
+<dt>my $bool = $burner-&gt;chk_syntax($ba, \$err)</dt>
+<dd>
+
+<p>Compiles the template found in $ba. If the compile succeeds with no errors, chk_syntax() returns true. Otherwise, it returns false, and the error will be in the $err variable passed by reference.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method has not yet been implemented for PHP templates. For the time being, it always returns success.</p>
+
+</dd>
+<dt>my $template = $burner-&gt;find_template($uri, $tmpl_name)</dt>
+<dd>
+
+<p>Finds the first instance of the template with the name $tmpl_name in the URI directory hierarchy in $uri. Returns the template path, if it exists, and undef if it does not. For example:</p>
+
+<pre><code>my $uri = &#39;/foo/bar/bletch&#39;;
+my $tmpl_name = &#39;story.mc&#39;;
+my $template = $burner-&gt;find_template($uri, $tmpl_name);</code></pre>
+
+<p>The find_template() method will look first for &#39;/foo/bar/bletch/story.mc&#39;, and return that string if the template exists. If it doesn&#39;t, it&#39;ll look for &#39;/foo/bar/story.mc&#39;. If it doesn&#39;t find that, it&#39;ll look for &#39;/foo/story.mc&#39; and then &#39;/story.mc&#39;. If it finds none of these, it will rutrn null (or an empty list in an array context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses HTML::Mason::Interp-&gt;comp_exists() internally to determine if the template exists.</p>
+
+</dd>
+<dt>my $template = $burner-&gt;find_first_template(@tmpl_list)</dt>
+<dd>
+
+<p>Returns the path to the first template it finds in @tmpl_list. It uses find_template() (see above) to examine each template in @tmpl_list in turn. Thus, this method looks down the directory hierarchy of each template in @tmpl_list before moving on to the next one. For example:</p>
+
+<pre><code>my @tmpl_list = (&#39;/foo/bar/story.mc&#39;, &#39;/sci/anthro/fizzle.mc&#39;);
+my $template =  $burner-&gt;find_first_template(@tmpl_list)</code></pre>
+
+<p>In this example, find_first_template will return the name of the first template it finds in this order:</p>
+
+<ul>
+
+<li><p>/foo/bar/story.mc&#39;</p>
+
+</li>
+<li><p>/foo/story.mc&#39;</p>
+
+</li>
+<li><p>/story.mc&#39;</p>
+
+</li>
+<li><p>/sci/anthro/fizzle.mc&#39;</p>
+
+</li>
+<li><p>/sci/fizzle.mc&#39;</p>
+
+</li>
+<li><p>/fizzle.mc&#39;</p>
+
+</li>
+</ul>
+
+<p>If no template is found to exist, find_first_template will return undef (or an empty list in an array context).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See also find_template() above.</p>
+
+</dd>
+<dt>$success = $b-&gt;display_element($element)</dt>
+<dd>
+
+</dd>
+<dt>$success = $b-&gt;display_element($element, %ARGS)</dt>
+<dd>
+
+<p>A method to be called from template space. This method will find the mason element associated with the element passed in and call <code>$m-&gt;comp</code>. All arguments after the first argument will be passed to the template executed as its <code>%ARGS</code> hash.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$output = $b-&gt;sdisplay_element($element)</dt>
+<dd>
+
+<p>A method to be called from template space. This is a <code>sprint</code>-likef version of <code>display_element()</code>, i.e. it returns the output as a string rather than outputting it it as <code>display_element()</code> does.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $more_pages = $b-&gt;get_more_pages</dt>
+<dd>
+
+<pre><code>% unless ($burner-&gt;get_more_pages) {
+      &lt;h3&gt;Last page&lt;/h3&gt;
+% }</code></pre>
+
+<p>Returns true if more pages remain to be burned, and false if not. Only enumerated when <code>display_pages()</code> is being used to output pages.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$template = $b-&gt;_load_template_element($element);</dt>
+<dd>
+
+<p>Given an element (a business asset/data element) return the template element that formats it.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$elem = $b-&gt;_current_element</dt>
+<dd>
+
+<p>Return the current element in this context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$elem = $b-&gt;_current_element_type</dt>
+<dd>
+
+<p>Return the current element type in this context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $b-&gt;_push_element($element)</dt>
+<dd>
+
+</dd>
+<dt>$element = $b-&gt;_pop_element;</dt>
+<dd>
+
+<p>Push and pops an element from the element stack. As a story is burned, the burn process can travel down several elements deep. This stack records the order in which each element was transversed so when the burn process exits an element, the correct and current element is at the top of the stack.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;_display_container($element)</dt>
+<dd>
+
+<p>Called by <code>display_element()</code> and <code>sidsplay_element()</code> this method uses the PHP::Interpreter object to execute the element template for a container element.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>None.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Burner.html" name="Bric::Util::Burner">Bric::Util::Burner</a></p>
+
+</body>
+</html>
+

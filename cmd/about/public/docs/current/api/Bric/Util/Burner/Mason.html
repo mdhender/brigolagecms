@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Burner::Mason</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Mason.html#Name">Name</a></li>
+  <li><a href="Mason.html#Synopsis">Synopsis</a></li>
+  <li><a href="Mason.html#Description">Description</a></li>
+  <li><a href="Mason.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Mason.html#Constructors">Constructors</a></li>
+      <li><a href="Mason.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Mason.html#Private">Private</a>
+    <ul>
+      <li><a href="Mason.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Mason.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Mason.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Mason.html#Notes">Notes</a></li>
+  <li><a href="Mason.html#Author">Author</a></li>
+  <li><a href="Mason.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Burner::Mason - Publish sturies using Mason templates</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Burner::Mason;
+
+# Create a new Mason burner using the settings from $burner
+my $mason_burner = Bric::Util::Burner::Mason-&gt;new($burner);
+
+# burn an asset, get back a list of resources
+my $resources = $mason_burner-&gt;burn_one($ba, $oc, $cat, $at);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module handles burning business assets using Mason templates.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = Bric::Util::Burner::Mason-&gt;new($burner);</dt>
+<dd>
+
+<p>Creates a new Mason burner object. Takes a single parameters - $burner - which is a Bric::Util::Burner object. The new object will has its attributes initialized by the passed object.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$resources = $b-&gt;burn_one($ba, $oc, $cat, $at);</dt>
+<dd>
+
+<p>Burn an asset in a given output channel and category, this is usually called by the preview or publish method. Returns a list of resources burned.</p>
+
+<p>Parameters are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to burn.</p>
+
+</dd>
+<dt><code>$oc</code></dt>
+<dd>
+
+<p>The output channel to which to burn the asset.</p>
+
+</dd>
+<dt><code>$cat</code></dt>
+<dd>
+
+<p>A category in which to burn the asset.</p>
+
+</dd>
+<dt><code>$at</code></dt>
+<dd>
+
+<p>A asset type object for $ba . Note that this is not currently used by Mason.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>my $bool = $burner-&gt;chk_syntax($template, \$err)</dt>
+<dd>
+
+<p>Compiles the template found in <code>$template</code>. If the compile succeeds with no errors, <code>chk_syntax()</code> returns true. Otherwise, it returns false, and the error will be in the <code>$err</code> variable passed by reference.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $template = $burner-&gt;find_template($uri, $tmpl_name)</dt>
+<dd>
+
+<p>Finds the first instance of the template with the name $tmpl_name in the URI directory hierarchy in $uri. Returns the template path, if it exists, and undef if it does not. For example:</p>
+
+<pre><code>my $uri = &#39;/foo/bar/bletch&#39;;
+my $tmpl_name = &#39;story.mc&#39;;
+my $template = $burner-&gt;find_template($uri, $tmpl_name);</code></pre>
+
+<p>The find_template() method will look first for &#39;/foo/bar/bletch/story.mc&#39;, and return that string if the template exists. If it doesn&#39;t, it&#39;ll look for &#39;/foo/bar/story.mc&#39;. If it doesn&#39;t find that, it&#39;ll look for &#39;/foo/story.mc&#39; and then &#39;/story.mc&#39;. If it finds none of these, it will return null (or an empty list in an array context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses HTML::Mason::Interp-&gt;comp_exists() internally to determine if the template exists.</p>
+
+</dd>
+<dt>my $template = $burner-&gt;find_first_template(@tmpl_list)</dt>
+<dd>
+
+<p>Returns the path to the first template it finds in @tmpl_list. It uses find_template() (see above) to examine each template in @tmpl_list in turn. Thus, this method looks down the directory hierarchy of each template in @tmpl_list before moving on to the next one. For example:</p>
+
+<pre><code>my @tmpl_list = (&#39;/foo/bar/story.mc&#39;, &#39;/sci/anthro/fizzle.mc&#39;);
+my $template =  $burner-&gt;find_first_template(@tmpl_list)</code></pre>
+
+<p>In this example, find_first_template will return the name of the first template it finds in this order:</p>
+
+<ul>
+
+<li><p>/foo/bar/story.mc&#39;</p>
+
+</li>
+<li><p>/foo/story.mc&#39;</p>
+
+</li>
+<li><p>/story.mc&#39;</p>
+
+</li>
+<li><p>/sci/anthro/fizzle.mc&#39;</p>
+
+</li>
+<li><p>/sci/fizzle.mc&#39;</p>
+
+</li>
+<li><p>/fizzle.mc&#39;</p>
+
+</li>
+</ul>
+
+<p>If no template is found to exist, find_first_template will return undef (or an empty list in an array context).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See also find_template() above.</p>
+
+</dd>
+<dt>$success = $b-&gt;display_element($element)</dt>
+<dd>
+
+</dd>
+<dt>$success = $b-&gt;display_element($element, %ARGS)</dt>
+<dd>
+
+<p>A method to be called from template space. This method will find the mason element associated with the element passed in and call <code>$m-&gt;comp</code>. All arguments after the first argument will be passed to the template executed as its <code>%ARGS</code> hash.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$html = $b-&gt;sdisplay_element($element)</dt>
+<dd>
+
+<p>A method to be called from template space. This is a sprintf version of $b-&gt;display_element(), i.e. it returns as a string of HTML what would have been displayed with $b-&gt;display_element().</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $more_pages = $b-&gt;get_more_pages</dt>
+<dd>
+
+<pre><code>% unless ($burner-&gt;get_more_pages) {
+      &lt;h3&gt;Last page&lt;/h3&gt;
+% }</code></pre>
+
+<p>Returns true if more pages remain to be burned, and false if not. Only enumerated when <code>display_pages()</code> is being used to output pages.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $b-&gt;chain_next()</dt>
+<dd>
+
+<p>This method can be used in an autohandler template. It calls the next template in the chain, whether its the next autohandler down the line or the template itself.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This is a wrapper around masons &#39;call_next&#39; method. We wrap it here to make sure we have control over the burn process at this level if we need it. It also gives us the opportunity to tailor the verbiage to suit our application better.</p>
+
+</dd>
+<dt>$success = $b-&gt;end_page;</dt>
+<dd>
+
+<p>Writes out the current page and starts a new one.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to open file for writing.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$template = $b-&gt;_load_template_element($element);</dt>
+<dd>
+
+<p>Given an element (a business asset/data element) return the template element that formats it.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$elem = $b-&gt;_current_element</dt>
+<dd>
+
+<p>Return the current element in this context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$elem = $b-&gt;_current_element_type</dt>
+<dd>
+
+<p>Return the current element type in this context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $b-&gt;_push_element($element)</dt>
+<dd>
+
+</dd>
+<dt>$element = $b-&gt;_pop_element;</dt>
+<dd>
+
+<p>Push and pops an element from the element stack. As a story is burned, the burn process can travel down several elements deep. This stack records the order in which each element was transversed so when the burn process exits an element, the correct and current element is at the top of the stack.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$html = $b-&gt;_render_element($element, $display)</dt>
+<dd>
+
+<p>Common code used by $b-&gt;display_element and $b-&gt;sdisplay_element. It directly displays the HTML for display_element, while it returns the HTML as a string for sdisplay_element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>_interp_args()</dt>
+<dd>
+
+<p>Returns HTML::Mason-&gt;Interp arguments, with custom tags set.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>_custom_preprocess($component, $burner)</dt>
+<dd>
+
+<p>HTML::Mason::Compiler pre-process filter, to allow custom mason tags.</p>
+
+<p>Pre-processor checks the tagset for the context, which can be PREVIEW_MODE, BURN_MODE or SYNTAX_MODE, and processes the tags according to the context.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb <a href="http://search.cpan.org/perldoc?gt">gt</a>garth@perijove.com<a href="http://search.cpan.org/perldoc?lt">lt</a></p>
+
+<p>Sam Tregar <a href="http://search.cpan.org/perldoc?gt">gt</a>stregar@about-inc.com<a href="http://search.cpan.org/perldoc?lt">lt</a></p>
+
+<p>David Wheeler <a href="http://search.cpan.org/perldoc?gt">gt</a>david@justatheory.com<a href="http://search.cpan.org/perldoc?lt">lt</a></p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Burner.html" name="Bric::Util::Burner">Bric::Util::Burner</a></p>
+
+</body>
+</html>
+

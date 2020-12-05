@@ -1,0 +1,1095 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Asset.html#Name">Name</a></li>
+  <li><a href="Asset.html#Synopsis">Synopsis</a></li>
+  <li><a href="Asset.html#Description">Description</a></li>
+  <li><a href="Asset.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Asset.html#Constructors">Constructors</a></li>
+      <li><a href="Asset.html#Destructors">Destructors</a></li>
+      <li><a href="Asset.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Asset.html#Private">Private</a>
+    <ul>
+      <li><a href="Asset.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Asset.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Asset.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Asset.html#Author">Author</a></li>
+  <li><a href="Asset.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset - A base class of behaviours that all assets must exhibit. An asset is anything that goes through workflow</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Class Methods
+$key_name = Bric::Biz::Asset-&gt;key_name()
+%priorities = Bric::Biz::Asset-&gt;list_priorities()
+$data = Bric::Biz::Asset-&gt;my_meths
+
+# looking up of objects
+($asset_list || @assets) = Bric::Biz::Asset-&gt;list( $param )
+
+# General information
+$asset       = $asset-&gt;get_id()
+$asset       = $asset-&gt;set_name($name)
+$name        = $asset-&gt;get_name()
+$asset       = $asset-&gt;set_description($description)
+$description = $asset-&gt;get_description()
+$priority        = $asset-&gt;get_priority()
+$asset           = $asset-&gt;set_priority($priority)
+
+$site_id     = $asset-&gt;get_site_id()
+$asset       = $asset-&gt;set_site_id($site_id)
+
+# User information
+$usr_id      = $asset-&gt;get_user__id()
+$modifier    = $asset-&gt;get_modifier()
+
+# Version information
+$vers        = $asset-&gt;get_version();
+$vers_id     = $asset-&gt;get_version_id();
+$current         = $asset-&gt;get_current_version();
+$checked_out = $asset-&gt;get_checked_out()
+
+# Publish info
+$needs_publish = $asset-&gt;needs_publish();
+
+# Expire Data Information
+$asset           = $asset-&gt;set_expire_date($date)
+$expire_date = $asset-&gt;get_expire_date()
+
+# Desk information
+$desk        = $asset-&gt;get_current_desk;
+$asset       = $asset-&gt;set_current_desk($desk);
+
+# Workflow methods.
+$id    = $asset-&gt;get_workflow_id;
+$obj   = $asset-&gt;get_workflow_object;
+$asset = $asset-&gt;set_workflow_id($id);
+
+# Access note information
+$asset         = $asset-&gt;set_note($note);
+my $note       = $asset-&gt;get_note;
+my $notes_href = $asset-&gt;get_notes()
+
+# Access active status
+$asset            = $asset-&gt;deactivate()
+$asset            = $asset-&gt;activate()
+($asset || undef) = $asset-&gt;is_active()
+
+$asset = $asset-&gt;save()
+
+# returns all the groups this is a member of
+($grps || @grps) = $asset-&gt;get_grp_ids()</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Asset is the Parent Class for everything that will go through Workflow. It contains data and actions that are common to all of these objects. Asset holds information on desks visited by the object, notes associated with the object, and versioning information. Actions that can be preformed are fork which prepares an object to be edited in a checked out state, cancel, which cancels the fork, merge which takes the forked object compares it to the stored main version and creates a new version and revert which is called on a forked object which returns the state of the object at a given version id.</p>
+
+<p>A fork will preform a copy in the database keeping the asset id, and version number the same but will associate a user with the object.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$asset = Bric::Biz::Asset::Business::Story-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>$asset = Bric::Biz::Asset::Business::Media-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>$asset = Bric::Biz::Asset::Template-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>This will return an asset that matches the ID provided.</p>
+
+<p><b>Throws:</b></p>
+
+<p>&quot;Missing required parameter &#39;id&#39;&quot;</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(@stories || $stories) = Bric::Biz::Asset::Business::Story-&gt;list($params)</dt>
+<dd>
+
+</dd>
+<dt>(@media_objs || $media) = Bric::Biz::Asset::Business::Media-&gt;list($params)</dt>
+<dd>
+
+</dd>
+<dt>(@template_objs || $templates) = Bric::Biz::Asset::Business::Template-&gt;list($params)</dt>
+<dd>
+
+<p><b>See Also:</b></p>
+
+<dl>
+
+<dt>Bric::Biz::Asset::Business::Story-&gt;list()</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media-&gt;list()</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Template-&gt;list()</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>(@ids||$ids) = Bric::Biz::Asset::Business::Story-&gt;list_ids($params)</dt>
+<dd>
+
+</dd>
+<dt>(@ids||$ids) = Bric::Biz::Asset::Business::Media-&gt;list_ids($params)</dt>
+<dd>
+
+</dd>
+<dt>(@ids||$ids) = Bric::Biz::Asset::Business::Template-&gt;list_ids($params)</dt>
+<dd>
+
+<p><b>See Also:</b></p>
+
+<dl>
+
+<dt>Bric::Biz::Asset::Business::Story-&gt;list_ids()</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media-&gt;list_ids()</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Template-&gt;list_ids()</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (%priorities || $priorities_href) = $asset-&gt;list_priorities()</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the priority labels. Each key is the priority number, and the corresponding value is its label.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Asset-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Asset-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Asset-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<ul>
+
+<li><p>name - The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</li>
+<li><p>disp - The display name of the property or attribute.</p>
+
+</li>
+<li><p>get_meth - A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>get_args - An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>set_meth - A reference to the method that will set the value of the property or attribute.</p>
+
+</li>
+<li><p>set_args - An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</li>
+<li><p>type - The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>len - If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</li>
+<li><p>search - The property is searchable via the list() and list_ids() methods.</p>
+
+</li>
+<li><p>req - The property or attribute is required.</p>
+
+</li>
+<li><p>props - An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+</dd>
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>length - The Length, in letters, to display a text or password field.</p>
+
+</li>
+<li><p>maxlength - The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</li>
+<li><p>rows - The number of rows to format in a textarea field.</p>
+
+</li>
+<li><p>cols - The number of columns to format in a textarea field.</p>
+
+</li>
+<li><p>vals - An anonymous hash of key/value pairs representing the values and display names to use in a select list.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$versions = $asset-&gt;get_versions</dt>
+<dd>
+
+<p>Returns an array or array reference the previous versions of this asset in order from the first to the current.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $self-&gt;get_name()</dt>
+<dd>
+
+<p>Returns the name field from Assets</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;set_name()</dt>
+<dd>
+
+<p>Sets the name field for Assets</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$site_id = $asset-&gt;get_site_id</dt>
+<dd>
+
+<p>Returns the ID of the site this asset is a part of.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$site = $asset-&gt;get_site</dt>
+<dd>
+
+<p>Returns the the site this asset is a part of.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$description = $self-&gt;get_description()</dt>
+<dd>
+
+<p>This returns the description for the asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;set_description()</dt>
+<dd>
+
+<p>This sets the description on the asset, first converting non-Unix line endings.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$priority = $asset-&gt;get_priority()</dt>
+<dd>
+
+<p>This will return the priority that is set upon the asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$asset = $asset-&gt;set_priority($priority)</dt>
+<dd>
+
+<p>This will set the priority for the asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$version = $asset-&gt;get_version()</dt>
+<dd>
+
+<p>Returns the version that this asset represents.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$user_id = $asset-&gt;get_user_id()</dt>
+<dd>
+
+<p>Returns the user_id of the person to whom the asset is checked out to</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$user = $asset-&gt;get_user()</dt>
+<dd>
+
+<p>Returns the Person object of the person to whom the asset is checked out to</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$version_id = $asset-&gt;get_version_id()</dt>
+<dd>
+
+<p>Returns the database id of the version of this asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$current_version = $asset-&gt;get_current_version()</dt>
+<dd>
+
+<p>Returns the version that is the current one.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$user_id = $asset-&gt;get_modifier()</dt>
+<dd>
+
+<p>Returns the user id of the person who edited this version of the asset. If the asset is checked out it will be the same as the user who checked it out.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$publish_status = $asset-&gt;get_publish_status()</dt>
+<dd>
+
+<p>returns the publish status flag</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$asset = $asset-&gt;set_publish_status($status)</dt>
+<dd>
+
+<p>sets the publish status flag.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$needs_publish = $asset-&gt;needs_publish()</dt>
+<dd>
+
+<p>Compares current_version and published_version from asset table. If the same, needs_publish returns 0. If different, returns 1.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$checked_out = $asset-&gt;get_checked_out()</dt>
+<dd>
+
+<p>Returns the checked out flag</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $story-&gt;set_expire_date($expire_date)</dt>
+<dd>
+
+<p>Sets the expire date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $expire_date = $story-&gt;get_expire_date($format)</dt>
+<dd>
+
+<p>Returns expire date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;set_current_desk($desk_object);</dt>
+<dd>
+
+<p>This method takes a desk stamp object and adds it to the asset object</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Adds the asset_grp_id of the desk to grp_ids (unless it was already there).</p>
+
+<p><b>Notes:</b></p>
+
+<p>This method only updates the asset&#39;s private variables to reflect the new desk and grp assignment. To truly add or transfer an asset to a desk, refer to the <a rel="section" href="Workflow/Parts/Desk.html" name="Bric::Biz::Workflow::Parts::Desk">Bric::Biz::Workflow::Parts::Desk</a> object&#39;s <code>accept()</code> and <code>transfer()</code> methods.</p>
+
+</dd>
+<dt>$ld = $self-&gt;get_current_desk;</dt>
+<dd>
+
+<p>This returns the desk stamp of the desk that the object is currently at</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;remove_from_desk</dt>
+<dd>
+
+<p>Removes the asset from the current desk.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $asset-&gt;get_id()</dt>
+<dd>
+
+<p>This returns the id that uniquely identifies this asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$id = $asset-&gt;get_workflow_id</dt>
+<dd>
+
+<p>Returns the workflow ID that this asset is a part of</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$asset = $asset-&gt;set_workflow_id( $w_ID );</dt>
+<dd>
+
+<p>Sets the workflow that this asset is a member of</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Adds the asset group ID of the workflow to grp_ids unless it was already there.</p>
+
+</dd>
+<dt>$workflow_obj = $asset-&gt;get_workflow_object();</dt>
+<dd>
+
+<p>Returns the workflow object that this asset is associated with</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$id = $asset-&gt;get_desk_id</dt>
+<dd>
+
+<p>Returns the ID for the desk the asset is currently on.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my @grp_ids = $asset-&gt;get_grp_ids</dt>
+<dd>
+
+</dd>
+<dt>my $grp_ids_aref = $asset-&gt;get_grp_ids</dt>
+<dd>
+
+<p>Returns the IDs for all the groups of which the asset is an active member.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method overrides <code>Bric::get_grp_ids()</code> in order to add the site ID to the list of IDs. This works because the site ID corresponds to a secret group ID.</p>
+
+</dd>
+<dt>$self = $self-&gt;cancel</dt>
+<dd>
+
+<p>Reverts the actions of a fork with out committing any changes. Deletes row for the checked out asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Removes the Asset (version) record from the database</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self-&gt;set_note($note);</dt>
+<dd>
+
+</dd>
+<dt>$self-&gt;add_note($note);</dt>
+<dd>
+
+<p>Sets the note for this instance of the assset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>add_note()</code> is deprecated.</p>
+
+</dd>
+<dt>my $note = $asset-&gt;get_note</dt>
+<dd>
+
+<p>Returns the note for this instance of the asset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $notes_href = $asset-&gt;get_notes;</dt>
+<dd>
+
+<p>Returns a hash reference of the notes for the asset. The hash keys are asset version numbers, and the values are the notes.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = $asset-&gt;has_notes</dt>
+<dd>
+
+<p>Returns true if the asset has notes in any of its versions, and false if it does not.</p>
+
+</dd>
+<dt>$asset = $asset-&gt;activate()</dt>
+<dd>
+
+<p>This will activate a nonactive asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$asset = $asset-&gt;deactivate()</dt>
+<dd>
+
+<p>This will set the asset to a non active state</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($asset || undef) = $asset-&gt;is_active()</dt>
+<dd>
+
+<p>Returns the object if it is active, undef otherwise</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;cancel_checkout</dt>
+<dd>
+
+<p>Cancels the checkout. Deletes the version instance record.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>&quot;Cannot cancel a non checked out asset&quot;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$asset = $asset-&gt;checkin</dt>
+<dd>
+
+<p>Checks the asset in.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot checkin non checked out versions.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<dl>
+
+<dt>michael soderstrom &lt;miraso@pacbell.net&gt;</dt>
+<dd>
+
+</dd>
+<dt>Mark Jaroski &lt;jaroskim@who.int&gt;</dt>
+<dd>
+
+</dd>
+<dt>David Wheeler &lt;david@kineticode.com&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?Bric.pm">Bric.pm</a>,<a href="http://search.cpan.org/perldoc?Bric::Util::Group::AssetVersion">Bric::Util::Group::AssetVersion</a></p>
+
+</body>
+</html>
+

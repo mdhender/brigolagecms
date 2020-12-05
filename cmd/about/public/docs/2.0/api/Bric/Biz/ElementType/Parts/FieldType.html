@@ -1,0 +1,1260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::ElementType::Parts::FieldType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="FieldType.html#Name">Name</a></li>
+  <li><a href="FieldType.html#Synopsis">Synopsis</a></li>
+  <li><a href="FieldType.html#Description">Description</a></li>
+  <li><a href="FieldType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="FieldType.html#Constructors">Constructors</a></li>
+      <li><a href="FieldType.html#Destructors">Destructors</a></li>
+      <li><a href="FieldType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="FieldType.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="FieldType.html#Private">Private</a>
+    <ul>
+      <li><a href="FieldType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="FieldType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="FieldType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="FieldType.html#Notes">Notes</a></li>
+  <li><a href="FieldType.html#Author">Author</a></li>
+  <li><a href="FieldType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::ElementType::Parts::FieldType - Bricolage Field Type management</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>$field = Bric::Biz::ElementType::Parts::FieldType-&gt;new( $initial_state )
+
+$field = Bric::Biz::ElementType::Parts::FieldType-&gt;lookup( { id =&gt; $id } )
+
+($field_list || @fields) = Bric::Biz::ElementType::Parts::FieldType-&gt;list($criteria)
+
+($ids || @ids) = Bric::Biz::ElementType::Parts::FieldType-&gt;list_ids($criteria)
+
+
+$id    = $field-&gt;get_id()
+
+# Get/Set the name of this field.
+$field = $field-&gt;set_key_name($name)
+$name  = $field-&gt;get_key_name()
+
+# Get/set the description for this field.
+$field = $field-&gt;set_description($description)
+$desc  = $field-&gt;get_description()
+
+# Get/Set the maximum length for the data in this field.
+$field = $field-&gt;set_max_length($max_length)
+$max   = $field-&gt;get_max_length()
+
+# (deprecated) Get/Set whether this field is required or not.
+$field       = $field-&gt;set_required(1 || undef)
+(1 || undef) = $field-&gt;get_required()
+
+# (deprecated) Get/Set the quantifier flag.
+$field      = $field-&gt;set_quantifier( $quantifier )
+$quantifier = $field-&gt;get_quantifier()
+
+# Get/Set min occurrence specification limit
+$field = $field-&gt;set_min_occurrence($amount)
+$min = $field-&gt;get_min_occurrence()
+
+# Get/Set max occurrence specification limit
+$field = $field-&gt;set_max_occurrence($amount)
+$max = $field-&gt;get_max_occurrence()
+
+# Get/Set the data type (or SQL type) of this field.
+$field    = $field-&gt;set_sql_type();
+$sql_type = $field-&gt;get_sql_type()
+
+# Set the active flag for this field.
+$field       = $field-&gt;activate()
+$field       = $field-&gt;deactivate()
+(undef || 1) = $field-&gt;is_active()
+
+(undef || $self) = $field-&gt;remove()
+
+$field = $field-&gt;save()</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class holds the data about data that will eventualy populate Published Assets. The <code>key_name</code> and <code>description</code> fields can be set as can a number of rules.</p>
+
+<p>The max length field. This will allow someone to set the max length allowed for their field. It will have a rule set upon it so that the max length will not be greater than any available storage. The field length will map to what ever storarge is available for a field just larger than the one listed ( Thought needs to be given how to handle those that change their length after data has been entered as it might switch storage catagories)</p>
+
+<p>The quantifier field will state whether the field may be repeated indefinitely, zero or more times, zero or one, one, or an arbitrary number of times.</p>
+
+<p>the sql type will map to a type in the DB ( varchar or date )</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$field = Bric::Biz::ElementType::Parts::FieldType-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>Creates a new element type Field Part with the values associated with the initial state</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>element_type_id (required)</p>
+
+</li>
+<li><p>meta_object</p>
+
+</li>
+<li><p>key_name</p>
+
+</li>
+<li><p>description</p>
+
+</li>
+<li><p>place</p>
+
+</li>
+<li><p>required</p>
+
+</li>
+<li><p>quantifier</p>
+
+</li>
+<li><p>sql_type</p>
+
+</li>
+<li><p>active</p>
+
+</li>
+<li><p>max_occurrence</p>
+
+</li>
+<li><p>min_occurrence</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>$field = $field-&gt;copy($at_id);</dt>
+<dd>
+
+<p>Makes a copy of itself and passes back a new object. The only argument is an element type ID. This needs to be passed since a field of one name cannot be inserted twice into the same element type.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$field = Bric::Biz::ElementType::Parts::FieldType-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Returns an existing element type field object that has the id that was given as an argument</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>($parts || @parts) = Bric::Biz::ElementType::Parts::FieldType-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or array refeference of field objects that match the criteria in the <code>$params</code> hash reference. Supported criteria are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Field ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType object with which the field is associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+<p>The field key name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The field name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>The field description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>place</dt>
+<dd>
+
+<p>The field place relative to other fields in the same element type. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>quantifier</dt>
+<dd>
+
+<p>Boolean value indicating whether the field is single or can be multiple.</p>
+
+</dd>
+<dt>autopopulated</dt>
+<dd>
+
+<p>Boolean value indicating whether the field&#39;s value is autopopulated by a media document.</p>
+
+</dd>
+<dt>max_length</dt>
+<dd>
+
+<p>The maximum length of the field. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>required</dt>
+<dd>
+
+<p>Boolean value indicating whether or not the field is always included in an element.</p>
+
+</dd>
+<dt>sql_type</dt>
+<dd>
+
+<p>Indicates how the field value should be stored in the database. Possible values are &quot;short&quot;, &quot;blob&quot;, and &quot;date&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>widget_type</dt>
+<dd>
+
+<p>A string indicating what widget should be used to display the field in user interfaces. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>precision</dt>
+<dd>
+
+<p>An inteteger indicating the precision of the field&#39;s value. Should be set only when the <code>widget_type</code> is set to &quot;date&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to use to display the field. Should only be set when the <code>widget_type</code> is set to &quot;textarea&quot; or &quot;wysiwyg&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to use to display the field. Should only be set when the <code>widget_type</code> is set to &quot;textarea&quot; or &quot;wysiwyg&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The length to use in the display of the field. Should only be set when the <code>widget_type</code> is set to &quot;text&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>multiple</dt>
+<dd>
+
+<p>A boolean value indicating whether or not the field may store multiple values. Should only be set to a true value when the <code>widget_type</code> is set to &quot;select&quot;.</p>
+
+</dd>
+<dt>default_val</dt>
+<dd>
+
+<p>A string indicating the default value for the field. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean valule indicating whether or not the field is active.</p>
+
+</dd>
+<dt>max_occurrence</dt>
+<dd>
+
+<p>Specifies an upper limit to how many instances there may be of this field type. 0 represents unlimited.</p>
+
+</dd>
+<dt>min_occurrence</dt>
+<dd>
+
+<p>Specifies a lower limit to how many instances there may be of this field type. 0 indicates that it is not required.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $data_href = Bric::Biz::Site-&gt;href($params);</dt>
+<dd>
+
+<p>Returns an anonymous hash of data objects based on the search parameters passed via an anonymous hash. The hash keys will be the site IDs, and the values will be the corresponding data elements. The supported lookup keys are the same as those for <code>list()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>$meths = Bric::Biz::ElementType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::ElementType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::ElementType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Not yet written.</p>
+
+</dd>
+<dt>($ids || @ids) = Bric::Biz::ElementType::Parts::Field-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns the ids of the field objects that match the given criteria in the <code>$params</code> hash reference. See <code>list()</code> for a list of supported parameters.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$id = $field-&gt;get_id()</dt>
+<dd>
+
+<p>Returns the database id of the field object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$name = $field-&gt;get_name()</dt>
+<dd>
+
+<p>Gets the name of the field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_name($name)</dt>
+<dd>
+
+<p>Sets the name of the field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$key_name = $field-&gt;get_key_name()</dt>
+<dd>
+
+<p>Returns the key name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_key_name($key_name)</dt>
+<dd>
+
+<p>Sets the key name for this field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$description = $field-&gt;get_description()</dt>
+<dd>
+
+<p>Return the human readable description field</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_description($description)</dt>
+<dd>
+
+<p>Sets the human readable descripton for this field, first converting any non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$max_length $field-&gt;get_max_length()</dt>
+<dd>
+
+<p>Return the max length that has been registered</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_max_length($max_length)</dt>
+<dd>
+
+<p>Set the max length in chars for this field</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$required = $field-&gt;get_required()</dt>
+<dd>
+
+<p>Return the required flag for this field</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_required($required)</dt>
+<dd>
+
+<p>Set the flag to make this field required ( default is not)</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$repeatable = $field-&gt;get_quantifier()</dt>
+<dd>
+
+<p>Return the repeatablity flag</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_quantifier($repeatable)</dt>
+<dd>
+
+<p>Sets the boolean attribute that indicates whether or not the field is repeatable within the element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$max = $field-&gt;get_max_occurrence()</dt>
+<dd>
+
+<p>Return the maximum occurrence</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_max_occurrence($max)</dt>
+<dd>
+
+<p>Sets the maximum occurrence this field type may occur.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$min = $field-&gt;get_min_occurrence()</dt>
+<dd>
+
+<p>Return the minimum occurrence</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_min_occurrence($min)</dt>
+<dd>
+
+<p>Sets the minimum occurrence this field type may occur.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data_type = $field-&gt;get_data_type()</dt>
+<dd>
+
+<p>Returns the database datatype</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_data_type($data_type)</dt>
+<dd>
+
+<p>Returns the database datatype</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$widget_type = $field-&gt;get_widget_type()</dt>
+<dd>
+
+<p>Returns a string indicating how to display the field in a UI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_widget_type($widget_type)</dt>
+<dd>
+
+<p>Sets the attribute indicating how to display the field in a UI. Possible values are:</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+<dt>pulldown</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>codeselect</dt>
+<dd>
+
+</dd>
+<dt>wysiwyg</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$precision = $field-&gt;get_precision()</dt>
+<dd>
+
+<p>Returns an inteteger indicating the precision of the field&#39;s value. Should be set only when the <code>widget_type</code> is set to &quot;date&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_precision($precision)</dt>
+<dd>
+
+<p>Sets the precision for <code>widget_type</code> &quot;date&quot;. See <a rel="section" href="../../../Util/Time.html" name="Bric::Util::Time">Bric::Util::Time</a> for documentation of the available precisions.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_cols($cols)</dt>
+<dd>
+
+<p>Sets the number of columns to use in displaying the field in a UI. Should only be set to a non-zero value if the <code>widget_type</code> attribute is set to &quot;textarea&quot; or &quot;wysiwyg&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$cols = $field-&gt;set_cols()</dt>
+<dd>
+
+<p>Returns the number of columns to use in display the field in a UI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_rows($rows)</dt>
+<dd>
+
+<p>Sets the number of rows to use in displaying the field in a UI. Should only be set to a non-zero value if the <code>widget_type</code> attribute is set to &quot;textarea&quot; or &quot;wysiwyg&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$rows = $field-&gt;set_rows()</dt>
+<dd>
+
+<p>Returns the number of rows to use in display the field in a UI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_length($length)</dt>
+<dd>
+
+<p>Sets the length to use in displaying the field in a UI. Should only be set to a non-zero value if the <code>widget_type</code> attribute is set to &quot;text&quot;.</p>
+
+<p><b>Thlength:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$length = $field-&gt;set_length()</dt>
+<dd>
+
+<p>Returns the number of length to use in display the field in a UI.</p>
+
+<p><b>Thlength:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$multiple = $field-&gt;get_multiple()</dt>
+<dd>
+
+<p>Returns boolean value indicating whether the field can have multiple values.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_multiple($multiple)</dt>
+<dd>
+
+<p>Sets boolean value indicating whether the field can have multiple values. Should only be set to a true value if the <code>widget_type</code> is &quot;select&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$default_val = $field-&gt;get_default_val()</dt>
+<dd>
+
+<p>Returns the default value for the field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_default_val($default_val)</dt>
+<dd>
+
+<p>Sets the default value for the field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$vals = $field-&gt;get_vals()</dt>
+<dd>
+
+<p>Returns a string representing the possible values for the field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field = $field-&gt;set_vals($vals)</dt>
+<dd>
+
+<p>Sets a list of values that can be used for the field. Each potential value should be listed on a single line, with a label following the value, separated by a comma and optional whitespace. Commas in the value or the label should be escaped. For example:</p>
+
+<pre><code>larry,  Wall\, Larry
+damian, Conway\, Damian
+chip,   Salzenberg\, Chip</code></pre>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$val = $data-&gt;set_attr($name, $value);</dt>
+<dd>
+
+</dd>
+<dt>$val = $data-&gt;get_attr($name);</dt>
+<dd>
+
+<p>Get/Set attributes on this element type.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$val = $data-&gt;set_meta($name, $field, $value);</dt>
+<dd>
+
+</dd>
+<dt>$val = $data-&gt;get_meta($name, $field);</dt>
+<dd>
+
+</dd>
+<dt>$val = $data-&gt;get_meta($name);</dt>
+<dd>
+
+<p>Get/Set attribute metadata on this element type. Calling the &#39;get_meta&#39; method without &#39;$field&#39; returns all metadata names and values as a hash.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$field = $field-&gt;activate()</dt>
+<dd>
+
+<p>Activates the field type object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$field = $field-&gt;deactivate()</dt>
+<dd>
+
+<p>Deactivates the field type object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(undef || 1) = $field-&gt;is_active()</dt>
+<dd>
+
+<p>Returns 1 if active or undef otherwise</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(undef || $self) = $field-&gt;remove()</dt>
+<dd>
+
+<p>Removes this object completely from the DB. Returns true if active or false otherwise.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$field = $field-&gt;save()</dt>
+<dd>
+
+<p>Saves the changes made to the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>_do_list</dt>
+<dd>
+
+<p>called by list and list ids this does the brunt of their work</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>Needing to be documented.</p>
+
+<dl>
+
+<dt>_get_attr_obj</dt>
+<dd>
+
+</dd>
+<dt>_update_data</dt>
+<dd>
+
+<p>Update the field_type table.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>_insert_data</dt>
+<dd>
+
+<p>Insert rows into the field_type table.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>michael soderstrom ( miraso@pacbell.net )</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>,<a rel="section" href="../../../../Bric.html" name="Bric">Bric</a>,<a rel="section" href="../../Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a>,<a rel="section" href="../../ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>,</p>
+
+</body>
+</html>
+

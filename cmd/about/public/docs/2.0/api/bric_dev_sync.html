@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_dev_sync</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_dev_sync.html#Name">Name</a></li>
+  <li><a href="bric_dev_sync.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_dev_sync.html#Description">Description</a></li>
+  <li><a href="bric_dev_sync.html#Examples">Examples</a></li>
+  <li><a href="bric_dev_sync.html#Author">Author</a></li>
+  <li><a href="bric_dev_sync.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_dev_sync - copies dev resources (Elements and Templates) between servers</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>bric_dev_sync [options] source_url target_url [target_url, ...]</p>
+
+<p>Arguments:</p>
+
+<pre><code>source_url        - the url for the source server
+                    (example: http://localhost or just localhost)
+
+target_url        - the url for the target server(s)
+                    (example: http://bric.bar.com or just bar.com)</code></pre>
+
+<p>Options:</p>
+
+<pre><code>--help            - shows this screen
+
+--man             - shows the full documentation
+
+--verbose         - print a running dialogue of operations.  Repeat
+                    up to three times of successively larger amounts
+                    of debugging information.
+
+--source-username - the Bricolage username to use on the source
+                    server.  Defaults to the BRICOLAGE_USERNAME
+                    environment variable if set.
+
+--source-password - the password to use on the source server.
+                    Default to the BRICOLAGE_PASSWORD environment
+                    variable if set.
+
+--target-username - the Bricolage username to use on the target
+                    server(s).  Defaults to the BRICOLAGE_USERNAME
+                    environment variable if set.
+
+--target-password - the password to use on the target server(s).
+                    Default to the BRICOLAGE_PASSWORD environment
+                    variable if set.
+
+--category        - set to a particular category path to only copy
+                    templates in this category.
+
+--template        - set to the name of a template to copy.  Also
+                    accepts SQL match variables to specify groups
+                    of templates (ex. &quot;%.pl&quot;, &quot;story.%&quot;).
+
+--element         - set to the name of an element to copy.  Also
+                    copies templates for just this element unless
+                    --no-templates is set.
+
+--template-id     - set to the ID of a single template to copy.
+
+--element-id      - set to the ID of a single element to copy.
+
+--site            - the name of a site to copy.
+
+--with-sub        - also selects sub-elements of the selected element.
+                    Useful in combination with --element or
+                    --element-id.
+
+--copy-categories - copy categories from source to target.  Off by
+                    default.  You will need this option to copy
+                    templates from a category on the source that
+                    does not exist in the target.
+
+--no-elements     - only copies templates.  This may cause failure if
+                    the source contains templates for elements that
+                    do not exist on the target.
+
+--no-templates    - only copy elements.
+
+--no-deploy       - by default templates are deployed after being
+                    copied.
+
+--yes             - don&#39;t ask questions, assume the answer is yes and
+                    proceed.
+
+--dry-run         - don&#39;t actually perform potentially destructive
+                    operations (delete, update, create, deploy).
+                    Combine with --verbose for maximum utility.
+
+--timeout         - specify the HTTP timeout for SOAP requests in
+                    seconds.  Defaults to 30.</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This program allows you to copy development resources (elements and templates) from a source server to one or more target servers. There are two main use cases for this program:</p>
+
+<ul>
+
+<li><p>Copying development resources from a development machine into production.</p>
+
+</li>
+<li><p>Copying development resources from a development machine to a private development environment and back again after changes are made.</p>
+
+</li>
+</ul>
+
+<p>For more general resource copying functionality, see the bric_soap client.</p>
+
+<h1 id="Examples">Examples</h1>
+
+<p>Simply copy all elements and templates from the server called &quot;prod&quot; to localhost:</p>
+
+<pre><code>bric_dev_sync http://prod http://localhost</code></pre>
+
+<p>Like the above, but with categories copied also:</p>
+
+<pre><code>bric_dev_sync --copy-categories prod localhost</code></pre>
+
+<p>Update prod with changes to the &quot;Article&quot; element and all sub-elements and associated templates:</p>
+
+<pre><code>bric_dev_sync --element Article --with-sub localhost prod</code></pre>
+
+<p>Update prod with changes with changes to all .pl templates:</p>
+
+<pre><code>bric_dev_sync --no-elements --template &#39;%.pl&#39; localhost prod</code></pre>
+
+<p>Distribute changes to elements and templates from localhost out to prod1, prod2 and prod3 machines:</p>
+
+<pre><code>bric_dev_sync localhost prod1 prod2 prod3</code></pre>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+<p><a href="http://search.cpan.org/perldoc?Bric::SOAP::Element">Bric::SOAP::Element</a></p>
+
+<p><a rel="section" href="Bric/SOAP/Template.html" name="Bric::SOAP::Template">Bric::SOAP::Template</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Coll::Action</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Action.html#Name">Name</a></li>
+  <li><a href="Action.html#Synopsis">Synopsis</a></li>
+  <li><a href="Action.html#Description">Description</a></li>
+  <li><a href="Action.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Action.html#Constructors">Constructors</a></li>
+      <li><a href="Action.html#Destructors">Destructors</a></li>
+      <li><a href="Action.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Action.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Action.html#Private">Private</a>
+    <ul>
+      <li><a href="Action.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Action.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Action.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Action.html#Notes">Notes</a></li>
+  <li><a href="Action.html#Author">Author</a></li>
+  <li><a href="Action.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Coll::Action - Interface for managing collections of distribution actions.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>See Bric::Util::Coll.</p>
+
+<h1 id="Description">Description</h1>
+
+<p>See Bric::Util::Coll.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Util::Coll.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll-&gt;class_name()</dt>
+<dd>
+
+<p>Returns the name of the class of objects this collection manages.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$self = $coll-&gt;save</dt>
+<dd>
+
+</dd>
+<dt>$self = $coll-&gt;save($server_type_id)</dt>
+<dd>
+
+<p>Saves the changes made to all the objects in the collection. Pass in a Bric::Dist::ServerType object ID to make sure all the Bric::Dist::Action objects are associated with that server type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll-&gt;_sort_objs($objs_href)</dt>
+<dd>
+
+<p>Sorts a list of objects into an internally-specified order. This implementation overrides the default, sorting the action objects by their &#39;ord&#39; property.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a></p>
+
+</body>
+</html>
+

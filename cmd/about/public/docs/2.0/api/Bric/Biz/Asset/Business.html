@@ -1,0 +1,1610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset::Business</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Business.html#Name">Name</a></li>
+  <li><a href="Business.html#Synopsis">Synopsis</a></li>
+  <li><a href="Business.html#Description">Description</a></li>
+  <li><a href="Business.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Business.html#Constructors">Constructors</a></li>
+      <li><a href="Business.html#Destructors">Destructors</a></li>
+      <li><a href="Business.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Business.html#Private">Private</a></li>
+      <li><a href="Business.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Business.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Business.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Business.html#Notes">Notes</a></li>
+  <li><a href="Business.html#Author">Author</a></li>
+  <li><a href="Business.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset::Business - An object that houses the business Assets</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Constructor
+$biz = Bric::Biz::Asset::Business-&gt;new($param);
+# DB object looukp
+$biz = Bric::Biz::Asset::Business-&gt;lookup({&#39;id&#39; =&gt; $biz_id});
+
+# Getting a list of objects
+($biz_asset_list||@biz_assets) = Bric::Biz::Asset::Business-&gt;list( $criteria )
+
+# Geting a list of ids
+($biz_ids || @biz_ids) = Bric::Biz::Asset::Business-&gt;list_ids( $criteria )
+
+
+# Class Methods
+$key_name = Bric::Biz::Asset-&gt;key_name()
+%priorities = Bric::Biz::Asset-&gt;list_priorities()
+$data = Bric::Biz::Asset-&gt;my_meths
+
+# looking up of objects
+($asset_list || @assets) = Bric::Biz::Asset-&gt;list( $param )
+
+# General information
+$asset       = $asset-&gt;get_id()
+$asset       = $asset-&gt;set_name($name)
+$name        = $asset-&gt;get_name()
+$asset       = $asset-&gt;set_description($description)
+$description = $asset-&gt;get_description()
+$priority    = $asset-&gt;get_priority()
+$asset       = $asset-&gt;set_priority($priority)
+$alias_id    = $asset-&gt;get_alias_id()
+$asset       = $asset-&gt;set_alias_id($alias_id)
+
+# User information
+$usr_id      = $asset-&gt;get_user__id()
+$modifier    = $asset-&gt;get_modifier()
+
+# Version information
+$vers        = $asset-&gt;get_version();
+$vers_id     = $asset-&gt;get_version_id();
+$current     = $asset-&gt;get_current_version();
+$checked_out = $asset-&gt;get_checked_out()
+
+# Expire Data Information
+$asset       = $asset-&gt;set_expire_date($date)
+$expire_date = $asset-&gt;get_expire_date()
+
+# Desk information
+$desk        = $asset-&gt;get_current_desk;
+$asset       = $asset-&gt;set_current_desk($desk);
+
+# Workflow methods.
+$id    = $asset-&gt;get_workflow_id;
+$obj   = $asset-&gt;get_workflow_object;
+$asset = $asset-&gt;set_workflow_id($id);
+
+# Output channel associations.
+my @ocs = $asset-&gt;get_output_channels;
+$asset-&gt;add_output_channels(@ocs);
+$asset-&gt;del_output_channels(@ocs);
+
+# Access note information
+$asset         = $asset-&gt;set_note($note);
+my $note       = $asset-&gt;get_note;
+my $notes_href = $asset-&gt;get_notes()
+
+# Access active status
+$asset            = $asset-&gt;deactivate()
+$asset            = $asset-&gt;activate()
+($asset || undef) = $asset-&gt;is_active()
+
+$asset = $asset-&gt;save()
+
+# returns all the groups this is a member of
+($grps || @grps) = $asset-&gt;get_grp_ids()</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This is the parent class for all the documents, including <a rel="section" href="Business/Story.html" name="Bric::Biz::Asset::Business::Story">stories</a> and <a rel="section" href="Business/Media.html" name="Bric::Biz::Asset::Business::Media">media documents</a>. It inherits from Bric::Biz::Asset.</p>
+
+<p>Assumption here is that all Business assets have rights, publish dates and keywords associated with them.</p>
+
+<p>This class contains all the interfact to these data points</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$asset = Bric::Biz::Asset::Business-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>new will only be called by Bric::Biz::Asset::Business&#39;s inherited classes</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset::Business-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Asset::Business-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Asset::Business-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Asset::Business-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<ul>
+
+<li><p>name - The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</li>
+<li><p>disp - The display name of the property or attribute.</p>
+
+</li>
+<li><p>get_meth - A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>get_args - An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>set_meth - A reference to the method that will set the value of the property or attribute.</p>
+
+</li>
+<li><p>set_args - An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</li>
+<li><p>type - The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>len - If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</li>
+<li><p>search - The property is searchable via the list() and list_ids() methods.</p>
+
+</li>
+<li><p>req - The property or attribute is required.</p>
+
+</li>
+<li><p>props - An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+</dd>
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>length - The Length, in letters, to display a text or password field.</p>
+
+</li>
+<li><p>maxlength - The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</li>
+<li><p>rows - The number of rows to format in a textarea field.</p>
+
+</li>
+<li><p>cols - The number of columns to format in a textarea field.</p>
+
+</li>
+<li><p>vals - An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$uuid = $asset-&gt;get_uuid</dt>
+<dd>
+
+</dd>
+<dt>$uuid = $asset-&gt;get_uuid_bin</dt>
+<dd>
+
+</dd>
+<dt>$uuid = $asset-&gt;get_uuid_hex</dt>
+<dd>
+
+</dd>
+<dt>$uuid = $asset-&gt;get_uuid_base64</dt>
+<dd>
+
+<p>These methods the UUID field for this document. <code>get_uuid</code> returns the string representation of the UUID, such as &quot;7713585E-0501-11DA-B4F2-BC394F2854A1&quot;. This is the form of the UUID stored in the database. <code>get_uuid_bin()</code> returns the binary representation of the UUID. <code>get_uuid_hex()</code> returns the UUID as a hex string. <code>get_uuid_base64()</code> returns the base64-encoded representation of the UUID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$title = $asset-&gt;get_title()</dt>
+<dd>
+
+<p>Returns the title field for this asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>title is the same as the name field</p>
+
+</dd>
+<dt>$asset = $asset-&gt;set_title($title)</dt>
+<dd>
+
+<p>sets the title for this asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>title is the same as the name field</p>
+
+</dd>
+<dt>$alias_id = $biz-&gt;get_alias_id()</dt>
+<dd>
+
+<p>Returns the alias id from this business asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$biz = $biz-&gt;set_source_id($s_id)</dt>
+<dd>
+
+<p>Sets the source id upon this story</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$source = $biz-&gt;get_source_id()</dt>
+<dd>
+
+<p>Returns the source id from this business asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$at_id = $biz-&gt;get_element_type_id()</dt>
+<dd>
+
+<p>Returns the element type id that this story is associated with</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$biz = $biz-&gt;set_element_type_id($at_id)</dt>
+<dd>
+
+<p>Sets the element type id that this story is associated with.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $primary_oc_id = $p-&gt;get_primary_oc_id</dt>
+<dd>
+
+<p>Returns the asset&#39;s primary output channel ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $oc = $p-&gt;get_primary_oc</dt>
+<dd>
+
+<p>Returns the primary output channel object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $p-&gt;set_primary_oc_id($primary_oc_id)</dt>
+<dd>
+
+<p>Sets the asset&#39;s primary output channel ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> The URIs for the asset will be changed.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$biz-&gt;add_contributor($contrib, $role);</dt>
+<dd>
+
+<p>Takes a contributor object or id and their role in the context of this story and associates them</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>$contrib argument must be a Bric::Util::Grp::Parts::Member::Contrib</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($contribs || @contribs) = $story-&gt;get_contributors()</dt>
+<dd>
+
+<p>Returns a list or list ref of the contributors that have been assigned to this story</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$role = $biz-&gt;get_contributor_role($contrib)</dt>
+<dd>
+
+<p>Returns the role played by this contributor</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$story = $story-&gt;delete_contributors( $contributors )</dt>
+<dd>
+
+<p>Recieves a list of contributrs or their ids and deletes them from the story</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$asset = $asset-&gt;reorder_contributors(@contributors)</dt>
+<dd>
+
+<p>Takes a list of ids and sets the new order upon them</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my @ocs = $biz-&gt;get_output_channels</dt>
+<dd>
+
+</dd>
+<dt>my $ocs_aref = $biz-&gt;get_output_channels</dt>
+<dd>
+
+</dd>
+<dt>my @ocs = $biz-&gt;get_output_channels(@oc_ids)</dt>
+<dd>
+
+</dd>
+<dt>my $ocs_aref = $biz-&gt;get_output_channels(@oc_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the output channels the business asset will be output to when it is published. If <code>@oc_ids</code> is passed, then only the output channels with those IDs are returned, if they&#39;re associated with this asset.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$ba = $ba-&gt;add_output_channels(@ocs)</dt>
+<dd>
+
+<p>Adds output channels to the list of output channels to which this story will be output upon publication.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$biz = $biz-&gt;del_output_channels(@ocs)</dt>
+<dd>
+
+</dd>
+<dt>$biz = $biz-&gt;del_output_channels(@oc_ids)</dt>
+<dd>
+
+<p>Removes output channels from this asset, so that it won&#39;t be output to these output channels when it is published.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>get_element_name()</dt>
+<dd>
+
+<p>Returns the name of the asset type that this is based on. This is the same as the name of the top level element.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>get_element_key_name()</dt>
+<dd>
+
+<p>Returns the key name of the asset type that this is based on. This is the same as the key name of the top level element.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$ba-&gt;get_possible_field_types()</dt>
+<dd>
+
+</dd>
+<dt>$ba-&gt;get_possible_data()</dt>
+<dd>
+
+<p>Returns a list or array reference of the field types that define the structure of fields that can be added to the business document&#39;s element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_possible_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>$ba-&gt;get_possible_containers()</dt>
+<dd>
+
+<p>Returns a list or array reference of the element types that define the structure of elements that can be added to the business document&#39;s element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $story-&gt;set_cover_date($cover_date)</dt>
+<dd>
+
+<p>Sets the cover date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $cover_date = $story-&gt;get_cover_date($format)</dt>
+<dd>
+
+<p>Returns cover date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $first_publish_date = $story-&gt;get_first_publish_date($format)</dt>
+<dd>
+
+<p>Returns the date the business asset was first published.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $story-&gt;set_publish_date($publish_date)</dt>
+<dd>
+
+<p>Sets the publish date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>Also sets the first publish date if it hasn&#39;t been set before.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $story-&gt;set_first_publish_date($publish_date)</dt>
+<dd>
+
+<p>Sets the first publish date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $story-&gt;set_publish_status($bool)</dt>
+<dd>
+
+<p>Sets the publish status to a true or false value.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Also sets the first <code>published_version</code> to the value stored in the <code>version</code> attribute if it hasn&#39;t been set before.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $story-&gt;set_published_version($version)</dt>
+<dd>
+
+<p>Sets the published version of the document.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Also sets the first <code>publishstatus</code> if it&#39;s set to a false value.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $publish_date = $story-&gt;get_publish_date($format)</dt>
+<dd>
+
+<p>Returns publish date.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $story-&gt;mark_as_published</dt>
+<dd>
+
+<pre><code>$doc-&gt;mark_as_published;
+$doc-&gt;save;</code></pre>
+
+<p>If the document is not already marked as published, this method does so, setting the publish status and publish date and saving the story. Use with caution, since this method does not actually publish the document (no jobs are created and no templates are executed).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Sets the <code>publish_status</code> to true and the <code>publish_date</code> to the current date and time, unless the document is already marked as published. The setting of &lt;publish_date&gt; causes the <code>first_publish_date</code> to be set to the same date.</p>
+
+<p><b>Notes:</b> This method is usually used when you have sucked the content of the asset into something else that you are really publishing and want this asset to be marked as published without creating any content on its own.</p>
+
+</dd>
+<dt>(@objs || $objs) = $asset-&gt;get_related_objects</dt>
+<dd>
+
+<p>Return all the related story or media objects for this business asset. If the asset is an alias of another asset, related objects will only be returned if they are in the same site as the asset, or if there are aliases in the asset&#39;s site for the related media associated with the aliased asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$element = $ba-&gt;get_element</dt>
+<dd>
+
+<pre><code>my $element = $ba-&gt;get_element;
+$element = $ba-&gt;get_element; # Deprecated form.</code></pre>
+
+<p>Returns the top level element that contains content for this document.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$elem_type = $self-&gt;get_element_type</dt>
+<dd>
+
+<p>Returns the element object that coresponds defines the structure of the elements of the document.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$uri = $biz-&gt;get_primary_uri</dt>
+<dd>
+
+<p>Returns the primary URL for this business asset. The primary URL is determined by the pre- and post- directory strings of the primary output channel, the URI of the business object&#39;s asset type, and the cover date if the asset type is not a fixed URL.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$bool = $biz-&gt;is_fixed</dt>
+<dd>
+
+<p>Returns a boolean value: true if the business asset has a fixed URL (for example, a Cover), false otherwise.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>get_elements</dt>
+<dd>
+
+<pre><code>my $elements = $ba-&gt;get_elements;
+my @elements = $ba-&gt;get_elements;
+$elements    = $ba-&gt;get_elements(@key_names);
+@elements    = $ba-&gt;get_elements(@key_names);
+
+# Deprecated forms:
+$elements = $ba-&gt;get_tiles;
+@elements = $ba-&gt;get_tiles;
+$elements = $ba-&gt;get_tiles(@key_names);
+@elements = $ba-&gt;get_tiles(@key_names);</code></pre>
+
+<p>Returns the elements that are held with in the top level element of this business asset. Convenience shortcut to <code>$ba-&gt;get_element-&gt;get_elements</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_tiles()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>$ba-&gt;add_field($field_type, $value)</dt>
+<dd>
+
+</dd>
+<dt>$ba-&gt;add_data($field_type, $value)</dt>
+<dd>
+
+<p>Creates a new field and adds it to the business document&#39;s element. Convenience shortcut to <code>$ba-&gt;get_element-&gt;add_field</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>add_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>$new_container = $ba-&gt;add_container( $atc_obj )</dt>
+<dd>
+
+<p>This will create and return a new container element that is added to the current container. Convenience shortcut to <code>$ba-&gt;get_element-&gt;add_container</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$value = $ba-&gt;get_value( $key_name, $obj_order )</dt>
+<dd>
+
+</dd>
+<dt>$value = $ba-&gt;get_value( $key_name, $obj_order, $format )</dt>
+<dd>
+
+</dd>
+<dt>$value = $ba-&gt;get_data( $key_name, $obj_order )</dt>
+<dd>
+
+</dd>
+<dt>$value = $ba-&gt;get_data( $key_name, $obj_order, $format )</dt>
+<dd>
+
+<p>Returns the value for a field with the given key name and object order. Convenience shortcut to <code>$ba-&gt;get_element-&gt;get_value</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p><code>get_data()</code> is the deprecated form of this method. For fields that can contain multiple values, call <code>get_values()</code>, instead.</p>
+
+</dd>
+<dt>$container = $ba-&gt;get_container( $key_name, $obj_order )</dt>
+<dd>
+
+<p>Returns a container element object with the given key name and the given object order position. Convenience shortcut to <code>$ba-&gt;get_element-&gt;get_container</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$ba = $ba-&gt;add_keywords(@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;add_keywords(\@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;add_keywords(@keyword_ids);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;add_keywords(\@keyword_ids);</dt>
+<dd>
+
+<p>Associates a each of the keyword in a list or array reference of keywords with the business asset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>@keywords = $cat-&gt;get_keywords;</dt>
+<dd>
+
+</dd>
+<dt>@keywords = $cat-&gt;get_keywords(@keyword_ids);</dt>
+<dd>
+
+<p>Returns a list of keyword objects associated with this business asset. If passed a list of keyword IDs, it will return only those keyword objects.</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>$kw_aref || @kws = $asset-&gt;get_all_keywords()</dt>
+<dd>
+
+<p>Returns an array ref or an array of keyword objects assigned to this Business Asset and to its categories.</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>$ba = $ba-&gt;del_keywords(@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;del_keywords(\@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;del_keywords(@keyword_ids);</dt>
+<dd>
+
+</dd>
+<dt>$ba = $ba-&gt;del_keywords(\@keyword_ids);</dt>
+<dd>
+
+<p>Dissociates a list or array reference of keyword objects or IDs from the business asset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>($self || undef) = $ba-&gt;has_keyword($keyword)</dt>
+<dd>
+
+<p>Returns a keyword if the keyword object is associated with this asset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> Uses <code>get_keywords()</code> internally.</p>
+
+</dd>
+<dt>$self = $self-&gt;cancel()</dt>
+<dd>
+
+<p>Called upon a checked out asset. This unchecks it out.</p>
+
+<p>XXX Actually, it deletes the asset! I don&#39;t think that&#39;s what we want. Don&#39;t use this method!</p>
+
+<p><b>Throws:</b></p>
+
+<p>&quot;Cannot cancel a non checked out asset&quot;</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>This will remove the coresponding object from the database</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($ba || undef) = $ba-&gt;is_current()</dt>
+<dd>
+
+<p>Return whether this is the most current version or not.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>= $biz = $biz-&gt;checkout( { user__id =&gt; $user_id })</dt>
+<dd>
+
+<p>checks out the asset to the specified user</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$ba = $ba-&gt;save()</dt>
+<dd>
+
+<p>Commits the changes to the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$story_name = $story-&gt;check_uri;</dt>
+<dd>
+
+</dd>
+<dt>$story_name = $story-&gt;check_uri($user_id);</dt>
+<dd>
+
+<p>Returns name of story that has clashing URI.</p>
+
+<p><code>Notes:</code> This method has been deprecated. URI uniqueness is now checked by <code>save()</code>, so this method is no longer strictly necessary.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private">Private</h2>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>$self = $self-&gt;_init()</dt>
+<dd>
+
+<p>Preforms functions needed to create new business assets</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot create an asset without an element type or alias ID.</p>
+
+</li>
+<li><p>Cannot create an asset with both an element type and an alias ID.</p>
+
+</li>
+<li><p>Cannot create an asset without a site.</p>
+
+</li>
+<li><p>Cannot create an alias to an asset in the same site.</p>
+
+</li>
+<li><p>Cannot create an alias to an alias.</p>
+
+</li>
+<li><p>Cannot create an alias to an asset based on an element type that is not associated with this site.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$at_obj = $self-&gt;_construct_uri()</dt>
+<dd>
+
+<p>Returns URI contructed from the output chanel paths, categories and the date.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_sync_contributors()</dt>
+<dd>
+
+<p>Syncs the contributors for this story</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_uris;</dt>
+<dd>
+
+<p>Deletes the URI records for this document. Called by <code>save()</code> when the document has been deactivated.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>$self = $self-&gt;_update_uris;</dt>
+<dd>
+
+<p>Updates the URI records for this document.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>$self = $self-&gt;_can_expire()</dt>
+<dd>
+
+<p>Returns true if the documement can be expired. Specifically, if the document has been published.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $oc_coll = $get_oc_coll-&gt;($ba)</dt>
+<dd>
+
+<p>Returns the collection of output channels for this asset. <a rel="section" href="../../Util/Coll/OutputChannel.html" name="Bric::Util::Coll::OutputChannel">Bric::Util::Coll::OutputChannel</a> object. See that class and its parent, <a rel="section" href="../../Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $kw_coll = &amp;$get_kw_coll($self)</dt>
+<dd>
+
+<p>Returns the collection of keywords for this business asset. The collection is a Bric::Util::Coll::Keyword object. See that class and its parent, Bric::Util::Coll, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>michael soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a></p>
+
+</body>
+</html>
+

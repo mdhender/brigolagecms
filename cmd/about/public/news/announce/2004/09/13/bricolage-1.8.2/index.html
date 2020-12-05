@@ -1,0 +1,287 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.8.2 Released</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.8.2" class="news announce">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.8.2 Released</h2>
+		<div id="articlemeta">
+            <p class="date">2004.09.13</p>
+          </div>
+
+          <p>The Bricolage development team is pleased to announce the release of Bricolage 1.8.2. This maintenance release addresses quite a large number of issues in Bricolage 1.8.1. The most important changes were to enhance Unicode support in Bricolage. Bricolage now internally handles all text content as UTF-8 strings, thus enabling templates to better control the manipulation of multibyte characters. Other changes include better performance for searches using the <code>ANY()</code> operators and more intelligent transaction handling for distribution jobs. Here are the other highlights of this release:</p>
+          <h3>Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Bricolage now runs under a DSO <code>mod_perl</code> as long as it uses a Perl compiled with <code>-Uusemymalloc</code> <em>or</em> <code>-Ubincompat5005</code>. See <a href="http://perl.apache.org/docs/1.0/guide/install.html#When_DSO_can_be_Used">The <code>mod_perl</code> FAQ</a> for details.</p></li>
+            <li><p>Alerts triggered to be sent to users who don't have the appropriate contact information will now be logged for those users so that they can see them and acknowledge them under <q>My Alerts</q>.</p></li>
+            <li><p>Added <em>bric_media_dump</em> script to <em>contrib/</em>.</p></li>
+            <li><p>The category association interface used in the story profile when the <code>ENABLE_CATEGORY_BROWSER</code> <em>bricolage.conf</em> directive is enabled now uses radio buttons instead of a link to select the primary category.</p></li>
+            <li><p>Existing jobs are now executed within their own transactions, as opposed to no transaction specification. This means that each job must succeed or fail independent of any other jobs. New jobs are executed before being inserted into the database so as to keep them atomic within their surrounding transaction (generally a UI request). All this means that transactionality is much more intelligent for jobs and will hopefully eliminate job table deadlocks.</p></li>
+            <li><p>All templates now execute with UTF-8 character strings enabled. This means that any templates that convert content to other character sets might need to change the way they do so. For example, templates that had used <code>&lt;%filter&gt;</code> blocks to convert content to another encoding using something like <code>Encode::from_to($_, 'utf-8', $encoding)</code> must now use something like <code>$_ = Encode::encode($encoding, $_)</code>, instead. Bric::Util::CharTrans should continue to do the right thing.</p></li>
+            <li><p>Added <code>encoding</code> attribute to Bric::Util::Burner so that, if templates are outputting something other than Perl <code>utf8</code> decoded data, they can specify what they're outputting, and the file opened for output from the templates will be set to the proper mode. Applies to Perl 5.8.0 and later only.</p></li>
+            <li><p>Added <code>SFTP_HOME</code> <em>bricolage.conf</em> directive to specify the home directory and location of SSH keys when SSH is enabled.</p></li>
+          </ul>
+        </div>
+          <h3>Bug Fixes</h3>
+        <div class="list">
+          <ul>
+            <li><p><code>make clone</code> once again properly copies the <em>lib/Makefile.PL</em> and <em>bin/Makefile.PL</em> files from the source directory.</p></li>
+            <li><p>Added missing language-specifying HTML attributes so as to properly localize story titles and the like.</p></li>
+            <li><p>The list of output channels to add to an element in the element profile now contains the name of the site that each is associated with, since different sites can have output channels with the same names.</p></li>
+            <li><p>The <q>Advanced Search</q> interface once again works for searching for related story and media documents.</p></li>
+            <li><p>Bricolage no longer attempts to email alerts to an empty list of recipients. This will make your SMTP server happier.</p></li>
+            <li><p>The version numbering issues of Bricolage modules have all been worked out after the confusion in 1.8.1. This incidentally allows the HTML::Template and Template Toolkit burners to be available again.</p></li>
+            <li><p>Misspelling the name of a key name tag or including a non-repeatable field more than once in Super Bulk Edit no longer causes all of the changes in that screen to be lost.</p></li>
+            <li><p>When a user overrides the global <q>Date/Time Format</q> and <q>Time Zone</q> preferences, the affects of the overrides are now properly reflected in the UI.</p></li>
+            <li><p>Publishing a story or media document along with its related story or media documents from a publish desk again correctly publishes the original asset as well as the relateds.</p></li>
+            <li><p>Deleted output channels no longer show up in the select list for story type and media type elements.</p></li>
+            <li><p>Deleting a workflow from the workflow manager now properly updates the workflow cache so that the deleted workflow is removed from the left navigation without a restart.</p></li>
+            <li><p>When Bricolage notices that a document or template is not in workflow or on a desk when it should be, it is now more intelligent in trying to select the correct workflow and/or desk to put it on, based on current workflow context and user permissions.</p></li>
+            <li><p>Content submitted to Bricolage in the UTF-8 character set is now always has the <code>utf8</code> flag set on the Perl strings that store it. This allows fields that have a maximum length to be truncated to that length in characters instead of bytes.</p></li>
+            <li><p>Elements with autopopulated fields (e.g., for image documents) can now be created via the SOAP interface.</p></li>
+            <li><p>Fixed a number of the parameters to the <code>list()</code> method of the Story, Media, and Template classes to properly handle an argument using the <code>ANY</code> operator. These include the <code>keyword</code> and <code>category_uri</code> parameters. Passing an <code>ANY</code> argument to these parameters before this release could cause a well-populated database to lock up with an impossible query for hours at a time.</p></li>
+            <li><p>Template sandboxes now work for the Template Toolkit burner.</p></li>
+          </ul>
+        </div>
+          <p>For a complete list of the changes, see the <a href="http://www.bricolage.cc/news/announce/changes/bricolage-1.8.2/">changes</a>. For the complete history of ongoing changes in Bricolage, see <a href="http://www.bricolage.cc/docs/api/current/Bric::Changes">Bric::Changes</a>.</p>
+          <p>Download <a href="http://www.bricolage.cc/downloads/bricolage-1.8.2.tar.gz"             title="Download Bricolage 1.8.2">Bricolage 1.8.2</a> now.</p>
+          <h3>About Bricolage</h3>
+          <p>Bricolage is a full-featured, enterprise-class content management and publishing system. It offers a browser-based interface for ease-of use, a full-fledged templating system with complete HTML::Mason, HTML::Template, and Template Toolkit support for flexibility, and many other features. It operates in an Apache/mod_perl environment and uses the PostgreSQL RDBMS for its repository. A comprehensive, actively-developed open source CMS, Bricolage was hailed as <q>quite possibly the most capable enterprise-class open-source application available</q> by <cite>eWEEK</cite>.</p>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../../../downloads/bricolage-1.8.2.tar.gz" title="Download Bricolge 1.8.2">Download Now!</a><br />(Version 1.8.2)</dd>
+              <dd class="more"><a href="../../../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+          <dl id="related-links">
+          	<dt>Related Links</dt>
+            <dd><a href="../../../../changes/bricolage-1.8.2/index.html" title="">Bricolage 1.8.2 Changes</a>
+              <br />2004.09.13
+            </dd>
+
+            <dd><a href="../../../05/03/bricolage-1.8.0/index.html" title="">Bricolage 1.8.0 Arrives</a>
+              <br />2004.05.03
+            </dd>
+
+            <dd><a href="../../../07/08/bricolage-1.8.1/index.html" title="">Bricolage 1.8.1 Released</a>
+              <br />2004.07.08
+            </dd>
+
+          </dl>
+
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

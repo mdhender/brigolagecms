@@ -1,0 +1,1859 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::AlertType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="AlertType.html#Name">Name</a></li>
+  <li><a href="AlertType.html#Synopsis">Synopsis</a></li>
+  <li><a href="AlertType.html#Description">Description</a></li>
+  <li><a href="AlertType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="AlertType.html#Constructors">Constructors</a></li>
+      <li><a href="AlertType.html#Destructors">Destructors</a></li>
+      <li><a href="AlertType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="AlertType.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="AlertType.html#Private">Private</a>
+    <ul>
+      <li><a href="AlertType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="AlertType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="AlertType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="AlertType.html#Notes">Notes</a></li>
+  <li><a href="AlertType.html#Author">Author</a></li>
+  <li><a href="AlertType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::AlertType - Interface for Managing Types of Alerts</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::AlertType;
+
+# Constructors.
+my $at = Bric::Util::AlertType-&gt;new($init);
+my $at = Bric::Util::AlertType-&gt;lookup({ id =&gt; $id });
+my @ats = Bric::Util::AlertType-&gt;list($atarams);
+
+# Class Methods.
+my @pids = Bric::Util::AlertType-&gt;list_ids($atarams);
+# Check to see if a name is already used by a user.
+my $bool = Bric::Util::AlertType-&gt;name_used($name, $user);
+my $meths = Bric::Util::AlertType-&gt;my_meths;
+my @meths = Bric::Util::AlertType-&gt;my_meths(1);
+
+# Instance Methods.
+my $id = $at-&gt;get_id;
+
+# Event type accessors.
+my $et = $at-&gt;get_event_type;
+my $et_id = $at-&gt;get_event_type_id;
+$at = $at-&gt;set_event_type_id($et_id);
+
+# Owner (user) accessors.
+my $owner = $at-&gt;get_owner;
+my $owner_id = $at-&gt;get_owner_id;
+$at = $at-&gt;set_owner_id($owner_id);
+
+my $name = $at-&gt;get_name;
+$at = $at-&gt;set_name($name);
+my $subject = $at-&gt;get_subject;
+$at = $at-&gt;set_subject($subject);
+my $message = $at-&gt;get_message;
+$at = $at-&gt;set_message($message);
+
+$at = $at-&gt;activate;
+$at = $at-&gt;deactivate;
+$at = $at-&gt;remove;
+$at = $at-&gt;is_active;
+
+my @rules = $at-&gt;get_rules;
+my $rule = $at-&gt;new_rule;
+$at = $at-&gt;del_rules(@rule_ids);
+
+my @users = $at-&gt;get_users;
+my @uids = $at-&gt;get_user_ids;
+$at = $at-&gt;add_users(@users);
+$at = $at-&gt;del_users(@uids);
+
+my @grps = $at-&gt;get_grps;
+my @gids = $at-&gt;get_grp_ids;
+$at = $at-&gt;add_grps(@grps);
+$at = $at-&gt;del_grps(@gids);
+
+$at = $at-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Bric::Util::AlertType provides an interface for creating, editing, and deleting types of alerts. All alerts are based on types of events. These are defined as Bric::Util::EvenType objects. Alerts have several important features.</p>
+
+<p>First, users can create rules for their alerts. These rules will be examined whenever an event the alert is based on is triggered, and the alert will only be sent if all the rules are true for that particular event. Rules can be such as &quot;Send the alert only if the user who triggered the event has a certain email login,&quot; or &quot;Send the alert only if the Story&#39;s slug is &quot;pooter&quot;. Rules can be combined to refine when the alert is sent to a great degree, and there is no limit on the number of rules an Bric::Util::AlertType object can have. The interface for rules is Bric::Util::AlertType::Parts::Rule.</p>
+
+<p>Second, users can use the same variables by which rules are created to customize the alert message. By simply adding a reference to one of these variables, the message will be filled in with data from the event or the object on which the event is based before sending out the alert. See set_message() below for more details on message customization.</p>
+
+<p>Third, users can select multiple methods of dispatching alerts (email, pager, instant message, etc.), and associate users or groups of users with a method.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $c = Bric::Util::AlertType-&gt;new</dt>
+<dd>
+
+</dd>
+<dt>my $c = Bric::Util::AlertType-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::AlertType object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>event_type_id</p>
+
+</li>
+<li><p>owner_id</p>
+
+</li>
+<li><p>name</p>
+
+</li>
+<li><p>subject</p>
+
+</li>
+<li><p>message</p>
+
+</li>
+</ul>
+
+<p>The active property will be set to true by default. Call $at-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $c = Bric::Util::AlertType-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Util::AlertType object based on the Bric::Util::AlertType object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::AlertType objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Util::AlertType object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@ats || $ats_aref) = Bric::Util::AlertType-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::AlertType objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Alert type ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>event_type_id</dt>
+<dd>
+
+<p>Event type ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>owner_id</dt>
+<dd>
+
+<p>User id for user who owns alert types. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>Alert type name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>subject</dt>
+<dd>
+
+<p>Alert type subject. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>message</dt>
+<dd>
+
+<p>Alert type message. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean value indicating whether or not an alert type is active.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>ID of a Bric::Util::Grp with which alert types may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Util::AlertType object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$at-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@at_ids || $at_ids_aref) = Bric::Util::AlertType-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::AlertType object IDs based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::Util::AlertType-&gt;name_used($name, $user);</dt>
+<dd>
+
+<p>All Bric::Util::AlertType objects owned by a single user must have a unique name. Different users can have alert types with the same name, but one user cannot have two or more alerts with the same name.</p>
+
+<p>This class method will check for the existence of a name/owner combination in the database. If it returns true, then the owner will have to change or the name will have to change before a new Bric::Util::AlertType object can be created with those values. If it returns false (undef), then the name/owner combination is available to be created.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Also may be used as an instance method. See below.</p>
+
+</dd>
+<dt>$meths = Bric::Util::AlertType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::AlertType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::AlertType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $at-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::AlertType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Util::AlertType object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $name = $at-&gt;get_name</dt>
+<dd>
+
+<p>Returns the name of the Bric::Util::AlertType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;name_used</dt>
+<dd>
+
+<p>Use this class method once you have set both the name and the owner of this Bric::Util::AlertType object. It will return $self if the user already owns an Bric::Util::AlertType object by that name, and undef if not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;set_name($name)</dt>
+<dd>
+
+<p>Sets the name of the Bric::Util::AlertType object. Be sure to call $at-&gt;save if you want the new name to stick. The maximum length of the name is 64 characters.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $subect = $at-&gt;get_subject</dt>
+<dd>
+
+<p>Returns the Bric::Util::AlertType object&#39;s subject. This is the subject data that will be parsed for variables, sent as individual alerts, and saved with the alert in the database. See set_subject() for details on customizing the subject for variable interpolation.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;set_subject($subject)</dt>
+<dd>
+
+<p>Sets the subject that will be sent in the subject field of alerts of this type. The subject can up to 128 characters long, and can contain special variables which will be evaluated when the alert is sent. The variables that are allowed for a given type of alert are specified by the type of object on which the alert is based, and can be retrieved from the Bric::Util::EventType object in question via its get_alert_props() method.</p>
+
+<p>The list of hashrefs returned from that method contain a &quot;name&quot; key and a &quot;description&quot; key. Append a dollar sign ($) to the beginning of a name to indicate a variable to be evaluated in a subject. For example, one common use for this functionality is to see who triggered the event that in turn triggered the alert. Thus, a subject might be something like:</p>
+
+<pre><code>$trig_full_name Saved a Story</code></pre>
+
+<p>When the alert is sent and saved as a Bric::Util::Alert object in the database, these variables will be evaluated and filled in with their underlying values:</p>
+
+<pre><code>David Wheeler Saved a Story</code></pre>
+
+<p>I recommend that, at most, one or two variables be included, since the subject of the alert should be short. Be sure to call $at-&gt;save if you have set a new value via set_subject().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $message = $at-&gt;get_message</dt>
+<dd>
+
+<p>Returns the Bric::Util::AlertType object&#39;s message. This is the message that will be parsed for variables, sent as individual alerts, and saved with the alert in the database. See set_message() for details on customizing the message for variable interpolation.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;set_message($message)</dt>
+<dd>
+
+<p>Sets the message that will be sent out in alerts of this type. The message can up to 512 characters long, and can contain special variables which will be evaluated when the alert is sent. The variables that are allowed for a given type of alert are specified by the type of object on which the alert is based, and can be retrieved from the Bric::Util::EventType object in question via its get_alert_props() method.</p>
+
+<p>The list of hashrefs returned from that method contain a &quot;name&quot; key and a &quot;description&quot; key. Append a dollar sign ($) to the beginning of a name to indicate a variable to be evaluated in a message. For example, one common use for this functionality is to see who triggered the event that in turn triggered the alert. Thus, a message might be something like:</p>
+
+<pre><code>A story was saved and moved to the $desk by $trig_full_name &lt;$trig_email&gt;.</code></pre>
+
+<p>When the alert is sent and saved as a Bric::Util::Alert object in the database, these variables will be evaluated and filled in with their underlying values:</p>
+
+<pre><code>A story was saved and moved to the Publish Desk by David Wheeler
+&lt;david@justatheory.com&gt;.</code></pre>
+
+<p>Feel free to use as many variables as necessary (and as are available from Bric::Util::EventType::get_alert_props()). Be sure to call $at-&gt;save if you have set a new value via set_message().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $user = $at-&gt;get_owner</dt>
+<dd>
+
+<p>Returns the Bric::Biz::Person::User object representing the user who owns the Bric::Util::AlertType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Biz::Person::User objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Biz::Person::User-&gt;lookup internally.</p>
+
+</dd>
+<dt>my $owner_id = $at-&gt;get_owner_id</dt>
+<dd>
+
+<p>Returns the owner_id of the Bric::Biz::Person::User object representing the user who owns this Bric::Util::AlertType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;owner_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;set_owner_id($owner_id)</dt>
+<dd>
+
+<p>Sets the Bric::Biz::Person::User ID representing the user who owns the Bric::Util::AlertType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;owner_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $event = $at-&gt;get_event_type</dt>
+<dd>
+
+<p>Returns the Bric::Util::EventType object for which the Bric::Util::AlertType object defines alerts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Util::EventType objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::EventType-&gt;lookup internally.</p>
+
+</dd>
+<dt>my $event_type_id = $at-&gt;get_event_type_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::EventType object for which this Bric::Util::AlertType is defined.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;event_type_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;set_event_type_id($event_type_id)</dt>
+<dd>
+
+<p>Sets the Bric::Util::EventType ID representing the event type for which this Bric::Util::AlertType object is defined.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;event_type_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;activate</dt>
+<dd>
+
+<p>Activate the alert type. When an alert type is active, it will be triggered whenever its associated event has been triggered and all its rules met. A new Bric::Util::AlertType object is active by default, so you don&#39;t need to call this method unless you need to reactivate an existing Bric::Util::AlertType object that has previously been deactivated (see below). Be sure to call $at-&gt;save to save the change to the object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates the Bric::Util::AlertType object. Deactivated Bric::Util::AlertTypes will not send alerts. Call $at-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;remove</dt>
+<dd>
+
+<p>Deletes the Bric::Util::AlertType object. Deleted alert types are still in the database, however; their del status is simply marked 1 while their active status is marked 0. So they can be manually recalled via SQL, and their individual alerts and alerted records still exist. Call $at-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Util::AlertType object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@rules || $rules_aref) = $at-&gt;get_rules(@rule_ids)</dt>
+<dd>
+
+<pre><code>foreach my $rule ($at-&gt;get_rules) {
+    print &quot;Name:  &quot;, $rule-&gt;get_attr, &quot;\n&quot;;
+    $rule-&gt;set_attr($new_attr_name);
+    print &quot;Value: &quot;, $rule-&gt;get_value, &quot;\n\n&quot;;
+    $rule-&gt;set_value($new_value);
+}
+$at-&gt;save;</code></pre>
+
+<p>If called with no arguemnts, returns a list of all the Bric::Util::AlertType::Parts::Rule objects associated with this Bric::Util::AlertType object. If called with Bric::Util::AlertType::Parts::Rule object IDs, it will return only those rules.</p>
+
+<p>Rules are Bric::Util::AlertType::Parts::Rule objects, and are strictly associated with a Bric::Util::AlertType object. They cannot be created or destroyed in any other way. Indeed, if you make changes to the rule via its accessors, those changes will only stick if you call $at-&gt;save on the Bric::Util::AlertType object with which the rule is associated.</p>
+
+<p>See Bric::Util::AlertType::Parts::Rule for its interface.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::AlertType::Parts::Rule and Bric::Util::Coll::Rule internally.</p>
+
+</dd>
+<dt>my $rule = $at-&gt;new_rule</dt>
+<dd>
+
+</dd>
+<dt>my $rule = $at-&gt;new_rule($attr, $op, $value)</dt>
+<dd>
+
+<pre><code>$at-&gt;new_rule($attr, $op, $value);
+$at-&gt;save;</code></pre>
+
+<p>Creates a new rule associated with this Bric::Util::AlertType object. You can pass in a list of values for the rule in this order--attribute, operator, value--and the rule will be complete. Or you can call new_rule() with no arguments, and then use the Bric::Util::AlertType::Parts::Rule accessor methods to set these values. Be sure to call $at-&gt;save whenever you want changes to the rule to stick.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;del_rules(@rule_ids)</dt>
+<dd>
+
+<pre><code>$at-&gt;del_rules();
+$at-&gt;save;</code></pre>
+
+<p>Deletes a rules from the object, and will delete them from the database once $at-&gt;save has been called. The arguments may consist of a simple list of all the IDs of Bric::Util::AlertType::Parts::Rule objects to be deleted. If called with no arguments, all of the rules asscociated with $at will be deleted. Be sure to call $at-&gt;save to save your changes.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@uids || $uids_aref) = $at-&gt;get_user_ids($cont_type_id)</dt>
+<dd>
+
+<p>Returns a list or an anonymous array of Bric::Biz::Person::User object IDs that represent the users who will receive alerts of this type. This list does not include users in a group associated with an alert (see below). If any Bric::Biz::Contact type names are passed as arguments, only those users who will be notified of this type of alert by that method will be returned. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@users || $users_aref) = $at-&gt;get_users(@cids)</dt>
+<dd>
+
+<p>Returns a list or an anonymous array of Bric::Biz::Person::User objects that represent the users who will receive this alert. This list does not include users in a group associated with an alert (see below). If Bric::Biz::Contact type names are passed as an arguments, only those users who will be notified of this type of alert by that method will be returned. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::Person::User objects found.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses get_user_ids() and Bric::Biz::Person::User-&gt;lookup() internally.</p>
+
+</dd>
+<dt>$at-&gt;add_users($contact_type, @users)</dt>
+<dd>
+
+<pre><code>$at-&gt;add_users($contact_type, $user1, $user2);
+$at-&gt;save;</code></pre>
+
+<p>This method tells the Bric::Util::AlertMethod object which users to alert via a given contact type when an alert it sent. The first argument must be a Bric::Biz::Contact type, and the remaining arguments may be Bric::Biz::Person::User objects or IDs. All users <b>must</b> be associated with a contact type. Be sure to call $at-&gt;save to save your changes. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;del_users($contact_type, @users)</dt>
+<dd>
+
+<p>This method dissociates individual users from the Bric::Util::AlertType object. These contacts will no longer receive alerts sent via $contact_type, although they may continue to receive alerts if they are associated with different contact types for this alert alerting. Be sure to call $at-&gt;save to save your changes. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@gids || $gids_aref) = $at-&gt;get_group_ids(@contact_types)</dt>
+<dd>
+
+<p>Returns a list or an anonymous array of Bric::Util::Grp::User object IDs representing groups of users to whom alerts of this type will be sent via the contact types passed as arguments. If @contact_types are not passed, all the Bric::Util::Grp::User object IDs associated with this Bric::Util::AlertType object will be returned. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@groups || $groups_aref) = $at-&gt;get_groups(@cids)</dt>
+<dd>
+
+<p>Returns a list or an anonymous array of Bric::Util::Grp::User objects that represent the groups who will receive this alert. If any Bric::Biz::Contact type names are passed as an arguments, only those groups who will be notified of this type of alert by that contct type will be returned. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::Grp::User objects found.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses get_user_ids() and Bric::Biz::Person::User-&gt;lookup() internally.</p>
+
+</dd>
+<dt>$self = $at-&gt;add_groups($contact_type, @groups)</dt>
+<dd>
+
+<pre><code>$at-&gt;add_grps($contact_type, $gid1, $gid2);
+$at-&gt;save;</code></pre>
+
+<p>This method tells the Bric::Util::AlertMethod object which groups of users to alert via $contact_type when an alert it sent. The first argument must be a Bric::Biz::Contact type, and the remaining arguments must be Bric::Util::Grp::User objects or IDs. All groups <i>must</i> be associated with a contact type. Be sure to call $at-&gt;save to save your changes. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;del_groups($contact_type, @grps)</dt>
+<dd>
+
+<p>This method dissociates Bric::Util::Grp::User objects from the Bric::Util::AlertType object. The users in these groups will no longer receive alerts sent via $contact_type, although they may continue to receive alerts if they are associated with different contact types. Be sure to call $at-&gt;save to save your changes. To get a list of available contact types, call Bric::Biz::Contact-&gt;list_alertable_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;save</dt>
+<dd>
+
+<p>Saves all the changes to the Bric::Util::AlertType object to the database. This includes all simple properties, all rules, and all contacts and groups. This is the method to call if you&#39;ve changed anything about your alert type and want it to stay changed. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $at-&gt;send_alerts($args)</dt>
+<dd>
+
+<p>This method will evaluate whether this type of alert&#39;s rules are true when compared to the properties of the event and its associated Bricolage object. If so, it will send all necessary alerts. You will not normally need to call this method - it is called internally when a new event is logged via Bric::Util::EventType-&gt;log_event() or Bric::Util::Event-&gt;new(). The anonymous hash argument rquires the following keys:</p>
+
+<ul>
+
+<li><p>event - The Bric::Util::Event object for which the alerts are to be sent.</p>
+
+</li>
+<li><p>attr - The attributes of the Bric::Util::Event object.</p>
+
+</li>
+<li><p>obj - The Bricolage object for which the event was created.</p>
+
+</li>
+<li><p>user - The Bric::Biz::Person::User object representing the person who triggered the alert.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;event_type_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $ats_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $ats_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Util::AlertType objects or, if called with an optional third argument, returns a listof Bric::Util::AlertType object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $rules = &amp;$get_rules($self)</dt>
+<dd>
+
+<p>Returns the collection of rules for this alert type. The collection is a Bric::Util::Coll::Rule object. See that class and its parent, Bric::Util::Coll, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $cont = &amp;$get_cont($self)</dt>
+<dd>
+
+<p>Loads user and group contacts. It is called first thing when any user or group contact method is called.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$bool = &amp;$upd_cont($self)</dt>
+<dd>
+
+<p>Saves any changes to the user and group contacts for this alert type. Called by save().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Alert.html" name="Bric::Util::Alert">Bric::Util::Alert</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/EventType.html" name="Bric::Util::EventType">Bric::Util::EventType</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Event.html" name="Bric::Util::Event">Bric::Util::Event</a></p>
+
+</body>
+</html>
+

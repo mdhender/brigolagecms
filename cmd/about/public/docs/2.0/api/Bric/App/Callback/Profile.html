@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Callback::Profile</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Profile.html#Name">Name</a></li>
+  <li><a href="Profile.html#Synopsis">Synopsis</a></li>
+  <li><a href="Profile.html#Description">Description</a></li>
+  <li><a href="Profile.html#Class-Interface">Class Interface</a>
+    <ul>
+      <li><a href="Profile.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Profile.html#new">new</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Profile.html#Instance-Interface">Instance Interface</a>
+    <ul>
+      <li><a href="Profile.html#Instance-Attributes">Instance Attributes</a>
+        <ul>
+          <li><a href="Profile.html#obj">obj</a></li>
+          <li><a href="Profile.html#type">type</a></li>
+          <li><a href="Profile.html#class">class</a></li>
+          <li><a href="Profile.html#has_perms">has_perms</a></li>
+        </ul>
+      </li>
+      <li><a href="Profile.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="Profile.html#manage_grps">manage_grps</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Profile.html#Author">Author</a></li>
+  <li><a href="Profile.html#See-Also">See Also</a></li>
+  <li><a href="Profile.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Callback::Profile - The Bricolage profile callback base class</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use base &#39;Bric::App::Callback::Profile&#39;;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This is the base class from which all Bricolage profile callback classes inherit. It provides a number of base and utility methods that are useful to the profile classes, and that handle common functionality between the classes.</p>
+
+<h1 id="Class-Interface">Class Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="new">new</h3>
+
+<p>Bric::App::Callback::Profile overrids the parent <code>new()</code> constructor so handle a number of tasks common to all profile callback classes. These include:</p>
+
+<ul>
+
+<li><p>Constructing the object on which the callback methods will be operating.</p>
+
+</li>
+<li><p>Setting the class of object that the callback will be executing against.</p>
+
+</li>
+<li><p>Checking permissions on the object to be operated on.</p>
+
+</li>
+</ul>
+
+<h1 id="Instance-Interface">Instance Interface</h1>
+
+<h2 id="Instance-Attributes">Instance Attributes</h2>
+
+<h3 id="obj">obj</h3>
+
+<pre><code>my $obj = $cb-&gt;obj;</code></pre>
+
+<p>The object on which operations are to be performed by callback methods.</p>
+
+<h3 id="type">type</h3>
+
+<pre><code>my $type = $cb-&gt;type;</code></pre>
+
+<p>The type of object on which operations will be performed. This is generally a string such as &quot;user&quot; or &quot;story&quot;.</p>
+
+<h3 id="class">class</h3>
+
+<pre><code>my $class = $cb-&gt;class;</code></pre>
+
+<p>The class of object on which operations will be performed.</p>
+
+<h3 id="has_perms">has_perms</h3>
+
+<pre><code>unless ($cb-&gt;has_perms)
+    die &quot;Oh-oh!&quot;;
+}</code></pre>
+
+<p>Returns true if the current user has permission to the object to be operated on. The required permission is CREATE for new objects and EDIT for existing objects.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="manage_grps">manage_grps</h3>
+
+<pre><code>$cb-&gt;manage_grps;</code></pre>
+
+<p>This method manages group memberships for the object. Since many profiles have group membership association built in to the UI, this method can handle updating the memberships for any and all types of objects with profiles.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;lannings@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../Callback.html" name="Bric::App::Callback">Bric::App::Callback</a></dt>
+<dd>
+
+<p>The Bricolage base callback class, from which Bric::App::Callback::Profile inherits.</p>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::User">Bric::App::Callback::Profile</a></dt>
+<dd>
+
+<p>The user profile callback class, which inherits from Bric::App::Callback::Profile.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2003-2004 World Health Organization and Kineticode, Inc. See <a rel="section" href="../../License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

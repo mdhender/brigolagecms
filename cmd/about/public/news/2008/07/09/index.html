@@ -1,0 +1,280 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- The Output Channel for May-June 2008</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="article" class="news">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>The Output Channel for May-June 2008</h2>
+		<div id="articlemeta">
+            <p class="byline">By Phillip Smith</p>
+            <p class="date">2008.07.09</p>
+          </div>
+
+          <p>Welcome back to the Output Channel: a relatively regular review of what&rsquo;s shakin&rsquo; in the Bricolage ecosystem. If you have submissions or corrections that you&#8217;d like to see included in next month&#8217;s issue, please e-mail them to <a href="mailto:&#116;&#104;&#101;&#045;&#111;&#099;&#064;&#098;&#114;&#105;&#099;&#111;&#108;&#097;&#103;&#101;&#046;&#099;&#099;" titile="Send in your submissions">the-oc@bricolage.cc</a>.</p>
+          <h3>Upfront</h3>
+          <p>Tell us your code select stories: Matt Rolf asks <q>Who out there has used code select and what are you using it for? How do you like it? Share your stories!</q> We've added a page to the <a href="http://wiki.bricolage.cc/bin/view/Bric/CodeSelectStories">Bricolage Wiki</a> just for these stories -- post away.</p>
+          <h3>Jobs</h3>
+          <p><b>CBS Paramount has a "junior developer" position open</b>: The description reads 
+<blockquote>Need not be a bric expert but only comfy and willing to dive in (Perl, PHP, Postgres, MySQL, Linux) ... even new to bric may be fine if you can dev in those core skills and have knowledge/experience with core web best practices. Full time, salaried, in Los Angeles near hollywood. Bric backends to large readership sites and our team is responsible for all template and other rendering code as well as bric servers and maintenance.</blockquote>
+To apply, send an e-mail to terence.bodola[at]cbsparamount.com or call 323-956-4813.
+
+</p>
+          <h3>Bricolage news and projects of note</h3>
+          <p>Summer time rolls in and things get a little quiet around these parts. But there's still lots of excitement ahead for Bricoleurs. Read on. Get excited. Get involved! </p>
+        <div class="list">
+          <ul>
+            <li><p><b>Helping the World Health Organization keep Bricolage</b>: The <a href="http://www.who.int/en/">World Health Orgnaization (WHO)</a> has been using and contributing to Bricolage for many, many years. Scott Lanning <a href="http://www.gossamer-threads.com/lists/bricolage/users/33964">recently wrote on the user's mailing list</a> <q>For the past year or so or more, we've been evaluating our website and CMS, and part of this has involved making a decision about whether to continue using Bricolage or to switch to something else.</q> The question sparked a good debate on the current landscape of open-source content management systems. We hope to hear a report back from Scott and his colleagues on their findings in time for the July newsletter.</p></li>
+            <li><p><b>1.11.0 QEMU Bricolage image:</b> If you enjoyed <q>localhostin' it</q> with <a href="http://www.bricolage.cc/news/announce/2008/06/01/vmware/">Bricolage 1.10.5 running in VMware</a>, you now have another option to choose from. Cameron Miller at Adams State College has put together a <a href="http://bellard.org/qemu/">QEMU</a> image that is <a href="ftp://ftp.adams.edu/pub/bricolage">available for download</a>.</p></li>
+            <li><p><b>Bricolage activity RSS feed</b>: Greg Heo's been hard at work again producing new Bricolage enchancements. This time around, he's nearing completion on bric_events_rss -- a new contributed script that can be run via a cronjob and produces an RSS feed of all activity for a Bricolage instance. This provides a convenient way for over-protective Bricolage administrators to see everything that every user is doing on the site, including group and permissions changes, password changes, user additions, etc. Look for this public release of this script over the next few weeks. 
+</p></li>
+            <li><p><b>Bricolage is soo cool!</b> Scott Lanning writes in with this fun story from the trenches: </p>
+              <p><q>Since I'm usually fixing problems, you get a negative bias, 
+so here's some positive feedback from one of our users 
+after our upgrade:</q></p>
+              <p><blockquote>I just wanted to say that I love its re-design! 
+Very easy on the eyes. </blockquote></p>
+              <p>	<q>Several people have mentioned how the font size is bigger now 
+	and easier to read, in particular Chinese characters. 
+	I'm not sure why that couldn't've been changed through 
+	the browser, but we'll take the credit.</q>
+</p></li>
+          </ul>
+        </div>
+          <h3>New sites and Bricolage sightings</h3>
+        <div class="list">
+          <ul>
+            <li><p><b>TUXAMOON</b> (<a href="http://www.tuxamoon.de/">www.tuxamoon.de/</a>) is an independent German online magazine which provides a wealth of stories and reviews on cultural topics such as music, literature, society and politics. The writers, who are based throughout Germany, appreciate not only the ease-of-use and flexibility which Bricolage offers, but also its powerful workflow and versioning capabilities.</p></li>
+          </ul>
+        </div>
+          <h3>Templates and tutorials</h3>
+        <div class="list">
+          <ul>
+            <li><p><b>Get a contributor's bio</b>: Ever wanted to show a contributor's bio in your story? If so, there's a great thread on just that topic <a href="http://www.gossamer-threads.com/lists/bricolage/users/33970">over here</a>. Another approach, if you would like more complex bios on your site -- with images, related stories, etc. -- is to use a "Bio" story for each contributor. You can see this at work over at <a href="http://thetyee.ca/Bios/Andrew_MacLeod/">The Tyee</a>.     </p></li>
+            <li><p><b>Automatically adding keywords to a story</b>: Chris Schults over at PCC Natural Markets <a href="http://www.gossamer-threads.com/lists/bricolage/users/33910">asks the mailing list how to automatically add keywords to a story</a> based on a field element in a story (a select list in this case), and then promptly answers his own question. If you need to figure out something similar, don't hesitate to contact the users mailing list. 
+</p></li>
+          </ul>
+        </div>
+          <h3>Miscellaneous stuff</h3>
+        <div class="list">
+          <ul>
+            <li><p> <b>You see, you can even use Bricolage to raise money!</b>: In case you missed it -- Check out this <a href="http://www2.grist.org/images/appealing/jerome-code-man_h310.jpg">great image</a> from a recent e-mail campaign, where long-time Bricolage powered organization <a href="http://www.grist.org">Grist.org</a> uses some familiar looking code (and handsome Bricolage geek Jerome Woody) to solicit support for their award-winning environmental news coverage. </p></li>
+          </ul>
+        </div>
+          <p>That's it for this month's issue. Remember, if you have submissions or corrections that you&#8217;d like to see included in next month&#8217;s issue, please e-mail them to <a href="mailto:&#116;&#104;&#101;&#045;&#111;&#099;&#064;&#098;&#114;&#105;&#099;&#111;&#108;&#097;&#103;&#101;&#046;&#099;&#099;" titile="Send in your submissions">the-oc@bricolage.cc</a>.</p>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+
+
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

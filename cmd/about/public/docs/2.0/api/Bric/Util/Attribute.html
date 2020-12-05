@@ -1,0 +1,1082 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Attribute</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Attribute.html#Name">Name</a></li>
+  <li><a href="Attribute.html#Synopsis">Synopsis</a></li>
+  <li><a href="Attribute.html#Description">Description</a></li>
+  <li><a href="Attribute.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Attribute.html#Public-Methods">Public Methods</a></li>
+      <li><a href="Attribute.html#Private-Methods">Private Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Attribute.html#Notes">Notes</a></li>
+  <li><a href="Attribute.html#Author">Author</a></li>
+  <li><a href="Attribute.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Attribute - A module to manage attributes for various objects.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Object creation methods
+$attr_obj = new($init);
+
+##-- Methods that apply to the object to which these attributes apply --##
+$id       = $attr_obj-&gt;get_object_id();
+$id       = $attr_obj-&gt;set_object_id();
+
+# Return an abbrievated name for the object these attributes represent.
+$short    = $attr_obj-&gt;short_object_type();
+
+
+##-- Subsystem methods --##
+$subsys   = $attr_obj-&gt;get_subsys();
+$success  = $attr_obj-&gt;set_subsys($subsys);
+
+# Return a list of subsystem names for this object.
+@names    = $attr_obj-&gt;subsys_names($subsys);
+
+# All attributes and metadata for a given subsys.
+$all      = $attr_obj-&gt;all_for_subsys($subsys);
+
+# Get the sql_type of a value.
+$sqltype  = $attr_obj-&gt;get_sqltype($param);
+
+
+##-- Single attribute methods --##
+$value    = $attr_obj-&gt;get_attr($param);
+$id       = $attr_obj-&gt;get_attr_id($param);
+
+$success  = $attr_obj-&gt;set_attr($param);
+
+$success  = $attr_obj-&gt;deactivate_attr($param);
+$success  = $attr_obj-&gt;delete_attr($param);
+
+##-- Methods that act on multiple attribute values --##
+$values   = $attr_obj-&gt;get_attr_hash($param);
+$attr_val = $attr_obj-&gt;search_attr($param);
+
+
+##-- Manipulate metadata about an attribute --##
+$success  = $attr_obj-&gt;add_meta($param);
+
+$value    = $attr_obj-&gt;get_meta($param);
+
+$success  = $attr_obj-&gt;delete_meta($param);
+
+##-- Other methods --##
+$success  = $attr_obj-&gt;save();</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The attribute module allows key/value pairs to be associated with an object. Attributes apply to a specific object of a specific type. Attributes keys can also have metadata associated with them. This is data that helps define additional information about an attribute key, but says nothing about the attribute value. Finally, attributes keys can be grouped into &#39;subsystems&#39;. A subsystem simply holds a group of related attributes. Specifying subsystems or metadata is not necessary for using the attribute class.</p>
+
+<p>Attribute values can be one of three types, &#39;short&#39;, &#39;date&#39; and &#39;blob&#39;. This is called the &#39;sql_type&#39;. Each of these types has a different storabe type in the database. If an attribute value is a &#39;short&#39; value its data is limited to a length of 1024 characters. If an attribute value is a &#39;date&#39; value, it must be in a database date format. If an attribute value is a &#39;blob&#39; value its length is limited only by disk space and database performance.</p>
+
+<p>Metadata on an attribute key can give more context to the attribute key, or simply be a storage space for information associated with that key. Metadata is a field name and a value. For instance, an attribute for a user class might be &#39;notify_email&#39; with values set to &#39;yes&#39; or &#39;no&#39;. A metadata field name for the &#39;notify_email&#39; key might be &#39;description&#39; and a value might be &#39;Should the user be notified via email of new announcements&#39;. There is no limit to the number of metadata fields for a given attribute.</p>
+
+<p>A subsystem is a way to organize attributes. Every attribute lives within a subsystem. If an attribute is not given a subsystem explicitly, it will automatically be placed inside of a default subsystem. Most methods in the attribute class can be passed a subsystem name, but will use the default name if one is not passed.</p>
+
+<p>You can think about the attribute system like a perl hash:</p>
+
+<pre><code>$attribute = {&#39;subsystem1&#39; =&gt;
+                 {&#39;attr_key1&#39; =&gt;
+                     {&#39;metadata&#39; =&gt;
+                         {&#39;meta_field1&#39; =&gt; &#39;meta_data1&#39;,
+                          &#39;meta_field2&#39; =&gt; &#39;meta_data2&#39;,
+                          ...
+                         },
+                      &#39;value&#39;    =&gt; &#39;attribute_value1&#39;
+                     },
+                  &#39;attr_key2&#39; =&gt;
+                     {&#39;metadata&#39; =&gt;
+                         {...
+                         },
+                      &#39;value&#39;    =&gt; &#39;attribute_value2&#39;
+                     },
+                  ...
+                 },
+              &#39;subsystem2&#39; =&gt;
+                  {&#39;attr_key1&#39; =&gt; {...},
+                   &#39;attr_key2&#39; =&gt; {...},
+                   &#39;attr_key3&#39; =&gt; {...},
+                  },
+              ...
+             }</code></pre>
+
+<p>where everything ending with a number is data that you as the attribute user sets, and everything else (ie &#39;metadata&#39; and &#39;value&#39;) is there just to give you and idea of the relationships. The &#39;...&#39; denotes possible additional values following the same pattern.</p>
+
+<p>So, to set value &#39;attribute_value1&#39;, one would call:</p>
+
+<pre><code>$attr_obj-&gt;set_attr({&#39;subsys&#39;   =&gt; &#39;subsystem1&#39;,
+                     &#39;name&#39;     =&gt; &#39;attr_key1&#39;,
+                     &#39;sql_type&#39; =&gt; &#39;short&#39;,
+                     &#39;value&#39;    =&gt; &#39;attribute_value1&#39;});</code></pre>
+
+<p>To set &#39;meta_data2&#39;, one would call:</p>
+
+<pre><code>$attr_obj-&gt;set_meta({&#39;subsys&#39; =&gt; &#39;subsystem1&#39;,
+                     &#39;name&#39;   =&gt; &#39;attr_key1&#39;,
+                     &#39;field&#39;  =&gt; &#39;meta_field2&#39;,
+                     &#39;value&#39;  =&gt; &#39;meta_data2&#39;});</code></pre>
+
+<p>To retrieve &#39;attribute_value2&#39;, one would call:</p>
+
+<pre><code>$attr_obj-&gt;get_meta({&#39;subsys&#39; =&gt; &#39;subsystem1&#39;,
+                     &#39;name&#39;   =&gt; $attr_key2});</code></pre>
+
+<p>Note that specifying an &#39;sql_type&#39; is only necessary when setting values, to let the module know how to store them. When a value is retrieved, the attribute module can tell what type of data is stored.</p>
+
+<p>One final note. The examples do not explicitly show this, but any metadata set on a particular attribute name will be available to all objects of the same type if they use the same attribute name. For instance, if a user object with id = 5 sets metadata field &#39;cereal&#39; on attribute name &#39;breakfast&#39; to &#39;cracklin oat bran&#39;, then all user objects that set attribute &#39;breakfast&#39; will have a metadata field &#39;cereal&#39; with value &#39;cracklin oat bran&#39;. This is intentional and is meant to promote attribute reusablility.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Methods">Public Methods</h2>
+
+<dl>
+
+<dt>$obj = new Bric::Util::Attribute($init);</dt>
+<dd>
+
+<p>Creates a new attribute object for an object type with ID given by argument &#39;id&#39;.</p>
+
+<p>Keys of $init are:</p>
+
+<ul>
+
+<li><p>subsys</p>
+
+<p>The subsystem to use by default for all subsequent method calls requiring a subsystem. If this is not given the package default subsytem, DEFAULT_SUBSYS, will be used. Any method requiring a subsystem will use the value passed here by default if a subsystem is not passed to that method.</p>
+
+<p>This field is optional</p>
+
+</li>
+<li><p>object_id</p>
+
+<p>The object ID for which this attribute applies. Attributes values are specific to the objects that set them.</p>
+
+<p>** This is a required field **</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$type = Bric::Util::Attribute::short_object_type();</dt>
+<dd>
+
+<p>Returns the short object type name used to construct the attribute table name where the attributes for this class type are stored. This should be overridden in all subclasses of Attribute. Oh, did I mention that the Attribute class should never be used directly? It is an abstract class and only subclasses of Attribute should be instantiated.</p>
+
+<p>This method is used internally by the Attribute object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Short object type not defined</p>
+
+<p>Thrown when the short object type name has not been defined by the programmer.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>Values for this method look like &#39;grp&#39; given a full object type of &#39;Bric::Util::Grp&#39;</p>
+
+</dd>
+<dt>$id = $attr_obj-&gt;get_subsys();</dt>
+<dd>
+
+<p>Return the current default subsys name. This subsys is used for any query requiring a subsys when the user has not supplied a subsys.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$id = $attr_obj-&gt;set_subsys();</dt>
+<dd>
+
+<p>Sets the default subsys name. This subsys is used for any query requiring a subsys when the user has not supplied a subsys.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>@names = $attr_obj-&gt;subsys_names($inactive);</dt>
+<dd>
+
+<p>Returns a list of subsystem names for this object. If argument &#39;inactive&#39; is true, then inactive subsystem names will be returned. Otherwise only active subsys names will be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$id = $attr_obj-&gt;get_object_id();</dt>
+<dd>
+
+<p>Return the object ID for this attribute object. This is the object to which these attributes apply.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$attr_obj = $attr_obj-&gt;set_object_id($id);</dt>
+<dd>
+
+<p>Set the object ID for this attribute object. This is the object to which these attributes apply. The object ID can be set only once.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot assign new object ID.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$sqltype = $attr_obj-&gt;get_sqltype($param);</dt>
+<dd>
+
+<p>Keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The attribute type to use, given instead of a &#39;name&#39;/&#39;subsys&#39; pair.</p>
+
+</li>
+</ul>
+
+<p>Returns the sqltype (the datatype) for the value of this attribute.</p>
+
+<p>If no subsystem is given, it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$attr_val = $attr_obj-&gt;get_attr($param);</dt>
+<dd>
+
+<p>Keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The attribute name</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The attribute type ID to use rather than use the &#39;name&#39;/&#39;subsys&#39; combination.</p>
+
+</li>
+</ul>
+
+<p>Returns the value of the attribute for the given attribute type.</p>
+
+<p>If no subsystem is given, but a name is given it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$attr_id = $attr_obj-&gt;get_attr_id($subsys, $name);</dt>
+<dd>
+
+<p>Returns an ID for an attribute type which uniquely identifies a subsystem name pair. This ID can be used in place of an attribute name and subsystem for methods that require those values.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$attr_val = $attr_obj-&gt;get_attr_hash($param);</dt>
+<dd>
+
+<p>Keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type ID to use rather than use the &#39;name&#39;/&#39;subsys&#39; combination.</p>
+
+</li>
+<li><p>ret_set_only</p>
+
+<p>Only return attribute names when that name has a corresponding row in one of the value tables if set to 1. Default is setting this to 0 and all attribute names will be returned, even if no value is set (undef will be returned as the value)</p>
+
+</li>
+<li><p>inactive</p>
+
+<p>If true, inactive attributes will be returned.</p>
+
+</li>
+</ul>
+
+<p>Returns a hash of key/values for the given parameters.</p>
+
+<p>If no subsystem is given, but a name is given it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$all = $attr_obj-&gt;all_for_subsys($subsys);</dt>
+<dd>
+
+<p>Return all attribute/value pairs AND metadata for a given subsystem. If $subsys is not passed the default subsys will be used. Format of the return value is:</p>
+
+<pre><code>$all = {&#39;attr_name&#39; =&gt; {&#39;value&#39; =&gt; &#39;attr_value&#39;,
+                        &#39;meta&#39;  =&gt; {&#39;attr_meta_field1&#39; =&gt; &#39;attr_meta_value1&#39;,
+                                    ...,
+                                   },
+                       },
+        ...,
+       };</code></pre>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$attr_val = $attr_obj-&gt;search_attr($param);</dt>
+<dd>
+
+<p>Keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>A name substring to search for in the attribute system.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem in which to search.</p>
+
+</li>
+</ul>
+
+<p>Returns a hash of key/values for the given parameters.</p>
+
+<p>If no subsystem is given, but a name is given it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>%attr = $attr_obj-&gt;set_attr($param);</dt>
+<dd>
+
+<p>Keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>sql_type</p>
+
+<p>The storage type of this attribute.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type ID to use rather than use the &#39;name&#39;/&#39;subsys&#39; combination.</p>
+
+</li>
+</ul>
+
+<p>Sets the value of a particular attribute.</p>
+
+<p>If no subsys is given, it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$success = $attr_obj-&gt;deactivate_attr($param);</dt>
+<dd>
+
+<p>Deactivates an attribute value. This means that the value is still in the database, but it has been made inactive. Inactive values will not be retrieved unless specifically sought after.</p>
+
+<p>The keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute to clear.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type of object (represents a name/subsys pair).</p>
+
+</li>
+</ul>
+
+<p>If no subsys is given, it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$success = $attr_obj-&gt;delete_attr($param);</dt>
+<dd>
+
+<p>Deletes an attribute value from the database...permanently!</p>
+
+<p>The keys of $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute to clear.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type of object (represents a name/subsys pair).</p>
+
+</li>
+</ul>
+
+<p>If no subsys is given, it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$success = $attr_obj-&gt;add_meta($param);</dt>
+<dd>
+
+<p>The keys for $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute for which to add metadata.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type of attribute (a substitute for a name and subsys)</p>
+
+</li>
+<li><p>field</p>
+
+<p>The name of the metadata field.</p>
+
+</li>
+<li><p>value</p>
+
+<p>The metadata value.</p>
+
+</li>
+<li><p>metadata</p>
+
+<p>A hash ref of field/value metadata pairs.</p>
+
+</li>
+</ul>
+
+<p>Adds metadata about a particular attribute name/subsys pair. Metadata can be things such as attribute descriptions, default values, etc.</p>
+
+<p>If no subsys is given, it will use the default subsystem passed to the new constructor or via the &#39;set_subsys&#39; method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$value = $attr_obj-&gt;get_meta($param);</dt>
+<dd>
+
+<p>The keys for $param are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name of the attribute for which to retrieve metadata.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>attr_id</p>
+
+<p>The type of attribute (represents a name/subsys)</p>
+
+</li>
+<li><p>field</p>
+
+<p>The name of the metadata field.</p>
+
+</li>
+</ul>
+
+<p>Either &#39;name&#39; and optional &#39;subsys&#39; (if not given the current default will be used) must be given, or an &#39;attr_id&#39; must be given. If a field name is given, the metadata associated with that field will be returned. If no field name is given, then all metadata for the name/subsys or attr_id will be returned in a hash.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$success = $attr_obj-&gt;delete_meta($param);</dt>
+<dd>
+
+<p>The keys for $param are:</p>
+
+<ul>
+
+<li><p>attr_id</p>
+
+<p>The attribute ID to which this metadata applies.</p>
+
+</li>
+<li><p>name</p>
+
+<p>The name of the attribute for which to clear metadata.</p>
+
+</li>
+<li><p>subsys</p>
+
+<p>The subsystem to use.</p>
+
+</li>
+<li><p>field</p>
+
+<p>The name of the metadata field.</p>
+
+</li>
+</ul>
+
+<p>These keys can be used in the following combinations:</p>
+
+<ol>
+
+<li><p>An &#39;attr_id&#39; and a &#39;field&#39;</p>
+
+</li>
+<li><p>A &#39;subsys&#39;, &#39;name&#39; and a &#39;field&#39;</p>
+
+</li>
+</ol>
+
+<p>Deletes a metadata entry for a given metadata name and attribute name/subsys pair.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>$success = $attr_obj-&gt;save();</dt>
+<dd>
+
+<p>Saves the information set on this object to the database.</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Methods">Private Methods</h2>
+
+<dl>
+
+<dt>_table_info</dt>
+<dd>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_get_meta($param)</dt>
+<dd>
+
+<p>Returns an attribute metadata value. Keys to $param are:</p>
+
+<dl>
+
+<dt>subsys</dt>
+<dd>
+
+<p>The subsystem to use, overriding the default. (optional)</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the attribute upon which to set metadata.</p>
+
+</dd>
+<dt>field</dt>
+<dd>
+
+<p>The name of the metadata data point.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_get_val($param)</dt>
+<dd>
+
+<p>Returns an attribute value. Keys to $param are:</p>
+
+<dl>
+
+<dt>subsys</dt>
+<dd>
+
+<p>The subsystem to use, overriding the default. (optional)</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the attribute to set. (optional)</p>
+
+</dd>
+</dl>
+
+<p>If &#39;name&#39; is not passed a data structure of all attributes in &#39;subsys&#39; (or the default subsys) are returned. If name is passed, then a data structure for that attribute alone is returned.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_set_meta($param)</dt>
+<dd>
+
+<p>Sets an attribute metadata value. Keys to $param are:</p>
+
+<dl>
+
+<dt>subsys</dt>
+<dd>
+
+<p>The subsystem to use, overriding the default. (optional)</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the attribute upon which to set metadata.</p>
+
+</dd>
+<dt>field</dt>
+<dd>
+
+<p>The name of the metadata data point.</p>
+
+</dd>
+<dt>value</dt>
+<dd>
+
+<p>The value of the metadata data point.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_set_val($param)</dt>
+<dd>
+
+<p>Sets an attribute value. Keys to $param are:</p>
+
+<dl>
+
+<dt>subsys</dt>
+<dd>
+
+<p>The subsystem to use, overriding the default. (optional)</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the attribute to set.</p>
+
+</dd>
+<dt>value</dt>
+<dd>
+
+<p>The value of the attribute</p>
+
+</dd>
+<dt>sql_type</dt>
+<dd>
+
+<p>The sql_type of the value (optional if updating an existing value)</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_load_subsys($subsys);</dt>
+<dd>
+
+<p>Loads all the attributes and attribute metadata for the given subsystem.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_select_table($type, $where, $bind);</dt>
+<dd>
+
+<p>Select rows from a table in the database.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_table($type, $bind);</dt>
+<dd>
+
+<p>Insert a row into a table in the database.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_table($type, $where, $bind);</dt>
+<dd>
+
+<p>Update a table in the database.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_from_table($type, $where, $bind);</dt>
+<dd>
+
+<p>Update a table in the database.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a href="http://search.cpan.org/perldoc?Bric::Util::Group">Bric::Util::Group</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,1451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Job</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Job.html#Name">Name</a></li>
+  <li><a href="Job.html#Synopsis">Synopsis</a></li>
+  <li><a href="Job.html#Description">Description</a></li>
+  <li><a href="Job.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Job.html#Constructors">Constructors</a></li>
+      <li><a href="Job.html#Destructors">Destructors</a></li>
+      <li><a href="Job.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Job.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Job.html#Private">Private</a>
+    <ul>
+      <li><a href="Job.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Job.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Job.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Job.html#Notes">Notes</a></li>
+  <li><a href="Job.html#Authors">Authors</a></li>
+  <li><a href="Job.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Job - Manages Bricolage distribution jobs.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Job;
+
+my $id = 1;
+my $format = &quot;%D %T&quot;;
+
+# Constructors.
+my $job = Bric::Util::Job-&gt;new($init);
+$job = Bric::Util::Job-&gt;lookup({ id =&gt; $id });
+my @jobs = Bric::Util::Job-&gt;list($params);
+
+# Class Methods.
+my @job_ids = Bric::Util::Job-&gt;list_ids($params);
+
+# Instance Methods
+my $id = $job-&gt;get_id;
+
+my $type = $job-&gt;get_type;
+$job = $job-&gt;set_type($type);
+
+my $sched_time = $job-&gt;get_sched_time($format);
+$job = $job-&gt;set_sched_time($sched_time);
+my $comp_time = $job-&gt;get_comp_time($format);
+
+my @resources = $job-&gt;get_resources;
+my @resource_ids = $job-&gt;get_resource_ids;
+$job = $job-&gt;set_resource_ids(@resource_ids);
+
+my @server_types = $job-&gt;get_server_types;
+my @server_type_ids = $job-&gt;get_server_type_ids;
+$job = $job-&gt;set_server_type_ids(@server_type_ids);
+
+my $boolean = $job-&gt;get_failed;
+$job = $job-&gt;set_failed($boolean);
+
+my $err_msg = $job-&gt;get_error_message;
+
+my $boolean = $job-&gt;get_executing;
+
+# Save the job.
+$job = $job-&gt;save;
+
+# Cancel the job.
+$job = $job-&gt;cancel;
+
+# Execute the job.
+$job = $job-&gt;execute_me;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages distribution jobs. A job is a list of things to be transformed by actions and moved out, all at a scheduled time. The idea is that Bricolage will schedule a job and then it will be executed at its scheduled times. There are two types of jobs, &quot;Deliver&quot; and &quot;Expire&quot;.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $job = Bric::Util::Job-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::Job object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>name - A name for the job. Required.</p>
+
+</li>
+<li><p>user_id - The ID of the user scheduling the job.</p>
+
+</li>
+<li><p>sched_time - The time at which to execute the job. If undef, the job will be executed immediately.</p>
+
+</li>
+<li><p>resources - An anonymous array of Bric::Dist::Resource objects representing the files and/or directories on which the job&#39;s actions will be executed.</p>
+
+</li>
+<li><p>server_types - An anonymous array of Bric::Dist::ServerType objects representing the types of servers for which the job must be executed. See Bric::Dist::ServerType for an interface for creating server types.</p>
+
+</li>
+<li><p>type - The type of job. Pass a true value for an expire job and a false value (or no <code>type</code> parameter at all) for a distribution job.</p>
+
+</li>
+</ul>
+
+<p>Either the resources, resource_names, or resource_ids anonymous array is must be passed in, as must either sever_types, server_type_names, or server_type_ids.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot add resources to a completed job.</p>
+
+</li>
+<li><p>Cannot add resources to a executing job.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $job = Bric::Util::Job-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Util::Job object based on the Bric::Util::Job object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::Job objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Util::Job object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@jobs || $jobs_aref) = Bric::Util::Job-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Job objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Job ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the jobs. May use typical SQL wildcard &#39;%&#39;. Note that the query is case-insensitve. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>user_id</dt>
+<dd>
+
+<p>The ID of the user who scheduled the jobs. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>sched_time</dt>
+<dd>
+
+<p>May pass in as an anonymous array of two values, the first the minimum scheduled time, the second the maximum scheduled time. If the first array item is undefined, then the second will be considered the date that sched_time must be less than. If the second array item is undefined, then the first will be considered the date that sched_time must be greater than. If the value passed in is undefined, then the query will specify &#39;IS NULL&#39;. May also use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>comp_time</dt>
+<dd>
+
+<p>May pass in as an anonymous array of two values, the first the minimum completion time, the second the maximum completion time. If the first array item is undefined, then the second will be considered the date that sched_time must be less than. If the second array item is undefined, then the first will be considered the date that sched_time must be greater than. If the value passed in is undefined, then the query will specify &#39;IS NULL&#39;. May also use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>resource_id</dt>
+<dd>
+
+<p>A Bric::Dist::Resource object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>server_type_id</dt>
+<dd>
+
+<p>A Bric::Dist::ServerType object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>story_id</dt>
+<dd>
+
+<p>A story ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>story_instance_id</dt>
+<dd>
+
+<p>A story instance ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_id</dt>
+<dd>
+
+<p>A media ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_instance_id</dt>
+<dd>
+
+<p>A media instance ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp::Job object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>failed</dt>
+<dd>
+
+<p>A boolean indicating whether or not a job is considered a failure. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>executing</dt>
+<dd>
+
+<p>A boolean indicating whether some process is running <code>execute_me</code> on this job.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>A boolean indicating the type of the job. Pass true for an expiring job and false for a publishing job.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Util::Job object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$job-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@job_ids || $job_ids_aref) = Bric::Util::Job-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Job object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Util::Job-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::Job-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::Job-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $job-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::Job object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Util::Job object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $priority = $job-&gt;get_priority</dt>
+<dd>
+
+<p>Returns the priority of the Bric::Util::Job object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;set_priority($priority)</dt>
+<dd>
+
+<p>Sets the server type name.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Priority must be between 1 and 5 inclusive</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $name = $job-&gt;get_name</dt>
+<dd>
+
+<p>Returns the name of the Bric::Util::Job object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_name($name)</dt>
+<dd>
+
+<p>Sets the server type name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $user_id = $job-&gt;get_user_id</dt>
+<dd>
+
+<p>Returns the user_id of the Bric::Util::Job object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;user_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_user_id($user_id)</dt>
+<dd>
+
+<p>Sets the server type user_id.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;user_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sched_time = $job-&gt;get_sched_time($format)</dt>
+<dd>
+
+<p>Returns the time at which the job is scheduled to execute. Pass in a strftime format string to get the time back in that format.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;set_sched_time($sched_time)</dt>
+<dd>
+
+<p>Sets the time at which the job is to be executed. This method will not set the scheduled time and will return undef if the job has already been completed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot change scheduled time on completed job.</p>
+
+</li>
+<li><p>Cannot change scheduled time on executing job.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $comp_time = $job-&gt;get_comp_time($format)</dt>
+<dd>
+
+<p>Returns the time at which the job was completed. Returns undef if the job has not yet been completed. Pass in a strftime format string to get the time back in that format.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $tries = $foo-&gt;get_tries</dt>
+<dd>
+
+<p>Returns the number of times the job attempted to be executed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;tries&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@resources || $resources_aref) = $job-&gt;get_resources</dt>
+<dd>
+
+</dd>
+<dt>my (@resources || $resources_aref) = $job-&gt;get_resources(@resource_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the Bric::Dist::Resource objects that represent the directories and/or files on which this job acts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$job = $job-&gt;add_resources(@resources)</dt>
+<dd>
+
+<p>Adds resources to this job. Call save() to save the relationship. Resources cannot be added to a job after the job has executed. Trying to add resources after a job has completed will throw an exception.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot add resources to a completed job.</p>
+
+</li>
+<li><p>Cannot add resources to a executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>$self = $job-&gt;del_resources(@resources)</dt>
+<dd>
+
+<p>Dissociates resources, represented as Bric::Dist::Resource objects, from the job. call save() to save the dissociations to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot delete resources from a completed job.</p>
+
+</li>
+<li><p>Cannot delete resources from a executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@server_types || $server_types_aref) = $job-&gt;get_server_types</dt>
+<dd>
+
+</dd>
+<dt>my (@server_types || $server_types_aref) = $job-&gt;get_server_types(@server_type_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the Bric::Dist::ServerType objects that represent the directories and/or files on which this job acts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$job = $job-&gt;add_server_types(@server_types)</dt>
+<dd>
+
+<p>Adds server types to this job. Call save() to save the relationship. Server types cannot be added to a job after the job has executed. Trying to add server types after a job has completed will throw an exception.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot add server types to a completed job.</p>
+
+</li>
+<li><p>Cannot add server types to a executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>$self = $job-&gt;del_server_types(@server_types)</dt>
+<dd>
+
+<p>Dissociates server types, represented as Bric::Dist::ServerType objects, from the job. call save() to save the dissociations to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot delete server types from a completed job.</p>
+
+</li>
+<li><p>Cannot delete server types from a executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;is_executing</dt>
+<dd>
+
+<p>Returns true ($self) if the job is executing (that is, in the process of being executed), and undef it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;has_failed</dt>
+<dd>
+
+<p>Returns true ($self) if the job threw an error on execution, returns false otherwise.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;cancel</dt>
+<dd>
+
+<p>Markes this job for cancellation. Call save() to delete it from the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot cancel completed job.</p>
+
+</li>
+<li><p>Cannot cancel executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;reset</dt>
+<dd>
+
+<p>Resets the job. If it had failed, the error message will be reset to <code>undef</code> and the <code>has_failed()</code> method will return false. Whether or not it has failed, the number of tries will be reset to 0.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Cannot reset completed job.</p>
+
+</li>
+<li><p>Cannot reset executing job.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Util::Job object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;execute_me</dt>
+<dd>
+
+<p>Executes the job. This means the for each of the server types associated with this job, the list of actions will be performed on each file, hopefully culminating in the distribution of the resources to the servers associated with the server type. At the end of the process, a completion time will be saved to the database. Attempting to execute a job before its scheduled time will throw an exception.</p>
+
+<p><b>Throws:</b> Quite a few exceptions can be thrown here. Check the do_it() methods on all Bric::Dist::Action subclasses, as well as the put_res() methods of the mover classes (e.g., Bric::Util::Trans::FS). Here are the exceptions thrown from withing this method itself.</p>
+
+<ul>
+
+<li><p>Cannot execute job before its scheduled time.</p>
+
+</li>
+<li><p>Cannot execute job that has already been executed.</p>
+
+</li>
+<li><p>Can&#39;t get a lock on job.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $job-&gt;handle_error($msg)</dt>
+<dd>
+
+<p>Concatinates the msg to the <i>top</i> of the error_message field. After Bric::Config::DIST_ATTEMPTS it also marks the Job as having failed.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$job = $job-&gt;_do_it</dt>
+<dd>
+
+<p>This is an abstract method that must be implemented in subclasses. In subclasses, <code>_do_it()</code> carries out the tasks that constitute a job. Here in the base class, it throws an exception.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Util::Job objects or, if called with an optional third argument, returns a listof Bric::Util::Job object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $coll = $get_coll-&gt;($self, $class, $key)</dt>
+<dd>
+
+<p>Returns the collection for this job. Pass in the $job object itself, the property key for storing the collection, and the name of the collection class. The collection is a Bric::Util::Coll object. See Bric::Util::Coll for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = $check_priority-&gt;($priority)</dt>
+<dd>
+
+<p>Checks a number to see if it is in the correct range for a priority setting (1 to 5, inclusive), and throws an error if it isn&#39;t.</p>
+
+</dd>
+<dt>my $bool = $set_executing-&gt;($self, $value)</dt>
+<dd>
+
+<p>Sets the executing column in the database, as well as the executing property in the job object. Used by <code>execute_me()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Authors">Authors</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<p>Mark Jaroski &lt;jaroskim@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Dist/Resource.html" name="Bric::Dist::Resource">Bric::Dist::Resource</a>, <a rel="section" href="../Dist/ServerType.html" name="Bric::Dist::ServerType">Bric::Dist::ServerType</a></p>
+
+</body>
+</html>
+

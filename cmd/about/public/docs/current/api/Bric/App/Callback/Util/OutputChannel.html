@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Callback::Util::OutputChannel</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="OutputChannel.html#Name">Name</a></li>
+  <li><a href="OutputChannel.html#Synopsis">Synopsis</a></li>
+  <li><a href="OutputChannel.html#Description">Description</a></li>
+  <li><a href="OutputChannel.html#Interface">Interface</a>
+    <ul>
+      <li><a href="OutputChannel.html#Functions">Functions</a>
+        <ul>
+          <li><a href="OutputChannel.html#update_output_channels">update_output_channels</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="OutputChannel.html#Author">Author</a></li>
+  <li><a href="OutputChannel.html#See-Also">See Also</a></li>
+  <li><a href="OutputChannel.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Callback::Util::OutputChannel - Utility function for adding/removing OCs</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Callback::Util::OutputChannel qw(:all);
+update_output_channels($element, $widget, $params);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides utility functions for updating Output Channel associations based on form input provided by Story and Media profile pages.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Functions">Functions</h2>
+
+<h3 id="update_output_channels">update_output_channels</h3>
+
+<pre><code>update_output_channels($story, $params);</code></pre>
+
+<p>Updates the output channels for <code>$story</code> by pulling the OC data from <code>$params</code>. See <a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::Story">Bric::App::Callback::Profile::Story</a> for a sample usage.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Marshall Roch &lt;marshall@exclupen.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::Story">Bric::App::Callback::Profile::Story</a></dt>
+<dd>
+
+</dd>
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::Media">Bric::App::Callback::Profile::Media</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2006 Marshall Roch. See <a rel="section" href="../../../../../../2.0/api/Bric/License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

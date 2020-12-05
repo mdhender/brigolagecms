@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Session</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Session.html#Name">Name</a></li>
+  <li><a href="Session.html#Synopsis">Synopsis</a></li>
+  <li><a href="Session.html#Description">Description</a></li>
+  <li><a href="Session.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Session.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Session.html#Functions">Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Session.html#Notes">Notes</a></li>
+  <li><a href="Session.html#Author">Author</a></li>
+  <li><a href="Session.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Session - A class to handle user sessions</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Session;
+
+#- Methods called from the apache perl handler -#
+
+setup_user_session($r);
+
+sync_user_session();
+
+#- Methods called from widgets -#
+
+[$new_state_name, $new_state_data] = init_state($widget, $state, $data);
+
+$state_name = state_name($widget, $name);
+
+$state_data = state_data($widget, ($data_hash || $name, $value));
+
+[$state_name, $state_data] = state($widget, $state_name, $state_data);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides all the necessary functions for maintaining state within widgets. This includes setting a global state variable $session as well as accessor methods for setting the state name of a widget and state data of a widget.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>instance()</dt>
+<dd>
+
+<p>Return a reference to the %session hash so that other parts of the API can get the current session without using %HTML::Mason::Commands::session directly.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<p>#------------------------------------------------------------------------------#</p>
+
+<h2 id="Functions">Functions</h2>
+
+<dl>
+
+<dt>setup_user_session($r)</dt>
+<dd>
+
+<p>This function takes an Apache request object and sets up the persistent user session hash. This hash is tied to an Apache::Session::File object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Difficulties tie&#39;ing the session hash.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sends a cookie to the users browser.</p>
+
+</li>
+<li><p>Creates a session file on the file system.</p>
+
+</li>
+<li><p>Sets global variable &#39;%session&#39; in package &#39;HTML::Mason::Commands&#39;.</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>sync_user_session()</dt>
+<dd>
+
+<p>Synchronizes changes to the user session back to the file system.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to synchronize user session.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Unties the global variable %HTML::Mason::Commands::session.</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>expire_session()</dt>
+<dd>
+
+<p>Expires the user session, deleting it from the disk.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to expire user session.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Deletes the global %HTML::Mason::Commands::session session object.</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>[$new_state_name, $new_state_data] = init_state($widget, $state, $data)</dt>
+<dd>
+
+</dd>
+<dt>$cur_name = init_state_name($widget, $name);</dt>
+<dd>
+
+</dd>
+<dt>$cur_val = init_state_data($widget, $name, $value);</dt>
+<dd>
+
+</dd>
+<dt>$key_val = reset_state($widget, $reset_key);</dt>
+<dd>
+
+<p>If a widget has not yet been called and this function is called, it will set some default values for that widgets state name and state data.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets the global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$state_name = set_state_name($widget, $name)</dt>
+<dd>
+
+</dd>
+<dt>$state_name = get_state_name($widget)</dt>
+<dd>
+
+<p>Set or get the current widget state name. A state name cannot be set to undef since it is bad style to rely on a state that you do not set explicitly. If you want to clear the state entirely, use clear_state.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets the global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$state_data = set_state_data($widget, ($data_hash || $name, $value))</dt>
+<dd>
+
+</dd>
+<dt>$state_data = get_state_data($widget, $name)</dt>
+<dd>
+
+<p>Get or set the state data. The set function takes either a hash or a key/value. Given a hash the set function will overwrite the state data. Given a key/value pair, it will set that key in the state data to that value.</p>
+
+<p>The get function will return the whole state data hash if given just a widget. If passed a name it will return the value for the state data with that name.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets the global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>[$state_name, $state_data] = set_state($widget, $state_name, $state_data)</dt>
+<dd>
+
+</dd>
+<dt>[$state_name, $state_data] = get_state($widget)</dt>
+<dd>
+
+<p>The set function takes a widget name, $widget, a state name, $state_name, and a hash ref, $state_data, containing state data. Both $state_name and $state_data are optional. If $state_name is undef, the state name will not be set, but if it does have a value it will be used to update the widget $widget state name. The same holds true for $state_data; undef will leave the state data untouched while a hash value will be used to overwrite the state data.</p>
+
+<p>The get function returns both the state name and the state data..</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets the global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>clear_state($widget)</dt>
+<dd>
+
+<p>Completely clears the state information for the given widget.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Sets the global variable %HTML::Mason::Commands::session</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(0 || 1) = set_user($user);</dt>
+<dd>
+
+</dd>
+<dt>($login || undef) = get_user_login;</dt>
+<dd>
+
+</dd>
+<dt>($uid || undef) = get_user_id;</dt>
+<dd>
+
+</dd>
+<dt>($user || undef) = get_user_object;</dt>
+<dd>
+
+<p>Get/set logged in user information.</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<ul>
+
+<li><p>Uses Bric::App::Util::get_pref() and Bric::App::Util::set_pref().</p>
+
+</li>
+</ul>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a href="http://search.cpan.org/perldoc?Apache::Session::File">Apache::Session::File</a></p>
+
+</body>
+</html>
+

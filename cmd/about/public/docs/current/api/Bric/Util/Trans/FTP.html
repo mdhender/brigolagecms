@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Trans::FTP</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="FTP.html#Name">Name</a></li>
+  <li><a href="FTP.html#Synopsis">Synopsis</a></li>
+  <li><a href="FTP.html#Description">Description</a></li>
+  <li><a href="FTP.html#Interface">Interface</a>
+    <ul>
+      <li><a href="FTP.html#Constructors">Constructors</a></li>
+      <li><a href="FTP.html#Destructors">Destructors</a></li>
+      <li><a href="FTP.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="FTP.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="FTP.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="FTP.html#Private">Private</a>
+    <ul>
+      <li><a href="FTP.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="FTP.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="FTP.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="FTP.html#Notes">Notes</a></li>
+  <li><a href="FTP.html#Author">Author</a></li>
+  <li><a href="FTP.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Trans::FTP - FTP Client interface for distributing resources.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Trans::FTP</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The distribution API uses this class to distribute resources to other servers via FTP.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my $bool = Bric::Util::Trans::FTP-&gt;put_res($resources, $st)</dt>
+<dd>
+
+<p>Puts the files specified by the $job object on the servers specified by $st.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to remote server.</p>
+
+</li>
+<li><p>Unable to login to remote server.</p>
+
+</li>
+<li><p>Unable to change to binary mode on remote server.</p>
+
+</li>
+<li><p>Unable to create directory on remote server.</p>
+
+</li>
+<li><p>Unable to put resource on remote server.</p>
+
+</li>
+<li><p>Unable to rename resource on remote server.</p>
+
+</li>
+<li><p>Unable to properly close connection to remote server.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Net::FTP internally. Unfortunately, except for connecting to the remote server, Net::FTP provides no error messages for failures. This will make debugging more difficult, but there&#39;s not much to be done. Hopefully the generalized error messages will be enough to give system administrators a clue as to what needs to be changed.</p>
+
+</dd>
+<dt>my $bool = Bric::Util::Trans::FTP-&gt;del_res($resources, $st)</dt>
+<dd>
+
+<p>Deletes the files specified by the $job object from the servers specified by $st.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to remote server.</p>
+
+</li>
+<li><p>Unable to login to remote server.</p>
+
+</li>
+<li><p>Unable to delete resource from remote server.</p>
+
+</li>
+<li><p>Unable to properly close connection to remote server.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> See put_res(), above.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action/Mover.html" name="Bric::Dist::Action::Mover">Bric::Dist::Action::Mover</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Trans/FS.html" name="Bric::Util::Trans::FS">Bric::Util::Trans::FS</a></p>
+
+</body>
+</html>
+

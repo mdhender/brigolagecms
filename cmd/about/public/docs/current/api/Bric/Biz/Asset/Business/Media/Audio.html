@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset::Business::Media::Audio</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Audio.html#Name">Name</a></li>
+  <li><a href="Audio.html#Date">Date</a></li>
+  <li><a href="Audio.html#Synopsis">Synopsis</a></li>
+  <li><a href="Audio.html#Description">Description</a></li>
+  <li><a href="Audio.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Audio.html#Constructrs">Constructrs</a></li>
+      <li><a href="Audio.html#Destructors">Destructors</a></li>
+      <li><a href="Audio.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Audio.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Audio.html#Private">Private</a>
+    <ul>
+      <li><a href="Audio.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Audio.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Audio.html#Notes">Notes</a></li>
+  <li><a href="Audio.html#Author">Author</a></li>
+  <li><a href="Audio.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset::Business::Media::Audio - the media class that represents static audios</p>
+
+<h1 id="Date">Date</h1>
+
+<p>$Data$</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Creation of new Audio objects
+$audio = Bric::Biz::Asset::Business::Media::Audio-&gt;new( $init )
+$audio = Bric::Biz::Asset::Business::Media::Audio-&gt;lookup( { id =&gt; $id })
+($audios || @audios) = Bric::Biz::Asset::Business::Media::Audio-&gt;list( $param)
+
+# list of ids
+($id_list || @ids) = Bric::Biz::Asset::Business::Media::Audio-&gt;list_ids($param)</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The Subclass of Media that pretains to Audios</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructrs">Constructrs</h2>
+
+<dl>
+
+<dt>$audio = Bric::Biz::Asset::Business::Media::Audio-&gt;new($init)</dt>
+<dd>
+
+<p>This will create a new audio object.</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>Put Itmes here</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$media = Bric::Biz::Asset::Business::Media::Audio-&gt;lookup( { id =&gt; $id })</dt>
+<dd>
+
+<p>This will return the matched looked up object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($imgs || @imgs) = Bric::Biz::Asset::Business::Media::Audio-&gt;list($param)</dt>
+<dd>
+
+<p>Returns a list of audio objects that match the params passed in</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>dummy method to not wast the time of AUTHLOAD</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>(@ids || $ids) = Bric::Biz::Asset::Business::Media::Audio-&gt;list_ids($param)</dt>
+<dd>
+
+<p>Returns a list of ids that match the particular params</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>Put Keys Here</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$class_id = Bric::Biz::Asset::Business::Media::Audio-&gt;get_class_id()</dt>
+<dd>
+
+<p>Returns the class id of the Audio class</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($fields || @fields) = Bric::Biz::Asset::Business::Media::Audio::autopopulated_fields()</dt>
+<dd>
+
+<p>Returns a list of the names of fields that are registered in the database as being autopopulatable</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset::Business::Media::Audio-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my_meths()</dt>
+<dd>
+
+<p>Data Dictionary for introspection of the object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE</p>
+
+<h1 id="Private">Private</h1>
+
+<p>NONE</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p># NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>&quot;Michael Soderstrom&quot; &lt;miraso@pacbell.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a> , <a rel="section" href="../../../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a></p>
+
+</body>
+</html>
+

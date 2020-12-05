@@ -1,0 +1,276 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 2.0.1 Changes</title>
+	<meta name="keywords" content="Ajax, announce, Apache 2, changes, content management, elements, features, mod_perl 2, MySQL, Perl, Prototype, script.aculo.us, UI" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-2.0.1" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 2.0.1 Changes</h2>
+	<div id="articlemeta">
+            <p class="date">2011.02.09</p>
+          </div>
+          <p>What's new in Bricolage 2.0.1?</p>
+          <p>The newest Bricolage is more reliable than ever. Here's a guide to what's changed.</p>
+        <div class="list">
+          <h4>Improvements</h4>
+          <ul>
+            <li><p>Added SKIP_SSL_REDIRECT bricolage.conf directive. This directive prevents Bricolage from redirecting to and from an SSL URL when SSL_ENABLE is turned on. The case for this is when Bricolage is running behind a reverse proxy server that's handling SSL mappings. Thanks to Alex Krohn for the report. [David]</p></li>
+            <li><p>Added the "object" format for datetime values. Pass "object" as the formatting string and a DateTime object will be returned, rather than a string. [David]</p></li>
+            <li><p>Refactored the SFTP mover to do proper error handling. Also removed the code that "escapes" file names, as with more recent versions of Net::SSH2 it left the backslashes in the file names. [David]</p></li>
+            <li><p>Bricolage now supports Apache 2 MPMs other than Prefork. YMMV (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/188">Bug #188</a>). [David]</p></li>
+            <li><p>The "Category" autocompleting field in the New Story/Media/Template profile now remembers the last value selected for that screen within the current session. This makes it one bit easier to create a bunch of objects in a row all in the same category, as used to be the case before 2.0 turned these into autocompleting fields (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/159">Bug #159</a>). [David]</p></li>
+            <li><p>The lists of the container and field subelement key names in a template are now displayed above the code in the read view as well as the edit view. Suggested by Phillip Smith (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/228">Bug #228</a>). [David]
+</p></li>
+          </ul>
+        </div>
+        <div class="list">
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li><p>Fixed a bug in the Bric::Util::ApacheReq tests where they would fail if the LISTEN_PORT or SSL_PORT bricolage.conf directives were anything other than 80 and 443, respectively. Thanks to Héctor Daniel Cortés González for the report. [David]</p></li>
+            <li><p>The "Checkout" link no longer appears on desk items for users who do not have permission to edit an asset [Kahil Jallad].</p></li>
+            <li><p>Fixed a bug where the SFTP mover would not properly finish moving the file, leaving escaped tmp files on the destination server. [Matt Rolf]</p></li>
+            <li><p>Updating published stories or media or deployed templates via the SOAP interface with the EXPIRE_ON_DEACTIVATE bricolage.conf directive enabled no longer expires those assets unless they are active and the <expire_date> element is set in the XML. Thanks to Nick Legg for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/184">Bug #184</a>). [David]</p></li>
+            <li><p>Worked around a bug in Net::SSH2 where sockets weren't being closed, leading to bric_queued running out of file descriptors. [David]</p></li>
+            <li><p>The virtual FTP server no longer limits itself, but leaves resource limits to the OS. This prevents apparently unrelated (and mysterious!) errors from the FTP server. [Alex Krohn].</p></li>
+            <li><p>Fixed error message thrown by publish_another() that incorrectly called itself burn_another(). [David]</p></li>
+            <li><p>When diffing documents and templates, if the "to" item is the current version, the currently-checked out asset is used. This is so that one can see what changes have been made since the checkout. Reported by Michael Herring. [David]</p></li>
+            <li><p>Fixed bug in bric_ftpd where the ftp PWD command returns an incorrect path (missing the site name). Some ftp clients (eg. FileZilla) call PWD and use this path after changing directories. [Adrian Yee]</p></li>
+            <li><p>Fixed a bug where desk asset counts would never be displayed regardless of the preference setting (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/198">Bug #198</a>). [Greg Heo]</p></li>
+            <li><p>The keyword autocomplete widget no longer suggests deleted keywords on the story and media profiles (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/206">Bug #206</a>). [Greg Heo]</p></li>
+            <li><p>Fixed a bug where some valid date ranges would be rejected as invalid when searching for assets. <a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/211">Bug #211</a>). [David Oliveira]</p></li>
+            <li><p>Fixed bug in bric_ftpd where the ftp PWD command returns an incorrect path (missing the site name). Some ftp clients (eg. FileZilla) call PWD and use this path after changing directories. [Adrian Yee]</p></li>
+            <li><p>In the event of a publish failure, a story and media document no longer has its publish status, date, and first publish date updated (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/200">Bug #200</a>). [David]</p></li>
+            <li><p>Xinha now works properly, as the WYSIWYG fields are now created only when they're displayed (they didn't work right when they were created while hidden). Thanks to Aaron Fuleki and Denison University for the report and Phillip Smith for finding the relevant Xinha support explaining the problem (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/217">Bug #217</a>). [David]</p></li>
+            <li><p>Adjusted placement of the Checkout and Publish buttons in search results and elsewhere so that they're not so close to the border of the box that contains them (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/194">Bug #194</a>). [Phillip Smith]</p></li>
+            <li><p>The Apache 2 detection during installation now properly finds Included configuration files specified with paths relative to the HTTPD_ROOT (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/174">Bug #174</a>). [Michael Herring]</p></li>
+            <li><p>Using pagination controls when selecting from a list of stories to relate no longer throws an error (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/183">Bug #183</a>). [Greg Heo]</p></li>
+            <li><p>Adjusted style of Check In and Move popup menu. Allows for easier selection of appropriate action.</p></li>
+            <li><p>Fixed the Xinha editor when using the Create Link button (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/180">Bug #180</a>). [Phillip Smith]</p></li>
+            <li><p>The "Content Type" column in the Element Type manager will now properly sort when you click its header (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/190">Bug #190</a>). [David]</p></li>
+            <li><p>Bricolage no longer throws an error when the description of a category is longer than 256 characters. Thanks to Vladimir for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/215">Bug #215</a>). [Phllip Smith]</p></li>
+            <li><p>Attempting to create a category template that already exists in a category and output channel no longer reactivates an element type template (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/195">Bug #195</a>). [David]</p></li>
+            <li><p>Deactivated element types no longer appear as available to add to stories, though existing elements of those types will remain unless they're individually deleted (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/230">Bug #230</a>). [Greg Heo]</p></li>
+            <li><p>Document and template search results no longer provide a "Republish" checkbox for deactivated assets, which are shown when "Include deleted" checkbox is selected in the advanced search interface (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/201">Bug #201</a>). [Nick Legg]</p></li>
+            <li><p>The buttons once again work in the media document category browser when the ENABLE_CATEGORY_BROWSER bricolage.conf directive is true. Thanks to Michael Herring for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/155">Bug #155</a>). [David]</p></li>
+            <li><p>The story and media profiles now allow only output channels associated with the site the document element type is associated with to be associated with the story or media document (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/212">Bug #212</a>). [Zdravko Balorda]</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-2.0.1.tar.gz" title="Download Bricolage 2.0.1">Download Now!</a><br />(Stable)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

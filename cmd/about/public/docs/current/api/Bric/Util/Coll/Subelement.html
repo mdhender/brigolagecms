@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Coll::Subelement</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Subelement.html#Name">Name</a></li>
+  <li><a href="Subelement.html#Synopsis">Synopsis</a></li>
+  <li><a href="Subelement.html#Description">Description</a></li>
+  <li><a href="Subelement.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Subelement.html#Constructors">Constructors</a></li>
+      <li><a href="Subelement.html#Destructors">Destructors</a></li>
+      <li><a href="Subelement.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Subelement.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Subelement.html#Private">Private</a>
+    <ul>
+      <li><a href="Subelement.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Subelement.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Subelement.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Subelement.html#Notes">Notes</a></li>
+  <li><a href="Subelement.html#Author">Author</a></li>
+  <li><a href="Subelement.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Coll::Subelement - Interface for managing collections of Bric::Biz::ElementType::Subelement objects.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>See Bric::Util::Coll.</p>
+
+<h1 id="Description">Description</h1>
+
+<p>See Bric::Util::Coll.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Util::Coll.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll-&gt;class_name()</dt>
+<dd>
+
+<p>Returns the name of the class of objects this collection manages.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$self = $coll-&gt;save($parent_id)</dt>
+<dd>
+
+<p>Saves the changes made to all the objects in the collection</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Util::Coll::Subelement-&gt;_sort_objs($objs_href)</dt>
+<dd>
+
+<p>Sorts a list of objects into an internally-specified order. This class sorts subelement objects by their child&#39;s name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Christian Muise &lt;christian.muise@gmail.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/ElementType/Subelement.html" name="Bric::Biz::ElementType::Subelement">Bric::Biz::ElementType::Subelement</a></p>
+
+</body>
+</html>
+

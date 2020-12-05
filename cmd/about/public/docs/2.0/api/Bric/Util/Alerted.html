@@ -1,0 +1,900 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Alerted</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Alerted.html#Name">Name</a></li>
+  <li><a href="Alerted.html#Synopsis">Synopsis</a></li>
+  <li><a href="Alerted.html#Description">Description</a></li>
+  <li><a href="Alerted.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Alerted.html#Constructors">Constructors</a></li>
+      <li><a href="Alerted.html#Destructors">Destructors</a></li>
+      <li><a href="Alerted.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Alerted.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Alerted.html#Private">Private</a>
+    <ul>
+      <li><a href="Alerted.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Alerted.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Alerted.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Alerted.html#Notes">Notes</a></li>
+  <li><a href="Alerted.html#Author">Author</a></li>
+  <li><a href="Alerted.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Alerted - Interface to Alerts as they are sent to individual users.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Alerted;
+
+# Constructors.
+my $alerted = Bric::Util::Alerted-&gt;lookup({ id =&gt; 1 });
+my @alerteds = Bric::Util::Alerted-&gt;list($params);
+
+# Class Methods.
+my @alerted_ids = Bric::Util::Alerted-&gt;list_ids($params);
+my $bool = Bric::Util::Alerted-&gt;ack_by_id(@alerted_ids);
+
+# Instance Methods.
+my $id = $alerted-&gt;get_id;
+my $at_id = $alerted-&gt;get_alert_id;
+my $alert = $alerted-&gt;get_alert;
+my $uid = $alerted-&gt;get_user_id;
+my $user = $alerted-&gt;get_user;
+my @sent = $alerted-&gt;get_sent;
+
+$alerted = $alered-&gt;acknowledge;
+my $ack_time = $alerted-&gt;get_ack_time($format);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class is the interface to individual user Alerts. While Bric::Util::Alert objects are created once for a given event, many different users may receive those alerts. Bric::Util::Alerted provides access to those user-specific instances of a particular alert. All methods by which a user is alerted are covered by a single Bric::Util::Alerted object for that Bric::Util::Alert alert, and when a user acknowledges an alert, all methods by which it was sent are acknowledged.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $c = Bric::Util::Alerted-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Util::Alerted object based on the Bric::Util::Alerted object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::Alerted objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Util::Alerted object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@alerteds || $alerteds_aref) = Bric::Util::Alerted-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Alerted objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Alerted ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>alert_id</dt>
+<dd>
+
+<p>A Bric::Util::Alert ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>user_id</dt>
+<dd>
+
+<p>A Bric::Biz::Person::User ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>timestamp</dt>
+<dd>
+
+</dd>
+<dt>ack_time</dt>
+<dd>
+
+<p>The time at which alerts were sent or acknowledged. May use <code>ANY</code> for a list of possible values. May also pass an anonymous array of two values, the first the minimum time, the second the maximum time. If the first array item is undefined, then the second will be considered the date that time must be less than. If the second array item is undefined, then the first will be considered the date that time must be greater than. If the value passed in is undefined, then the query will specify &#39;IS NULL&#39;.</p>
+
+</dd>
+<dt>alert_type_id</dt>
+<dd>
+
+<p>A Bric::Util::AlertType ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>event_id</dt>
+<dd>
+
+<p>A Bric::Util::Event ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>subject</dt>
+<dd>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>An alert subject. <code>name</code> is an alias for <code>subject</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>message</dt>
+<dd>
+
+<p>An alert message. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Util::Alerted object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@alrtd_ids || $alrtd_ids_aref) = Bric::Util::Alerted-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Alerted object IDs based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Util::Alerted-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::Alerted-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::Alerted-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = Bric::Util::Alerted-&gt;ack_by_id(@alerted_ids)</dt>
+<dd>
+
+<p>If a whole bunch of alerteds need to be acknowledged at once, use this method and simply pass in all of their IDs, rather than instantiating each one and acknowledging it in turn. This will dramatically cut down on the overhead, as ack_by_id() will execute fewer queries.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $alerted-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::Alerted object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Util::Alerted object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $user = $alerted-&gt;get_user</dt>
+<dd>
+
+<p>Returns the Bric::Biz::Person::User object representing the user to whom the alert was sent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Biz::Person::User objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Uses Bric::Biz::Person::User-&gt;lookup() internally.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $uid = $alerted-&gt;get_user_id</dt>
+<dd>
+
+<p>Returns the Bric::Biz::Person::User object ID representing the user to whom the alert was sent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;user_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $alert = $alerted-&gt;get_alert</dt>
+<dd>
+
+<p>Returns the Bric::Util::Alert object representing the alert for which this Bric::Util::Alerted object was created.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Util::Alert objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $aid = $alerted-&gt;get_alert_id</dt>
+<dd>
+
+<p>Returns the id of the Bric::Util::Alert object representing the alert for which this Bric::Util::Alerted object was created.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;alert_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $subject = $alerted-&gt;get_subject</dt>
+<dd>
+
+</dd>
+<dt>my $subject = $alerted-&gt;get_name</dt>
+<dd>
+
+<p>Returns the subject of the alert for which this recipient was notified.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+<li><p>Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $msg = $alerted-&gt;get_message</dt>
+<dd>
+
+<p>Returns the message of the alert for which this recipient was notified.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $timestamp = $alerted-&gt;get_timestamp($format)</dt>
+<dd>
+
+<p>Returns the time at which the alert was sent to the user. Pass in a strftime formatting string to get the time formatted by that format; otherwise, the time will be formatted in the format splecified for the &#39;Date/Time Format&#39; preference.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $ack_time = $alerted-&gt;get_ack_time($format)</dt>
+<dd>
+
+<p>Returns the time at which the alert has been acknowledged by the user to whom it was sent. Pass in a strftime formatting string to get the time formatted by that format; otherwise, the time will be formatted in the format splecified for the &#39;Date/Time Format&#39; preference. Returns undef if the alert has not yet been acknowledged. Call acknowledge() to acknowledge the alert.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $alerted-&gt;acknowledge</dt>
+<dd>
+
+<p>Acknowledges the alert. Call this method when the user who was sent the alert acknowledges receipt of the alert. The ack_time property will then be filled enumerated. This is the only method that updates the Bric::Util::Alerted object, and can only be called once. If the Bric::Util::Alerted object has already been acknowledged, this method will return undef; otherwise it will return $self.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@sent || $sent_aref) = $alerted-&gt;get_sent</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Alerted::Parts::Sent objects. These objects describe how the user was alerted and at what time. See Bric::Util::Alerted::Parts::Sent for its interface.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $p-&gt;save</dt>
+<dd>
+
+<p>No-op.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $alerts_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $alert_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Util::Alert objects or, if called with an optional third argument, returns a list of Bric::Util::Alert object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $addr = &amp;$new($pkg, $init)</dt>
+<dd>
+
+<p>Instantiates a new object. Used in place of new() by &amp;$get_em(), since new isn&#39;t implemented for this class.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="AlertType.html" name="Bric::Util::AlertType">Bric::Util::AlertType</a>, <a rel="section" href="EventType.html" name="Bric::Util::EventType">Bric::Util::EventType</a>, <a rel="section" href="Event.html" name="Bric::Util::Event">Bric::Util::Event</a></p>
+
+</body>
+</html>
+

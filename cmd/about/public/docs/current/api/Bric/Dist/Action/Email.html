@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Action::Email</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Email.html#Name">Name</a></li>
+  <li><a href="Email.html#Synopsis">Synopsis</a></li>
+  <li><a href="Email.html#Description">Description</a></li>
+  <li><a href="Email.html#Class-Interface">Class Interface</a>
+    <ul>
+      <li><a href="Email.html#Constructors">Constructors</a></li>
+      <li><a href="Email.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Email.html#has_more">has_more</a></li>
+          <li><a href="Email.html#my_meths">my_meths</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Email.html#Instance-Interface">Instance Interface</a>
+    <ul>
+      <li><a href="Email.html#Accessors">Accessors</a>
+        <ul>
+          <li><a href="Email.html#from">from</a></li>
+          <li><a href="Email.html#to">to</a></li>
+          <li><a href="Email.html#cc">cc</a></li>
+          <li><a href="Email.html#bcc">bcc</a></li>
+          <li><a href="Email.html#subject">subject</a></li>
+          <li><a href="Email.html#content_type">content_type</a></li>
+          <li><a href="Email.html#handle_text">handle_text</a></li>
+          <li><a href="Email.html#handle_other">handle_other</a></li>
+        </ul>
+      </li>
+      <li><a href="Email.html#Other-Instance-Methods">Other Instance Methods</a>
+        <ul>
+          <li><a href="Email.html#do_it">do_it</a></li>
+          <li><a href="Email.html#save">save</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Email.html#Author">Author</a></li>
+  <li><a href="Email.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Action::Email - Class to email distribution resources</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Action::Email;
+
+my $id = 1; # Assume that this is an Email action.
+# This line will automatically instantiate the correct subclass.
+my $action = Bric::Dist::Action-&gt;lookup({ id =&gt; $id });
+
+# Set up the action.
+$action-&gt;set_from(&#39;me@example.com&#39;);
+$action-&gt;set_to(&#39;you@example.net&#39;);
+
+# Perform the action on a list of resources.
+$action = $action-&gt;do_it($resources_href);
+
+# Undo is a no-op.
+$action = $action-&gt;undo_it($resources_href);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Dist::Action can be used to email distribution resources to one or more email addresses.</p>
+
+<h1 id="Class-Interface">Class Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>See Bric::Dist::Action.</p>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<p>The following class method is in addition to those provided by Bric::Dist::Action, and overrides the same method in that class.</p>
+
+<h3 id="has_more">has_more</h3>
+
+<pre><code>if (Bric::Dist::Action::Email-&gt;has_more) {
+    print &quot;It has more attributes than Bric::Dist::Action\n&quot;;
+}</code></pre>
+
+<p>Returns true to indicate that this action has more properties than does the base class (Bric::Dist::Action).</p>
+
+<h3 id="my_meths">my_meths</h3>
+
+<pre><code>my $meths = Bric::Dist::Action::Email-&gt;my_meths
+my @meths = Bric::Dist::Action::Email-&gt;my_meths(1);
+my $meths_aref = Bric::Dist::Action::Email-&gt;my_meths(1);
+@meths = Bric::Dist::Action::Email-&gt;my_meths(0, 1);
+$meths_aref = Bric::Dist::Action::Email-&gt;my_meths(0, 1);</code></pre>
+
+<p>Returns Bric::Dist::Action::Email attribute accessor introspection data. See <a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a> for complete documentation of the format of that data. Returns accessor introspection data for the following attributes:</p>
+
+<dl>
+
+<dt>from</dt>
+<dd>
+
+<p>Address from whom email will be sent.</p>
+
+</dd>
+<dt>to</dt>
+<dd>
+
+<p>Addresses to whom email will be sent.</p>
+
+</dd>
+<dt>cc</dt>
+<dd>
+
+<p>Addresses to whom email will be Cc&#39;d.</p>
+
+</dd>
+<dt>bcc</dt>
+<dd>
+
+<p>Addresses to whom email will be Bcc&#39;d.</p>
+
+</dd>
+<dt>subject</dt>
+<dd>
+
+<p>Subject of the email to be sent.</p>
+
+</dd>
+<dt>content_type</dt>
+<dd>
+
+<p>The content type the email will be sent as.</p>
+
+</dd>
+<dt>handle_text</dt>
+<dd>
+
+<p>Determines how text resources are to be handled.</p>
+
+</dd>
+<dt>handle_other</dt>
+<dd>
+
+<p>Determines how non-text resources are to be handled.</p>
+
+</dd>
+</dl>
+
+<h1 id="Instance-Interface">Instance Interface</h1>
+
+<h2 id="Accessors">Accessors</h2>
+
+<p>The following accessors are in addition to those provided by Bric::Dist::Action.</p>
+
+<h3 id="from">from</h3>
+
+<pre><code>my $from = $action-&gt;get_from;
+$action = $action-&gt;set_from($from);</code></pre>
+
+<p>Get and set the address from which email will be sent. Optional. The setter converts non-Unix line endings.</p>
+
+<h3 id="to">to</h3>
+
+<pre><code>my $to = $action-&gt;get_to;
+$action = $action-&gt;set_to($to);</code></pre>
+
+<p>Get and set the address or addresses to which email will be sent. Multiple addresses should be separated by commas. Either <code>to</code> or <code>bcc</code> or both are required. The setter converts non-Unix line endings.</p>
+
+<h3 id="cc">cc</h3>
+
+<pre><code>my $cc = $action-&gt;get_cc;
+$action = $action-&gt;set_cc($cc);</code></pre>
+
+<p>Get and set the address or addresses to which email will be Cc&#39;d. Multiple addresses should be separated by commas. Optional. The setter converts non-Unix line endings.</p>
+
+<h3 id="bcc">bcc</h3>
+
+<pre><code>my $bcc = $action-&gt;get_bcc;
+$action = $action-&gt;set_bcc($bcc);</code></pre>
+
+<p>Get and set the address or addresses to which email will be Bcc&#39;d. Multiple addresses should be separated by commas. Either <code>to</code> or <code>bcc</code> or both are required. The setter converts non-Unix line endings.</p>
+
+<h3 id="subject">subject</h3>
+
+<pre><code>my $subject = $action-&gt;get_subject;
+$action = $action-&gt;set_subject($subject);</code></pre>
+
+<p>Get and set the subject to be used when emails are sent. Optional. The setter converts non-Unix line endings.</p>
+
+<h3 id="content_type">content_type</h3>
+
+<pre><code>my $content_type = $action-&gt;get_content_type;
+$action = $action-&gt;set_content_type($content_type);</code></pre>
+
+<p>Get and set the content type to be used when emails are sent. If not specified, Bric::Dist::Action::Email will use the media type of the first text file it uses for the email message. The setter converts non-Unix line endings.</p>
+
+<h3 id="handle_text">handle_text</h3>
+
+<pre><code>my $handle_text = $action-&gt;get_handle_text;
+$action = $action-&gt;set_handle_text($handle_text);</code></pre>
+
+<p>Get and set the constant value that determines how text resources are handled. All files with a media type starting with &quot;text/&quot; are considered text files. The possible values for this attribute are available via the constants defined for this class:</p>
+
+<dl>
+
+<dt><code>INLINE</code></dt>
+<dd>
+
+<p>Concatenate the contents of all text resources and include the resulting string inlinex as the email message. The default value.</p>
+
+</dd>
+<dt><code>ATTACH</code></dt>
+<dd>
+
+<p>Attach all text files to the email message.</p>
+
+</dd>
+<dt><code>IGNORE</code></dt>
+<dd>
+
+<p>Ignore text resources.</p>
+
+</dd>
+</dl>
+
+<p>The setter converts non-Unix line endings.</p>
+
+<h3 id="handle_other">handle_other</h3>
+
+<pre><code>my $handle_other = $action-&gt;get_handle_other;
+$action = $action-&gt;set_handle_other($handle_other);</code></pre>
+
+<p>Get and set the contant value that deterimines how non-text resources, such as image files, are handled. All files with a media type that does not start with &quot;text/&quot; are considered non-text files. The possible values for this attribute are available via the constants defined for this class:</p>
+
+<dl>
+
+<dt><code>IGNORE</code></dt>
+<dd>
+
+<p>Ignore text resources. The default value.</p>
+
+</dd>
+<dt><code>ATTACH</code></dt>
+<dd>
+
+<p>Attach all text files to the email message.</p>
+
+</dd>
+</dl>
+
+<p>The setter converts non-Unix line endings.</p>
+
+<h2 id="Other-Instance-Methods">Other Instance Methods</h2>
+
+<h3 id="do_it">do_it</h3>
+
+<pre><code>$action = $action-&gt;do_it($job, $server_type);</code></pre>
+
+<p>Emails the resources (files) for a given job and server type.</p>
+
+<p><b>Thows:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="save">save</h3>
+
+<pre><code>$action = $action-&gt;save;</code></pre>
+
+<p>Saves the action for the server type and job, along with all of its attributes.</p>
+
+<p><b>Thows:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a></dt>
+<dd>
+
+<p>Base class from which Bric::Dist::Action::Email inherits much of its interface.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/ActionType.html" name="Bric::Dist::ActionType">Bric::Dist::ActionType</a></dt>
+<dd>
+
+<p>Defines the types of actions that the Bricolage distribution supports, including emailing resources.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/ServerType.html" name="Bric::Dist::ServerType">Bric::Dist::ServerType</a></dt>
+<dd>
+
+<p>Defines the interface for Bricolage distribution destinations, including a list of actions to be performed before distributing to a given destination, as well as a list of servers for that destination.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Util/Job/Dist.html" name="Bric::Util::Job::Dist">Bric::Util::Job::Dist</a></dt>
+<dd>
+
+<p>Manages distribution jobs, including processing all the actions required for each destination for which resources are to be distributed.</p>
+
+</dd>
+</dl>
+
+</body>
+</html>
+

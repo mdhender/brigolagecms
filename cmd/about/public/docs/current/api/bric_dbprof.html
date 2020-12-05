@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_dbprof</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_dbprof.html#Name">Name</a></li>
+  <li><a href="bric_dbprof.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_dbprof.html#Description">Description</a></li>
+  <li><a href="bric_dbprof.html#Author">Author</a></li>
+  <li><a href="bric_dbprof.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_dbprof - Bricolage Log-Analyzing Database-Profiling Machine</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>bric_dbprof [options] logfile</p>
+
+<pre><code>--help     - shows this screen
+
+--man      - shows the full documentation
+
+--verbose  - print a running description to STDERR.  Add a second
+             --verbose and you&#39;ll get debugging output too.
+
+--n        - how many results to print, 0 for all.  Defaults to 10.
+
+--mode     - select an output mode.  The default is &#39;total&#39;.
+             Possibilities are:
+
+               total   - total time across all executions (default)
+
+               longest - longest single execution time
+
+               count   - most executions
+
+--nowrap   - by default the output wraps the SQL queries to fit on
+             your screen.  Use this option to prevent that.</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This program reads Bricolage error logs and parses the output of the DBI_DEBUG and DBI_PROFILE options. It uses this data to produce database usage statistics that can be used to optimize Bricolage.</p>
+
+<p>To use this program, follow these steps;</p>
+
+<ol>
+
+<li><p>Set the DBI_DEBUG and DBI_PROFILE options to 1 in bricolage.conf.</p>
+
+</li>
+<li><p>Truncate or delete your Bricolage Apache error_log.</p>
+
+</li>
+<li><p>Restart your server.</p>
+
+</li>
+<li><p>Run the test case you&#39;re interested in using Bricolage as normal.</p>
+
+</li>
+<li><p>Immediately copy the Apache error log to a safe place.</p>
+
+</li>
+<li><p>Run bric_dbprof on the captured error log and begin your ascent to greatness.</p>
+
+</li>
+</ol>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/Util/DBI.html" name="Bric::Util::DBI">Bric::Util::DBI</a></p>
+
+<p><a rel="section" href="../../2.0/api/Bric/Hacker.html" name="Bric::Hacker">Bric::Hacker</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.11.1 Changes</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.11.1" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.11.1 Changes</h2>
+	<div id="articlemeta">
+            <p class="date">2008.10.03</p>
+          </div>
+          <h3>Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added reverse date sorting option on desks (newest items first). Suggested by Bret Dawson. [Greg Heo]</p></li>
+            <li><p>Updated the Xinha include script to reflect latest Xinha updates. [Matt Rolf]</p></li>
+            <li><p>Updated the SFTP mover to use the faster Net::SSH2, rather than the deprecated Net::SFTP. [Sarah Mercier, Matt Rolf, Charlie Reitsma, Michael Herring]</p></li>
+            <li><p>The <code>to_preview</code> option to <code>Bric::SOAP::Workflow->publish</code> now previews a document for all output channels, not just the primary output channel. The same of course applies to the <code>--to-preview</code> option to <i>bric_soap</i>. Suggested by Terence Bodola. [David]</p></li>
+            <li><p>Server errors sent in response to Ajax requests are now displayed in a modal lightbox widget, rather than just getting shoved into the DOM. Also, effects that should only occur on success (such as removing a story from a desk when you move it) now only happen on success. [David]</p></li>
+            <li><p>Changed the behavior of <code>Bric::Util::Burner->publish_another</code> so that, rather than immediately publishing a document, it instead adds it to a list of documents to be published and then returns. Documents added to the list are then published when all other publish jobs in a given request have finished publishing. The upshot is that if you bulk publish 50 stories that all trigger the republication of a home page story, that home page story will be republished only once, rather than 50 times. A side-effect is memory consumption, so don't send too many stories to <code>publish_another</code> from your templates! Sponsored by NetStumbler and Kineticode, with production testing by the National Gallery of Art. [David]</p></li>
+            <li><p>Removed the “Related Story” and “Related Media” sections of the element profile, as they are now included in the “Content” sections of the element profile, and therefore redundant. [David]</p></li>
+            <li><p>The upload field for related media (available when the <code>RELATED_MEDIA_UPLOAD</code> <i>bricolage.conf</i> directive is enabled) is no longer displayed in the element profile. Instead, it is displayed in the “Edit” popup window, where you can now search for an existing media document <i>or</i> upload a new file. This eliminates a bug when more than one upload field was displayed in the “Content” section of a document profile. It also makes it clearer that you're editing a new, related media document, as the popup looks different than the main display window (in that it has no navigation bar). [David]</p></li>
+            <li><p>Permission and conflict messages thrown by callbacks in response to Ajax requests now cause a lightbox to be thrown up with the message highlighted. This means, for example, that if a user tries to move a story they don't have permission to move, the story will not appear to be moved in the UI and the user will be told that she lacks the permission. [David]</p></li>
+            <li><p>The “New Story” page now uses an autocomplete field to select a primary category. [David]</p></li>
+            <li><p>Minor improvements to the dynamic display and handling of container elements in document profiles. [David]</p></li>
+            <li><p>Related media and/or story subelements may now be toggled to show/hide them like any other subelements in a document. [David]</p></li>
+            <li><p>Added the “displayed” attribute to element type and container objects. Setting it on a subelement type causes the value to be set on new containers based on that type. [David]</p></li>
+            <li><p>Container elements in the document profile are now toggled open or closed depending on their “displayed” attribute, which persists across saves and versions. This means that the appearence of a document is the same as you left it, or as the user who last checked it in left it. [David]</p></li>
+            <li><p>New container elements added in the document profile now cause the containing element to always be toggled open, and the newly added container is also toggled open. [David]</p></li>
+            <li><p>The installer now explicitly sets permissions on the files it installs, rather than using the same permissions as the files have in the distribution. This is because a umask could force the unpacked distribution files to have permissions that are inappropriate for installed files. Reported by Roland van Ipenburg (Bug #1360). [David]</p></li>
+            <li><p>The installer now sets the permissions on configuration files to `0640`, rather than `0644`, as before, so that the files are no longer world-readable on the system. [David]</p></li>
+            <li><p>`make upgrade` is now better at determining the installed configuration, rather than making you select the database server and version of Apache again, it properly remembers the already-intalled configuration. [David]
+</ul>
+
+<h2>Bug Fixes</h2>
+
+<ul>
+</p></li>
+            <li><p>Fixed non-standard installation path being ignored if changed during “multi” installation mode. This was done by changing the defaults files to include the <code>BRICOLAGE_ROOT</code> variable. So when <code>BRICOLAGE_ROOT</code> is changed and the others are then evaled they get changed too. [Paul Orrock]</p></li>
+            <li><p>Updated <a href="../../../../docs/devel/api/index.html@Bric%253A%253AAdmin.html">Bric::Admin</a> to ensure that we have at least version 1.16 of <a href="http://search.cpan.org/perldoc?Params::CallbackRequest">Params::CallbackRequest</a> so that we detect mod_perl 2 correctly when running Apache 2. [Paul Orrock]</p></li>
+            <li><p>Trying to add an element to a document that has related media fields no longer causes an error [David]</p></li>
+            <li><p>Server errors sent in response to AJAX requests no longer send a full HTML file in reply, just the error stuff. [David]</p></li>
+            <li><p>Eliminated redundant “Relate” column from the search results when searching for a media document to relate. [David]</p></li>
+            <li><p>The “Un-relate” link now properly unrelates media documents. [David]</p></li>
+            <li><p>Fixed <i>bric_dist_mon</i> so that it works when Bricolage is running on mod_perl 2. Reported by Roland van Ipenburg. [David]</p></li>
+            <li><p>Improved compatibility of the installer with certain Apache configurations where the <code>apreq2</code> module might be named differently. Reported by Roland van Ipenburg (Bug #1359). [David]</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-1.11.1.tar.gz" title="Download Bricolage-Devel 1.11.1 Now!">Download Now!</a><br />(Version 1.11.1)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

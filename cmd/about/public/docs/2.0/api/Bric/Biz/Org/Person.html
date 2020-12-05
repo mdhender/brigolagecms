@@ -1,0 +1,1195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Org::Person</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Person.html#Name">Name</a></li>
+  <li><a href="Person.html#Synopsis">Synopsis</a></li>
+  <li><a href="Person.html#Description">Description</a></li>
+  <li><a href="Person.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Person.html#Constructors">Constructors</a></li>
+      <li><a href="Person.html#Destructors">Destructors</a></li>
+      <li><a href="Person.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Person.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Person.html#Private">Private</a>
+    <ul>
+      <li><a href="Person.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Person.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Person.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Person.html#Notes">Notes</a></li>
+  <li><a href="Person.html#Author">Author</a></li>
+  <li><a href="Person.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Org::Person - Manages Organizations Related to Persons</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># How to create brand new Bric::Biz::Org::Person object.
+my $org = Bric::Biz::Org-&gt;lookup({ id =&gt; $org_id });
+my $porg = $org-&gt;add_object($person);
+
+# How to retreive existing Bric::Biz::Org::Person objects.
+my $person = Bric::Biz::Person-&gt;lookup({ id =&gt; $person_id });
+my @porgs = $person-&gt;get_orgs;
+
+# Other contstructors.
+my $porg = Bric::Biz::Org::Person-&gt;lookup({ id =&gt; $porg_id })
+my @porgs = Bric::Biz::Org::Person-&gt;list($search_href);
+
+# Class Methods.
+my @porg_ids = Bric::Biz::Org::Person-&gt;list_ids($search_href);
+
+# Instance Methods.
+my $id = $porg-&gt;get_id;
+my $oid = $porg-&gt;get_org_id;
+my $person = $porg-&gt;get_person;
+my $pid = $porg-&gt;get_person_id;
+my $role = $porg-&gt;get_role;
+$porg = $porg-&gt;set_role($role);
+my $title = $porg-&gt;get_title;
+$porg = $porg-&gt;set_title($title);
+my $dept = $porg-&gt;get_department;
+$porg = $porg-&gt;set_department($dept);
+
+$porg = $porg-&gt;activate;
+$porg = $porg-&gt;deactivate;
+$porg = $porg-&gt;is_active;
+
+my @addr = $porg-&gt;get_addresses;
+my $addr = $porg-&gt;new_address;
+$porg = $porg-&gt;add_addresses($addr);
+$porg = $porg-&gt;del_addresses;
+
+$porg = $porg-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages the association between a Bric::Biz::Person object and a Bric::Biz::Org object. There may be numerous adddresses associated with a given Bric::Biz::Org object, but only some of them may apply to any given person. This class limits a Bric::Biz::Org objects addresses to those associated with a given person. It also manages the details of the person&#39;s association with the organization by offering properites for the person&#39;s title and department within the organization.</p>
+
+<p>When a Bric::Biz::Person object is created, it automatically has a single Bric::Biz::Org::Person object associated with it, an object which represents the Bric::Biz::Person object itself and the personal addresses of the person represented. These Bric::Biz::Org::Person objects are identified by their role properties, which will all be &quot;Personal&quot; by default, and by the is_persona() method returning $self when the Org is personal, and undef whe it is not.</p>
+
+<p>For example, a Bric::Biz::Peron object created for Ian Kallen will have at least one Bric::Biz::Org::Person object, named for Ian Kallen, and in which Ian&#39;s personal addresses may be stored. However, Ian has other addresses by his association with the companies he works for and other organizations to which he belongs. Thus, one can add a Bric::Biz::Org object representing About.com and then associated create a Bric::Biz::Org::Person object by calling $org-&gt;add_object, passing in Ian Kallen&#39;s Bric::Biz::Person object. Then one can add addresses to the Bric::Biz::Org::Person object, either by referencing Bric::Biz::Org::Parts::Addr object IDs, or by creating new Bric::Biz::Org::Parts::Addr objects.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$porg = Bric::Biz::Org::Person-&gt;new</dt>
+<dd>
+
+</dd>
+<dt>my $porg = Bric::Biz::Org::Person-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Biz::Org::Person object. An anonymous hash of initial values may be passed. The supported intial value keys are:</p>
+
+<ul>
+
+<li><p>org_id</p>
+
+</li>
+<li><p>name</p>
+
+</li>
+<li><p>long_name</p>
+
+</li>
+<li><p>role</p>
+
+</li>
+<li><p>person - A Bric::Biz::Person object.</p>
+
+</li>
+<li><p>obj - Alias for person.</p>
+
+</li>
+<li><p>person_id</p>
+
+</li>
+<li><p>title</p>
+
+</li>
+<li><p>department</p>
+
+</li>
+<li><p>_personal - should only be passed a true value by a call from Bric::Biz::Person-&gt;save.</p>
+
+</li>
+</ul>
+
+<p>Call $porg-&gt;save to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $porg = Bric::Biz::Org::Person-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::Org::Person object based on the Bric::Biz::Org::Person object ID passed. If $id is not found in the database, lookup() returns undef. If the ID is found more than once, lookup() returns zero (0). This should not happen.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::Org::Person objects found.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Biz::Org::Person object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> Bric::Biz::Org::Person objects have different IDs than the equivalent Bric::Biz::Org object. The IDs vary based on the person who is associated with the Bric::Biz::Org object.</p>
+
+</dd>
+<dt>my (@porgs || $porgs_aref) = Bric::Biz::Org::Person-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Org objects based on the search criteria passed via a hashref. The lookup searches are case-insensitive. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Person/Organization ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The organization&#39;s name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>long_name</dt>
+<dd>
+
+<p>The long name of the organization. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>personal</dt>
+<dd>
+
+<p>A boolean indicating whether or not the oganization is a person.</p>
+
+</dd>
+<dt>org_id</dt>
+<dd>
+
+<p>The organization ID, which is different from this object&#39;s ID. Yes, this is a bad idea. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>role</dt>
+<dd>
+
+<p>The role describing the relationship between the person and the organization.</p>
+
+</dd>
+<dt>person_id</dt>
+<dd>
+
+<p>The ID of the person associated with the organization. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>title</dt>
+<dd>
+
+<p>The person&#39;s title within the organization. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>department</dt>
+<dd>
+
+<p>The department the person works in. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp::Keyword object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Biz::Org::Person object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$porg-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@porg_ids || $porg_ids_aref) = Bric::Biz::Org::Person-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Functionally identical to list(), but returns Bric::Biz::Org::Person object IDs rather than objects. See list() for a description of its interface.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $meths = Bric::Biz::Org::Person-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Org::Person-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Org::Person-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>In addition to the Public Instance Methods offered by the Bric::Biz::Org API, Bric::Biz::Org::Person offers the following additional or overridden methods.</p>
+
+<dl>
+
+<dt>my $id = $porg-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Org::Person object. This ID will be different from the ID of the equivalent Bric::Biz::Org object. Use the get_org_id() method to fetch that ID.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If called by Bric::Util::Grp or Bric::Util::Grp::Parts::Member or a subclass of either, this method will return the same value as <code>get_org_id()</code>. This is because it is the Org ID that is used for group membership, rather than the Org::Person ID.</p>
+
+<p><b>Notes:</b> If the Bric::Biz::Org::Person object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $org_id = $porg-&gt;get_org_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Org object associated with this Bric::Biz::Org::Person object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;org_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $p = $porg-&gt;get_person</dt>
+<dd>
+
+<p>Returns the Bric::Biz::Person object associated with this Bric::Biz::Org::Person object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $person_id = $porg-&gt;get_person_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Person object referenced by this Bric::Biz::Org::Person object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;person_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $role = $porg-&gt;get_role</dt>
+<dd>
+
+<p>Returns the role of person represented by the Bric::Biz::Person object in the organization represented by the Bric::Biz::Org object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;role&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $porg-&gt;set_role($role)</dt>
+<dd>
+
+<p>Sets the role of person represented by the Bric::Biz::Person object in the organization represented by the Bric::Biz::Org object. May be anything, such as &quot;Work&quot;, &quot;Professional&quot;, etc.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;role&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $title = $porg-&gt;get_title</dt>
+<dd>
+
+<p>Returns the title of the person associated with this organization.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;title&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $porg-&gt;set_title($title)</dt>
+<dd>
+
+<p>Sets the title of the person associated with this organization.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;title&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $dept = $porg-&gt;get_dept</dt>
+<dd>
+
+<p>Returns the department of the person associated with this organization.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;dept&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $porg-&gt;set_dept($dept)</dt>
+<dd>
+
+<p>Sets the department of the person associated with this organization.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;dept&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $porg-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Biz::Org::Person object. Call $porg-&gt;save to make the change persistent. Bric::Biz::Org::Person objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Org, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> This method only affects the Bric::Biz::Org::Person object representing the relationship between the underlying Bric::Biz::Org object and the Bric::Biz::Person object.</p>
+
+</dd>
+<dt>$self = $porg-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Biz::Org::Person object. Call $porg-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Org, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> This method only affects the Bric::Biz::Org::Person object representing the relationship between the underlying Bric::Biz::Org object and the Bric::Biz::Person object. The underlying Bric::Biz::Org object must have its activate() and deactivate() methods called separately from those called from a Bric::Biz::Org::Person object.</p>
+
+</dd>
+<dt>$self = $porg-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Org::Person object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Inherited from Bric::Biz::Org, but uses the active value specific to the user, rather than the person.</p>
+
+<p><b>Notes:</b> See notes for activate() and deactivate() above.</p>
+
+</dd>
+<dt>my (@addr || $addr_aref) = $porg-&gt;get_addr</dt>
+<dd>
+
+</dd>
+<dt>my (@addr || $addr_aref) = $porg-&gt;get_addr(@address_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Org::Parts::Addr objects. The addresses returned will be a subset of those associated with the underlying Bric::Biz::Org object, being only the organizational addresses corresponding to a particular Bric::Biz::Person object. Returns an empty list when there are no addresses associated with this object, and undef upon failure. See the Bric::Biz::Org::Parts::Addr documentation for its API.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Stores the list of Bric::Biz::Org::Parts::Addr objects internally in the Bric::Biz::Org::Person object the first time it or any other address method is called on a given Bric::Biz::Org::Person instance.</p>
+
+<p><b>Notes:</b> Changes made to Bric::Biz::Org::Parts::Addr objects retreived from this method can be persistently saved to the database only by calling the Bric::Biz::Org::Person object&#39;s save() method.</p>
+
+</dd>
+<dt>my $address = $porg-&gt;new_addr</dt>
+<dd>
+
+<p>Adds and returns a new Bric::Biz::Org::Parts::Addr object associated with the Bric::Biz::Org::Person object. Once $porg-&gt;save has been called, the new address will be associated both with this Bric::Biz::Org::Person object <i>and</i> the underlying Bric::Biz::Org object.</p>
+
+<p>Returns undef on failure. See the Bric::Biz::Org::Parts::Addr documentation for its API.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Stores the list of Bric::Biz::Org::Parts::Addr objects internally in the Bric::Biz::Org object the first time it or any other address method is called on a given Bric::Biz::Org instance.</p>
+
+<p><b>Notes:</b> Changes made to $address objects retreived from this method can be persistently saved to the database only by calling the Bric::Biz::Org object&#39;s save() method.</p>
+
+</dd>
+<dt>$self = $porg-&gt;add_addr($addr, $addr, ...)</dt>
+<dd>
+
+<p>Associates the list of Bric::Biz::Org::Parts::Addr objects with the Bric::Biz::Person identified by the Bric::Biz::Org::Person object. The addresses must already be associated with the underlying Bric::Biz::Org object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Stores the list of Bric::Biz::Org::Parts::Addr objects internally in the Bric::Biz::Org object the first time it or any other address method is called on a given Bric::Biz::Org instance.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $porg-&gt;del_addr</dt>
+<dd>
+
+</dd>
+<dt>$self = $porg-&gt;del_addr(@address_ids)</dt>
+<dd>
+
+<p>If called with no arguments, deletes all Bric::Biz::Org::Parts::Addr objects associated with the Bric::Biz::Org::Person object. Pass Bric::Biz::Org::Parts::Addr object IDs to delete only those Bric::Biz::Org::Parts::Addr objects.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Deletes the Bric::Biz::Org::Parts::Addr objects from the Bric::Biz::Org::Person object&#39;s internal structure, but retains a list of the IDs. These will be used to delete the Bric::Biz::Org::Parts::Addr objects from the database when $porg-&gt;save is called, then are deleted from the Bric::Biz::Org object&#39;s internal structure. The Bric::Biz::Org::Parts::Addr objects will not actually be deleted from the database until $porg-&gt;save is called.</p>
+
+<p><b>Notes:</b> The addresses will not be deleted from the underlying Bric::Biz::Org object.</p>
+
+</dd>
+<dt>$self = $porg-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Biz::Org::Person and underlying Bric::Biz::Org objects, including changes to associated address (Bric::Biz::Org::Parts::Addr) objects. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Cleans out internal cache of Bric::Biz::Org::Parts::Addr objects to reflect what is in the database.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $orgs_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $org_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Biz::Org::Person objects or, if called with an optional third argument, returns a list of Bric::Biz::Org::Person object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $addr_col = &amp;$get_addr_coll($self)</dt>
+<dd>
+
+<p>Returns the collection of addresses for this organization. The collection is a Bric::Util::Coll::Addr object. See that class and its parent, Bric::Util::Coll, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>This is an early draft of this class, and therefore subject to change.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Org.html" name="Bric::Biz::Org">Bric::Biz::Org</a>, <a rel="section" href="../Person.html" name="Bric::Biz::Person">Bric::Biz::Person</a></p>
+
+</body>
+</html>
+

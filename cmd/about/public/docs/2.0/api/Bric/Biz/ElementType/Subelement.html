@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::ElementType::Subelement</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Subelement.html#Name">Name</a></li>
+  <li><a href="Subelement.html#Synopsis">Synopsis</a></li>
+  <li><a href="Subelement.html#Description">Description</a></li>
+  <li><a href="Subelement.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Subelement.html#Constructors">Constructors</a></li>
+      <li><a href="Subelement.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Subelement.html#Notes">Notes</a></li>
+  <li><a href="Subelement.html#Author">Author</a></li>
+  <li><a href="Subelement.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::ElementType::Subelement - Maps a subelement ElementType to its parent&#39;s Element Types with occurrence relations and place.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::ElementType::Subelement;
+
+# Constructors.
+my $subelem = Bric::Biz::ElementType::Subelement-&gt;new($init);
+my $subelems_href = Bric::Biz::ElementType::Subelement-&gt;href($params);
+
+# Instance methods.
+my $element_type_id = $subelem-&gt;get_parent_element_type_id;
+$subelem-&gt;set_parent_element_type_id($element_type_id);
+
+my $min = $subelem-&gt;get_min_occurrence;
+$subelem-&gt;set_min_occurrence($min);
+
+my $max = $subelem-&gt;get_max_occurrence;
+$subelem-&gt;set_max_occurrence($max);
+
+my $place = $subelem-&gt;get_place;
+$subelem-&gt;set_place($place);
+
+$subelem-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Biz::ElementType manages the relationship between parent ElementTypes and subelement ElementTypes. It contains information on the minimum and maximum occurrence that can be used, and also the place it should appear in when displaying. This class provides accessors to the relevant properties, as well as an <code>href()</code> method to help along the use of a Bric::Util::Coll object.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<p>This class inherits the majority of its interface from <a rel="section" href="../ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>. Only additional methods are documented here.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $subelem = Bric::Biz::ElementType::Subelement-&gt;new($init);</dt>
+<dd>
+
+<p>Constructs a new Bric::Biz::ElementType::Subelement object intialized with the values in the <code>$init</code> hash reference and returns it. The suported values for the <code>$init</code> hash reference are the same as those supported by <code>Bric::Biz::ElementType::Subelement-&gt;new</code>, with the addition of the following:</p>
+
+<dl>
+
+<dt><code>child_id</code></dt>
+<dd>
+
+<p>The ID of the element type object on which the new Bric::Biz::ElementType::Subelement will be based. The relevant Bric::Biz::ElementType object will be looked up from the database. Note that all of the <code>$init</code> parameters documented in <a rel="section" href="../ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a> will be ignored if this parameter is passed.</p>
+
+</dd>
+<dt><code>child</code></dt>
+<dd>
+
+<p>The element type object on which the new Bric::Biz::ElementType::Subelement will be based. Note that all of the <code>$init</code> parameters documented in <a rel="section" href="../ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a> will be ignored if this parameter is passed.</p>
+
+</dd>
+<dt><code>parent_id</code></dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType object to which this subelement is mapped.</p>
+
+</dd>
+<dt><code>min_occurrence</code></dt>
+<dd>
+
+<p>The minimum occurrence that the child ElementType must exist within any element with the parent ElementType</p>
+
+</dd>
+<dt><code>max_occurrence</code></dt>
+<dd>
+
+<p>The maximum occurrence that the child ElementType may exist within any element with the parent ElementType. A max of 0 means that there is no maximum.</p>
+
+</dd>
+<dt><code>place</code></dt>
+<dd>
+
+<p>The place that the child exists in relation to the other children within the parent element type.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If you pass in an element type object via the <code>child</code> parameter, that element type will be converted into a Bric::Biz::ElementType::Subelement object.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $subelem_href = Bric::Biz::ElementType::Subelement-&gt;href({ parent_id =&gt; $eid });</dt>
+<dd>
+
+<p>Returns a hash reference of Bric::Biz::ElementType::Subelement objects. Each hash key is a Bric::Biz::ElementType::Subelement ID, and the values are the corresponding Bric::Biz::ElementType::Subelement objects. Only a single parameter argument is allowed, <code>parent_id</code>, though <code>ANY</code> may be used to specify a list of element type IDs. All of the child element types associated with that parent element type ID will be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<p>##############################################################################</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $eid = $subelem-&gt;get_parent_id</dt>
+<dd>
+
+<p>Returns the ID of the Element Type definition of the parent with which this sub element is associated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;set_parent_id($eid)</dt>
+<dd>
+
+<p>Sets the ID of the parent element type definition with which this sub element is associated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;set_min_occurrence($min)</dt>
+<dd>
+
+<p>Set the minimum occurrence for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$min = $subelem-&gt;get_min_occurrence</dt>
+<dd>
+
+<p>Get the minimum occurrence for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;set_max_occurrence($max)</dt>
+<dd>
+
+<p>Set the maximum occurrence for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$max = $subelem-&gt;get_max_occurrence</dt>
+<dd>
+
+<p>Get the maximum occurrence for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;set_place($place)</dt>
+<dd>
+
+<p>Set the place for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$place = $subelem-&gt;get_place</dt>
+<dd>
+
+<p>Get the place for this subelement</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;remove</dt>
+<dd>
+
+<p>Marks this parent/child element type association to be removed. Call the <code>save()</code> method to remove the mapping from the database.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$subelem = $subelem-&gt;save</dt>
+<dd>
+
+<p>Saves the subelement.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;christian.muise@gmail.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>,</p>
+
+</body>
+</html>
+

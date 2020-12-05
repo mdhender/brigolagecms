@@ -1,0 +1,402 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.8.0 Changes</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.8.0" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.8.0 Changes</h2>
+		<div id="articlemeta">
+            <p class="date">2004.05.03</p>
+          </div>
+
+          <h3>Major New Features</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added multisite support. Now all stories, media, output channels, templates, categories, and workflows may be associated with different sites, and even have the same names in different sites. This simplifies the management of multiple Web sites with Bricolage. Story type and media type elements may be shared between sites. Funded by Portugal Telecom Multimedia.</p></li>
+            <li><p>Added document aliasing. Stories and media in one site may now be aliased and published in another site, as long as the document type element on which they are based is shared between sites. Control over the content of aliased documents remains in the original site, thus ensuring the editorial integrity of the document for that site. Funded by Portugal Telecom.</p></li>
+            <li><p>Added <q>Email</q> distribution action, which can be used to email the files output from an output channel to one or more email addresses. Funded by ETonline.</p></li>
+            <li><p>Bricolage now has a much more robust security policy. Users with permission to edit various objects and groups in the administrative interface can no longer increase their permissions. Nor can they manage the membership of groups of which they are not members or do not have EDIT access to the members. All this is to prevent users from giving themselves higher permissions. David Wheeler/Kineticode.</p></li>
+            <li><p>Added new permissions <q>RECALL</q> and <q>PUBLISH</q>. These permissions apply only to asset groups, including desks, categories, and workflows. Now users must have RECALL permission to recall documents and templates from the library and bring them into workflow, and PUBLISH permission to publish documents or deploy templates. These new permissions make it much easier to create more flexible permissions to manage approval processes. Funded by Radio Free Asia.</p></li>
+            <li><p>Bricolage now supports per-user preferences. Administrators can mark individual preferences as overrideable, and then users can set those preferences to their preferred values. Funded by Radio Free Asia.</p></li>
+            <li><p>Added publication jobs in addition to burn jobs. Instead of burning documents on command and distributing them later later, Bricolage will now burn and distribute documents at the scheduled publish time. Mark Jaroski/World Health Organization.</p></li>
+            <li><p>Added the <code>bric_queued</code> daemon to take advantage of the new publication scheduling. Together with the use of a carefully tuned instance of Bricolage, these new features allow the Bricolage administrator to control the amount of system resources given over to publishing. Mark Jaroski/World Health Organization.</p></li>
+            <li><p>The virtual FTP server, which eases the management of templates, now moves templates into a workflow when they're uploaded and puts them into the user's sandbox. This behavior allows the user to test the template changes without imposing possible bugs upon other Bricolage users. This approach is much safer than the previous behavior, which simply checked in and deployed a template upon upload. Templates can still be deployed via the virtual FTP server by appending <q>.deploy</q> to their names. The original behavior of always deploying templates upon upload can be restored by enabling the <code>FTP_DEPLOY_ON_UPLOAD</code> <em>bricolage.conf</em> directive. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>first_publish_date</code> attribute to stories and media. This date is set once, the first time a story or media document is published. This date is useful for template developers to search for and display stories and media published at a given time, rather than relying on the arbitrarily-set <code>cover_date</code> attribute. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <q>Bulk Publish</q> feature to ADMIN-&gt;PUBLISHING. This new interface allows members of the Global Admins group to publish story and media documents by category. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added HTMLArea support. This feature, enabled via the <code>ENABLE_HTMLAREA</code> <em>bricolage.conf</em> directive, adds a new type of field to be added to elements and contributor types, <q>WYSIWYG</q>. Such fields are then displayed in the UI using HTMLArea, a WYSIWYG HTML editor. This can be useful in particular for simple fields that often need added emphasis or inline links. Eric Sellers/Pectopah.</p></li>
+          </ul>
+        </div>
+          <h3>Performance Increases</h3>
+        <div class="list">
+          <ul>
+            <li><p>Callbacks were moved from Mason components to Perl modules loaded at Apache startup time. This change improves the responsiveness of the UI layer and enhances maintainability. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Optimized performance of URI uniqueness checks by adding database tables to do the job, rather than constructing the URIs for all other documents in the same categories as the document being checked. This was the last major bottleneck affecting SOAP performance, as well as document editing in general. David Wheeler/Kineticode.</p></li>
+            <li><p>Queries for stories, media, and templates, using the <code>list()</code> methods of their respective classes, have been greatly optimized. Thanks to a large database from I<The Register> and query optimization from Josh Berkus/Aglio Database Solutions (under sponsorship from The World Health Organization) and Simon Myers of GBDirect, searches for stories in the UI are now 10-40 times faster than they were before (depending on the version of PostgreSQL). David Wheeler/Kineticode.</p></li>
+            <li><p>The story, media, and template queries now use aggregates to create arrays of group IDs, instead of returning a separate row for each individual group ID. Since all story, media, and template objects are now returned in single rows instead of potentially many rows, this greatly cuts down on the overhead of fetching data from the database. Suggested by Josh Berkus/Aglio Database Solutions; implementation help from David Fetter. David Wheeler/Kineticode.</p></li>
+            <li><p>Thanks to the aggregation of group IDs into a single row for each story, media and template object, the <code>Offset</code> and <code>Limit</code> parameters to the <code>list()</code> methods of the story, media, and template classes are now handled by the database back end, instead of in application space. This makes using these parameters much more efficient. David Wheeler/Kineticode.</p></li>
+            <li><p>Modified the indices on the <code>workflow__id</code> and <code>desk__id</code> columns of the story, media, and template database tables to be more efficient, being indexed only when their IDs are greater than 0 (that is, when a story, media document, or template is actually on a desk and in a workflow). David Wheeler/Kineticode.</p></li>
+            <li><p>Eliminated <code>login_avail()</code> PostgreSQL function, replacing it with a partial constraint. This not only makes things simpler code-wise, but it also eliminates backup and restore problems where the <code>usr</code> table is missing. Suggested by Josh Berkus/Aglio Database Solutions. David Wheeler/Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>User Interface Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added the <code>YEAR_SPAN_BEFORE</code> and <code>YEAR_SPAN_AFTER</code> <em>bricolage.conf</em> directives. These directives control how many years before and after the current year to display in the list of years in the date and time select widget. The default values are 10 for each, meaning that if the current year is 2003, then the date span will be from 1993 to 2013.</p></li>
+            <li><p>Many of notification and status message localization fixes. Radu Greab.</p></li>
+            <li><p>Added <q>search by element type</q> to Advanced Search of the Find Stories and Find Media interfaces. This feature allows users to find all of the story or media documents based on a particular document type element. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added a preference to select Simple or Advanced search in Find Stories/Media/Templates as the default search when you go to those screens. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added <q>Select all</q> button to select all the checkboxes on publish desks or My Workspace. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added Keyword Management interface to centrally manage keywords. Keywords can be corrected or deleted in the Keyword Manager, and the changes will be reflected in the stories they're associated with. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added Group Membership sections to most of the profiles. This enhancement makes it easier to assign objects to groups, and therefore ensures that the appropriate permissions apply to them. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom.</p></li>
+            <li><p>Added <q>Text to search</q> option in the Advanced search of Media and Stories to search for documents based on the contents of their field. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom.</p></li>
+            <li><p>All preview links are now generated by a single widget. This widget adds the story or media URI to the <q>title</q> attribute of the anchor tag (which in modern browsers will automatically work as a roll-over tooltip), makes the story or media URI copyable (by relying on JavaScript to actually open a new window for the preview), and manages selecting an output channel in which to preview a story. David Wheeler/Kineticode.</p></li>
+            <li><p>User group permissions are now more easily managed by the addition of a select list to choose which type of permissions to edit. This enhancement eliminates the sometimes overwhelmingly long list of permissions to manage for a given user group. Scott Lanning/World Health Organization.</p></li>
+            <li><p>The Find Stories, Find Media, and Find Templates interfaces now disallow an empty search. This improvement prevents thousands or tens of thousands of assets from being displayed in the UI and locking up all of the resources on the server. David Wheeler/Kineticode.</p></li>
+            <li><p>Moved category selection from Media and Story Profiles into their own separate components so that organizations with hundreds or thousands of categories don't have to load them into a dropdown list every time a document is edited. The category <q>browser</q> uses an interface to search for and associate categories, rather than to look through a long list of all categories. This feature can be enabled via the new <code>ENABLE_CATEGORY_BROWSER</code> <em>bricolage.conf</em> directive. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added list paging to Desks and My Workspace, so that when those desks have many documents or templates on them, they can be viewed on successive pages, rather than all in a single long screen. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Converted desk items to display with strict XHTML and CSS. This approach is the future of the Bricolage interface: purely structural XHTML, with CSS to create the presentation. Eventually, we'll be able to have UI preferences to change font sizes or the entire look and feel just by switching style sheets. But for now, this change eases the display of desks with many items on them, and speeds the display. David Wheeler/Kineticode.</p></li>
+            <li><p>Added a preference to set the default Story/Media sorting on desks. This will make it easier for users who in the past had to select an alternative sort method every time they visited a desk. Scott Lannning/World Health Organization.</p></li>
+            <li><p>Added context-sensitive help for pages that were missing it. Scott Lannning/World Health Organization.</p></li>
+            <li><p>The character set and language preferences have been moved into the database, so that they can be overridden by individual users. This enhancement allows a single Bricolage installation to serve its UI in multiple languages and character sets. Funded by Radio Free Asia.</p></li>
+            <li><p>Added a complete German localization. Gerfried Fuchs, Thorsten Biel, and Florian Rossol.</p></li>
+            <li><p>Added Mandarin localization, with translation based on traditional Chinese. Kang-min Liu/OurInternet.</p></li>
+            <li><p>An element field that is both required and repeatable now allows instances of that field, after the first instance, to be deleted. Setting a field to required essentially means that one instance of that field must always be present in the UI. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <q>Filter by Site Context</q> preference. When active, search results only return assets relative to the site context instead of all the sites the user has access to. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom.</p></li>
+            <li><p>The special <q>All</q> groups, which contain all of the objects in a given class, can now be accessed via the Group Manager. Their names and memberships cannot be edited, but their permissions can. David Wheeler/Kineticode.</p></li>
+            <li><p>Select lists now correctly save their states so that, for example, dropdown menus in New Story remember the element and category that was previously selected. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added a feature that counts characters used in a textarea subelement on the fly. It displays this figure, as well as the number of characters left, immediately above the textarea. This feature is enabled when the Max size attribute for the textarea is given a non-zero value. The JavaScript will also prevent more than the maximum number of characters in the textarea by truncating the data to that number of characters every time a character beyond the maximum is added. Paul Orrock/Digital Craftsmen.</p></li>
+            <li><p>Added a feature to display image thumbnails or icons in the search results, active view, and related media interfaces for media objects. This feature can be enabled via the <code>USE_THUMBNAILS</code> <em>bricolage.conf</em> directive. Paul Orrock/Digital Craftsmen.</p></li>
+            <li><p>Added support for icons for all media documents when the <code>USE_THUMBNAILS</code> <em>bricolage.conf</em> directive is enabled. These rely on the presence of PNG icon files for each MIME type in <em>comp/media/mime</em>. Only one such icon is distributed with Bricolage, but Administrators are free to add their own icons, and the contributed <code>copy_gnome_icons</code> script makes it easy to use GNOME icons. David Wheeler/Kineticode.</p></li>
+            <li><p>When publishing from a publish desk, you can now uncheck related assets in order to not publish them. You can also disable the <code>PUBLISH_RELATED_ASSETS</code> <em>bricolage.conf</em> directive to never publish related assets. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added the <code>ENABLE_OC_ASSET_ASSOCIATION</code> <em>bricolage.conf</em> directive to optionally remove the ability to associate output channels in the story and media profiles for those organizations that don't want their editors to make such changes. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added an interface to <q>Clone</q> stories so that the category, slug, cover date, and output channel can be selected before the clone is created. This enhancement prevents an identical story from being created, which can cause errors for some stories. Clones are no longer allowed to have URIs that are identical to the stories they were cloned from. Scott Lanning/World Health Organization and David Wheeler/Kineticode.</p></li>
+            <li><p>Added the ability to Delete stories, media, and templates from non-publish desks (same as My Workspace). Scott Lanning/World Health Organization.</p></li>
+            <li><p>The <q>User Override</q> admin tool is now available to all users. A user can only override another user if she has EDIT permission to that other user. This makes it easier for user administrators to masquerade as other users without having to change passwords. David Wheeler/Kineticode.</p></li>
+            <li><p>The new <code>AUTOGENERATE_SLUG</code> <em>bricolage.conf</em> directive can be enabled to autogenerate a slug based on the title of a new story created without a slug. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom and Scott Lanning/World Health Organization.</p></li>
+            <li><p>The <q>Cancel Checkout</q> button in the Story, Media, and Template profiles now tries to do the right thing instead of just leaving the asset on a desk in workflow every time. If the asset was just created by the user, it will be deleted. If it was just recalled from the library by the user, it will be removed from workflow and shelved in the library. Otherwise, clicking the <q>Cancel Checkout</q> button will leave the asset in workflow. David Wheeler/Kineticode.</p></li>
+            <li><p>For checked-out media, stories, and documents listed in the <q>Active</q> and <q>Find</q> interfaces, added the name of the user who has them checked out to the empty column that would otherwise contain a <q>Checkout</q> checkbox. David Wheeler/Kineticode.</p></li>
+            <li><p>Added UI for managing organizations, which provide the base data for sources. David Wheeler/Kineticode.</p></li>
+            <li><p>Bricolage now works with many more browsers, notably Safari, Konqueror, IE 5.2/Mac, and Opera 7. Marshall Roch.</p></li>
+          </ul>
+        </div>
+          <h3>Templating and API Enhancements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added <code>$burner-&gt;sdisplay_element</code> method to the Mason burner. This is a <code>sprintf</code>-style version of <code>$burner-&gt;display_element</code>. Scott Lanning/World Health Organization</p></li>
+            <li><p>Added <code>get_data_element()</code> method to the <code>$element</code> object in templates. This allows template writers to more easily find a single data (field) element object, rather than just the value of a single data element (as <code>get_data()</code> does). David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>output_channel_id</code> parameter to the <code>list()</code> methods of the Story and Media classes to enable querying for documents in output channels other than the primary output channel. David Wheeler/Kineticode.</p></li>
+            <li><p>Added the custom tags <code>&lt;%publish&gt;</code>, <code>&lt;%preview&gt;</code>, and <code>&lt;%chk_syntax&gt;</code> to Mason templates. These tags allow Mason template developers to write code blocks that execute only during publish, preview, or template syntax checking. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom.</p></li>
+            <li><p>Added new page extension support to the burner. This feature allows template developers to set string extensions to use for successive file names, rather than the traditional use of numeric file name extensions for successive file names. Clive Jones.</p></li>
+            <li><p>Added <code>contrib_id</code> parameter to the <code>list()</code> methods of the Story and Media classes to enable querying for documents associated with a given contributor. Funded by The RAND Corporation.</p></li>
+            <li><p>Added <q>element</q> attribute to Bric::Util::Burner so that <code>$burner-&gt;get_element</code> always returns the element currently being burned. David Wheeler/Kineticode.</p></li>
+            <li><p>Added burner-specific exceptions with context information, including current output channel, current category, and current element. This feature will make it easier for template developers to determine the context of errors they run into during template development. David Wheeler/Kineticode.</p></li>
+            <li><p>Added a <code>throw_error()</code> method to the <code>$burner</code> object in templates. Template developers can use this method to easily throw an exception that their users will see in the UI. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>best_uri()</code> method to the <code>$burner</code> object in templates. This method will return the most appropriate URI (in Bricolage's opinion) for a document object. Mainly useful when multiple sites and document aliases are used. Funded by Portugal Telecom.</p></li>
+            <li><p>Greatly simplified burner subclassing by adding a new registration method to the burner base class. This cuts down on the number of files that need to be edited to add a new templating architecture to Bricolage. David Wheeler/Kineticode.</p></li>
+            <li><p>Added Template Toolkit templating. Template Toolkit is a robust, mature templating architecture that nicely complements the existing Mason and HTML::Template templating support. More information on Template Toolkit can be found at L<http://www.template-toolkit.org/>. Arthur Bergman/Fotango.</p></li>
+            <li><p>Added <q>template sandboxes.</q> Now template editors can test their template changes as they make them without effecting production templates. Templates are stored in a <q>sandbox</q> for each developer as they work on them, and are put into production only when they are deployed. Jo&atilde;o Pedro Gon&ccedil;alves/Portugal Telecom.</p></li>
+            <li><p>Added <code>publish_another()</code> and <code>preview_another()</code> methods to the <code>$burner</code> object in templates. These methods publish or preview a document other than the one currently being published. This is useful when a template for one document type needs to trigger the publish or preview of another document. David Wheeler/Kineticode and Serge Soznoff/Alinghi.</p></li>
+            <li><p>Added <code>get_parent()</code> method to all element objects accessed in templates. This method simplifies getting access to a parent element in an element template. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>burn_again</code> attribute to the Mason template burner. This method can be called from within a template to force the burner to burn the current story page again, creating a new file. This can be useful for creating multi-file output without extra paginated subelements, such as in archive or index pages. Funded by Radio Free Asia.</p></li>
+            <li><p>Added <code>element_key_name</code> parameter to the <code>list()</code> method of the story, media, and template classes. This makes it easier to use the name of a story type element, media type element, or template element to search for documents and templates. David Wheeler/Kineticode.</p></li>
+            <li><p>The Mason burner now uses document templates as true Mason dhandlers (default handlers), enabling full Mason-style inheritance from autohandlers to work properly. David Wheeler/Kineticode and Dave Rolsky/House Absolute Consulting.</p></li>
+            <li><p>Added the <code>story.category</code> parameter to the <code>list()</code> method of the Story class. Pass in a story ID via this parameter, and a list of stories in the same categories as the story with that ID will be returned, minus the story with that ID. This parameter can be very useful in templates that want to create a list of stories in all of the categories the current story is in. David Wheeler/Kineticode with implementation assistance from Josh Berkus/Aglio Database Solutions.</p></li>
+            <li><p>Added <code>ANY</code> function to be used with certain parameters to the <code>list()</code> method of the story, media, and template classes. Pass a list of values to this function to have any of of them match for a given parameter. This is especially useful for matching on a list of URIs or category IDs, for example. This function is automatically available in templates. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>get_element()</code> method to story and media classes and deprecated the <code>get_tile()</code> method. This will make things a bit more consistent for template developers. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>primary_category_id</code> parameter to the story class' <code>list()</code> method. This will make it easier to search for stories by their primary category associations. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>notes()</code> method to the <code>$burner</code> object in templates, along with the accompanying <code>clear_notes()</code> method. The <code>notes()</code> method provides a place to store burn data, giving template developers a way to share data among multiple burns over the course of publishing a single story to a single category trough a single output channel. David Wheeler/Kineticode.</p></li>
+            <li><p>Added a method <code>is_fixed</code> to story and media objects, to determine whether a document has a fixed URL (for example, a Cover page). Scott Lanning/World Health Organization.</p></li>
+            <li><p>Completely documented the document element classes. This should make it a bit easier on templators learning their way around the Bricolage API. David Wheeler/Kineticode.</p></li>
+            <li><p>Refactored much of the code in the element classes. Renamed the methods with <q>tile</q> in their names to use <q>element</q> instead (but kept the names around as aliases, since they're used throughout the UI). Added a few methods to make the interface more complete. David Wheeler/Kineticode.</p></li>
+            <li><p>Modified the <code>get_containers()</code> and <code>get_elements()</code> methods of the element classes to take an optional list of key name arguments, and to return only the container subelements with those key names. This is most useful in templates, where it's fairly common to get a list of container subelements of only one or two particular types out all at once. David Wheeler/Kineticode.</p></li>
+            <li><p>Added the <code>get_data_elements()</code> method to the element class.This method functions exactly like <code>get_containers()</code> except that it returns data element (field) subelements. It also takes an optional list of key name arguments, and, if passed, will return only the subelements with those key names. David Wheeler/Kineticode.</p></li>
+            <li><p>Added the <code>unexpired</code> parameter to the <code>list()</code> method of the story and media classes. It selects for stories without an expire date, or with an expire date set in the future. David Wheeler/Kineticode.</p></li>
+            <li><p>Added the <code>subelement_key_name</code> parameter to the <code>list()</code> method of the story and media classes. This parameter allows searches on the key name for a container element that's a subelement of a story or media document. David Wheeler/Kineticode.</p></li>
+            <li><p>Added single underscore parameters to the <code>list()</code> methods of the Story, Media, and Template classes to complement those that have double underscores. David Wheeler/Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>SOAP Server Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added <code>--workflow</code> and <code>--desk</code> options to create and update commands of the <code>bric_soap</code> command-line client. These options allow documents and templates to be moved to a specific desk when they're created or updated. Scott Lanning/World Health Organization.</p></li>
+            <li><p>The Story, Media, and Template SOAP classes were refactored for improved performance. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added MediaType, Site, Keyword, User, and Desk SOAP modules. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added <code>--published-only</code> option to the <em>bric_soap</em> and <em>bric_republish</em> command-line clients so that when documents are being republished, the last-published version of a document will be republished, rather than the current version. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added more asset commands to the Workflow SOAP module and made corresponding changes to bric_soap. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Added support for all of the parameters to the <code>list_ids()</code> method of the Story, Media, and Template classes to the <code>list_ids()</code> method of the corresponding SOAP classes. This allows for much more robust searches via the SOAP interface. Scott Lanning/World Health Organization.</p></li>
+          </ul>
+        </div>
+          <h3>Installer Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>The installer now supports installing and upgrading Bricolage with the PostgreSQL database server on a separate host. Thorsten Biel.</p></li>
+            <li><p><code>make upgrade</code> no longer simply overwrites the contents of the UI component root (<em>$BRICOLAGE_ROOT/comp</em>), but renames it <em>$BRICOLAGE_ROOT/comp.old</em> and writes out a new one. This is both so that deleted UI component files don't remain behind after an upgrade, and so that users can access any files that they've changed in the old component root. David Wheeler/Kineticode.</p></li>
+            <li><p>Upgrade scripts are now more intelligent in their handling of transactions. They no longer allow SQL errors without failing the upgrade. The upgrade scripts have also been updated to ensure successful upgrades to Bricolage installations as far back as 1.4.0. David Wheeler/Kineticode.</p></li>
+            <li><p><code>make upgrade</code> now suggests that the user run <code>make clone</code> on the existing installation, and asks whether or not to continue. This is to encourage system administrators to have a good backup before upgrading, in case the upgrade fails. David Wheeler/Kineticode.</p></li>
+            <li><p><code>make clone</code> now provides the current date and time for the default name for the cloned package. David Wheeler/Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>Contributed Program Updates</h3>
+        <div class="list">
+          <ul>
+            <li><p>A number of fixes for the <em>bric_media_upload</em> contributed script:</p>        <div class="list">
+          <ul>
+            <li><p>Now works with the 1.8.0 XML Schema.</p></li>
+            <li><p>Fixed a bug in its use of File::Find.</p></li>
+            <li><p>Fixed problem in calculating category names when given a directory to upload.</p></li>
+            <li><p>Added <code>--bric_soap</code> and <code>--site</code> options.</p></li>
+            <li><p>Creates intermediate categories if needed.</p></li>
+            <li><p>Added a <code>--skip-existing</code> directive.</p></li>
+            <li><p>Added a <code>--media-info</code> directive.</p></li>
+            <li><p>Made it output a more meaningful error message when it can't find <em>bric_soap</em>.</p></li>
+          </ul>
+        </div>
+
+              <p>Dave Rolsky/House Absolute Consulting and Simon Wilcox/Digital Craftsmen.</p></li>
+            <li><p>Added new contributed scripts for Bricolage button generation. These scripts use the Gimp to generate localized buttons for the Bricolage UI based on the contents of an input file. Florian Rossol.</p></li>
+            <li><p>Added <code>bric_template_diff</code> and <code>bric_template_patch</code> scripts, which can be used to sync templates between two Bricolage servers. Sam Tregar/Primedia.</p></li>
+            <li><p>Added <code>bric_media_load</code> script, which copies media exported from one Bricolage installation to another Bricolage installation. Sam Tregar/Primedia.</p></li>
+            <li><p>The new <em>bric_template_dump</em> script uses the Bricolage SOAP server to export all of the templates in a single output channel. David Wheeler/Kineticode.</p></li>
+          </ul>
+        </div>
+          <h3>Other Enhancements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Changed element attribute <q>name</q> to <q>key name</q> to emphasize its uniqueness within an element. Also changed the <q>Display Name</q> to <q>Label</q>. Funded by Portugal Telecom.</p></li>
+            <li><p>Added a <q>key_name</q> attribute to elements as the system-wide unique key for each element, rather than the name. The name is now used as a label. Note that the key name only allows certain characters, as it is used to name the template files that format the element. This makes the <code>has_name()</code> method a bit simpler -- and it can in fact be ignored in favor of <code>$element-&gt;get_key_name eq $key_name</code>. Thus there may be some warnings if older name values are passed to <code>has_name()</code>. Funded by Portugal Telecom.</p></li>
+            <li><p>Refactored Bric::Biz::Keyword. It is now more compliant with the standard API as defined in other classes. Also added support for keyword groups so that we can create a keyword manager. David Wheeler/Kineticode.</p></li>
+            <li><p>Added the <code>ENABLE_SFTP_V2</code> <em>bricolage.conf</em> directive to make SSH protocol 2 be tried first. Scott Lanning/World Health Organization.</p></li>
+            <li><p>Switched Bric::Util::CharTrans from using Text::Iconv to Encode, thus removing the dependency on a C library (libiconv). Note that this has changed the API of Bric::Util::CharTrans. Its <code>to_utf8()</code> and <code>from_utf8()</code> methods now always convert the argument passed in in place. They did this before for references, but now they do it for plain strings, as well. Also note that use of character translation also now requires Perl 5.8.0 or later. Scott Lanning/World Health Organization and David Wheeler/Kineticode.</p></li>
+            <li><p>Added a <em>bricolage.conf</em> directive, <code>ALLOW_SLUGLESS_NONFIXED</code>, to prevent slugless non-fixed (non-Cover) stories. Scott Lanning/World Health Organization.</p></li>
+            <li><p>The <em>bric_dist_mon</em> <code>-U</code> option no longer requires that <q>/dist/</q> be at the end of the URL. If <q>/dist/</q> is missing, <em>bric_dist_mon</em> will append it. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>-k</code> option to <em>bric_ftpd</em> to kill a currently running virtual FTP server. This is made possible by the addition of the new <code>FTP_PID_FILE</code> <em>bricolage.conf</em> directive. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>FTP_UNLINK_BEFORE_MOVE</code> <em>bricolage.conf</em> directive. This forces the FTP mover to unlink an older version of a file before renaming the new version to that name. This is necessary for some FTP servers that disallow renaming a file to replace an existing file. Andrea Rota.</p></li>
+            <li><p>Relabeled the <q>Pre</q> and <q>Post</q> attributes of output channels as <q>URI Prefix</q> and <q>URI Suffix</q>, respectively. Serge Sozonoff/Alinghi.</p></li>
+            <li><p>Changed the vertical alignment of the labels for textarea fields in the story profile to be consistent with the labels on the element profile. i.e. top aligned. Paul Orrock/Digital Craftsmen.</p></li>
+            <li><p>Eliminated the term <q>Asset Type</q> from the UI, replacing it with <q>Element</q>, <q>Story Type Element</q>, or <q>Media Type Element</q>, as context demands. David Wheeler/Kineticode.</p></li>
+            <li><p>In the formBuilder interface used by the Element and Contributor Type profiles, the default maximum length of text and textarea fields is now <q>0</q>, or unlimited. David Wheeler/Kineticode.</p></li>
+            <li><p>Added <code>SFTP_MOVER_CIPHER</code> <em>bricolage.conf</em> directive to tune the SFTP mover (if enabled) to the best cipher for good performance on the wire. David Wheeler/Kineticode.</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-1.8.0.tar.gz" title="Download Bricolage 1.8.0">Download Now!</a><br />(Version 1.8.0)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

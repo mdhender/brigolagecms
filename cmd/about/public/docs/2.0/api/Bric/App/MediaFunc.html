@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::MediaFunc</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="MediaFunc.html#Name">Name</a></li>
+  <li><a href="MediaFunc.html#Synopsis">Synopsis</a></li>
+  <li><a href="MediaFunc.html#Description">Description</a></li>
+  <li><a href="MediaFunc.html#Interface">Interface</a>
+    <ul>
+      <li><a href="MediaFunc.html#Constructors">Constructors</a></li>
+      <li><a href="MediaFunc.html#Destructors">Destructors</a></li>
+      <li><a href="MediaFunc.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="MediaFunc.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="MediaFunc.html#Private">Private</a>
+    <ul>
+      <li><a href="MediaFunc.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="MediaFunc.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="MediaFunc.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="MediaFunc.html#Notes">Notes</a></li>
+  <li><a href="MediaFunc.html#Author">Author</a></li>
+  <li><a href="MediaFunc.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::MediaFunc - Location for functions that query uploaded media files.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>TBD.</p>
+
+<h1 id="Description">Description</h1>
+
+<p>TBD.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$mediafunc = Bric::App::MediaFunc-&gt;new($init);</dt>
+<dd>
+
+<p>Creates a new object to run the given methods against</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>$height = $media_func-&gt;get_height</dt>
+<dd>
+
+<p>Returns the height of the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+</dd>
+<dt>$width = $media-&gt;get_width</dt>
+<dd>
+
+<p>Returns the width of the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$color_type = $media-&gt;get_color_type</dt>
+<dd>
+
+<p>Returns the color type of the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$resolution = $media-&gt;get_resolution()</dt>
+<dd>
+
+<p>Returns the resolution of the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$samples_per_pixel = $media-&gt;get_samples_per_pixel()</dt>
+<dd>
+
+<p>Returns the samples per pixel in the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$bits_per_sample = $media-&gt;get_bits_per_sample</dt>
+<dd>
+
+<p>Returns the bits per sample in the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$comment = $media-&gt;get_comment</dt>
+<dd>
+
+<p>Returns the image comment.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$interlace = $media-&gt;get_interlace</dt>
+<dd>
+
+<p>Returns the image interlace.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$compression = $media-&gt;get_compression</dt>
+<dd>
+
+<p>Returns the image compression.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$gama = $media-&gt;get_gama</dt>
+<dd>
+
+<p>Returns the image gama.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$last_modi_time = $media-&gt;get_last_modi_time</dt>
+<dd>
+
+<p>Returns the last modification time of the image.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>$image_info = $self-&gt;_get_image_info_obj()</dt>
+<dd>
+
+<p>Returns the image info object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

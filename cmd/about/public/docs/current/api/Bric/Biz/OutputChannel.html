@@ -1,0 +1,1368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::OutputChannel</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="OutputChannel.html#Name">Name</a></li>
+  <li><a href="OutputChannel.html#Synopsis">Synopsis</a></li>
+  <li><a href="OutputChannel.html#Description">Description</a></li>
+  <li><a href="OutputChannel.html#Public-Interface">Public Interface</a>
+    <ul>
+      <li><a href="OutputChannel.html#Public-Constructors">Public Constructors</a></li>
+      <li><a href="OutputChannel.html#Destructors">Destructors</a></li>
+      <li><a href="OutputChannel.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="OutputChannel.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="OutputChannel.html#Private">Private</a>
+    <ul>
+      <li><a href="OutputChannel.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="OutputChannel.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="OutputChannel.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="OutputChannel.html#Notes">Notes</a></li>
+  <li><a href="OutputChannel.html#Authors">Authors</a></li>
+  <li><a href="OutputChannel.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::OutputChannel - Bricolage Output Channels.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::OutputChannel;
+
+# Constructors.
+$oc = Bric::Biz::OutputChannel-&gt;new($init);
+$oc = Bric::Biz::OutputChannel-&gt;lookup({ id =&gt; $id});
+my $ocs_aref = Bric::Biz::OutputChannel-&gt;list($params);
+my @ocs = Bric::Biz::OutputChannel-&gt;list($params);
+
+# Class Methods.
+my $id_aref = Bric::Biz::OutputChannel-&gt;list_ids($params);
+my @ids = Bric::Biz::OutputChannel-&gt;list_ids($params);
+
+# Instance Methods.
+$id = $oc-&gt;get_id;
+my $name = $oc-&gt;get_name;
+$oc = $oc-&gt;set_name( $name );
+my $description = $oc-&gt;get_description;
+$oc = $oc-&gt;set_description($description);
+if ($oc-&gt;get_primary) { # do stuff }
+$oc = $oc-&gt;set_primary(1); # or pass undef.
+my $site_id = $oc-&gt;get_site_id;
+$site = $site-&gt;set_site_id($site_id);
+my $protocol = $oc-&gt;get_protocol;
+$site = $site-&gt;set_protocol($protocol);
+
+# URI Format instance methods.
+my $uri_format = $oc-&gt;get_uri_format;
+$oc-&gt;set_uri_format($uri_format);
+my $fixed_uri_format = $oc-&gt;get_fixed_uri_format;
+$oc-&gt;set_fixed_uri_format($uri_fixed_format);
+my $uri_case = $oc-&gt;get_uri_case;
+$oc-&gt;set_uri_case($uri_case);
+if ($oc-&gt;can_use_slug) { # do stuff }
+$oc-&gt;use_slug_on;
+$oc-&gt;use_slug_off;
+
+# Output Channel Includes instance methods.
+my @ocs = $oc-&gt;get_includes;
+$oc-&gt;set_includes(@ocs);
+$oc-&gt;add_includes(@ocs);
+$oc-&gt;del_includes(@ocs);
+
+# Active instance methods.
+$oc = $oc-&gt;activate;
+$oc = $oc-&gt;deactivate;
+$oc = $oc-&gt;is_active;
+
+# Persistence methods.
+$oc = $oc-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Holds information about the output channels that will be associated with templates and elements.</p>
+
+<h1 id="Public-Interface">Public Interface</h1>
+
+<h2 id="Public-Constructors">Public Constructors</h2>
+
+<dl>
+
+<dt>$oc = Bric::Biz::OutputChannel-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>Instantiates a Bric::Biz::OutputChannel object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+</li>
+<li><p>site_id</p>
+
+</li>
+<li><p>description</p>
+
+</li>
+<li><p>active (default is active, pass undef to make a new inactive Output Channel)</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = Bric::Biz::OutputChannel-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>$oc = Bric::Biz::OutputChannel-&gt;lookup({ name =&gt; $name, site_id =&gt; $id})</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::OutputChannel object based on an Bric::Biz::OutputChannel object ID or name. If no output channelobject is found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Missing required parameter &#39;id&#39; or &#39;name&#39;/&#39;site_id&#39;.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>($ocs_aref || @ocs) = Bric::Biz::OutputChannel-&gt;list( $criteria )</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::OutputChannel objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Output channel ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Description of the output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>The ID of the Bric::Biz::Site object with which the output channel is associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>protocol</dt>
+<dd>
+
+<p>The protocol or scheme for files published to an output channel, such as &quot;http://&quot;. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>server_type_id</dt>
+<dd>
+
+<p>The ID of a Bric::Dest::ServerType (destination) with which output channels may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>include_parent_id</dt>
+<dd>
+
+<p>The ID of an output channel that includes other output channels, to get a list of those includes. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>story_instance_id</dt>
+<dd>
+
+<p>The ID of a story with which output channels may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>media_instance_id</dt>
+<dd>
+
+<p>The ID of a media document with which output channels may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uri_format</dt>
+<dd>
+
+<p>The URI format of an output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>fixed_uri_format</dt>
+<dd>
+
+<p>The fixed URI format of an output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uri_case</dt>
+<dd>
+
+<p>The URI case of an output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>use_slug</dt>
+<dd>
+
+<p>A boolean indicating whether story slugs should be used for file names in an output channel.</p>
+
+</dd>
+<dt>burner</dt>
+<dd>
+
+<p>A burner constant as exported by this class. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean indicating whether or not an output channel is active.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$ocs_href = Bric::Biz::OutputChannel-&gt;href( $criteria )</dt>
+<dd>
+
+<p>Returns an anonymous hash of Output Channel objects, where each hash key is an Output Channel ID, and each value is Output Channel object that corresponds to that ID. Takes the same arguments as list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>($id_aref || @ids) = Bric::Biz::OutputChannel-&gt;list_ids( $criteria )</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::OutputChannel object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $meths = Bric::Biz::OutputChannel-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::OutputChannel-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::OutputChannel-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$id = $oc-&gt;get_id</dt>
+<dd>
+
+<p>Returns the OutputChannel&#39;s unique ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_name( $name )</dt>
+<dd>
+
+<p>Sets the name of the Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$name = $oc-&gt;get_name()</dt>
+<dd>
+
+<p>Returns the name of the Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_description( $description )</dt>
+<dd>
+
+<p>Sets the description of the Output Channel, converting any non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$description = $oc-&gt;get_description()</dt>
+<dd>
+
+<p>Returns the description of the Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $oc-&gt;get_site_id()</dt>
+<dd>
+
+<p>Returns the ID of the site this OC is a part of</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $oc-&gt;set_site_id($id)</dt>
+<dd>
+
+<p>Set the ID this OC should be a part of</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$proto = $oc-&gt;get_protocol()</dt>
+<dd>
+
+<p>Returns the protocol for this OC (http://, ftp://, etc)</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$proto = $oc-&gt;set_protocol($proto)</dt>
+<dd>
+
+<p>Set the protocol for this OC</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_filename($filename)</dt>
+<dd>
+
+<p>Sets the filename that will be used in the names of files burned into this Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$filename = $oc-&gt;get_filename</dt>
+<dd>
+
+</dd>
+<dt>$filename = $oc-&gt;get_filename($asset)</dt>
+<dd>
+
+<p>Gets the filename that will be used in the names of files burned into this Output Channel. Defaults to the value of the DEFAULT_FILENAME configuration directive if unset. The value of the <code>uri_case</code> property affects the case of the filename returned. If &lt;$asset&gt; is passed in, then <code>get_filename()</code> will return the proper filename for that asset based on the value of the <code>use_slug</code> property and on the class of the asset object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_file_ext($file_ext)</dt>
+<dd>
+
+<p>Sets the filename extension that will be used in the names of files burned into this Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$file_ext = $oc-&gt;get_file_ext</dt>
+<dd>
+
+<p>Gets the filename extension that will be used in the names of files burned into this Output Channel. Defaults to the value of the DEFAULT_FILE_EXT configuration directive if unset. The case of the file extension returned is affected by the value of the <code>uri_case</code> property.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_primary( undef || 1)</dt>
+<dd>
+
+<p>Set the flag that indicates whether or not this is the primary Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(undef || 1 ) = $oc-&gt;get_primary</dt>
+<dd>
+
+<p>Returns true if this is the primary Output Channel and false (undef) if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Only one Output channel can be the primary output channel.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_uri_format($uri_format)</dt>
+<dd>
+
+<p>Sets the URI format for documents output in this Output Channel. URI formats are made up of a number of possible parts, that can be arranged in any combination and order of any of the following parts:</p>
+
+<dl>
+
+<dt>%{categories}</dt>
+<dd>
+
+<p>The category URI. This is the only part that is required in all formats.</p>
+
+</dd>
+<dt>%{slug}</dt>
+<dd>
+
+<p>The story slug. Not used for media URIs.</p>
+
+</dd>
+<dt>%{uuid}</dt>
+<dd>
+
+<p>The document UUID.</p>
+
+</dd>
+<dt>%{base64_uuid}</dt>
+<dd>
+
+<p>The base64-encoded document UUID.</p>
+
+</dd>
+<dt>%{hex_uuid}</dt>
+<dd>
+
+<p>The hex representation of the document UUID.</p>
+
+</dd>
+<dt>*</dt>
+<dd>
+
+<p>Arbitrary strings. You can even ignore the <code>uri_prefix</code> and <code>uri_suffix</code> attributes, if you like.</p>
+
+</dd>
+<dt>%Y</dt>
+<dd>
+
+<p>The four-digit cover date year.</p>
+
+</dd>
+<dt>%m</dt>
+<dd>
+
+<p>The two-digit cover date month.</p>
+
+</dd>
+<dt>%d</dt>
+<dd>
+
+<p>The two-digit cover date month.</p>
+
+</dd>
+<dt>etc.</dt>
+<dd>
+
+<p>Any other <a href="http://search.cpan.org/perldoc?DateTime">DateTime</a>-supproted <code>strftime</code> format.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>No URI Format value specified.</p>
+
+</li>
+<li><p>Invalid URI Format tokens.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $format = $oc-&gt;get_uri_format</dt>
+<dd>
+
+<p>Returns the URI format for documents output in this Output Channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Only one Output channel can be the uri_format output channel.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_fixed_uri_format($uri_format)</dt>
+<dd>
+
+<p>Sets the fixed URI format for documents output in this Output Channel.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>No Fixed URI Format value specified.</p>
+
+</li>
+<li><p>Invalid Fixed URI Format tokens.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(undef || 1 ) = $oc-&gt;can_use_slug</dt>
+<dd>
+
+<p>Returns true if this is Output Channel can use the <code>slug</code> property of a story as the filename for files output for the story.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;use_slug_on</dt>
+<dd>
+
+<p>Sets the <code>use_slug</code> property to a true value.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;use_slug_off</dt>
+<dd>
+
+<p>Sets the <code>use_slug</code> property to a false value.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner = $oc-&gt;get_burner</dt>
+<dd>
+
+<p>Returns the burner with which the output channel is associated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$oc = $oc-&gt;set_burner($burner)</dt>
+<dd>
+
+<p>Sets the value corresponding to the burner with which this output channel is associated. The value must correspond to one of the burner constants exportable by this class:</p>
+
+<dl>
+
+<dt>BURNER_MASON</dt>
+<dd>
+
+</dd>
+<dt>BURNER_TEMPLATE</dt>
+<dd>
+
+</dd>
+<dt>BURNER_TT</dt>
+<dd>
+
+</dd>
+<dt>BURNER_PHP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>##############################################################################</p>
+
+</dd>
+<dt>my @inc = $oc-&gt;get_includes</dt>
+<dd>
+
+</dd>
+<dt>my $inc_aref = $oc-&gt;get_includes</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::OutputChannel objects that constitute the include list for this OutputChannel. Templates not found in this OutputChannel will be sought in this list of OutputChannels, looking at each one in the order in which it was returned from this method.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$job = $job-&gt;add_includes(@ocs)</dt>
+<dd>
+
+<p>Adds Output Channels to this to the include list for this Output Channel. Output Channels added to the include list via this method will be appended to the end of the include list. The order can only be changed by resetting the entire include list via the set_includes() method. Call save() to save the relationship.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>$self = $job-&gt;del_includes(@ocs)</dt>
+<dd>
+
+<p>Deletes Output Channels from the include list. Call save() to save the deletes to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $self-&gt;set_includes(@ocs);</dt>
+<dd>
+
+<p>Sets the list of Output channels to set as the include list for this Output Channel. Any existing Output Channels in the includes list will be removed from the list. To add Output Channels to the include list without deleting the existing ones, use add_includes().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Output Channel cannot include itself.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $oc-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Biz::OutputChannel object. Call $oc-&gt;save to make the change persistent. Bric::Biz::OutputChannel objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $oc-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Biz::OutputChannel object. Call $oc-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $oc-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self (true) if the Bric::Biz::OutputChannel object is active, and undef (false) if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $oc-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Biz::OutputChannel object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>_do_list</dt>
+<dd>
+
+<p>Called by list and list ids this does the brunt of their work.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>_do_update()</dt>
+<dd>
+
+<p>Will perform the update to the database after being called from save.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>_do_insert</dt>
+<dd>
+
+<p>Will do the insert to the database after being called by save</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $inc_coll = &amp;$get_inc($self)</dt>
+<dd>
+
+<p>Returns the collection of Output Channels that costitute the includes. The collection a Bric::Util::Coll::OCInclude object. See Bric::Util::Coll for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $uri_format = $parse_uri_format-&gt;($name, $format)</dt>
+<dd>
+
+<p>Parses a URI format as passed to <code>set_uri_format()</code> or <code>set_fixed_uri_format()</code> and returns it if it parses properly. If it doesn&#39;t, it throws an exception. The <code>$name</code> attribute is used in the exceptions.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>No URI Format value specified.</p>
+
+</li>
+<li><p>Invalid URI Format tokens.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Authors">Authors</h1>
+
+<p>Michael Soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/Asset/Template.html" name="Bric::Biz::Asset::Template">Bric::Biz::Asset::Template</a>.</p>
+
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Grp::Keyword</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Keyword.html#Name">Name</a></li>
+  <li><a href="Keyword.html#Synopsis">Synopsis</a></li>
+  <li><a href="Keyword.html#Description">Description</a></li>
+  <li><a href="Keyword.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Keyword.html#Constructors">Constructors</a></li>
+      <li><a href="Keyword.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Keyword.html#get_supported_classes">get_supported_classes</a></li>
+          <li><a href="Keyword.html#get_object_class_id">get_object_class_id</a></li>
+          <li><a href="Keyword.html#get_list_classes">get_list_classes</a></li>
+          <li><a href="Keyword.html#get_class_id">get_class_id</a></li>
+          <li><a href="Keyword.html#get_secret">get_secret</a></li>
+          <li><a href="Keyword.html#my_class">my_class</a></li>
+          <li><a href="Keyword.html#member_class">member_class</a></li>
+        </ul>
+      </li>
+      <li><a href="Keyword.html#Instance-Methods">Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Keyword.html#Author">Author</a></li>
+  <li><a href="Keyword.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Grp::Keyword - Interface to Bric::Biz::Keyword Groups</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>See Bric::Util::Grp</p>
+
+<h1 id="Description">Description</h1>
+
+<p>See Bric::Util::Grp.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Util::Grp.</p>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="get_supported_classes">get_supported_classes</h3>
+
+<pre><code>my $supported_classes = Bric::Util::Grp::Keyword-&gt;get_supported_classes;</code></pre>
+
+<p>This will return an anonymous hash of the supported classes in the group as keys with the short name as a value. The short name is used to construct the member table names and the foreign key in the table.</p>
+
+<h3 id="get_object_class_id">get_object_class_id</h3>
+
+<pre><code>my $class_id = Bric::Util::Grp::Keyword-&gt;get_object_class_id;</code></pre>
+
+<p>If this method returns an ID, then all objects returne as members of this class of group will be instances of the class represented by that ID. If no ID is returned, then member objects will not be forced into the single class.</p>
+
+<h3 id="get_list_classes">get_list_classes</h3>
+
+<pre><code>my @list_classes = Bric::Util::Grp::Keyword-&gt;get_list_classes;</code></pre>
+
+<p>Returns a list or anonymous array of the supported classes in the group that can have their <code>list()</code> methods called in succession to assemble a list of member objects. This data varies from that stored in the keys in the hash reference returned by <code>get_supported_classes</code> in that some classes&#39; <code>list()</code> methods may inherit from others, and we don&#39;t want the same <code>list()</code> method executed more than once.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<h3 id="get_class_id">get_class_id</h3>
+
+<pre><code>my $class_id = Bric::Util::Grp::Keyword-&gt;get_class_id;</code></pre>
+
+<p>Returns the Bric::Util::Class object ID representing this class.</p>
+
+<h3 id="get_secret">get_secret</h3>
+
+<pre><code>my $secret = Bric::Util::Grp::Keyword-&gt;get_secret;</code></pre>
+
+<p>Returns false, because groups of this class are not secret groups, but groups that can be used by users.</p>
+
+<h3 id="my_class">my_class</h3>
+
+<pre><code>my $class = Bric::Util::Grp::Keyword-&gt;my_class;</code></pre>
+
+<p>Returns the Bric::Util::Class object representing this class.</p>
+
+<h3 id="member_class">member_class</h3>
+
+<pre><code>my $class = Bric::Util::Grp::Keyword-&gt;member_class;</code></pre>
+
+<p>Returns the Bric::Util::Class object representing the members of this group.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<p>Inherited from Bric::Util::Grp.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Util/Grp.html" name="Bric::Util::Grp">Bric::Util::Grp</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Biz/Keyword.html" name="Bric::Biz::Keyword">Bric::Biz::Keyword</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+</body>
+</html>
+

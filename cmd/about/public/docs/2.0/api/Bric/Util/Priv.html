@@ -1,0 +1,977 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Priv</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Priv.html#Name">Name</a></li>
+  <li><a href="Priv.html#Synopsis">Synopsis</a></li>
+  <li><a href="Priv.html#Description">Description</a></li>
+  <li><a href="Priv.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Priv.html#Constructors">Constructors</a></li>
+      <li><a href="Priv.html#Destructors">Destructors</a></li>
+      <li><a href="Priv.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Priv.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Priv.html#Private">Private</a>
+    <ul>
+      <li><a href="Priv.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Priv.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Priv.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Priv.html#Notes">Notes</a></li>
+  <li><a href="Priv.html#Author">Author</a></li>
+  <li><a href="Priv.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Priv - Individual Privileges</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Priv;
+use Bric::Util::Priv::Parts::Const qw(:all);
+
+my $priv = Bric::Util::Priv-&gt;new($init);
+$priv = Bric::Util::Priv-&gt;lookup($params);
+my @privs = Bric::Util::Priv-&gt;list($params);
+my $privs_href = Bric::Util::Priv-&gt;href($params);
+my @priv_ids = Bric:::Util::Priv-&gt;list_ids($params);
+my $acl = Bric::Util::Priv-&gt;get_acl($user);
+my $vals_href = Bric::Util::Priv-&gt;vals_href;
+my $meths = Bric::Util::Priv-&gt;my_meths;
+my @meths = Bric::Util::Priv-&gt;my_meths(1);
+
+my $grp = $priv-&gt;get_usr_grp;
+my $grp_id = $priv-&gt;get_usr_grp_id;
+my $obj = $priv-&gt;get_obj_grp;
+my $obj_id = $priv-&gt;get_obj_grp_id;
+my $value = $priv-&gt;get_value;
+$priv = $priv-&gt;set_value(READ);
+$priv = $priv-&gt;del;
+$priv = $priv-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Objects of the Bric::Util::Priv class represent single privileges granted to a user or user group. The idea is to be able to manage individual privileges in an object-oriented fashion. Thus, this class will be used by the interface of Bric::Biz::Person::User and Bric::Util::Grp::User.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $priv = Bric::Util::Priv-&gt;new($init)</dt>
+<dd>
+
+<p>Creates a new privilege for a user or group. Expects a single anonymous hash argument consisting of the following keys:</p>
+
+<ul>
+
+<li><p>usr_grp - The Bric::Util::Grp::User object or ID for which to set the privilege. Required.</p>
+
+</li>
+<li><p>obj_grp - The Bric::Util::Grp object or ID for whose members the privilege is granted. Required.</p>
+
+</li>
+<li><p>value - The privilege to grant to the user or group. Required. Must be one of the following constants (which may be imported by <code>use Bric::Util::Priv::Parts::Const qw(:all)</code>:</p>
+
+<ul>
+
+</li>
+<li><p>READ =&gt; 1</p>
+
+</li>
+<li><p>EDIT =&gt; 2</p>
+
+</li>
+<li><p>RECALL =&gt; 3</p>
+
+</li>
+<li><p>CREATE =&gt; 4</p>
+
+</li>
+<li><p>PUBLISH =&gt; 5</p>
+
+</li>
+<li><p>DENY =&gt; 255</p>
+
+</li>
+</ul>
+
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Must pass user group and object group.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $priv = Bric::Util::Priv-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a Bric::Util::Priv object based on the Bric::Util::Priv object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Util::Priv objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Util::Priv object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(@privs || $privs_aref) = Bric::Util::Priv-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Priv objects. Supported search keys include:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>permission ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>usr_grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp::User object ID to which privileges have been granted. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>obj_grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp object ID for which privileges have been granted. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>value</dt>
+<dd>
+
+<p>A privilege value. This could return a *lot* of records, so you&#39;re probably not going to want to do this. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $privs_href = Bric::Util::Priv-&gt;href($parms)</dt>
+<dd>
+
+<p>Works the same as list(), with the same arguments, except it returns a hash or hashref of Bric::Util::Priv objects, where the keys are the contact IDs, and the values are the contact objects.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Util::Priv object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$priv-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>(@priv_ids || $priv_ids_aref) = Bric::Util::Priv-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Util::Priv objects. Interface is the same as for list() above.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $acl = Bric::Util::Priv-&gt;get_acl($user)</dt>
+<dd>
+
+<p>Returns an access control list of privilege settings for a given user. An ACL is simply a hash reference with all keys but one being object group IDs for groups <b>to which</b> the user has been granted permission, where the value for each key is the relevant permission. One key is not a group ID, but &quot;mtime&quot;, and it stands for that most recent time any of the permissions was modified. It is used for expiring an ACL.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Support for parent groups is not supported. Thus, if a user is in a group that does not have a permission set, and that group has a parent where the permission <b>is</b> set, that permission will not be included in the ACL. This inheritance of permissions may be implemented in the future, and at that time the permissions of child groups will override the permissions of their parents.</p>
+
+</dd>
+<dt>my $mtime = Bric::Util::Priv-&gt;get_acl_mtime($user)</dt>
+<dd>
+
+<p>Returns the last modified time for the privileges set for groups of which $user is a member.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $vals_href = Bric::Util::Priv-&gt;vals_href</dt>
+<dd>
+
+</dd>
+<dt>my $vals_aref = Bric::Util::Priv-&gt;vals_aref</dt>
+<dd>
+
+<p>Returns an anonymous hash or anonymous array of the possible values for a privilege object. The vals_href() method returns an anonymous array in which the privilege values are the keys and their corresponding names are the values:</p>
+
+<pre><code>{ &amp;READ    =&gt; &#39;READ&#39;,
+  &amp;EDIT    =&gt; &#39;EDIT&#39;,
+  &amp;RECALL  =&gt; &#39;RECALL&#39;,
+  &amp;CREATE  =&gt; &#39;CREATE&#39;,
+  &amp;PUBLISH =&gt; &#39;PUBLISH&#39;,
+  &amp;DENY    =&gt; &#39;DENY&#39;
+}</code></pre>
+
+<p>The vals_aref() method returns an anonymous array of anonymous arrays. The first value of each embedded anonymous array is the privilege value, whereas the second value is the name for that value:</p>
+
+<pre><code>[ [ &amp;READ    =&gt; &#39;READ&#39;    ],
+  [ &amp;EDIT    =&gt; &#39;EDIT&#39;    ],
+  [ &amp;RECALL  =&gt; &#39;RECALL&#39;  ],
+  [ &amp;CREATE  =&gt; &#39;CREATE&#39;  ],
+  [ &amp;PUBLISH =&gt; &#39;PUBLISH&#39; ],
+  [ &amp;DENY    =&gt; &#39;DENY&#39;    ]
+]</code></pre>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Use Bric::Util::Priv::Pargs::Const internally to import the value constants.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Util::Priv-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::Priv-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::Priv-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $priv-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::Priv object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Util::Priv object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $usr_grp = $priv-&gt;get_usr_grp</dt>
+<dd>
+
+<p>Returns the Bric::Util::Grp::User object to which the privilege has been granted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Util::Grp::User objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls Bric::Util::Grp::User-&gt;new internally.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $usr_grp_id = $priv-&gt;get_usr_grp_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Util::Grp::User object to which the privilege has been granted.</p>
+
+<p><b>Throws:</b></p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;usr_grp_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $obj_grp = $priv-&gt;get_obj_grp</dt>
+<dd>
+
+<p>Returns the group object for whose members the privilege has been granted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Too many Bric::Util::Grp objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Calls Bric::Util::Grp-&gt;new internally.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $obj_grp_id = $priv-&gt;get_obj_grp_id</dt>
+<dd>
+
+<p>Returns the ID of the group object for whose members the privilege has been granted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;obj_grp_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $mtime = $priv-&gt;get_mtime</dt>
+<dd>
+
+</dd>
+<dt>my $mtime = $priv-&gt;get_mtime($format)</dt>
+<dd>
+
+<p>Returns the time the privilege was last modified. Pass in a strftime formatting string to get the time back in that format.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to unpack date.</p>
+
+</li>
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $value = $priv-&gt;get_value</dt>
+<dd>
+
+<p>Returns the privilege setting for this Bric::Util::Priv object. Returns a value corresponding to the constants defined above for new(). <code>use Bric::Util::Priv::Parts::Const qw(:all)</code> for convenience constants.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;value&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $priv-&gt;set_value($value)</dt>
+<dd>
+
+<p>Sets the privilege value for this Bric::Util::Priv object. The value must be equivalent to one of the privileges exported by Bric::Util::Priv::Parts::Const.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Not a valid privilege value.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $priv-&gt;del</dt>
+<dd>
+
+<p>Deletes the privilege. The privilege won&#39;t actually be deleted until $priv-&gt;save is called.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $priv-&gt;save</dt>
+<dd>
+
+<p>Saves the privilege to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $privs_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $privs_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Util::Priv objects or, if called with an optional third argument, returns a list of Bric::Util::Priv object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Biz/Person.html" name="Bric::Biz::Person">Bric::Biz::Person</a>, <a rel="section" href="../Biz/Person/User.html" name="Bric::Biz::Person::User">Bric::Biz::Person::User</a>, <a rel="section" href="Grp/User.html" name="Bric::Util::Grp::User">Bric::Util::Grp::User</a></p>
+
+</body>
+</html>
+

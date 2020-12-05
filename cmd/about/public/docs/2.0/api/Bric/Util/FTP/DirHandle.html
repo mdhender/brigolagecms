@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::FTP::DirHandle</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="DirHandle.html#Name">Name</a></li>
+  <li><a href="DirHandle.html#Description">Description</a></li>
+  <li><a href="DirHandle.html#Interface">Interface</a>
+    <ul>
+      <li><a href="DirHandle.html#Constructors">Constructors</a></li>
+      <li><a href="DirHandle.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="DirHandle.html#Private">Private</a>
+    <ul>
+      <li><a href="DirHandle.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="DirHandle.html#Author">Author</a></li>
+  <li><a href="DirHandle.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::FTP::DirHandle - Virtual FTP Server DirHandle</p>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a directory handle object for use by Bric::Util::FTP::Server.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<p>This module inherits from Net::FTPServer::DirHandle and overrides the required methods. This class is used internally by Bric::Util::FTP::Server.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>new($ftps, [$pathname, $oc_id, $category_id])</dt>
+<dd>
+
+<p>Creates a new Bric::Util::FTP::DirHandle object. Requires a Bric::Util::FTP::Server object as its first parameter. Optionally takes a pathname, a site_id, an oc_id, and a category_id. If not supplied the pathname defaults to &quot;/&quot;.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>get($filename)</dt>
+<dd>
+
+<p>The get() method is used to do a lookup on a specific filename. If a template called $filename exists in this category then get() will call Bric::Util::FTP::FileHandle-&gt;new() and return the object. If a category exists underneath this category called $filename then new() will be called and the directory handle will be returned. Failing that, undef is returned.</p>
+
+</dd>
+<dt>open($filename, $mode)</dt>
+<dd>
+
+<p>This method is called to open a file in the current directory. The possible modes are &#39;r&#39;, &#39;w&#39; and &#39;a&#39;. It will return a Bric::Util::FTP::FileHandle object if the file exists and the user has permission to it. If they don&#39;t have permission, it returns <code>undef</code>. If the file does not exist, it will be created (provided the user has CREATE permission) and the Bric::Util::FTP::FileHandle object returned.</p>
+
+</dd>
+<dt>list($wildcard)</dt>
+<dd>
+
+<p>The list() method is called to do a wildcard search inside a directory. The method performs a search for categories and templates matching the specified wildcard. The return value is a reference to an array of two-element arrays - the first element is the name and the second is the corresponding FileHandle or DirHandle object. The results are sorted by names before being returned. If nothing matches the wildcard then a reference to an empty array is returned.</p>
+
+</dd>
+<dt>list_status($wildcard)</dt>
+<dd>
+
+<p>This method performs the same as list() but also adds a third element to each returned array - the results of calling the status() method on the object. See the status() method below for details.</p>
+
+</dd>
+<dt>parent()</dt>
+<dd>
+
+<p>Returns the Bric::FTP::DirHandle object for the parent of this directory. For the root directory it returns itself.</p>
+
+</dd>
+<dt>status()</dt>
+<dd>
+
+<p>This method returns information about the object. The return value is a list with seven elements - ($mode, $perms, $nlink, $user, $group, $size, $time). To quote the good book (Net::FTPServer::Handle):</p>
+
+<pre><code>$mode     Mode        &#39;d&#39; = directory,
+                      &#39;f&#39; = file,
+                      and others as with
+                      the find(1) -type option.
+$perms    Permissions Permissions in normal octal numeric format.
+$nlink    Link count
+$user     Username    In printable format.
+$group    Group name  In printable format.
+$size     Size        File size in bytes.
+$time     Time        Time (usually mtime) in Unix time_t format.</code></pre>
+
+<p>In this case all of these values are fixed for all categories: ( &#39;d&#39;, 0777, 1, &quot;nobody&quot;, &quot;&quot;, 0, 0 ).</p>
+
+</dd>
+<dt>move()</dt>
+<dd>
+
+<p>Unsupported method that always returns -1. Category management using the FTP interface will probably never be supported.</p>
+
+</dd>
+<dt>delete()</dt>
+<dd>
+
+<p>Unsupported method that always returns -1. Category management using the FTP interface will probably never be supported.</p>
+
+</dd>
+<dt>mkdir()</dt>
+<dd>
+
+<p>Unsupported method that always returns -1. Category management using the FTP interface will probably never be supported.</p>
+
+</dd>
+<dt>can_*()</dt>
+<dd>
+
+<p>Returns permissions information for various activites. can_write(), can_enter() and can_list() all return true since these operations are supported on all categories. can_delete(), can_rename() and can_mkdir() all return false since these operations are never supported.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>_get_cats()</dt>
+<dd>
+
+<p>Returnes a reference to a hash of category information. Caches this data in a package global and returns the cached data if already called.</p>
+
+</dd>
+<dt>_forget_cats()</dt>
+<dd>
+
+<p>Invalidates the cache used by _get_cats(). If the module ever provided operations that change catgeories then this method could be used to forget stale values.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="Net:FTPServer::DirHandle">Net:FTPServer::DirHandle</a></p>
+
+<p><a href="http://search.cpan.org/perldoc?&lt;Bric::Util::FTP::Server">Bric::Util::FTP::Server</a></p>
+
+<p><a rel="section" href="FileHandle.html" name="Bric::Util::FTP::FileHandle">Bric::Util::FTP::FileHandle</a></p>
+
+</body>
+</html>
+

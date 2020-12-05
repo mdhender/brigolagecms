@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Element::Field</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Field.html#Name">Name</a></li>
+  <li><a href="Field.html#Synopsis">Synopsis</a></li>
+  <li><a href="Field.html#Description">Description</a></li>
+  <li><a href="Field.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Field.html#Constructors">Constructors</a></li>
+      <li><a href="Field.html#Destructors">Destructors</a></li>
+      <li><a href="Field.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Field.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Field.html#Private">Private</a>
+    <ul>
+      <li><a href="Field.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Field.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Field.html#Notes">Notes</a></li>
+  <li><a href="Field.html#Authors">Authors</a></li>
+  <li><a href="Field.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Element::Field - Data (Field) Element</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Creation of New Objects
+$data = Bric::Biz::Element::Field-&gt;new($params);
+$data = Bric::Biz::Element::Field-&gt;lookup({ id =&gt; $id });
+@data = Bric::Biz::Element::Field-&gt;list($params);
+
+# Retrieval of Object IDs
+@ids = = Bric::Biz::Element::Field-&gt;list_ids($params);
+
+# Manipulation of Data Field
+$data = $data-&gt;set_value( $data_value );
+$data_value = $data-&gt;get_value;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class contains the contents of field elements, also known as data elements. These are the objects that hold the values of story element fields. This class inherits from <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a>.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $data = Bric::Biz::Element::Field-&gt;new($init)</dt>
+<dd>
+
+<p>Construct a new data element object. The supported initial attributes are:</p>
+
+<dl>
+
+<dt>object_type</dt>
+<dd>
+
+<p>A string identifying the type of document the new data element is associated with. It&#39;s value can be &quot;story &quot; or &quot;media&quot;.</p>
+
+</dd>
+<dt>object_instance_id</dt>
+<dd>
+
+<p>The ID of the story or media document the new data element is associated with.</p>
+
+</dd>
+<dt>place</dt>
+<dd>
+
+<p>The order of this element relative to the other subelements of the parent element.</p>
+
+</dd>
+<dt>field_type</dt>
+<dd>
+
+</dd>
+<dt>element_data</dt>
+<dd>
+
+<p>The Bric::Biz::ElementType::Parts::FieldType object that defines the structure of the new data element.</p>
+
+</dd>
+<dt>field_type_id</dt>
+<dd>
+
+</dd>
+<dt>element_data_id</dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType::Parts::FieldType object that defines the structure of the new data element.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>The ID of the container element that is the parent of the new data element.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating whether the container element is active or inactive.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $data = Bric::Biz::Element::Field-&gt;lookup($params)</dt>
+<dd>
+
+<p>Looks up a data element in the database by its ID and returns it. The lookup parameters are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>The ID of the data element to lookup. Required.</p>
+
+</dd>
+<dt>object</dt>
+<dd>
+
+<p>A story or media document object with which the data element is associated. Required unless <code>object_type</code> is specified.</p>
+
+</dd>
+<dt>object_type</dt>
+<dd>
+
+<p>The type of document object with which the data element is associated. Must be either &quot;media&quot; or &quot;story&quot;. Required unless <code>object</code> is specified.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Missing required Parameter &#39;id&#39;.</dt>
+<dd>
+
+</dd>
+<dt>Missing required Parameter &#39;object_type&#39; or &#39;object&#39;.</dt>
+<dd>
+
+</dd>
+<dt>Improper type of object passed to lookup.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @data = Bric::Biz::Element::Field-&gt;list($params)</dt>
+<dd>
+
+<p>Searches for and returns a list or anonymous array of data element objects. The supported parameters that can be searched are:</p>
+
+<dl>
+
+<dt>object</dt>
+<dd>
+
+<p>A story or media object with which the data elements are associated. Required unless <code>object_type</code> is specified.</p>
+
+</dd>
+<dt>object_type</dt>
+<dd>
+
+<p>The type of document with which the data elements are associated. Required unless <code>object</code> is specified.</p>
+
+</dd>
+<dt>object_instance_id</dt>
+<dd>
+
+<p>The ID of a story or data object with wich the data elements are associated. Can only be used if <code>object_type</code> is also specified and <code>object</code> is not specified. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the data elements. Since the SQL <code>LIKE</code> operator is used with this search parameter, SQL wildcards can be used. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+<p>The key name of the data elements. Since the SQL <code>LIKE</code> operator is used with this search parameter, SQL wildcards can be used. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>The ID of the container element that is the parent element of the data elements. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>field_type_id</dt>
+<dd>
+
+</dd>
+<dt>element_data_id</dt>
+<dd>
+
+<p>The ID of the Bric::Biz::ElementType::Parts::FieldType object that specifies the structure of the data elements. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating whether the returned data elements are active or inactive.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$data-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my @ids = Bric::Biz::Element::Field-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of data element IDs. The search parameters are the same as for <code>list()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>See also <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a>, from which Bric::Biz::Element::Field inherits.</p>
+
+<dl>
+
+<dt>my $field_type_id = $data-&gt;get_field_type_id</dt>
+<dd>
+
+</dd>
+<dt>my $field_type_id = $data-&gt;get_element_data_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::ElementType::Parts::FieldType object that describes this element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data-&gt;set_field_type_id($field_type_id)</dt>
+<dd>
+
+</dd>
+<dt>$data-&gt;set_element_data_id($field_type_id)</dt>
+<dd>
+
+<p>Sets the ID of the Bric::Biz::ElementType::Parts::FieldType object that describes this element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$field_type = $data-&gt;get_field_type</dt>
+<dd>
+
+</dd>
+<dt>$field_type = $data-&gt;get_field_type</dt>
+<dd>
+
+<p>Returns the Bric::Biz::ElementType::Parts::FieldType object that defines the structure of this field.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_element_data_obj</code> is the deprecated form.</p>
+
+</dd>
+<dt>$name = $data-&gt;get_element_name</dt>
+<dd>
+
+<p>An alias for <code>$data-&gt;get_name</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$key_name = $data-&gt;get_element_key_name</dt>
+<dd>
+
+<p>An alias for <code>$data-&gt;get_key_name</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data-&gt;set_value($value)</dt>
+<dd>
+
+</dd>
+<dt>$data-&gt;set_data($value)</dt>
+<dd>
+
+<p>Sets the value of the field. Use <code>set_values()</code> if multiple values are allowed on the field (because the field type&#39;s <code>multiple</code> attribute is true).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>set_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>$data-&gt;set_values(@values)</dt>
+<dd>
+
+<p>Sets multiple values for the field. Useful for setting the values for &quot;multiple&quot; fields such as multiple select lists.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $value = $value-&gt;get_value</dt>
+<dd>
+
+</dd>
+<dt>my $value = $value-&gt;get_value($format)</dt>
+<dd>
+
+</dd>
+<dt>my $value = $data-&gt;get_data</dt>
+<dd>
+
+</dd>
+<dt>my $value = $data-&gt;get_data($format)</dt>
+<dd>
+
+<p>Returns the value of this data element. If the SQL type of the data object is &quot;date&quot;, then <code>$format</code>, if it is passed, will be used to format the date. Otherwise, the format set in the preferences will be used.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p><code>set_data()</code> is the deprecated form of this method. For fields that can contain multiple values, call <code>get_values()</code>, instead.</p>
+
+</dd>
+<dt>$field-&gt;get_values()</dt>
+<dd>
+
+<pre><code>my @values      = $field-&gt;get_values;
+   @values      = $field-&gt;get_values($format);
+my $fields_aref = $field-&gt;get_values;
+   $fields_aref = $field-&gt;get_values($format);</code></pre>
+
+<p>Returns a list or array reference of all of the values associated with a field. This method should be called in preference to <code>get_value()</code> for fields that can contain multiple values (i.e., <code>is_multiple()</code> returns a true value.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $is_autopopulated = $data-&gt;is_autopopulated</dt>
+<dd>
+
+<p>Returns true if the field&#39;s value is autopopulate, and false if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $is_multiple = $data-&gt;is_multiple</dt>
+<dd>
+
+<p>Returns true if the field is allowed to have multiple values and false if it is not.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $get_max_length = $data-&gt;get_max_length</dt>
+<dd>
+
+<p>Returns the maximum allowed length of the field&#39;s value.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sql_type = $data-&gt;get_sql_type</dt>
+<dd>
+
+<p>Returns the SQL type of the field. This value corresponds to the <code>sql_type</code> attribute of the Bric::Biz::ElementType::Parts::FieldType object on which the field is based.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $widget_type = $data-&gt;get_widget_type</dt>
+<dd>
+
+<p>Returns the string indicating the widget to use to display the field. This value corresponds to the <code>widget_type</code> attribute of the Bric::Biz::ElementType::Parts::FieldType object on which the field is based.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data-&gt;prepare_clone</dt>
+<dd>
+
+<p>Prepares the data element to be cloned, such as when a new version of a document is created, or when a document itself is cloned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $is_container = $data-&gt;is_container</dt>
+<dd>
+
+<p>Returns false, since data elements are not container elements.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data-&gt;lock_val</dt>
+<dd>
+
+<p>For autopopulated data elements, this method prevents the value from being autopopulated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data = $data-&gt;unlock_val</dt>
+<dd>
+
+<p>Allows auotpopulated data elements to be autopopulated.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $is_locked = $data-&gt;is_locked</dt>
+<dd>
+
+<p>Returns true if the element has been locked.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data = $data-&gt;save</dt>
+<dd>
+
+<p>Saves the changes to the data element to the database.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>Bric::Biz::Element::Field-&gt;_do_list($class, $param, $ids)</dt>
+<dd>
+
+<p>Called by <code>list()</code> or <code>list_ids()</code>, this method returns either a list of ids or a list of objects, depending on the third argument.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Object of type $obj_class not allowed to have elements.</p>
+
+</li>
+<li><p>Improper args for list.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$data-&gt;_do_insert()</dt>
+<dd>
+
+<p>Called by <code>save()</code>, this method inserts the data element into the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Object must be a media or story to add elements.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$data-&gt;_do_update</dt>
+<dd>
+
+<p>Called by <code>save()</code>, this method updates the data element into the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Object must be a media or story to add elements.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Authors">Authors</h1>
+
+<p>Michael Soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<p>Refactored by David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>, <a rel="section" href="../../../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a></p>
+
+</body>
+</html>
+

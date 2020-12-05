@@ -1,0 +1,874 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::ATType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="ATType.html#Name">Name</a></li>
+  <li><a href="ATType.html#Synopsis">Synopsis</a></li>
+  <li><a href="ATType.html#Description">Description</a></li>
+  <li><a href="ATType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="ATType.html#Constructors">Constructors</a></li>
+      <li><a href="ATType.html#Destructors">Destructors</a></li>
+      <li><a href="ATType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="ATType.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="ATType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="ATType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="ATType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="ATType.html#Notes">Notes</a></li>
+  <li><a href="ATType.html#Author">Author</a></li>
+  <li><a href="ATType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::ATType - A class to represent ElementType types.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::ATType;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class sets up properties that are common to all elements (Bric::Biz::ElementType) objects of a type.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = Bric::Biz::ATType-&gt;new($init);</dt>
+<dd>
+
+<p>Constructs and returns a new Bric::Biz::ATType object initialized with the parameters in the <code>$init</code> hash reference. The supported keys for <code>$init</code> are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of this ATType.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>A short description of this ATType.</p>
+
+</dd>
+<dt>top_level</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType represent top level elements (story type elements or media type elements) or subelements. Defaults to false.</p>
+
+</dd>
+<dt>paginated</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType represent pages. Defaults to false.</p>
+
+</dd>
+<dt>fixed_url</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType are fixed URL elements. Defaults to false.</p>
+
+</dd>
+<dt>related_story</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType are rleated story elements. Defaults to false.</p>
+
+</dd>
+<dt>related_media</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType are rleated media elements. Defaults to false.</p>
+
+</dd>
+<dt>media</dt>
+<dd>
+
+<p>A boolean value flagging whether elements (ElementTypes) of this this ATType are media elements. Defaults to false.</p>
+
+</dd>
+<dt>biz_class_id</dt>
+<dd>
+
+<p>The ID corresponding to the Bric::Util::Class entry for one of the following classes:</p>
+
+<dl>
+
+<dt>Bric::Biz::Asset::Business::Story</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media::Image</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media::Audio</dt>
+<dd>
+
+</dd>
+<dt>Bric::Biz::Asset::Business::Media::Video</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $st = Bric::Biz::ATType-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>my $st = Bric::Biz::ATType-&gt;lookup({ name =&gt; $name })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::ATType object based on the Bric::Biz::ATType object ID or name passed. If <code>$id</code> or <code>$name</code> is not found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::ATType objects found.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@attypes || $attypes_aref) = Bric::Biz::ATType-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::ATType objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>ATType ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>Lookup ATType by name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Lookup ATType by description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>top_level</dt>
+<dd>
+
+<p>Boolean; return all top level ATTypes</p>
+
+</dd>
+<dt>paginated</dt>
+<dd>
+
+<p>Boolean; return all paginated ATTypes.</p>
+
+</dd>
+<dt>fixed_url</dt>
+<dd>
+
+<p>Boolean; return all fixed URL ATTypes.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean; return all active ATTypes. If passed as &quot;all&quot;, returns all ATTypes.</p>
+
+</dd>
+<dt>related_story</dt>
+<dd>
+
+<p>Boolean; return all related story ATTypes.</p>
+
+</dd>
+<dt>related_media</dt>
+<dd>
+
+<p>Boolean; return all related media ATTypes.</p>
+
+</dd>
+<dt>media</dt>
+<dd>
+
+<p>Boolean; return all media ATTypes.</p>
+
+</dd>
+<dt>biz_class_id</dt>
+<dd>
+
+<p>Return all ATTypes associated with this business class ID. See <code>new()</code> for a list of business asset classes. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>Return all ATTypes in the Bric::Util::Grp::ATType group corresponding to this ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$st-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@st_ids || $st_ids_aref) = Bric::Biz::ATType-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::ATType object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for <code>list()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $meths = Bric::Biz::ATType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::ATType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::ATType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$name = $att-&gt;get_name;</dt>
+<dd>
+
+</dd>
+<dt>$name = $att-&gt;set_name($name);</dt>
+<dd>
+
+<p>Get/Set the name of this AT type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$desc = $att-&gt;get_description;</dt>
+<dd>
+
+</dd>
+<dt>$desc = $att-&gt;set_description($desc);</dt>
+<dd>
+
+<p>Get/Set the description for this AT type, first converting non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$topl = $att-&gt;get_top_level;</dt>
+<dd>
+
+</dd>
+<dt>$topl = $att-&gt;set_top_level(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the top level flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_paginated;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_paginated(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the paginated flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_fixed_url;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_fixed_url(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the fixed url flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_related_story;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_related_story(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the related story flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_related_media;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_related_media(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the related media flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_media;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_media(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the media flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$page = $att-&gt;get_biz_class_id;</dt>
+<dd>
+
+</dd>
+<dt>$page = $att-&gt;set_biz_class_id(1 || 0);</dt>
+<dd>
+
+<p>Get/Set the business class ID. See <code>new()</code> for a list of the business asset classes.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$att = $att-&gt;is_active;</dt>
+<dd>
+
+</dd>
+<dt>$att = $att-&gt;activate;</dt>
+<dd>
+
+</dd>
+<dt>$att = $att-&gt;deactivate;</dt>
+<dd>
+
+<p>Get/Set the active flag.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $attype-&gt;remove;</dt>
+<dd>
+
+<p>Deletes the AT type from the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$att = $att-&gt;save;</dt>
+<dd>
+
+<p>Save the AT type and/or all changes to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>_update_attype</dt>
+<dd>
+
+<p>Updates the ATType in the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>_insert_attype</dt>
+<dd>
+
+<p>Inserts the ATType into the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $attypes_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $attypes_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by <code>lookup()</code> and <code>list()</code> to return a list of Bric::Biz::ATType objects or, if called with an optional third argument, returns a list of Bric::Biz::ATType object IDs (used by <code>list_ids()</code>).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Refactored by David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a></p>
+
+</body>
+</html>
+

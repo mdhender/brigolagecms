@@ -1,0 +1,1627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::ServerType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="ServerType.html#Name">Name</a></li>
+  <li><a href="ServerType.html#Synopsis">Synopsis</a></li>
+  <li><a href="ServerType.html#Description">Description</a></li>
+  <li><a href="ServerType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="ServerType.html#Constructors">Constructors</a></li>
+      <li><a href="ServerType.html#Destructors">Destructors</a></li>
+      <li><a href="ServerType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="ServerType.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="ServerType.html#Private">Private</a>
+    <ul>
+      <li><a href="ServerType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="ServerType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="ServerType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="ServerType.html#Notes">Notes</a></li>
+  <li><a href="ServerType.html#Author">Author</a></li>
+  <li><a href="ServerType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::ServerType - Interface for managing types of servers to which to distribute content.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::ServerType;
+
+# Constructors.
+# Create a new object.
+my $st = Bric::Dist::ServerType-&gt;new;
+# Look up an existing object.
+$st = Bric::Dist::ServerType-&gt;lookup({ id =&gt; 1 });
+# Get a list of server type objects.
+my @sts = Bric::Dist::ServerType-&gt;list({ move_method =&gt; &#39;FTP Transport&#39; });
+# Get an anonymous hash of server type objects.
+my $sts_href = Bric::Dist::ServerType-&gt;href({ description =&gt; &#39;Preview%&#39; });
+
+# Class methods.
+# Get a list of object IDs.
+my @st_ids = Bric::Dist::ServerType-&gt;list_ids({ description =&gt; &#39;Prev%&#39; });
+# Get an introspection hashref.
+my $int = Bric::Dist::ServerType-&gt;my_meths;
+# Get a list of mover types.
+my @move_methods = Bric::Dist::ServerType-&gt;list_move_methods;
+
+# Instance Methods.
+my $id = $st-&gt;get_id;
+my $name = $st-&gt;get_name;
+$st = $st-&gt;set_name($name);
+my $description = $st-&gt;get_description;
+$st = $st-&gt;set_description($description);
+my $move_method = $st-&gt;get_move_method;
+$st = $st-&gt;set_move_method($move_method);
+my $site_id = $st-&gt;get_site_id;
+$st = $st-&gt;set_site_id($site_id);
+print &quot;ST is &quot;, $st-&gt;can_copy ? &#39;&#39; : &#39;not &#39;, &quot;copyable.\n&quot;;
+$st-&gt;copy;
+$st-&gt;no_copy;
+
+print &quot;ST &quot;, $st-&gt;can_publish ? &#39;publishes&#39; : &quot;does not publish.\n&quot;;
+$st = $st-&gt;on_publish; # Used for publish event.
+$st = $st-&gt;no_publish; # Not used for publish event.
+
+print &quot;ST &quot;, $st-&gt;can_preview ? &#39;previews&#39; : &quot;does not preview.\n&quot;;
+$st = $st-&gt;on_preview; # Used for preview event.
+$st = $st-&gt;no_preview; # Not used for preview event.
+
+print &quot;ST is &quot;, $st-&gt;is_active ? &#39;&#39; : &#39;not &#39;, &quot;active.\n&quot;;
+$st-&gt;deactivate;
+$st-&gt;activate;
+
+# Accessors to servers of this type.
+my @servers = $st-&gt;get_servers;
+my $server = $st-&gt;new_server;
+$st-&gt;del_servers;
+
+# Accessors to output channels associated with this server type.
+my @ocs = $st-&gt;get_output_channels;
+$st = $st-&gt;add_output_channels(@ocs);
+$st = $st-&gt;del_output_channels(@ocs);
+
+# Accessors to actions associated with this type.
+my @actions = $st-&gt;get_actions;
+my $action = $st-&gt;new_action;
+$st-&gt;del_actions;
+
+# Save it.
+$st-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages types of servers. A server type represents a class of servers on which a list of actions should be performed upon the execution of a job. A server type, therefore, simply describes a list of servers for which the actions will be performed and a list of actions to be executed on the files associated with a given job. The last action should be a move statement, to move each file to each of the servers.</p>
+
+<p>So use this class a the central management point for figuring out what happens to files, and in what order, and what servers they are sent to, in the event of a publish or preview event.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $st = Bric::Dist::ServerType-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Dist::ServerType object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+</li>
+<li><p>description</p>
+
+</li>
+<li><p>site_id</p>
+
+</li>
+<li><p>move_method</p>
+
+</li>
+</ul>
+
+<p>The active property will be set to true and the copy property to false by default. Call $st-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $st = Bric::Dist::ServerType-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+</dd>
+<dt>my $st = Bric::Dist::ServerType-&gt;lookup({ name =&gt; $name, site_id =&gt; $site_id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Dist::ServerType object based on the Bric::Dist::ServerType object ID or name and site ID passed. If <code>$id</code> or <code>$name</code> and <code>$site_id</code> is not found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Dist::ServerType objects found.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Dist::ServerType object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@sts || $sts_aref) = Bric::Dist::ServerType-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::ServerType objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Destination ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>move_method</dt>
+<dd>
+
+<p>Destination move method. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>Destination name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Destination description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>ID of Bric::Biz::Site object with which destinations may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>job_id</dt>
+<dd>
+
+<p>ID of Bric::Util::Job object with which destinations may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>resource_id</dt>
+<dd>
+
+<p>ID of Bric::Dist::Resource object with which destinations may be associated via jobs. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>output_channel_id</dt>
+<dd>
+
+<p>ID of Bric::Biz::OutputChannel object with which destinations may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>can_copy</dt>
+<dd>
+
+<p>Boolean value indicating whether resources should be copied to a temporary location before distribution actions should be carried out on them. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>can_publish</dt>
+<dd>
+
+<p>Boolean value indicating whether or not the destination is distributed to upon publish events.</p>
+
+</dd>
+<dt>can_preview</dt>
+<dd>
+
+<p>Boolean value indicating whether or not the destination is distributed to upon preview events.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>ID of Bric::Util::Grp object with which destinations may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean value indicating whether the destination object is active.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::ServerType object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sts_href = Bric::Dist::ServerType-&gt;href($params)</dt>
+<dd>
+
+<p>Returns an anonymous hash of Bric::Dist::ServerType objects, where the keys are object IDs and the values or the objects themselves, based on the search parameters passed via an anonymous hash. The supported lookup keys are are the same as for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::ServerType object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$st-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@st_ids || $st_ids_aref) = Bric::Dist::ServerType-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::ServerType object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@types || $types_aref) = Bric::Dist::ServerType-&gt;list_move_methods</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the names of classes that feature a method to move resources.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Dist::ServerType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Dist::ServerType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Dist::ServerType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $st-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Dist::ServerType object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Dist::ServerType object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $name = $st-&gt;get_name</dt>
+<dd>
+
+<p>Returns the server type name.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_name($name)</dt>
+<dd>
+
+<p>Sets the server type name. The name must be unique.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;name&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $st-&gt;get_description</dt>
+<dd>
+
+<p>Returns the server type description.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;description&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_description($description)</dt>
+<dd>
+
+<p>Sets the server type description, first converting any non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $st-&gt;get_site_id</dt>
+<dd>
+
+<p>Returns the site ID with which this ServerType is associated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_site_id($site_id)</dt>
+<dd>
+
+<p>Associate this ServerType with a site.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $move_method = $st-&gt;get_move_method</dt>
+<dd>
+
+<p>Returns the display name of the Bricolage class responible for moving resources to servers of this type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;move_method&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;set_move_method($move_method)</dt>
+<dd>
+
+<p>Sets the name of the class responible for moving resources to servers of this type. Get a list of supporte mover types from list_move_methods().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;move_method&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@ocs || $ocs_aref) = $st-&gt;get_output_channels</dt>
+<dd>
+
+</dd>
+<dt>my (@ocs || $ocs_aref) = $st-&gt;get_output_channels(@oc_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the Bric::Biz::OutputChannel objects that represent the directories and/or files on which this server type acts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$st = $st-&gt;add_output_channels(@ocs)</dt>
+<dd>
+
+<p>Adds Output Channels to this server type. Call save() to save the relationship.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>$self = $st-&gt;del_output_channels(@ocs)</dt>
+<dd>
+
+<p>Dissociates Output Channels, represented as Bric::Biz::OutputChannel objects, from the server type. call save() to save the dissociations to the database.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@servers || $servers_aref) = $st-&gt;get_servers(@server_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Server objects that are of this type. Pass in a list of Bric::Dist::Server object IDs to get back only those Bric::Dist::Server objects. If no IDs are passed, all the Bric::Dist::Server objects of this type will be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>my $server = $st-&gt;new_server($init)</dt>
+<dd>
+
+<p>Adds a new server to this server type. The initial values for the $init anonymous hash are the same as those for Bric::Dist::Server-&gt;new(), although the server_type_id property will be set automatically to associate the new server object with this server type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>$self = $st-&gt;del_servers(@server_ids)</dt>
+<dd>
+
+<p>Deletes Bric::Dist::Server objects from this type. Pass in a list of Bric::Dist::Server object IDs to delete only those servers. If no IDs are passed, all of the Bric::Dist::Server objects of this type will be deleted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Server internally.</p>
+
+</dd>
+<dt>my (@actions || $actions_aref) = $st-&gt;get_actions(@action_ids)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Action objects that are of this type. Pass in a list of Bric::Dist::Action object IDs to get back only those Bric::Dist::Action objects. If no IDs are passed, all the Bric::Dist::Action objects of this type will be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Action internally.</p>
+
+</dd>
+<dt>my $action = $st-&gt;new_action($init)</dt>
+<dd>
+
+<p>Adds a new action to this action type. The initial values for the $init anonymous hash are the same as those for Bric::Dist::Action-&gt;new(), although the server_type_id property will be set automatically to associate the new action object with this server type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Action internally.</p>
+
+</dd>
+<dt>$self = $st-&gt;del_actions(@action_ids)</dt>
+<dd>
+
+<p>Deletes Bric::Dist::Action objects from this type. Pass in a list of Bric::Dist::Action object IDs to delete only those actions. If no IDs are passed, all of the Bric::Dist::Action objects of this type will be deleted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Coll::Action internally.</p>
+
+</dd>
+<dt>$self = $st-&gt;copy</dt>
+<dd>
+
+<p>Sets the copy property to true, meaning that when a job is executed for this server type, all the resources should be copied to a temporary directory before the actions are applied to them.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;no_copy</dt>
+<dd>
+
+<p>Sets the copy property to false, meaning that when a job is executed for this server type, all the resources will have the actions applied to them in place, without first moving them to a temporary directory.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;can_copy</dt>
+<dd>
+
+<p>Returns $self if the resources should be copied to a temporary directory before performing actions on them, and false if the actions can be applied to the resources in place.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;on_publish</dt>
+<dd>
+
+<p>Sets the copy publish to true, meaning that this server type should be used for publish events.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;no_publish</dt>
+<dd>
+
+<p>Sets the publish property to false, meaning that this server type should be used for jobs triggered by publish events.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;can_publish</dt>
+<dd>
+
+<p>Returns $self if this server type is used to move files for a publish event.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;on_preview</dt>
+<dd>
+
+<p>Sets the copy preview to true, meaning that this server type should be used for preview events.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;no_preview</dt>
+<dd>
+
+<p>Sets the preview property to false, meaning that this server type should be used for jobs triggered by preview events.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;can_preview</dt>
+<dd>
+
+<p>Returns $self if this server type is used to move files for a preview event.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Dist::ServerType object. Call $st-&gt;save to make the change persistent. Bric::Dist::ServerType objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Dist::ServerType object. Call $st-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Dist::ServerType object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $st-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Dist::ServerType object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>my $mover_class = $st-&gt;_get_mover_class()</dt>
+<dd>
+
+<p>Returns the Class (package) name of the class used to move resources. Used by Bric::Dist::Action::Mover so that it knows who to tell to do the moving.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If the move method has been changed via set_move_method() since the current object was instantiated, this method will return the old package name rather than the new one. To get the new one, instantiate the object but don&#39;t change its method. If you really want to change it, do so, save it, and then re-instantiate it via Bric::Dist::ServerType-&gt;lookup().</p>
+
+<p><b>Notes:</b> NONE&gt;</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $st_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $st_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by <code>lookup()</code> and <code>list()</code> to return a list of Bric::Dist::ServerType objects or, if called with an optional third argument, returns a list of Bric::Dist::ServerType object IDs (used by <code>list_ids()</code>).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+</dd>
+<dt>my $rules = &amp;$get_coll($self, $class, $key)</dt>
+<dd>
+
+<p>Returns the collection of objects stored under $key in $self. The collection is a subclass Bric::Util::Coll object, identified by $class. See Bric::Util::Coll for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

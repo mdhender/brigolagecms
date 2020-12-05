@@ -1,0 +1,246 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Blogger to Bricolage 2.0</title>
+	<meta name="keywords" content="blogger, migration" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="blogger-to-bricolagecms" class="news">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Blogger to Bricolage 2.0</h2>
+		<div id="articlemeta">
+            <p class="byline">By Phillip Smith</p>
+            <p class="date">2010.10.29</p>
+          </div>
+
+          <p>Bricoleur Matt Rolf shares his experience migrating from Blogger to Bricolage 2.0. He details the installation, content migration, woes and successes of his journey:</p>
+          <blockquote>
+            <p>Over the summer I migrated a site I do on the side, the <a href="http://soccer.fakesigi.com/about_fake_sigi_website_redesign.html">Fake Sigi Soccer website</a>, from Blogger to Bricolage 2.0.  The first question is why do this?  Why leave something as easy as Blogger for something as powerful as Bricolage?  For me it came down to control over my site and control over a tool that I know.  Blogger has a number of limitations over what users can do with their design.  I thought that for what I was getting with the minimal layout, the code was too heavy and slow to load.  I also wanted to optimize my site for users and search engines. Creating a fast loading, navigable, article archive was something that gave me a lot of trouble on Blogger, and was what -- ultimately -- pushed me over the edge.</p>
+            <p>The installation of Bricolage 2 was fast - much faster than what I've experienced with Bricolage 1.10. In one evening I put together the hardware and had a running Bricolage instance.  My four years of experience with Bricolage helped me in this regard, but system administrators who are familiar with <a href="http://www.cpan.org/">CPAN</a> will also have a leg up.  If you're new to the command-line interface, be prepared for a challenge. </p>
+            <p>I was also helped by my reliance on <a href="http://www.netbsd.org/">NetBSD</a> and the <a href="http://www.netbsd.org/docs/software/packages.html">pkgsrc framework</a>.  The most important word of advice for Bricolage installers is "build everything from source" including your installation of Perl.  Since pkgsrc does that, and better yet, automates most of it, it's the perfect companion for Bricolage.  </p>
+            <p>Once Bricolage was installed, I spent some time building my templates, elements, and story types.  The site needed to be simple but flexible, with regular web pages, article/blog posts, keyword archives, a sitemap, and an Atom feed.  The core process took me about a week, followed by tweaks to the templates as was necessary.  In addition to the site migration, I did a full site redesign, which you can <a href="http://soccer.fakesigi.com/about_fake_sigi_website_redesign.html">
+read about on the site if things like that interest you</a>.  Getting the site design right took much more time than setting up the Bricolage templates.  Obviously this will vary for other installations.</p>
+            <p>The migration itself was not too bad, but like many Bricolage administration tasks, it's not geared toward non-technical users.  I got the Blogger XML dump of my site and mapped it to my new elements.  I used a perl script with <a href="http://search.cpan.org/~jstowe/XML-XSLT-0.48/lib/XML/XSLT.pm">XML::XSLT</a> and an XSL Template to convert the Blogger XML into a Bricolage-friendly <a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a> format. I also had to run some regex to clean up the code. Specifically, Google has taken to dumping a unique ID into the content field of their blogs, and that was a little tricky to get out.  </p>
+            <p>Once I had the Bricolage-friendly XML, I imported the content without much fuss. I imported about 800 blog posts.  I did not migrate any images to the system. Since the migration was relatively simple, the Bricolage-specific work -- installation, template development, import -- took between a quarter and a third of the project time.  The rest of the time was spent on the redesign, implementing a KinoSearch search engine for the site, making some needed content and keyword updates, and most importantly, beta testing.  The final beta testing period lasted about three weeks. </p>
+            <p>So, what's it like using Bricolage 2.0? The new workspace and content editing interfaces are a glorious improvement over the previous version. Whereas 1.10 was challenging but trainable, I can actually use the word intuitive to describe several aspects of the 2.0 interface.  In bringing new users to the system, the most challenging aspect is explaining how Workflows, desks, the "shelf," workspaces, check in/out, and the editing interface all work together.  But the pain of drilling down into story elements has thankfully been eliminated, and the result is a much more usable product.  When looking at the current state of enterprise-class content management systems, the Bricolage 2 interface compares favorably. </p>
+            <p>Not all is golden. I am currently using JS-Quicktags (which inserts HTML tags into text) to get around some bugs with the Xinha WYSIWYG text editor.  A couple aspects of the new interface seem like a step back. For example, I still miss the "cancel checkout" button after two months of use.  Document publishing is still *the* system bottle neck using SFTP to transfer files.  Bricolage can generate around 800 pages of HTML content in 5 minutes for my site, but it then takes 20-25 minutes to distribute those files to the server via SFTP.  Not only that, I had to apply some patches were not in the 2.0 release to get the SFTP publishing to work at all.  <a href="http://www.justatheory.com/">David Wheeler</a> has already rewritten the SFTP framework from the ground up for the next release, and hopefully the other minor issues I've found will be soon be patched for a bug-fix release.</p>
+            <p>There's no question Bricolage is more powerful than Blogger -- so much so that I've considered expanding my one-person blog to other writers.  Since Bricolage can handle the web publishing efforts of very large organizations, it's probably over-kill if you're just one writer.  But it sure is fun.</p>
+            <p>For hardware I'm running two machines.  The Postgresql database is on a 1.6Ghz Core 2 MacMini with a 250GB HD and 2GB RAM.  Bricolage is on a 2.0Ghz  single-core Athlon from early 2005, with a 80GB HD and 1GB RAM. This setup works very well for my needs, and is probably a little more hardware than is necessary.  SFTP publishing is far and away the biggest performance bottleneck.  </p>
+            <p>Overall, I'm very pleased with Bricolage 2.0. Once some of the minor bugs are squashed, it's an easy upgrade to recommend to users of Bricolage 1.10.   This post only scratches the surface of my installation.  I'll be happy to answer any questions via e-mail (mattrolf at me dot com). </p>
+            <p><cite>Matt Rolf</cite></p>
+          </blockquote>
+          <p>Have a similar story to share? E-mail us at the-oc at bricolagecms dot org. </p>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+
+
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

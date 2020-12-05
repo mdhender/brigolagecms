@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Element</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Element.html#Name">Name</a></li>
+  <li><a href="Element.html#Synopsis">Synopsis</a></li>
+  <li><a href="Element.html#Description">Description</a></li>
+  <li><a href="Element.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Element.html#Constructors">Constructors</a></li>
+      <li><a href="Element.html#Destructors">Destructors</a></li>
+      <li><a href="Element.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Element.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Element.html#Private">Private</a>
+    <ul>
+      <li><a href="Element.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Element.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Element.html#Notes">Notes</a></li>
+  <li><a href="Element.html#Author">Author</a></li>
+  <li><a href="Element.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Element - Bricolage Document Element base class</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>my @elements = Bric::Biz::Element-&gt;list($params)
+
+$id = $element-&gt;get_id;
+$element = $element-&gt;activate;
+$element = $element-&gt;deactivate;
+my $active = $element-&gt;is_active;
+$element = $element-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class defins the common structure of elements, the building blocks of Bricolage story and media documents. There are two types of elements: container elements and data elements. Container elements can contain any number of container and data subelements. Data elements contain values, and corrspond to fields in the Bricolage UI. See <a rel="section" href="Element/Container.html" name="Bric::Biz::Element::Container">Bric::Biz::Element::Container</a> and <a rel="section" href="Element/Field.html" name="Bric::Biz::Element::Field">Bric::Biz::Element::Field</a> for details of their interfaces and how they vary from Bric::Biz::Element.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $element = Bric::Biz::Element-&gt;new($init)</dt>
+<dd>
+
+<p>Constructs a new element. Its attributes can be initialized via the <code>$init</code> hash reference. See the subclasses for a list of parameters. Cannot be called directly, but must be called from a subclass.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @elements = Bric::Biz::Element-&gt;list($params)</dt>
+<dd>
+
+<p>Searches for and returns a list or anonymous array of element objects. Cannot be called directly, but must be called from a subclass.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Method Not Implemented</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$element-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>$meths = Bric::Biz::Element-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my @meths = Bric::Biz::Element-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my @meths = Bric::Biz::Element-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<ul>
+
+<li><p>name - The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</li>
+<li><p>disp - The display name of the property or attribute.</p>
+
+</li>
+<li><p>get_meth - A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>get_args - An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</li>
+<li><p>set_meth - A reference to the method that will set the value of the property or attribute.</p>
+
+</li>
+<li><p>set_args - An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</li>
+<li><p>type - The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>len - If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</li>
+<li><p>search - The property is searchable via the list() and list_ids() methods.</p>
+
+</li>
+<li><p>req - The property or attribute is required.</p>
+
+</li>
+<li><p>props - An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+</dd>
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</li>
+<li><p>length - The Length, in letters, to display a text or password field.</p>
+
+</li>
+<li><p>maxlength - The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</li>
+<li><p>rows - The number of rows to format in a textarea field.</p>
+
+</li>
+<li><p>cols - The number of columns to format in a textarea field.</p>
+
+</li>
+<li><p>vals - An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @elements = Bric::Biz::Element-&gt;list($params)</dt>
+<dd>
+
+<p>Searches for and returns a list or anonymous array of element object IDs. Cannot be called directly, but must be called from a subclass.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Method Not Implemented</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $p-&gt;get_id</dt>
+<dd>
+
+<p>Returns the element ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $name = $p-&gt;get_name</dt>
+<dd>
+
+<p>Returns the element name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $key_name = $p-&gt;get_key_name</dt>
+<dd>
+
+<p>Returns the element key name.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $p-&gt;get_description</dt>
+<dd>
+
+<p>Returns the element description.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$p = $p-&gt;set_description( $description )</dt>
+<dd>
+
+<p>Sets the element description, first converting non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $parent_id = $p-&gt;get_parent_id</dt>
+<dd>
+
+<p>Returns the ID of the element&#39;s parent element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$p-&gt;set_parent_id($parent_id)</dt>
+<dd>
+
+<p>Sets the ID of the element&#39;s parent element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $place = $p-&gt;get_place</dt>
+<dd>
+
+<p>Returns the element place, that is, its place in the order of subelements of the parent element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$p-&gt;set_place($place)</dt>
+<dd>
+
+<p>Sets the element place, that is, its place in the order of subelements of the parent element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $object_type = $p-&gt;get_object_type</dt>
+<dd>
+
+<p>Returns the element object type (&quot;story&quot; or &quot;media&quot;);</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$p-&gt;set_object_type($object_type)</dt>
+<dd>
+
+<p>Sets the element object type (&quot;story&quot; or &quot;media&quot;);</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $object_instance_id = $element-&gt;get_object_instance_id</dt>
+<dd>
+
+<p>Returns the ID of the version of the document (story or media) that the element is associated with.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element-&gt;set_object_instance_id($object_instance_id)</dt>
+<dd>
+
+<p>Sets the ID of the version of the document (story or media) that the element is associated with.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $has_name = $element-&gt;has_name($name);</dt>
+<dd>
+
+<p>Returns true if an element has a name matching the <code>$name</code> argument. Note that this is not a direct comparison to the <code>name</code> attribute of the element object. Rather, it converts <code>$name</code> so that it is all lowercase and its non-alphanumeric characters are changed to underscores. The resulting value is then compared to the element&#39;s <code>key_name</code> attribute. In general, it&#39;s a better idea to use <code>has_key_name()</code>, or to do direct key name comparisons yourself. This method is provided for backwards compatability.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $has_key_name = $element-&gt;has_key_name($key_name)</dt>
+<dd>
+
+<p>Returns true if an element has a key name matching the <code>$key_name</code> argument.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$parent_element = $element-&gt;get_parent</dt>
+<dd>
+
+<p>Returns the parent element object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element = $element-&gt;activate</dt>
+<dd>
+
+<p>Activates the element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element = $element-&gt;deactivate()</dt>
+<dd>
+
+<p>Deactivates the element.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $is_active $element-&gt;is_active</dt>
+<dd>
+
+<p>Returns true if the element is active, and false if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<p>NONE</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>michael soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a>, <a rel="section" href="Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a>, <a rel="section" href="ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a>, <a rel="section" href="Element/Container.html" name="Bric::Biz::Element::Container">Bric::Biz::Element::Container</a>, <a href="http://search.cpan.org/perldoc?Bric::Biz::Element::Tile">Bric::Biz::Element::Tile</a></p>
+
+</body>
+</html>
+

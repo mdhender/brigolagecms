@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::AdvTemplates</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="AdvTemplates.html#Name">Name</a></li>
+  <li><a href="AdvTemplates.html#Introduction">Introduction</a></li>
+  <li><a href="AdvTemplates.html#Utility-Templates">Utility Templates</a></li>
+  <li><a href="AdvTemplates.html#Multipage-Stories">Multipage Stories</a>
+    <ul>
+      <li><a href="AdvTemplates.html#Using-display_element-">Using <code>display_element()</code></a></li>
+      <li><a href="AdvTemplates.html#Using-display_pages-">Using <code>display_pages()</code></a></li>
+    </ul>
+  </li>
+  <li><a href="AdvTemplates.html#Including-Related-Stories-and-Media">Including Related Stories and Media</a></li>
+  <li><a href="AdvTemplates.html#Bricolage-Mason-Custom-Tags">Bricolage Mason Custom Tags</a></li>
+  <li><a href="AdvTemplates.html#Formatting-XML-in-the-Mason-burner">Formatting XML in the Mason burner</a></li>
+  <li><a href="AdvTemplates.html#Using-Other-Perl-Modules">Using Other Perl Modules</a></li>
+  <li><a href="AdvTemplates.html#Author">Author</a></li>
+  <li><a href="AdvTemplates.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::AdvTemplates - Template Producing: Advanced Topics</p>
+
+<h1 id="Introduction">Introduction</h1>
+
+<p>This document discusses some templating techniques that require existing knowledge of the Bricolage publishing system. The text and examples assume that you have already read and understood the <a rel="section" href="../../../2.0/api/Bric/Templates.html" name="Bric::Templates">Bric::Templates</a>.</p>
+
+<h1 id="Utility-Templates">Utility Templates</h1>
+
+<p>Bricolage supports three different types of templates. We&#39;ve already discussed category templates and element templates in <a rel="section" href="../../../2.0/api/Bric/Templates.html" name="Bric::Templates">Bric::Templates</a>. Here we introduce the third: utility templates.</p>
+
+<p>Utility templates are associated with no element types, unlike element templates. They <i>are</i> associated with categories, but only to manage where they&#39;re stored on the file system; they of course do not execute as part of a category template chain.</p>
+
+<p>The purpose of utility templates is to create libraries of commonly reused code, so that you can maintain that code in one place, rather than copy and paste it into many different element and/or category templates. Most Bricolage templaters create a category structure just for utility templates. For example, you might have a category called <i>/util</i>, with a <i>/util/xhtml</i> subcategory of templates specific to XHTML output.</p>
+
+<p>Utility templates are never executed by Bricolage. Rather, you execute them using the standard calling syntax of your templating architecture. For example, say that you want to have a simple include to pull in at the end of a story, and you support many different types of stories. The simple thing to do is to create a utility template. In Mason, I might create a utility template named <i>/util/xhtml/license.mc</i> that looks like this:</p>
+
+<pre><code>&lt;%args&gt;
+$license
+&lt;/%args&gt;
+&lt;div&gt;Licensed under the &lt;% $license %&gt; license&lt;/div&gt;\</code></pre>
+
+<p>To call it, I just use native Mason syntax at the bottom of a story template:</p>
+
+<pre><code>&lt;&amp; /util/xhtml/license.mc, license =&gt; &#39;Creative Commons&#39; &amp;&gt;</code></pre>
+
+<p>In Template Toolkit, the utility template would be named <i>/util/xhtml/license.tt</i> and looks like this:</p>
+
+<pre><code>&lt;div&gt;Licensed under the [% license %] license&lt;/div&gt;</code></pre>
+
+<p>To call it I just use native TT syntax at the bottom of a story template:</p>
+
+<pre><code>[% INCLUDE util/xhtml/license.tt license = &#39;BSD&#39; -%]</code></pre>
+
+<p>In PHP, the utility template would be named <i>/util/xhtml/license.php</i> and looks like this:</p>
+
+<pre><code>&lt;?php
+function license($license = &quot;GPL&quot;) {
+    echo &quot;&lt;div&gt;Licensed under the $license license&lt;/div&gt;\n&quot;;
+}
+?&gt;</code></pre>
+
+<p>As you can see, it&#39;s a bit different in PHP, as the file doesn&#39;t actually output anything itself, but declares a function that does. We just need to include the template and then call the function:</p>
+
+<pre><code>&lt;?php
+   include_once(&quot;util/xhtml/license.php&quot;);
+   license(&#39;BSD&#39;);
+?&gt;</code></pre>
+
+<p>In HTML::Template templates, it&#39;s not possible to pass arguments to an included <i>.tmpl</i> template; use a <i>.pl</i> template to define functions, if necessary. But you can of course include another template. So if the utility template, named <i>/util/xhtml/license.tmpl</i>, looked something like this:</p>
+
+<pre><code>&lt;tmpl_if include_license&gt;
+  &lt;div&gt;Licensed under the Creative Commons license&lt;/div&gt;
+&lt;/tmpl_if&gt;</code></pre>
+
+<p>You can include it like so:</p>
+
+<pre><code>&lt;tmpl_include name=&quot;util/xhtml/license.tmpl&quot;&gt;</code></pre>
+
+<p>Of course these are contrived examples. But hopefully the utility (no pun intended) of utility templates is apparent.</p>
+
+<h1 id="Multipage-Stories">Multipage Stories</h1>
+
+<p>As discussed in <a rel="section" href="../../../2.0/api/Bric/Templates.html" name="Bric::Templates">Bric::Templates</a>, element types in Bricolage can be marked as &quot;paginated.&quot; Such element types can be used to re-execute their element templates over successive pages, automatically outputting a new file each time. All templates output to a file named for the &quot;File Name&quot; and &quot;File Extension&quot; properties of the current Output Channel. Templates based on paginated element types will simply append a number to the output file for each additional time they run.</p>
+
+<p>For example, a story containing four paginated elements will (assuming that the &quot;File Name&quot; and &quot;File Extension&quot; properties are set to &quot;index&quot; and &quot;html&quot;, respectively), upon publication, produce the files:</p>
+
+<dl>
+
+<dt><i>index.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index1.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index2.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index3.html</i></dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Sometimes you&#39;d rather not use the numbers, but some other identifier for successive page file names. In such a case, you can use the burner object&#39;s <code>set_page_extensions()</code> method to set alternatives. If there are more pages than extensions, the burner will start using numbers again. For example, this statement:</p>
+
+<pre><code>$burner-&gt;set_page_extensions(&#39;&#39;, &#39;_two&#39;, &#39;_three&#39;);</code></pre>
+
+<p>Would cause a four-page story to output the following file names;</p>
+
+<dl>
+
+<dt><i>index.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index_two.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index_three.html</i></dt>
+<dd>
+
+</dd>
+<dt><i>index1.html</i></dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Now, regardless of the file names, there are two ways to execute templates based on paginated elements. The first is the normal <code>display_element()</code> method, and the second is the <code>display_pages()</code> method.</p>
+
+<h2 id="Using-display_element-">Using <code>display_element()</code></h2>
+
+<p>When formatting a paginated element using <code>display_element()</code>, the page elements will <b>not</b> trigger the output of data to a new file. Thus <code>display_element()</code> handles paginated elements in the same way that it handles all other elements. Use this approach to output all pages on a single page, such as for the print version of a story.</p>
+
+<p>For example, say we have a &quot;Column&quot; story that contains paginated &quot;Page&quot; subelements. Here is some Mason template code for &quot;Page&quot; (assume that it contains only paragraphs):</p>
+
+<pre><code>&lt;!-- page --&gt;
+  % foreach my $p ($element-&gt;get_elements(&#39;paragraph&#39;)) {
+&lt;p&gt;&lt;% $p-&gt;get_value %&gt;&lt;/p&gt;
+  % }</code></pre>
+
+<p>In Template Toolkit, that&#39;s:</p>
+
+<pre><code>&lt;!-- page --&gt;
+  [% FOREACH e = element.get_elements(&#39;paragraph&#39;) -%]
+&lt;p&gt;[% e.get_value %]&lt;/p&gt;
+  [% END -%]</code></pre>
+
+<p>And in PHP, it&#39;s:</p>
+
+<pre><code>&lt;!-- page --&gt;
+  &lt;?php
+  foreach ($element-&gt;get_elements(&#39;paragraph&#39;) as $e) {
+echo &#39;    &lt;p&gt;&#39;, $e-&gt;get_value(), &quot;&lt;/p&gt;\n&quot;;
+  }
+  ?&gt;</code></pre>
+
+<p>And now, some simple template code for &quot;Column.&quot; Mason first:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;&lt;% $story-&gt;get_title %&gt;&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+% $burner-&gt;display_element($_) for $element-&gt;get_elements(&#39;page&#39;);
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Next, Template Toolkit:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;[% story.get_title() %]&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+  [% FOREACH e = element.get_elements(&#39;page&#39;) -%]
+  [% burner.display_element(e) %]
+  [% END -%]
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>And finally, of course, PHP:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;&lt;?= $story-&gt;get_title() ?&gt;&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;?php
+    foreach ($element-&gt;get_elements(&#39;page&#39;) as $e) {
+        $burner-&gt;display_element($e);
+    }
+    ?&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Now, these templates will work exactly as you would expect: each page is output as any other element is output, and the results of all this output are included in a single page. For a column story with three &quot;Page&quot; subelements, the output would look something like this:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;Our Column Title&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 1 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 1 para 2 content&lt;/p&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 2 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 2 para 2 content&lt;/p&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 3 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 3 para 2 content&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h2 id="Using-display_pages-">Using <code>display_pages()</code></h2>
+
+<p>The <code>display_pages()</code> method, on the other hand, creates new files for each page element. The <code>display_pages()</code> method takes a single key name or an array reference of key names of paginated elements:</p>
+
+<pre><code>% my @page_key_names = qw/page another_page/;
+% $burner-&gt;display_pages(\@page_key_names);</code></pre>
+
+<p>Here, pages with key names &quot;page&quot; and &quot;another_page&quot; are published. The template with the call to <code>display_pages()</code>, as well as any surrounding category templates, is run multiple times, once for every instance of a paginated element identified by the key names argument. So if we have a &quot;Column&quot; story containing three &quot;Page&quot; subelements and no &quot;Another Page&quot; elements, the &quot;Column&quot; template will be executed three times. Each time it runs, the <code>display_pages()</code> method will execute the &quot;Page&quot; template with each succeeding page.</p>
+
+<p>So we can use our earlier example with just a minor change to the Column template to produce the output we want. The Mason template is now:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;&lt;% $story-&gt;get_title %&gt;&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+% $burner-&gt;display_pages([ qw(page another_page) ]);
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Template Toolkit now looks like this:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;[% story.get_title() %]&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+  [% burner.display_pages([ &#39;page&#39;, &#39;another_page&#39; ]) %]
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>And PHP looks like this:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;&lt;?= $story-&gt;get_title() ?&gt;&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;?php
+$burner-&gt;display_pages(array( &#39;page&#39;, &#39;another_page&#39; ));
+    ?&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Note that in each case, we&#39;ve removed the <code>foreach</code> block with its call to <code>display_element()</code> and substituted a call to <code>display_pages()</code>. The output is now in three files that look like this:</p>
+
+<p>index.html:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;Our Column Title&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 1 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 1 para 2 content&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>index1.html:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;Our Column Title&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 2 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 2 para 2 content&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>index2.html:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;Our Column Title&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- page --&gt;
+    &lt;p&gt;page 3 para 1 content&lt;/p&gt;
+    &lt;p&gt;page 3 para 2 content&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h1 id="Including-Related-Stories-and-Media">Including Related Stories and Media</h1>
+
+<p>Certain types of container elements can have other stories or media objects related to them. If an element has a related story or media document (or both!), you can get at it using methods on the container element. In Mason:</p>
+
+<pre><code>% my $rel_story = $element-&gt;get_related_story;
+% my $rel_media = $element-&gt;get_related_media;</code></pre>
+
+<p>In Template Toolkit:</p>
+
+<pre><code>[% rel_story = element.get_related_story %]
+[% rel_media = element.get_related_media %]</code></pre>
+
+<p>In PHP:</p>
+
+<pre><code>$rel_story = $element-&gt;get_related_story();
+$rel_media = $element-&gt;get_related_media();</code></pre>
+
+<p>The related story object is of course in the same class as the global $story object. To get the top element of the related story, call the <code>get_element()</code> method. The returned element is in the same class as the global $element object: It&#39;s the top-level container element for the related story.</p>
+
+<p>Related media are <a rel="section" href="../../../2.0/api/Bric/Biz/Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a> objects. They inherit from the same class as the story class, namely <a href="http://search.cpan.org/perldoc?Bric::Biz::Asset::Busines">Bric::Biz::Asset::Busines</a>, but has a slightly different interface. These methods are the most notable:</p>
+
+<dl>
+
+<dt><code>get_uri($oc)</code></dt>
+<dd>
+
+<p>Media objects are associated with only a single category, and so there is no distinction between a primary URI and secondary URIs. But thanks to their ability to be associated multiple output channels, they might have different output channel formats. You can therefore pass in an output channel object or ID to get the media document&#39;s URI for that output channel?</p>
+
+<p>As of Bricolage 1.10, there is also a <code>primary_uri()</code> method in the media class to create parity with the interface of the story class. But, really, for creating URIs in Templates, you&#39;re best off using the <code>best_uri()</code> method of the burner class:</p>
+
+<pre><code>my $uri = $burner-&gt;best_uri($rel_media)-&gt;as_string;</code></pre>
+
+</dd>
+<dt><code>get_media_type()</code></dt>
+<dd>
+
+<p>Returns a &lt;LBric::Util::MediaType|Bric::Util::MediaType&gt; object describing the media type (a.k.a. the &quot;MIME Type&quot;) of the media document.</p>
+
+</dd>
+</dl>
+
+<h1 id="Bricolage-Mason-Custom-Tags">Bricolage Mason Custom Tags</h1>
+
+<p>The Bricolage Mason burner extends HTML::Mason tags so that template developers can write blocks of code that only run in certain contexts.</p>
+
+<p>There are four contexts in which a template is executed, and each context has a corresponding Mason tag:</p>
+
+<dl>
+
+<dt><code>&lt;%chk_syntax&gt;</code></dt>
+<dd>
+
+<p>Only runs in syntax checking--that is, when saving a template in the Templating UI. This tag is useful to comment out code that you want to check as valid Perl code, but not to be used in any other context.</p>
+
+<pre><code>&lt;%chk_syntax&gt;;
+print &quot;This is a no-op.\n&quot;;
+&lt;/%chk_syntax&gt;</code></pre>
+
+</dd>
+<dt><code>&lt;%preview&gt;</code></dt>
+<dd>
+
+<p>Code inside a <code>&lt;%preview&gt;</code> tag executes only during previews, and is ignored by publishes. It can be useful for sending messages to the previewer or carrying out some action that should only be carried out during previews:</p>
+
+<pre><code>&lt;%preview&gt;;
+$burner-&gt;throw_error(&#39;What are you thinking??&#39;)
+    if $element-&gt;get_value(&#39;is_porn&#39;);
+&lt;/%preview&gt;</code></pre>
+
+</dd>
+<dt><code>&lt;%publish&gt;</code></dt>
+<dd>
+
+<p>Code inside a <code>&lt;%publish&gt;</code> block will only execute during a publish, and not during a preview. For example, you might want to create a record in a database only when a story is published:</p>
+
+<pre><code>&lt;%publish&gt;;
+my $dbh = DBI-&gt;connect(&#39;DBI:mysql:database=mydb;host=db.example.com&#39;);
+$dbh-&gt;do(
+    &#39;INSERT INTO blog VALUES (?, ?)&#39;,
+    undef,
+    $story-&gt;get_title,
+    &#39;&lt;p&gt;&#39; . join(
+        &#39;&lt;/p&gt;&lt;p&gt;&#39;,
+         map { $_-&gt;get_value } $element-&gt;get_elements(&#39;paragraph&#39;)
+    ) . &#39;&lt;/p&gt;&#39;
+);
+&lt;/%publish&gt;</code></pre>
+
+</dd>
+<dt><code>&lt;%realtime&gt;</code></dt>
+<dd>
+
+<p>This block is equivalent to Mason&#39;s <code>&lt;%text&gt;</code> block. Any of its contents will be ignored by the burner and simply output to the file. Once distributed to a Mason-powered destination server, any Mason code inside the block will execute:</p>
+
+<pre><code>&lt;%realtime&gt;
+&lt;&amp; /path/to/delivery_server/include.mhtml &amp;&gt;
+&lt;/%realtime&gt;</code></pre>
+
+</dd>
+</dl>
+
+<h1 id="Formatting-XML-in-the-Mason-burner">Formatting XML in the Mason burner</h1>
+
+<p>In order to simplify the Mason template developer&#39;s life to some degree, we&#39;ve created <i>bricolage.conf</i> configuration directives that, when enabled, will add a global variable to the Mason name space called $writer. This variable contains an <a href="http://search.cpan.org/perldoc?XML::Writer">XML::Writer</a> object that can be used to output XML from your templates. Of course you can simply use Mason for outputting XML, but if you need to output a <b>lot</b> of XML, you might want to take advantage of the XML::Writer object.</p>
+
+<p>To use $writer, simply set the <code>INCLUDE_XML_WRITER</code> <i>bricolage.conf</i> directive to &quot;Yes&quot;. Another directive, <code>XML_WRITER_ARGS</code>, can be used to pass extra parameters to the XML::Writer constructor (see <a href="http://search.cpan.org/perldoc?XML::Writer">XML::Writer</a> for details of the arguments it accepts -- just don&#39;t use the <code>OUTPUT</code> parameter, as Bricolage needs to set this argument in order to ensure that all XML is properly output). Then all you need do is use $writer inside a <code>&lt;%perl&gt;</code> block. Here&#39;s an example:</p>
+
+<pre><code>&lt;%perl&gt;;
+$writer-&gt;startTag(&#39;greeting&#39;, &#39;class&#39; =&gt; &#39;simple&#39;);
+$writer-&gt;characters(&#39;Hello, world!&#39;);
+$writer-&gt;endTag(&#39;greeting&#39;);
+$writer-&gt;end;
+&lt;/%perl&gt;</code></pre>
+
+<p>See the <a href="http://search.cpan.org/perldoc?XML::Writer">XML::Writer</a> documentation for more details on how to use it.</p>
+
+<h1 id="Using-Other-Perl-Modules">Using Other Perl Modules</h1>
+
+<p>Since Bricolage&#39;s templates are all Perl-based (even the PHP templates run inside a PHP interpreter inside a Perl interpreter), it is of course possible to load Perl modules and use them in your templates. You might want to use the <a href="http://search.cpan.org/perldoc?DBI">DBI</a> to pull data in from another database, or use <a href="http://search.cpan.org/perldoc?XML::RSS">XML::RSS</a> to burn in headlines from another site. This is one of the great strengths of Bricolage&#39;s templating architecture, and we strongly urge you to exploit it.</p>
+
+<p>However, it&#39;s not efficient to load modules directly in your templates, since every time they&#39;re run, they&#39;ll load the template into a separate Apache process, and therefore use more system resources (memory). It would be better to load all of the modules you&#39;ll need at Bricolage startup time, so that they get shared across processes and therefore use less memory.</p>
+
+<p>With the <code>PERL_LOADER</code> <i>bricolage.conf</i> configuration directive, you can do just that. The <code>PERL_LOADER</code> directive takes, on a single line, an arbitrary line of Perl code, and executes it in the name space reserved for Mason, Template Toolkit, and PHP templates (any exports won&#39;t be available to HTML::Template templates, although any imported modules of course will be). So you can execute a whole bunch of Perl <code>use</code> statements here, and all the modules will be available to you in your templates without needing to reload them there. Here&#39;s an example:</p>
+
+<pre><code>PERL_LOADER = use XML::RSS; use CGI qw(:standard); use Apache::DBI;</code></pre>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../../../2.0/api/Bric/Templates.html" name="Bric::Templates">Bric::Templates</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/Asset/Template.html" name="Bric::Biz::Asset::Template">Bric::Biz::Asset::Template</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/Element/Field.html" name="Bric::Biz::Element::Field">Bric::Biz::Element::Field</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Biz/Element/Container.html" name="Bric::Biz::Element::Container">Bric::Biz::Element::Container</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Util/Burner.html" name="Bric::Util::Burner">Bric::Util::Burner</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Util/Burner/Mason.html" name="Bric::Util::Burner::Mason">Bric::Util::Burner::Mason</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Util/Burner/TemplateToolkit.html" name="Bric::Util::Burner::TemplateToolkit">Bric::Util::Burner::TemplateToolkit</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Util/Burner/Template.html" name="Bric::Util::Burner::Template">Bric::Util::Burner::Template</a></dt>
+<dd>
+
+</dd>
+<dt><a rel="section" href="../../../2.0/api/Bric/Util/Burner/PHP.html" name="Bric::Util::Burner::PHP">Bric::Util::Burner::PHP</a></dt>
+<dd>
+
+</dd>
+</dl>
+
+</body>
+</html>
+

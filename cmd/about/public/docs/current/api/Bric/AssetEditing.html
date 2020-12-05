@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::AssetEditing</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="AssetEditing.html#Name">Name</a></li>
+  <li><a href="AssetEditing.html#Background">Background</a>
+    <ul>
+      <li><a href="AssetEditing.html#Elements">Elements</a></li>
+      <li><a href="AssetEditing.html#Business-Data">Business Data</a></li>
+    </ul>
+  </li>
+  <li><a href="AssetEditing.html#More-About-Elements">More About Elements</a>
+    <ul>
+      <li><a href="AssetEditing.html#More-Element-Types">More Element Types</a></li>
+      <li><a href="AssetEditing.html#Elements-from-element-types">Elements from element types</a></li>
+      <li><a href="AssetEditing.html#Data-Elements-on-Elements">Data Elements on Elements</a></li>
+      <li><a href="AssetEditing.html#Rules-for-Data-Elements">Rules for Data Elements</a></li>
+      <li><a href="AssetEditing.html#Elements-in-Elements">Elements in Elements</a></li>
+    </ul>
+  </li>
+  <li><a href="AssetEditing.html#Story-Editing">Story Editing</a>
+    <ul>
+      <li><a href="AssetEditing.html#Fields-on-creation">Fields on creation</a></li>
+      <li><a href="AssetEditing.html#Additional-fields-on-Edit-Screen">Additional fields on Edit Screen</a></li>
+    </ul>
+  </li>
+  <li><a href="AssetEditing.html#Media-Editing">Media Editing</a>
+    <ul>
+      <li><a href="AssetEditing.html#File-Uploading">File Uploading</a></li>
+    </ul>
+  </li>
+  <li><a href="AssetEditing.html#Asset-Versioning">Asset Versioning</a>
+    <ul>
+      <li><a href="AssetEditing.html#Viewing-Past-versions">Viewing Past versions</a></li>
+      <li><a href="AssetEditing.html#Reverting-to-Past-Versions">Reverting to Past Versions</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::AssetEditing - The creation of elements and putting them together into assets</p>
+
+<h1 id="Background">Background</h1>
+
+<p>This document describes the creation of elements and their uses in the creation of Business Data.</p>
+
+<h2 id="Elements">Elements</h2>
+
+<p>Elements are a definition of what the Business Data can be. Elements define data fields and subelements that they can contain. They also define rules about the data. The elements do not affect the layout, but provide sets of rules that the templates and Business data conform to.</p>
+
+<h2 id="Business-Data">Business Data</h2>
+
+<p>When creating a story, the Business Data are the values that relate to the fields. So if an element contains a field teaser, the Business Data might be &quot;Aren&#39;t Clowns Lovely?&quot;.</p>
+
+<h1 id="More-About-Elements">More About Elements</h1>
+
+<p>The first place one starts when making a new story is with an Element. An element defines the structure of a story. It lists the data fields available to those creating a story. There are two types of root element, media and story, and there are subelements that can be a part of other elements. So if a story element is created, it can contain page elements, which can contain paragraph attributes. The Story Element is a top level element, while the Page element is a subelement. The Page element contains Paragraph attributes.</p>
+
+<dl>
+
+<dt>Element</dt>
+<dd>
+
+<p>A subelement of Media types, Story types, or other elements.</p>
+
+</dd>
+<dt>Story</dt>
+<dd>
+
+<p>An element that represents the top level story. This can contain other elements.</p>
+
+</dd>
+<dt>Media</dt>
+<dd>
+
+<p>An element that represents the top level media. This can contain other media elements.</p>
+
+</dd>
+</dl>
+
+<h2 id="More-Element-Types">More Element Types</h2>
+
+<p>An element type is a flag that will alter the behavior of an element.</p>
+
+<dl>
+
+<dt>Page</dt>
+<dd>
+
+<p>This element will represent a single page on final publish.</p>
+
+</dd>
+<dt>Fixed</dt>
+<dd>
+
+<p>This element will represent a fixed url page. A fixed url page does not have the coverdate or slug in the url string. It is used for pages like covers.</p>
+
+</dd>
+<dt>Related Story</dt>
+<dd>
+
+<p>This element is used to link to other story objects.</p>
+
+</dd>
+<dt>Related Media</dt>
+<dd>
+
+<p>This element is used to link media objects to a story.</p>
+
+</dd>
+</dl>
+
+<h2 id="Elements-from-element-types">Elements from element types</h2>
+
+<p>To create the framework of a story or media asset, create an element based upon either a story or media element type. Associate the output channels that the element will be sent through. Templates will need to be created for each of the output channels.</p>
+
+<p>An Output Channel is a group of templates that can deliver the same content in a different format. Examples might be a WAP version or an email version of stories.</p>
+
+<p>See <a rel="section" href="../../../2.0/api/Bric/Templates.html" name="Bric::Templates">Bric::Templates</a> for more templating info.</p>
+
+<h2 id="Data-Elements-on-Elements">Data Elements on Elements</h2>
+
+<p>Each Element can contain any number of Data Elements. These are fields that can be set on the element. The admin interface provides ways of setting the input of these elements. Select Menus, text, date fields can all be set here.</p>
+
+<h2 id="Rules-for-Data-Elements">Rules for Data Elements</h2>
+
+<dl>
+
+<dt>Required</dt>
+<dd>
+
+<p>If selected this field must be present in all story or media assets. It will automatically be created when an asset is called up for editing.</p>
+
+</dd>
+<dt>Repeatable</dt>
+<dd>
+
+<p>If selected this field will be allowed to exist any number of times. It will also be allowed to be bulk edited.</p>
+
+</dd>
+</dl>
+
+<h2 id="Elements-in-Elements">Elements in Elements</h2>
+
+<p>Elements can also contain other non-story/media elements. These can then contain other elements to whatever level of complexity is needed.</p>
+
+<h1 id="Story-Editing">Story Editing</h1>
+
+<h2 id="Fields-on-creation">Fields on creation</h2>
+
+<p>When a new story is created these are the fields that can be entered.</p>
+
+<ul>
+
+<li><p>title - the name of the story</p>
+
+</li>
+<li><p>slug - a string that will appear in the url of stories that are not marked as fixed</p>
+
+</li>
+<li><p>story type - this is where one chooses which story element to base this story upon</p>
+
+</li>
+<li><p>source - the rights owner of the story. Will be used in conjunction with coverdate to set the expire date.</p>
+
+</li>
+<li><p>primary category - the main category association of this story. When other stories link to this one, the primary category will be used to construct the url</p>
+
+</li>
+<li><p>priority - the importance of the story in workflow</p>
+
+</li>
+<li><p>cover date - the intended date of publish</p>
+
+</li>
+</ul>
+
+<h2 id="Additional-fields-on-Edit-Screen">Additional fields on Edit Screen</h2>
+
+<ul>
+
+<li><p>description</p>
+
+</li>
+<li><p>expire date - the date at which the story should be unpublished</p>
+
+</li>
+<li><p>content - the area in which elements and attributes are added and edited</p>
+
+</li>
+<li><p>categories - Additional associations of categories to the story</p>
+
+</li>
+<li><p>Keywords - Words that can be set to describe the story</p>
+
+</li>
+<li><p>Contributors - Users that can be associated with this story</p>
+
+</li>
+<li><p>Notes - an area where one can leave notes for other users</p>
+
+</li>
+<li><p>Trail - a list of actions taken on this story</p>
+
+</li>
+</ul>
+
+<h1 id="Media-Editing">Media Editing</h1>
+
+<p>This is the area where files can be uploaded and properties can be set on them. Media elements can hold Data Elements and other Elements in the same way that Stories can.</p>
+
+<h2 id="File-Uploading">File Uploading</h2>
+
+<p>The file that represents the media object is uploaded here.</p>
+
+<h1 id="Asset-Versioning">Asset Versioning</h1>
+
+<p>Every time an asset is checked out and then checked back in, a new version is created. It has the same ID as the previous asset version.</p>
+
+<h2 id="Viewing-Past-versions">Viewing Past versions</h2>
+
+<p>The Profile screen has a section where, if there are previous versions, one can go back and view them.</p>
+
+<h2 id="Reverting-to-Past-Versions">Reverting to Past Versions</h2>
+
+<p>If an asset is checked out, one can revert the data to a previous version. The revert will overwrite all the data in the current version and replace it with the previous version&#39;s data. It will keep the same version ID, and any versions that existed in between the reverted versions will still be available.</p>
+
+</body>
+</html>
+

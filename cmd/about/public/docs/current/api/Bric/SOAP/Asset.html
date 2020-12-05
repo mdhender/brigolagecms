@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Asset</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Asset.html#Name">Name</a></li>
+  <li><a href="Asset.html#Description">Description</a></li>
+  <li><a href="Asset.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Asset.html#Public-Class-Methods">Public Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Asset.html#Author">Author</a></li>
+  <li><a href="Asset.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Asset - base class for SOAP &quot;asset&quot; classes</p>
+
+<h1 id="Description">Description</h1>
+
+<p>This module is the base class that for providing a SOAP interface for manipulating Bricolage objects.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>list_ids</dt>
+<dd>
+
+<p>This method queries the database for matching assets and returns a list of ids. If no assets are found an empty list will be returned.</p>
+
+<p>Notes: You&#39;ll likely want to override this method unless your asset is simple like MediaType.</p>
+
+</dd>
+<dt>export</dt>
+<dd>
+
+<p>The export method retrieves a set of assets from the database, serializes them and returns them as a single XML document. See <a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for the schema of the returned document.</p>
+
+<p>Accepted paramters are:</p>
+
+<dl>
+
+<dt>asset_id</dt>
+<dd>
+
+<p>Specifies a single asset_id to be retrieved. The name &#39;asset_id&#39; will actually be something like &#39;media_id&#39;.</p>
+
+</dd>
+<dt>asset_ids</dt>
+<dd>
+
+<p>Specifies a list of asset_ids. The value for this option should be an array of integer &quot;asset_id&quot; assets. The name &#39;asset_ids&#39; will actually be something like &#39;media_ids&#39;.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>create</dt>
+<dd>
+
+<p>The create method creates new objects using the data contained in an XML document of the format created by export().</p>
+
+<p>Returns a list of new ids created in the order of the assets in the document.</p>
+
+<p>Available options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document containing objects to be created. The document must contain at least one asset object.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>update</dt>
+<dd>
+
+<p>The update method updates an asset using the data in an XML document of the format created by export(). A common use of update() is to export() a selected object, make changes to one or more fields and then submit the changes with update().</p>
+
+<p>Returns a list of new ids created in the order of the assets in the document.</p>
+
+<p>Takes the following options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document where the objects to be updated can be found. The document must contain at least one asset and may contain any number of related asset objects.</p>
+
+</dd>
+<dt>update_ids (required)</dt>
+<dd>
+
+<p>A list of &quot;asset_id&quot; integers for the assets to be updated. These must match id attributes on asset elements in the document. If you include objects in the document that are not listed in update_ids then they will be treated as in create(). For that reason an update() with an empty update_ids list is equivalent to a create().</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>delete</dt>
+<dd>
+
+<p>The delete() method deletes assets. It takes the following options:</p>
+
+<dl>
+
+<dt>asset_id</dt>
+<dd>
+
+<p>Specifies a single asset ID to be deleted. The name &#39;asset_id&#39; will actually be something like &#39;mediatype_id&#39;.</p>
+
+</dd>
+<dt>asset_ids</dt>
+<dd>
+
+<p>Specifies a list of asset IDs to delete. The name &#39;asset_ids&#39; will actually be something like &#39;mediatype_ids&#39;.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: You&#39;ll likely want to override this method unless your asset is simple like MediaType.</p>
+
+</dd>
+<dt>class</dt>
+<dd>
+
+<p>Return the package name used with lookup or list_ids.</p>
+
+</dd>
+<dt>module</dt>
+<dd>
+
+<p>Return the module name, that is the first argument passed to bric_soap.</p>
+
+</dd>
+<dt>is_allowed_param</dt>
+<dd>
+
+</dd>
+<dt>$pkg-&gt;is_allowed_param($param, $method)</dt>
+<dd>
+
+<p>Returns true if $param is an allowed parameter to the $method method.</p>
+
+</dd>
+<dt>$pkg-&gt;load_asset($args)</dt>
+<dd>
+
+<p>This method provides the meat of both create() and update(). It inputs XML. The only difference between the two methods is that update_ids will be empty on create().</p>
+
+</dd>
+<dt>$pkg-&gt;serialize_asset( writer =&gt; $writer, asset_id =&gt; $id, args =&gt; $args)</dt>
+<dd>
+
+<p>Serializes a single asset into an XML element using the given writer and args.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;slanning@theworld.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

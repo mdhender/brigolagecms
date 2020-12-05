@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Fault</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Fault.html#Name">Name</a></li>
+  <li><a href="Fault.html#Synopsis">Synopsis</a></li>
+  <li><a href="Fault.html#Description">Description</a></li>
+  <li><a href="Fault.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Fault.html#Constructors">Constructors</a></li>
+      <li><a href="Fault.html#Destructors">Destructors</a></li>
+      <li><a href="Fault.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Fault.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Fault.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Fault.html#Private">Private</a>
+    <ul>
+      <li><a href="Fault.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Fault.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Fault.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Fault.html#Notes">Notes</a></li>
+  <li><a href="Fault.html#Author">Author</a></li>
+  <li><a href="Fault.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Fault - Bricolage Exceptions</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Fault qw(throw_gen);
+
+eval {
+    # Do something that causes general mayhem.
+    throw_gen(error =&gt; &#39;Ro-ro!&#39;);
+};
+
+if (my $err = $@) {
+    print &quot;Oh-oh, something faulted. Let&#39;s look at it...&quot;;
+    print &quot;Type:      &quot;, ref $err, &quot;\n&quot;;
+    print &quot;Message:   &quot;, $err-&gt;get_msg, &quot;\n&quot;;
+    print &quot;Payload:   &quot;, $err-&gt;get_payload, &quot;\n&quot;;
+    print &quot;Timestamp: &quot;, $err-&gt;get_timestamp, &quot;\n&quot;;
+    print &quot;Package:   &quot;, $err-&gt;get_pkg, &quot;\n&quot;;
+    print &quot;Filename:  &quot;, $err-&gt;get_filename. &quot;\n&quot;;
+    print &quot;Line&quot;      &quot;, $err-&gt;get_line, &quot;\n&quot;;
+
+    print &quot;Stack:\n&quot;;
+    foreach my $c (@{ $err-&gt;get_stack }) {
+        print &quot;\t&quot;, (ref $c ? join(&#39; - &#39;, @{$c}[1,3,2]) : $c), &quot;\n&quot;;
+    }
+}</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class does Exceptions for Bricolage. It replaces a home-grown implementation with one based on Exception::Class (which is what HTML::Mason uses). For now, we are merely emulating the previous functionality, so the above synopsis should still be valid, but this will change as we use more features of Exception::Class and try to clean exception usage throughout the Bricolage API code.</p>
+
+<p>There are currently two major classes of exceptions: Bric::Util::Fault::Exception and its subclasses represent fatal, non-recoverable errors. Exceptions of this sort are unexpected, and should be reported to an administrator or to the Bricolage developers.</p>
+
+<p>Bric::Util::Fault::Error and its subclasses represent non-fatal errors triggered by invalid data. These can be used to let users know that the data they&#39;ve entered is invalid. To support this usage, Bric::Util::Fault::Error and its subclasses offer the <code>maketext</code> field, which can be passed an array reference of values suitable for passing to Bric::Util::Language&#39;s <code>maketext()</code> method.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = Bric::Util::Fault-&gt;new($init);</dt>
+<dd>
+
+<p>Creates a new Fault object for processing up the caller stack</p>
+
+<p>Keys of $init are:</p>
+
+<dl>
+
+<dt>msg</dt>
+<dd>
+
+<p>The exception message.</p>
+
+</dd>
+<dt>payload</dt>
+<dd>
+
+<p>Extra error information, e.g., from <code>$!</code> or <code>$@</code>.</p>
+
+</dd>
+<dt>maketext</dt>
+<dd>
+
+<p>Supported by Bric::Util::Fault::Error and its subclasses. An array reference suitable for passing to Bric::Util::Language&#39;s <code>maketext()</code> method.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This method should only be used within a <code>die</code> context, and one of its subclasses (GEN, MNI, etc..) should be thrown instead. We want to change this so that you generally use the <code>throw</code> method instead.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>None.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$str = $obj-&gt;error_info;</dt>
+<dd>
+
+<p>Returns $obj-&gt;as_string.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Overloads the double-quoted string operator.</p>
+
+</dd>
+<dt>$str = $obj-&gt;get_msg;</dt>
+<dd>
+
+<p>Returns the message set by the programmer at error time.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_timestamp;</dt>
+<dd>
+
+<p>Returns the timestamp of the error. The timestamp is the epoch time of the error - the number of seconds since January 1, 1970.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_filename;</dt>
+<dd>
+
+<p>Returns the name of the file in which the error ocurred.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_line;</dt>
+<dd>
+
+<p>Return the line number at which the error ocurred in the file returned by <code>get_filename()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_pkg;</dt>
+<dd>
+
+<p>Returns the name of the package in which the error ocurred.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_payload;</dt>
+<dd>
+
+<p>Returns the programmer-specified payload.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$id = $obj-&gt;get_stack;</dt>
+<dd>
+
+<p>Returns the stack trace.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$err-&gt;throw(error =&gt; &#39;This is some error we are throwing&#39;);</dt>
+<dd>
+
+<p>This overrides the <code>throw</code> method in Exception::Class so that if we create a new exception from a Bric or HTML::Mason exception, we will just use the short error message. Otherwise, exceptions can get stringified more than once.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$str = $obj-&gt;full_message;</dt>
+<dd>
+
+<p>Overrides $obj-&gt;as_string to include the payload.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$str = $obj-&gt;as_string;</dt>
+<dd>
+
+<p>Displays the exception object as a text string. Includes the output of <code>trace_as_text()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$str = $obj-&gt;trace_as_text;</dt>
+<dd>
+
+<p>Displays the exception object&#39;s stack trace as text.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>isa_bric_exception($err, &#39;MNI&#39;);</dt>
+<dd>
+
+<p>This function tests whether the $err argument is a Bricolage exception. The optional second argument can be used to test for a specific Bricolage exception.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>&quot;no such exception class $class&quot;</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This function is imported into the calling class.</p>
+
+</dd>
+<dt>isa_exception($err);</dt>
+<dd>
+
+<p>This function tests whether the $err argument is an Exception::Class exception.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>&quot;no such exception class $class&quot;</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This function is imported into the calling class.</p>
+
+</dd>
+<dt>rethrow_exception($err);</dt>
+<dd>
+
+<p>This function rethrows the $err argument if it <code>can</code> rethrow (i.e. it is a Bricolage or HTML::Mason exception).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This function is imported into the calling class.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>This was muchly copied from HTML::Mason::Exceptions. This replaces the home-grown exception handling written by matthew d. p. k. strelchun-lanier &lt;matt@lanier.org&gt;.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;lannings@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?Exception::Class">Exception::Class</a>, <a href="http://search.cpan.org/perldoc?Devel::StackTrace">Devel::StackTrace</a>, <a href="http://search.cpan.org/perldoc?HTML::Mason::Exceptions">HTML::Mason::Exceptions</a></p>
+
+</body>
+</html>
+

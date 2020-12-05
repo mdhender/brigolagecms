@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Grp::Person</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Person.html#Name">Name</a></li>
+  <li><a href="Person.html#Synopsis">Synopsis</a></li>
+  <li><a href="Person.html#Description">Description</a></li>
+  <li><a href="Person.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Person.html#Constructors">Constructors</a></li>
+      <li><a href="Person.html#Destructors">Destructors</a></li>
+      <li><a href="Person.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Person.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Person.html#Private">Private</a>
+    <ul>
+      <li><a href="Person.html#Private-Constructors">Private Constructors</a></li>
+      <li><a href="Person.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Person.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Person.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Person.html#Notes">Notes</a></li>
+  <li><a href="Person.html#Author">Author</a></li>
+  <li><a href="Person.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Grp::Person - Interface to Bric::Biz::Person Groups</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>See Bric::Util::Grp</p>
+
+<h1 id="Description">Description</h1>
+
+<p>See Bric::Util::Grp.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Util::Grp.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$attr-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>$supported_classes = Bric::Util::Grp-&gt;get_supported_classes()</dt>
+<dd>
+
+<p>This will return an anonymous hash of the supported classes in the group as keys with the short name as a value. The short name is used to construct the member table names and the foreign key in the table.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my @list_classes = Bric::Util::Grp::Person-&gt;get_list_classes</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the supported classes in the group that can have their <code>list()</code> methods called in succession to assemble a list of member objects. This data varies from that stored in the keys in the hash reference returned by <code>get_supported_classes</code> in that some classes&#39; <code>list()</code> methods may inherit from others, and we don&#39;t want the same <code>list()</code> method executed more than once.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$class_id = Bric::Util::Grp::Person-&gt;get_class_id()</dt>
+<dd>
+
+<p>This will return the class ID that this group is associated with.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$class_id = Bric::Util::Grp::Person-&gt;get_object_class_id()</dt>
+<dd>
+
+<p>Forces all Objects to be considered as this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $secret = Bric::Util::Grp::Person-&gt;get_secret()</dt>
+<dd>
+
+<p>Returns true, because this is a secret type of group, cannot be directly used by users.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $class = Bric::Util::Grp::Person-&gt;my_class()</dt>
+<dd>
+
+<p>Returns a Bric::Util::Class object describing this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Class-&gt;lookup() internally.</p>
+
+</dd>
+<dt>my $class = Bric::Util::Grp::Person-&gt;member_class()</dt>
+<dd>
+
+<p>Returns a Bric::Util::Class object describing the members of this group.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Class-&gt;lookup() internally.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>Inherited from Bric::Util::Grp.</p>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Constructors">Private Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../Biz/Person.html" name="Bric::Biz::Person">Bric::Biz::Person</a>, <a rel="section" href="../Grp.html" name="Bric::Util::Grp">Bric::Util::Grp</a></p>
+
+</body>
+</html>
+

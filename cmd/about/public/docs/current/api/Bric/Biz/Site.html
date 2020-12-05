@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Site</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Site.html#Name">Name</a></li>
+  <li><a href="Site.html#Synopsis">Synopsis</a></li>
+  <li><a href="Site.html#Description">Description</a></li>
+  <li><a href="Site.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Site.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Site.html#new">new</a></li>
+          <li><a href="Site.html#lookup">lookup</a></li>
+          <li><a href="Site.html#list">list</a></li>
+          <li><a href="Site.html#href">href</a></li>
+        </ul>
+      </li>
+      <li><a href="Site.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Site.html#list_ids">list_ids</a></li>
+          <li><a href="Site.html#my_meths">my_meths</a></li>
+        </ul>
+      </li>
+      <li><a href="Site.html#Accessors">Accessors</a>
+        <ul>
+          <li><a href="Site.html#id">id</a></li>
+          <li><a href="Site.html#name">name</a></li>
+          <li><a href="Site.html#description">description</a></li>
+          <li><a href="Site.html#domain_name">domain_name</a></li>
+          <li><a href="Site.html#active">active</a></li>
+        </ul>
+      </li>
+      <li><a href="Site.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="Site.html#save">save</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Site.html#Author">Author</a></li>
+  <li><a href="Site.html#See-Also">See Also</a></li>
+  <li><a href="Site.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Site - Interface to Bricolage Site Objects</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::Site;
+
+# Constructors.
+my $site = Bric::Biz::Site-&gt;new($init);
+$site = Bric::Biz::Site-&gt;lookup({ id =&gt; $id });
+my @sites = Bric::Biz::Site-&gt;list($params);
+
+# Class Methods.
+my @site_ids = Bric::Biz::Site-&gt;list_ids($params);
+my $meths = Bric::Biz::Site-&gt;my_meths;
+
+# Instance methods.
+$id = $site-&gt;get_id;
+my $name = $site-&gt;get_name;
+$site = $site-&gt;set_name($name)
+my $desc = $site-&gt;get_description;
+$site = $site-&gt;set_description($desc);
+my $domain_name = $site-&gt;get_domain_name;
+$site = $site-&gt;set_domain_name($domain_name);
+
+$site = $site-&gt;activate;
+$site = $site-&gt;deactivate;
+$site = $site-&gt;is_active;
+
+# Save the changes to the database
+$site = $site-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Sites are first-class Bricolage objects designed to manage different sites from within a single Bricolage instance.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="new">new</h3>
+
+<pre><code>my $site = Bric::Biz::Site-&gt;new;
+$site = Bric::Biz::Site-&gt;new($init);</code></pre>
+
+<p>Constructs a new site object and returns it. An anonymous hash of initial values may be passed. The supported keys for that hash references are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+</dd>
+<dt>domain_name</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>The <code>name</code> and <code>domain_name</code> attributes must be globally unique or an exception will be thrown.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="lookup">lookup</h3>
+
+<pre><code>my $site = Bric::Biz::Site-&gt;lookup({ id =&gt; $id });
+$site = Bric::Biz::Site-&gt;lookup({ name =&gt; $name });
+$site = Bric::Biz::Site-&gt;lookup({ domain_name =&gt; $domain_name });</code></pre>
+
+<p>Looks up and constructs an existing site object in the database and returns it. A Site ID, name, or domain name can be used as the site object unique identifier to look up. If no site object is found in the database, then <code>lookup()</code> will return <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="list">list</h3>
+
+<pre><code>my @sites = Bric::Biz::Site-&gt;list($params);
+my $sites_aref = Bric::Biz::Site-&gt;list($params);</code></pre>
+
+<p>Returns a list or anonymous array of site objects based on the search parameters passed via an anonymous hash. The supported lookup keys that may use valid SQL wild card characters are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+</dd>
+<dt>domain_name</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>The <code>ANY()</code> operator may be used to specify a list of values for any of these parameters.</p>
+
+<p>The supported lookup keys that must be an exact value are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Site ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating if the site is active.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp::Site object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+</dd>
+<dt>element_id</dt>
+<dd>
+
+<p>A Bric::Biz::ElementType (element type) ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>output_channel_id</dt>
+<dd>
+
+<p>A Bric::Biz:OutputChannel ID. Pass in <code>undef</code> to check for when it&#39;s <code>NULL</code>, and &quot;not null&quot; to check for when it&#39;s <code>NOT NULL</code>. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="href">href</h3>
+
+<pre><code>my $sites_href = Bric::Biz::Site-&gt;href($params);</code></pre>
+
+<p>Returns an anonymous hash of site objects based on the search parameters passed via an anonymous hash. The hash keys will be the site IDs, and the values will be the corresponding sites. The supported lookup keys are the same as those for <code>list()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="list_ids">list_ids</h3>
+
+<pre><code>my @site_ids = Bric::Biz::Site-&gt;list_ids($params);
+my $site_ids_aref = Bric::Biz::Site-&gt;list_ids($params);</code></pre>
+
+<p>Returns a list or anonymous array of site object IDs based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as for the <code>list()</code> method.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="my_meths">my_meths</h3>
+
+<pre><code>my $meths = Bric::Biz::Site-&gt;my_meths
+my @meths = Bric::Biz::Site-&gt;my_meths(1);
+my $meths_aref = Bric::Biz::Site-&gt;my_meths(1);
+@meths = Bric::Biz::Site-&gt;my_meths(0, 1);
+$meths_aref = Bric::Biz::Site-&gt;my_meths(0, 1);</code></pre>
+
+<p>Returns Bric::Biz::Site attribute accessor introspection data. See <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a> for complete documtation of the format of that data. Returns accessor introspection data for the following attributes:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The site name. A unique identifier attribute.</p>
+
+</dd>
+<dt>domain_name</dt>
+<dd>
+
+<p>The site domain name. A unique identifier attribute.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>A description of the site.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>The site&#39;s active status boolean.</p>
+
+</dd>
+</dl>
+
+<h2 id="Accessors">Accessors</h2>
+
+<h3 id="id">id</h3>
+
+<pre><code>my $id = $site-&gt;get_id;</code></pre>
+
+<p>Returns the site object&#39;s unique database ID.</p>
+
+<h3 id="name">name</h3>
+
+<pre><code>my $name = $site-&gt;get_name;
+$site = $site-&gt;set_name($name);</code></pre>
+
+<p>Get and set the site object&#39;s unique name. The value of this attribute must be case-insensitively globally unique. If a non-unique value is passed to <code>set_name()</code>, an exception will be thrown.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="description">description</h3>
+
+<pre><code>my $description = $site-&gt;get_description;
+$site = $site-&gt;set_description($description);</code></pre>
+
+<p>Get and set the site object&#39;s description. The setter converts non-Unix line endings.</p>
+
+<h3 id="domain_name">domain_name</h3>
+
+<pre><code>my $domain_name = $site-&gt;get_domain_name;
+$site = $site-&gt;set_domain_name($domain_name);</code></pre>
+
+<p>Get and set the site object&#39;s unique domain name. The value of this attribute must be case-insensitively globally unique. If a non-unique value is passed to <code>set_domain_name()</code>, an exception will be thrown.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="active">active</h3>
+
+<pre><code>$site = $site-&gt;activate;
+$site = $site-&gt;deactivate;
+$site = $site-&gt;is_active;</code></pre>
+
+<p>Get and set the site object&#39;s active status. <code>activate()</code> and <code>deactivate()</code> each return the site object. <code>is_active()</code> returns the site object when the site is active, and <code>undef</code> when it is not.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="save">save</h3>
+
+<pre><code>$site = $site-&gt;save;</code></pre>
+
+<p>Saves any changes to the site object to the database. Returns the site object on success and throws an exception on failure.</p>
+
+<p><b>Side Effects:</b> Creates five internal permanent groups. One is a Bric::Util::Grp::Asset group. Its ID is used for the site ID, so that it can easily be used by Bric::Biz::Asset to add the ID to its <code>grp_ids</code> attribute because every asset is related to a site. The other four are Bric::Util::Grp::User groups, and one is created for each permission, READ, EDIT, CREATE, and DENY. Furthermore, a Bric::Util::Priv object is created for each of these user groups in turn, to grant their users the appropriate permissions to any assets associated with the site.</p>
+
+<p><b>Thows:</b></p>
+
+<dl>
+
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../../../../2.0/api/Bric/Biz/Category.html" name="Bric::Biz::Category">Bric::Biz::Category</a></dt>
+<dd>
+
+<p>Each category object is associated with a site.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../2.0/api/Bric/Biz/OutputChannel.html" name="Bric::Biz::OutputChannel">Bric::Biz::OutputChannel</a></dt>
+<dd>
+
+<p>Each output channel object is associated with a site.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../2.0/api/Bric/Biz/ElementType.html" name="Bric::Biz::ElementType">Bric::Biz::ElementType</a></dt>
+<dd>
+
+<p>Each top-level element object is associated with one or more site.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../2.0/api/Bric/Biz/Workflow.html" name="Bric::Biz::Workflow">Bric::Biz::Workflow</a></dt>
+<dd>
+
+<p>Each workflow object is associated with a site.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a></dt>
+<dd>
+
+<p>Each asseet object is associated with a site.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../2.0/api/Bric/Dist/ServerType.html" name="Bric::Dist::ServerType">Bric::Dist::ServerType</a></dt>
+<dd>
+
+<p>Each destination object is associated with a site.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2003 Kineticode, Inc. See <a rel="section" href="../../../../2.0/api/Bric/License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

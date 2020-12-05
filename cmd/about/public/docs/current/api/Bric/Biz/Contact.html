@@ -1,0 +1,1128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Contact</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Contact.html#Name">Name</a></li>
+  <li><a href="Contact.html#Synopsis">Synopsis</a></li>
+  <li><a href="Contact.html#Description">Description</a></li>
+  <li><a href="Contact.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Contact.html#Constructors">Constructors</a></li>
+      <li><a href="Contact.html#Destructors">Destructors</a></li>
+      <li><a href="Contact.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Contact.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Contact.html#Private">Private</a>
+    <ul>
+      <li><a href="Contact.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Contact.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Contact.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Contact.html#Notes">Notes</a></li>
+  <li><a href="Contact.html#Author">Author</a></li>
+  <li><a href="Contact.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Contact - Interface to Contacts</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::Contact
+
+# Constructors.
+my $c = Bric::Biz::Contact-&gt;new($init);
+my $c = Bric::Biz::Contact-&gt;lookup({ id =&gt; $id });
+my @c = Bric::Biz::Contact-&gt;list($params);
+
+# Class Methods.
+my @cids = Bric::Biz::Contact-&gt;list_ids($params);
+my $methods = Bric::Biz::Contact-&gt;my_meths;
+
+# Contact Type managment.
+my @types = Bric::Biz::Contact-&gt;list_types;
+my $types_href = Bric::Biz::Contact-&gt;href_types;
+my @types = Bric::Biz::Contact-&gt;list_alertable_types;
+my $types_href = Bric::Biz::Contact-&gt;href_alertable_types;
+my $type_ids_href = Bric::Biz::Contact-&gt;href_alertable_type_ids;
+my $bool = Bric::Biz::Contact-&gt;edit_type($type, $description);
+my $bool = Bric::Biz::Contact-&gt;deactivate_type($type);
+
+# Instance Methods.
+my $id = $c-&gt;get_id;
+my $type = $c-&gt;get_type;
+$c = $c-&gt;set_type($type);
+my $desc = $c-&gt;get_description;
+my $value = $c-&gt;get_value;
+$c = $c-&gt;set_value($value);
+
+$c = $c-&gt;activate;
+$c = $c-&gt;deactivate;
+$c = $c-&gt;is_active;
+
+$c = $c-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages contacts. Currently, contacts are only associated with Bric::Biz::Person objects, but they could conceivably be associated with other objects, e.g., Bric::Biz::Org.</p>
+
+<p>A contact is a method (other than snail mail) to contact a person. Default contact types include &quot;Primary Email,&quot; &quot;Secondary Email,&quot; &quot;Office Phone,&quot; &quot;Mobile Phone,&quot; &quot;AOL Instant Messenger,&quot; etc. These types can be modified and new contact types can be added via this class&#39; class methods. Each individual Bric::Biz::Contact object has an associated type, the type&#39;s description, and a value. Each is also associated with another object, so they will often be accessed from that object (see Bric::Biz::Person for an example).</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $c = Bric::Biz::Contact-&gt;new()</dt>
+<dd>
+
+</dd>
+<dt>my $c = Bric::Biz::Contact-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Biz::Contact object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>type</p>
+
+</li>
+<li><p>value</p>
+
+</li>
+</ul>
+
+<p>The active property will be set to true by default. Call $c-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $c = Bric::Biz::Contact-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::Contact object based on the Bric::Biz::Contact object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::Contact objects found.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Biz::Contact object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@contacts || $contact_aref) = Bric::Biz::Contact-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Contact objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Contact ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>Contact type. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Contact description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>value</dt>
+<dd>
+
+<p>Contact value. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>person_id</dt>
+<dd>
+
+<p>ID of person object associated with contacts. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>alertable</dt>
+<dd>
+
+<p>Boolean indicating whether or not alerts can be sent to contacts of this type.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Biz::Contact object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $contacts_href = Bric::Biz::Contact-&gt;href($params)</dt>
+<dd>
+
+<p>Works the same as list(), with the same arguments, except it returns a hash or hashref of Bric::Biz::Contact objects, where the keys are the contact IDs, and the values are the contact objects.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Biz::Contact object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my (@c_ids || $c_ids_aref) = Bric::Biz::Contact-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Contact object IDs based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Conatact-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Contact-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Contact-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@types || $type_aref) = Bric::Biz::Contact-&gt;list_types</dt>
+<dd>
+
+<p>Returns a list or anonymous array of all the possible types (names) of contacts. Use these types to set the type of a contact via $c-&gt;set_type().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $type_href = Bric::Biz::Contact-&gt;href_types</dt>
+<dd>
+
+<p>Returns a hash list or anonymous hash of all the possible types of contacts. The hash keys are the type names, and the hash values are the descriptions.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@types || $type_aref) = Bric::Biz::Contact-&gt;list_alertable_types</dt>
+<dd>
+
+<p>Returns a list or anonymous array of contact types that are alertable, that is, contacts of these types may be used for sending alerts.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $types_aref = Bric::Biz::Contact-&gt;href_alertable_types</dt>
+<dd>
+
+<p>Returns a hash list or anonymous hash of contact types that are alertable, that is, contacts of these types may be used for sending alerts. The hash keys are the type names and the values are their descriptions.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $types_aref = Bric::Biz::Contact-&gt;href_alertable_type_ids</dt>
+<dd>
+
+<p>Returns a hash list or anonymous hash of contact types that are alertable, that is, contacts of these types may be used for sending alerts. The hash keys are they type names and the values are theiry IDs. Used by Bric::Util::Alert.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $success = Bric::Biz::Contact-&gt;edit_type($type, $description)</dt>
+<dd>
+
+<p>Adds or alters a contact type. If the type exists, its description will be updated and it will be activated. If it does not exist, it will be created.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $success = Bric::Biz::Contact-&gt;deactivate_type($type)</dt>
+<dd>
+
+<p>Deletes a type. All contacts of this type will be automatically deactivated. To reactivate a type, use edit_type(); all existing contacts of that type will then be available again.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $c-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Biz::Contact object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Biz::Contact object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $type = $c-&gt;get_type</dt>
+<dd>
+
+<p>Returns the type of the Bric::Biz::Contact object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;type&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;set_type($type)</dt>
+<dd>
+
+<p>Sets the type type of the contact. The type type must be a valid type as returned by get_types().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $c-&gt;get_description</dt>
+<dd>
+
+<p>Returns the description of the Bric::Biz::Contact object. If the contact has not been looked up from the database or if its type has changed, description will be <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;description&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;set_description( $description )</dt>
+<dd>
+
+<p>Sets the description of the Bric::Biz::Contact object, first converting non-Unix line endings.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $value = $c-&gt;get_value</dt>
+<dd>
+
+<p>Returns the value of the Bric::Biz::Contact object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;value&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;set_value($value)</dt>
+<dd>
+
+<p>Sets the value of the Bric::Biz::Contact object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;value&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Biz::Contact object. Call $p-&gt;save to make the change persistent. Bric::Biz::Contact objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Biz::Contact object. Call $p-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Biz::Contact object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $p-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Biz::Contact object, including changes to associated contacts (Bric::Biz::Attribute::Contact::Contact objects) and attributes (Bric::Biz::Attribute::Contact objects). Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Cleans out internal cache of Bric::Biz::Attr::Contact::Contact and Bric::Biz::Attribute::Contact objects to reflect what is in the database.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $contacts_aref = &amp;$get_em( $pkg, $search_href )</dt>
+<dd>
+
+</dd>
+<dt>my $contacts_ids_aref = &amp;$get_em( $pkg, $search_href, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Biz::Contact objects or, if called with an optional third argument, returns a listof Bric::Biz::Contact object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@types || $types_aref) = &amp;$get_types()</dt>
+<dd>
+
+</dd>
+<dt>my (%types || $types_href) = &amp;$get_types(1)</dt>
+<dd>
+
+</dd>
+<dt>my (@alertable_types || $alertable_types_aref) = &amp;$get_types(undef, 1)</dt>
+<dd>
+
+</dd>
+<dt>my (%alertable_types || $alertable_types_href) = &amp;$get_types(1, 1)</dt>
+<dd>
+
+</dd>
+<dt>my (%alertable_type_ids || $alertable_type_ids_href) = &amp;$get_types(1, 1, 1)</dt>
+<dd>
+
+<p>Function used by list_types(), href_types(), list_alertable_types(), href_alertable_types(), and href_alertable_type_ids() to return an anonymous array or anonymous hash of contact types.</p>
+
+<p>The arguments are as follows:</p>
+
+<ul>
+
+<li><p>If no arguments are passed, a simple list of contact type names is returned.</p>
+
+</li>
+<li><p>The first argument requires that a hash list or anonymous hash be returned, where the hash keys are the contact type names and the values are the contact type descriptions.</p>
+
+</li>
+<li><p>The second argument specifies that the values returned by the the method reflect only those contact types that are alertable.</p>
+
+</li>
+<li><p>The third argument specifies that the hash values returned by the inclusion of the second argument be the contact type IDs, rather than their descriptions.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

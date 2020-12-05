@@ -1,0 +1,364 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.11.2 Changes</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.11.2" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.11.2 Changes</h2>
+	<div id="articlemeta">
+            <p class="date">2009.11.14</p>
+          </div>
+          <h3>New Features</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added configuration directive to allow the expiration of assets when they are deleted. [David, Mercier, Rolf and Herring]</p></li>
+            <li><p>Added the <code>publishing()</code>, <code>previewing()</code>, and <code>compiling()</code> sugar methods to <a href="http://bricolagecms.org/docs/current/api/Bric::Util::Burner">Bric::Util::Burner</a> because I'm sick of seeing the same code to check modes in templates all the time. [David]</p></li>
+            <li><p>Take keyword permissions into account when accessing or creating keywords from the story and media profiles as well as category manager. [Adrian Yee]</p></li>
+            <li><p>Added support for copying and pasting elements in the story profile. [Adrian Yee]</p></li>
+            <li><p>Added the <code>find_or_create_alternate()</code> method to <a href="http://bricolagecms.org/docs/current/api/Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a> class. This method makes it easy for templates to create alternate representations of an image as a new media document. Useful for generating thumbnails and the like. As a side-effect, <a href="http://search.cpan.org/perldoc?Imager">Imager</a> is now a required module. [David]</p></li>
+            <li><p>Since <a href="http://search.cpan.org/perldoc?Imager">Imager</a> is now a required module, the <code>USE_THUMBNAILS</code> directive is now enabled by default as well. [David]</p></li>
+            <li><p>Added the following aliases, so I can pretend that the versions with double underscores don't exist [David]:</p>        <div class="list">
+          <ul>
+            <li><p><code>Bric::Biz::Asset::Business::set_source_id()</code></p></li>
+            <li><p><code>Bric::Biz::Asset::Business::get_source_id()</code></p></li>
+            <li><p><code>Bric::Biz::Asset::get_user_id()</code></p></li>
+            <li><p><code>Bric::Biz::Asset::Business::Media::get_category_id()</code></p></li>
+          </ul>
+        </div>
+</li>
+            <li><p>Fixed a compatibility issue in
+<a href="http://bricolagecms.org/docs/current/api/Bric::Dist::Action::DTDValidate">Bric::Dist::Action::DTDValidate</a>. Apparently <code>get_last_error()</code> was removed from <a href="http://search.cpan.org/perldoc?XML::LibXML">XML::LibXML</a> 1.59 “for thread-safety reasons.” This change backward-compatible with older versions of XML::LibXML. [David]</p></li>
+          </ul>
+        </div>
+          <h3>Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added the <code>is_republish()</code> and <code>is_first_publish()</code> methods to <a href="http://bricolagecms.org/docs/current/api/Bric::Util::Burner">Bric::Util::Burner</a>. [David]</p></li>
+            <li><p>The CPAN module installer now relies on <a href="http://search.cpan.org/perldoc?CPAN">CPAN</a> to determine if a module was successfully installed and is the proper version number, rather than doing that work itself. This addresses an issue when installing mod_perl modules, which would be installed properly but the installer would think that they weren't. [David]</p></li>
+            <li><p>Changed autocomplete category selection for stories so that if you have the <code>FULL_SEARCH</code> config directive turned on, you get wildcard matching to any part of the URI on your entered string, so typing “bar” will return “/bar” and “/foo/bart”. Enter “/” for a full list of categories. [Paul Orrock]</p></li>
+            <li><p>Added text beneath all buttons for desk items to make them more intuitive. [Sarah Mercier, Matt Rolf and Michael Herring]</p></li>
+            <li><p>Added more translations in German and Russian. [Alisa Gdalina]</p></li>
+            <li><p>Made “Delete this Profile” text more specific depending on location, such as “Delete this Story” or “Delete this Element Type”, etc. [Sarah Mercier and Matt Rolf]</p></li>
+            <li><p>Switched to passing parameters for Net::SSH2 authentication in <a href="http://bricolagecms.org/docs/current/api/Bric::Util::Trans::SFTP">Bric::Util::Trans::SFTP</a> so that it will first try <code>auth_password</code>, and then follow up with <code>auth_keyboard</code> should the first fail (and will also try SSH keys if you happen to have that configured). [Alex Krohn]</p></li>
+            <li><p>Upgraded Prototype and Scriptaculous libraries to versions 1.6.0.3 and 1.8.2 respectively. [Rolf, Mercier, Herring]</p></li>
+            <li><p>Display a hint about subelements in the story view. This is especially important when they have no related stories or media and are not revealed, so that you can tell what each is! [David & Adrian Yee]</p></li>
+            <li><p>Workspaces, Desks, and debug messages validate again. [Matt Rolf]</p></li>
+            <li><p>Dragging container elements to the edge of the browser window will now scroll the page. Reported by Matt Rolf. [Sarah Mercier]</p></li>
+            <li><p>Factored the creation of a canonical URL for a request into a new method, <code>< Bric::Util::ApacheReq-</code>url >>. This removes a fair bit of duplicate code found here and there. [David]</p></li>
+            <li><p>Cover date is now required at the database level. It has always been required in the UI. [David]</p></li>
+            <li><p>Calls to <code>log_event()</code> are immediately logged when not running under <code>mod_perl</code> or <code>bric_queued</code>. This is so that events will now always be properly logged. [David]</p></li>
+            <li><p>Made the thumbnail format-guesser case-insensitive (e.g. <code>.JPG</code> or <code>.PDF</code> will also work now). [Scott]</p></li>
+            <li><p>Made the popup dialog for related stories/media a bit bigger. [Scott]</p></li>
+            <li><p>Added a throbber to category completion in New Story screen and the Story Profile. [Scott]</p></li>
+            <li><p>Added the “Bricolage events feed generator” (<code>contrib/bric_events_rss</code>) contrib application. Generates RSS output for all system events. [Greg Heo]</p></li>
+            <li><p>Renamed <code>Makefile</code> to <code>Makefile.in</code> and changed <code>Makefile.PL</code> so that it creates <code>Makefile</code> from <code>Makefile.in</code>. This is so that <code>Makefile</code> is no longer changed in-place, which could get annoying when doing development. [David]</p></li>
+            <li><p>Added <code>mark_as_published()</code> method to <a href="http://bricolagecms.org/docs/current/api/Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>. This method marks a document as published but does not create jobs or resources and no templates will be executed. [Paul Orrock]</p></li>
+            <li><p>Added the <code>timeout</code> attribute to <a href="http://bricolagecms.org/docs/current/api/Bric::Dist::Client">Bric::Dist::Client</a> and the corresponding <code>-t</code> option to <a href="http://bricolagecms.org/docs/current/api/bric_dist_mon"><code>bric_dist_mon</code></a>. [David]</p></li>
+            <li><p>Added the <code>sql_type</code> element to the export of field types from SOAP. This prevents the SOAP server from having to guess the SQL type of a field type when updating an element type. Thanks to David Oliveira for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/79">Bug #79</a>). [David]</p></li>
+            <li><p>Added a timestamp for data that <code>bric_queued</code> sends to its log. Thanks to Neal Sofge for the suggestion (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/41">Bug #41</a>). [David]</p></li>
+            <li><p>Renamed the “Lock Val” checkbox in the media profile to “Autopopulate”. It is now checked by default, rather than unchecked. Uncheck it to prevent Bricolage from autopopulating values in the future. Thanks to Marshall for the suggestion (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/32">Bug #32</a>). [David]</p></li>
+            <li><p>Changed “Click here to start” to “Start Bricolage” on the welcome page. Suggested by Chris Heiland and Czerny (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/42">Bug #42</a>). [David]</p></li>
+            <li><p>When an asset drops off a desk or My Workspace (because it is checked in or moved to a different desk), and it's the last asset of its type (story, media, or template), the asset type label and sort menu will also drop off the desk or workspace. Thanks to Matt Rolf for the suggestion (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/69">Bug #69</a>). [David]</p></li>
+            <li><p>Moved the “Cancel” and “Save” buttons in the contributor popup up from the bottom of the screen (it was below search results) to under the list of contributors currently associated with the story and above the search box. This makes it much easier to find the buttons when there are a lot of search results. Thanks to Scott for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/84">Bug #84</a>). [David]</p></li>
+          </ul>
+        </div>
+          <h3>Bug Fixes</h3>
+        <div class="list">
+          <ul>
+            <li><p>Fixed a bug in the loading of WYSIWYG editor callback code in the Apache configuration. [John Durkin]</p></li>
+            <li><p>Uploading a media file to a related media element to create a new media document now Works properly when the related media element is a subelement. Reported by John Durkin (Bug #1364). [David]</p></li>
+            <li><p>Fixed a bug where an attempt to export a story via SOAP failed due to a bad method call. Reported by Denny de la Haye. [David]</p></li>
+            <li><p>Added a JavaScript call to confirm a delete action on Workspace and desk. Reported by Matt Rolf (Bug 1380). [Sarah Mercier]</p></li>
+            <li><p>Fixed problem with rendering of radio button fields (Bug #1387). Denny de la Haye]</p></li>
+            <li><p>Fixed <a href="http://bricolagecms.org/docs/current/api/Bric">Bric</a> to load <a href="http://bricolagecms.org/docs/current/api/Bric::Config">Bric::Config</a> before anything else, which was causing problems on some systems. [Paul Orrock]</p></li>
+            <li><p>Fixed problem with <a href="http://bricolagecms.org/docs/current/api/Bric::SOAP">Bric::SOAP</a> so that the first field or container is correctly numbered at 0 rather than 2. [Paul Orrock]</p></li>
+            <li><p>Fix bug where a story imported through <a href="http://bricolagecms.org/docs/current/api/Bric::SOAP">Bric::SOAP</a> didn't have its <code>object_order</code> set properly so wouldn't preview through templates until saved in the UI (Bug # 1394 && Bug # 1397). [Paul Orrock]</p></li>
+            <li><p>Fixed up broken/non-compliant HTML on desks, search results and workspace. [Paul Orrock]</p></li>
+            <li><p>Improved the appearance of popup menus on desks. [Sarah Mercier and Matt Rolf]</p></li>
+            <li><p>In the story profile, the primary category now shows as a required field (Bug #1400). [Matt Rolf]</p></li>
+            <li><p>Re-labeled the Associations box the story and template profile (Bug #1414). [Matt Rolf]</p></li>
+            <li><p>Fixed the <code>get_uri()</code> method of <a href="http://bricolagecms.org/docs/current/api/Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a> so that it URI escapes the media file name. [David]</p></li>
+            <li><p>Fixed bug when uploading a new media file to a related media element so that, when running under mod_perl 1, headers are properly sent I<before> the content is sent. This should fix some of the issues with the related media popup window. [Adrian Yee]</p></li>
+            <li><p>The Add Element dropdown menu will now close on double click (Bug #1405). [Sarah Mercier and Matt Rolf]</p></li>
+            <li><p>The find stories/media/template advanced search toggle now works properly. (Bug #1426) [Sarah Mercier and Matt Rolf]</p></li>
+            <li><p>Fixed bug where IE7 couldn't open the sidenav. [Kahil Jallad]</p></li>
+            <li><p>Fixed bug where removing a subelement or custom field from an element type would result in an error when editing a story with one of those elements. [Bret Dawson]</p></li>
+            <li><p>Fixed typing error which caused the upgrade script to fail. [Darren Embry]</p></li>
+            <li><p>Deleting keywords from a category no longer causes an error. [Adrian Yee]</p></li>
+            <li><p>Fixed bug where new bulk edit button would cause submit error in IE7 because it didn't call the <code>customSubmit()</code> JavaScript function. [Kahil Jallad, Sarah Mercier]</p></li>
+            <li><p>Hitting the enter key now properly submits a search in the advanced search form (Bug #1425). [Bret Dawson]</p></li>
+            <li><p>Desks no longer have double pagination bars at the bottom (Bug #1439). [Matt Rolf]</p></li>
+            <li><p>Fixed a bug where deleting a checked out asset from My Workspace or the desk would still offer an Edit link in the search results. Reported by John Durkin and Matt Rolf (Bug #1388). [Greg Heo]</p></li>
+            <li><p>Fixed bug in <code>inst/required.pl</code> so it remembers what you're trying to install when telling you what's missing. Also added documentation to
+<code>inst/htprobe_apache2.pl</code> about not finding the <code>apreq</code> module. [Paul Orrock]</p></li>
+            <li><p>The help button no longer wipes unsaved values from pages when clicked (Bug #1386). [Sarah Mercier]</p></li>
+            <li><p>Added a check to <code>inst/required.pl</code> to check for a preforking Apache 2 rather than a threaded worker Apache 2. [Paul Orrock]</p></li>
+            <li><p>A newly created field with an underscore in its key name will no longer disappear as soon as you create it. Reported by Krzysztof Rudnik (Bug #1140). [David]</p></li>
+            <li><p>Documents no longer drop off the publish desk when a publish fails. Reported by Krzysztof Rudnik (Bug #1141). [David]</p></li>
+            <li><p>An error in the related media popup window no longer pulls in the side navigation, since it doesn't belong in the popup. Reported by Matt Rolf (Bug #1433). [David]</p></li>
+            <li><p>Adding a contributor to a media document when creating the media document from a related media popup no longer mysteriously closes the related media popup window. Thanks to John Durkin for the spot (Bug #1431). [David]</p></li>
+            <li><p>When creating a new media document via the related media popup, the popup window now closes in Camino and Safari once the media document has been created and saved, and in Safari it now properly updates the related media  element with which it is newly associated. Reported by Matt Rolf (Bug #1432). [David]</p></li>
+            <li><p>Fixed a bug where, once child elements were added to or deleted from a container element, the container was prevented from being deleted until the page is refreshed. Reported by Matt Rolf (Bug #1392). [David]</p></li>
+            <li><p>The pagination links now work in the edit related popup window. Reported by Adam Wilson (Bug #1428). [David]</p></li>
+            <li><p>The “Related Story” popup now properly closes in Camino when a “relate” or “un-relate” link is clicked. [David]</p></li>
+            <li><p>A call to <code>list()</code> or <code>lookup()</code> in <a href="http://bricolagecms.org/docs/current/api/Bric::Util::Event">Bric::Util::Event</a> with an “Offset” parameter but no “Limit” now works properly on MySQL. [David]</p></li>
+            <li><p>Fixed a misspelled method name (introduced in 1.11.1) that would've caused an unfriendly error message if the Cover Date was partially completed on the New Story screen. [Scott]</p></li>
+            <li><p>It was possible in the New Story screen, despite autocompletion, to enter a category with no trailing slash, like <code>/foo/bar</code>, which led to an error. This was fixed by making <code>< Bric::Biz::Category-</code>lookup >> (and <code>list</code>, <code>list_ids</code>) work by looking up with a <code>uri</code> not ending with a slash. [Scott]</p></li>
+            <li><p>Newer versions of Safari now properly handle the autocomplete form (Bug #1390). [Matt Rolf with much work by Sarah Mercier and Marshall Roch]</p></li>
+            <li><p>Fixed <code>< Bric::Biz::Element::Field-</code>get_max_length >> to correctly return the maximum length of a field. [Adrian Yee]</p></li>
+            <li><p>The user is now properly warned when a story type is not selected on story creation (Bug #1434). [Sarah Mercier]</p></li>
+            <li><p>Fixed bug in category autocompletion so that lookups of parent categories are now correctly site-specific. [Rolf Schaufelberger, Paul Orrock]</p></li>
+            <li><p>Fixed bulk edit bug where extra newlines after a <code>=begin</code> without a default value would result in an error. [Adrian Yee]</p></li>
+            <li><p>Checkboxes are no longer always displaying as checked (Bug #1452). [Scott]</p></li>
+            <li><p>Fixed the rendering of the jump links in the desk headers in IE6/7. [Adrian Yee]</p></li>
+            <li><p>Fixed Workspace link spacing and the opening/closing of the navigation in IE6. [Adrian Yee]</p></li>
+            <li><p>Fixed rendering issues with the action icons on the workspace/desk pages in IE6/7. [Adrian Yee]</p></li>
+            <li><p>All of the WYSIWYG editors (Xinha, htmlArea, FCKeditor, and JS-Quicktags) work again. Reported by John Durkin and Matt Rolf (Bug #1429). [David]</p></li>
+            <li><p>Made the Add keywords button (on the story and media profiles) not so huge in IE. [Adrian Yee]</p></li>
+            <li><p>Fixed JavaScript error with IE and the Check In/Move action icons on the workspace and desk pages. [Adrian Yee]</p></li>
+            <li><p>Fixed popup menu rendering issues in IE and Firefox. [Adrian Yee]</p></li>
+            <li><p>Fixed popup menu z-index issues on the workspace/desk pages in IE. [Adrian Yee]</p></li>
+            <li><p>Added a JavaScript fix for popup menu z-index issues that happened after re-ordering elements. [Adrian Yee]</p></li>
+            <li><p>Fixed the category autocomplete z-index issue in IE. [Adrian Yee]</p></li>
+            <li><p>Fixed bug where related media that failed to be thumbnailed caused the Story Profile to error out. Similarly fixed bug 1461 for Find Media (Bug #1458). [Scott]</p></li>
+            <li><p>Fixed issue where auto-completion was jumping around. Slightly modified from <a href="http://blog.gilluminate.com/2009/01/20/scriptaculous-autocomplete-page-jump-using-arrow-keys/">code by Jason Gill and Janos Novak</a> (Bug #1460). [Scott]</p></li>
+            <li><p>Fixed IE6 rendering on the story profile where the textarea/inputs disappear when the page isn't wide enough. [Adrian Yee]</p></li>
+            <li><p>Fixed bug where expanding containers on the story profile page caused IE to hide the contents of the container after it's done expanding. [Adrian Yee]</p></li>
+            <li><p>Fixed bug with IE6 where elements could not be re-ordered using drag and drop. [Adrian Yee]</p></li>
+            <li><p>Fixed the horizontal scroll that was showing up in IE7 on the desk/workspace pages. [Adrian Yee]</p></li>
+            <li><p>Fixed issue where the Cancel button in Profiles wasn't working because of the fix for Bug #1343 (Bug #1455). [Scott]</p></li>
+            <li><p>Fixed issue where URLs weren't wrapping properly in IE (Bug #1464). [Adrian]</p></li>
+            <li><p>Fixed issue where the Checkout icon wasn't working on desks in IE (Bug #1466). [Scott]</p></li>
+            <li><p>Response error handling in <a href="http://bricolagecms.org/docs/current/api/Bric::Dist::Client">Bric::Dist::Client</a>, which is used by <code>bric_dist_mon</code>, now properly checks the error status before looking to see if the response is from a proper distribution handler URL. This makes it easier to see what problems there are in a failed response, rather than just bailing without any useful information. [David]</p></li>
+            <li><p>Fixed an IE6 CSS bug that caused the sideNav layer to be hidden if the <code>mainContent</code> layer wasn't tall enough to show it (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/88">Bug #88 / #1465</a>) [Phillip Smith]</p></li>
+            <li><p>Fixed a bug introduced in 1.10.7 (and 1.11.1) where the <code>get_uri()</code> method, now properly URI-escaping itself, was breaking media distribution for media documents with spaces or other URI-escapeable characters in their file names. Thanks to Scott Lanning for the spot, and Aaron Fuleki for the kick to get it fixed (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/82">Bug #82 / #1456</a>). [David]</p></li>
+            <li><p>Fixed compatibility issues on MySQL. Bricolage now sets <code>sql_mode</code> when it connects to the database, so that MySQL itself does not have to globally set that option, as it could cause conflicts with other apps running on MySQL. Also removed the attempt to set <code>sql_mode</code> globally at installation time; it was bad manners, really. Thanks to Waldo Jaquith for the report. [David]</p></li>
+            <li><p>Alert type rules can once again be deleted from the UI. Thanks to Scott for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/81">Bug #81</a>). [David]</p></li>
+            <li><p>Contributors can be deleted again. Thanks to Phillip for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/111">Bug #111</a>). [David]</p></li>
+            <li><p>Fixed odd positioning of the “Check-in” menu on /workflow/profile/workspace (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/89">Bug #89</a>). [Phillip Smith]</p></li>
+            <li><p>Fixed the contributor association popup so that hitting the “Enter” key to perform a search no longer deletes contributors you've just added (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/112">Bug #112</a>). [David]</p></li>
+            <li><p>Story, Media, and Template search now properly remember whether they're in advanced or simple mode when a an empty search is submitted and when the “Clear Values” button is clicked. Thanks to Matt Rolf for the report (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/74">Bug #74</a>). [David]</p></li>
+            <li><p>The category autocompletion feature in the “New Story” profile now refuses to submit if a non-existent category has been typed in. If the user somehow manages to submit anyway, she'll be returned to the form with a message asking for a proper category name, rather than getting an error. Thanks to Scott for the report. [David]</p></li>
+            <li><p>Double-clicking an asset on a desk to check it into that desk no longer causes the asset to drop off the desk. It will only drop off if it's being checked into a different desk (<a href="http://bricolage.lighthouseapp.com/projects/29601/tickets/97">Bug #97</a>). [David]</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-1.11.2.tar.gz" title="Download Bricolage 1.11.2 Now!">Download Now!</a><br />(Version 1.11.2)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

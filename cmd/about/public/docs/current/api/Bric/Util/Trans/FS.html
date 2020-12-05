@@ -1,0 +1,697 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Trans::FS</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="FS.html#Name">Name</a></li>
+  <li><a href="FS.html#Synopsis">Synopsis</a></li>
+  <li><a href="FS.html#Description">Description</a></li>
+  <li><a href="FS.html#Interface">Interface</a>
+    <ul>
+      <li><a href="FS.html#Constructors">Constructors</a></li>
+      <li><a href="FS.html#Destructors">Destructors</a></li>
+      <li><a href="FS.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="FS.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="FS.html#Private">Private</a>
+    <ul>
+      <li><a href="FS.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="FS.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="FS.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="FS.html#Notes">Notes</a></li>
+  <li><a href="FS.html#Author">Author</a></li>
+  <li><a href="FS.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Trans::FS - Utility class for handling files, paths and filenames.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Trans::FS;
+
+# Constructors.
+my $fs = Bric::Util::Trans::FS-&gt;new;
+
+# Class methods.
+Bric::Util::Trans-&gt;put_res($res, @sts);
+Bric::Util::Trans-&gt;del_res($res, @sts);
+
+# Instance methods.
+$fs-&gt;copy($src, $loc);
+$fs-&gt;move($src, $loc);
+$fs-&gt;mk_path($path);
+$fs-&gt;del(@files);
+my $dir  = $fs-&gt;cat_dir(@dir_parts);
+my $file = $fs-&gt;cat_file(@file_parts);
+my $dir  = $fs-&gt;trunc_dir($dir);
+my $uri  = $fs-&gt;cat_uri(@uri_parts);
+my $uri  = $fs-&gt;trunc_uri($dir);
+my $uri  = $fs-&gt;dir_to_uri($dir);
+my $dir  = $fs-&gt;uri_to_dir($uri);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class provides a thin abstraction around a number of File::* modules (Copy, Spec, Basename, Find, etc.). Use it for all your portable file-system access needs.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $mail = Bric::Util::Trans::FS-&gt;new</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::Trans::FS object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $bool = Bric::Util::Trans::FS-&gt;put_res($resources, $st)</dt>
+<dd>
+
+<p>Copies the resources in the $resources anonymous array to each of the file system document roots specified by the servers associated with the $st server type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;uri&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+<li><p>Error copying $src to $dst.</p>
+
+</li>
+<li><p>Error creating path.</p>
+
+</li>
+<li><p>Error deleting path.</p>
+
+</li>
+<li><p>Error opening directory.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = Bric::Util::Trans::FS-&gt;del_res($resources, $st)</dt>
+<dd>
+
+<p>Deletes the resources in the $resources anonymous array from each of the file system document roots specified by the servers associated with the $st server type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+<li><p>Error deleting path.</p>
+
+</li>
+<li><p>Error opening directory.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$fs = $fs-&gt;copy($src, $dst, $recurse)</dt>
+<dd>
+
+<p>Copies $src to $dest. If the directory hierarchy for $dst does not exist, it will be created. If $src is a file and $dst doesn&#39;t exist, $dst will be created as a copy of $src. If $srcs is a file and $dst exists as a directory, then $src will be copied into $dst. If $src is a file and $dst is a file, then $dst will be replaced with a copy of $src. If $src is a directory, then only the immediate contents of $src will be copied unless $recurse is true. If $src is a directory and $dst doesn&#39;t exist, then $dst will be created as a copy of $src. If $src is a directory and $dst is a directory, then $src will be copied into $dst. If $src is a directory and $dst is a file, then $dst will be wiped out and replaced with a copy of $src.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error copying $src to $dst.</p>
+
+</li>
+<li><p>Error creating path.</p>
+
+</li>
+<li><p>Error deleting path.</p>
+
+</li>
+<li><p>Error opening directory.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$fs = $fs-&gt;move($src, $dest)</dt>
+<dd>
+
+<p>Moves $src to $dest. If the directory hierarchy for $dst does not exist, it will be created. If $src is a file and $dest is a file or doesn&#39;t exist, $src will be moved to (become) $dst. If $src is a file and $dst is a directory, $src will be moved into $dst. If $src is a directory and $dst doesn&#39;t exist, then $src will be moved to (become) $dst, including all of its contents. If $src is a directory and $dsts is a directory, then $src will be moved, with all of its contents, into $dst. If $src is a directory and $dst is a file, $dst will be blown away and then $src will be moved to (become) $dst.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error creating path.</p>
+
+</li>
+<li><p>Error deleting path.</p>
+
+</li>
+<li><p>Error moving $src to $dst.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = $fs-&gt;mk_path($path)</dt>
+<dd>
+
+<p>Creates a directory path.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error creating path.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Path::mkpath() internally.</p>
+
+</dd>
+<dt>my $bool = $fs-&gt;del(@paths)</dt>
+<dd>
+
+<p>Deletes a an entire directory tree from the file system. If any path in @paths is a simple file, it will be deleted.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error deleting path.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Path::rmtree() internally.</p>
+
+</dd>
+<dt>my $dir = $fs-&gt;cat_dir(@dir_parts)</dt>
+<dd>
+
+<p>Takes a list of directory parts and concatenates them for the local file system.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Functions::catdir() internally.</p>
+
+</dd>
+<dt>my $file = $fs-&gt;cat_file(@file_parts)</dt>
+<dd>
+
+<p>Takes a list of directory parts and a filename and concatenates them for the local file system.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Functions::catfile() internally.</p>
+
+</dd>
+<dt>my $uri = $fs-&gt;cat_uri(@uri_parts)</dt>
+<dd>
+
+<p>Takes a list of directory parts and concatenates them into a URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Unix-&gt;catdir() internally.</p>
+
+</dd>
+<dt>my @dir_parts = $fs-&gt;split_dir($dir)</dt>
+<dd>
+
+<p>Takes a local filesystem directory name and and returns its directory parts.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Functions::splitdir() internally.</p>
+
+</dd>
+<dt>my @uri_parts = $fs-&gt;split_uri($uri)</dt>
+<dd>
+
+<p>Takes a URI and and returns its directory parts.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Unix-&gt;splitdir() internally.</p>
+
+</dd>
+<dt>my $dir = $fs-&gt;trunc_dir($dir)</dt>
+<dd>
+
+<pre><code>my $dir = &#39;/here/there/every/where&#39;;
+$dir = $fs-&gt;trunc_dir($dir);
+print $dir; # Prints &quot;/here/there/every&quot; on Unix.</code></pre>
+
+<p>Takes a directory name, chops off the last directory specification, and returns the truncated directory. Returns undef when the directory passed in is the root directory (e.g., &#39;/&#39;).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Functions::catdir() and File::Spec::Functions::splitdir() internally.</p>
+
+</dd>
+<dt>my $uri = $fs-&gt;trunc_uri($uri)</dt>
+<dd>
+
+<p>Takes a URI, chops off the last directoey, and returns the truncated URI. Returns undef when the URI passed in is the root URI (e.g., &#39;/&#39;).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Unix-&gt;catdir() and File::Spec::Unix-&gt;splitdir() internally.</p>
+
+</dd>
+<dt>my $uri = $fs-&gt;dir_to_uri($dir)</dt>
+<dd>
+
+<p>Takes a platform-specific directory name and changes it to a URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Unix-&gt;catdir() and File::Spec::Unix-&gt;splitdir() internally.</p>
+
+</dd>
+<dt>my $uri = $fs-&gt;uri_to_dir($uri)</dt>
+<dd>
+
+<p>Takes a URI and changes it to a directory name for the local platform.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Spec::Unix-&gt;catdir() and File::Spec::Unix-&gt;splitdir() internally.</p>
+
+</dd>
+<dt>my $base_name = $fs-&gt;base_name($file_name)</dt>
+<dd>
+
+</dd>
+<dt>my $base_name = $fs-&gt;base_name($file_name, $OS)</dt>
+<dd>
+
+<p>Takes a complete file path name and extracts just the file name. The $OS argument may be any one of the following:</p>
+
+<dl>
+
+<dt>Unix</dt>
+<dd>
+
+</dd>
+<dt>SomeNix</dt>
+<dd>
+
+</dd>
+<dt>Windows NT</dt>
+<dd>
+
+</dd>
+<dt>Windows 95</dt>
+<dd>
+
+</dd>
+<dt>Windows 98</dt>
+<dd>
+
+</dd>
+<dt>Windows XP</dt>
+<dd>
+
+</dd>
+<dt>Windows ME</dt>
+<dd>
+
+</dd>
+<dt>MacOS</dt>
+<dd>
+
+</dd>
+<dt>Mac</dt>
+<dd>
+
+</dd>
+<dt>VMS</dt>
+<dd>
+
+</dd>
+<dt>DOS</dt>
+<dd>
+
+</dd>
+<dt>MSDOS</dt>
+<dd>
+
+</dd>
+<dt>Amiga</dt>
+<dd>
+
+</dd>
+<dt>AmigaOS</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>If it&#39;s not included, the $OS argument is assumed to be &#39;Unix&#39;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Basename::basename() and File::Basename::fileparse_set_fstype() internally.</p>
+
+</dd>
+<dt>my $uri_base_name = $fs-&gt;uri_base_name($uri)</dt>
+<dd>
+
+<p>Takes a URI as an argument and returns just the base name of the file at the end of the URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Basename::basename() and File::Basename::fileparse_set_fstype() internally.</p>
+
+</dd>
+<dt>my $dir_name = $fs-&gt;dir_name($file_name)</dt>
+<dd>
+
+</dd>
+<dt>my $dir_name = $fs-&gt;dir_name($file_name, $OS)</dt>
+<dd>
+
+<p>Takes a complete file path name and extracts just the file name. The $OS argument may be any one of the options listed in base_name() above.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Basename::dirname() and File::Basename::fileparse_set_fstype() internally.</p>
+
+</dd>
+<dt>my $uri_dir_name = $fs-&gt;uri_dir_name($uri)</dt>
+<dd>
+
+<p>Takes a URI as an argument and returns just the directory name, minus the filename at the end of the URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Basename::basename() and File::Basename::fileparse_set_fstype() internally.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $bool = &amp;$cp($src, $dst)</dt>
+<dd>
+
+<p>Copies a source file to a destination file.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error copying $src to $dst.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Copy::copy() internally.</p>
+
+</dd>
+<dt>my $bool = &amp;$mv($src, $dst)</dt>
+<dd>
+
+<p>Moves a source file or directory to a destination file or directory.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error moving $src to $dst.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Copy::move() internally.</p>
+
+</dd>
+<dt>my $bool = &amp;$cpdir($src, $dst, $recurse)</dt>
+<dd>
+
+<p>Copies the contents of $src into $dst. If $recurse is true, it will copy all the subdirectories of $src, too. Otherwise, it&#39;ll just copy the immediate contents of $src.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error opening directory.</p>
+
+</li>
+<li><p>Error copying $src to $dst.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses &amp;$glob() and &amp;$glob_rec() internally.</p>
+
+</dd>
+<dt>my $bool = &amp;$glob($src_dir, $dst_dir)</dt>
+<dd>
+
+<p>Copies the immediate contents of $src_dir into $dst_dir. Does not recursively copy the subdirectories of $src.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Error opening directory.</p>
+
+</li>
+<li><p>Error copying $src to $dst.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses &amp;$cp() internally.</p>
+
+</dd>
+<dt>my $bool = &amp;$glob_rec($src_dir, $dest_dir)</dt>
+<dd>
+
+<p>Recursively copies the contents of $src to $dst.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses File::Find::find() internally. Not yet implemented.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a href="http://search.cpan.org/perldoc?File::Copy">File::Copy</a>, <a href="http://search.cpan.org/perldoc?File::Path">File::Path</a>, <a href="http://search.cpan.org/perldoc?File::Basename">File::Basename</a>, <a href="http://search.cpan.org/perldoc?File::Find">File::Find</a>, <a href="http://search.cpan.org/perldoc?File::Spec">File::Spec</a></p>
+
+</body>
+</html>
+

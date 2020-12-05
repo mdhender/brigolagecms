@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Event</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Event.html#Name">Name</a></li>
+  <li><a href="Event.html#Synopsis">Synopsis</a></li>
+  <li><a href="Event.html#Description">Description</a></li>
+  <li><a href="Event.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Event.html#Constructors">Constructors</a></li>
+      <li><a href="Event.html#Destructors">Destructors</a></li>
+      <li><a href="Event.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Event.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Event.html#Private">Private</a>
+    <ul>
+      <li><a href="Event.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Event.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Event.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Event.html#Notes">Notes</a></li>
+  <li><a href="Event.html#Author">Author</a></li>
+  <li><a href="Event.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Event - Exports simple functions for managing events.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Event qw(:all);
+log_event($name, $obj, $init);
+commit_events();</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$p-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my $bool = log_event($key_name, $obj, $init)</dt>
+<dd>
+
+<p>Queues an event for logging. Pass in the following arguments:</p>
+
+<dl>
+
+<dt>$key_name</dt>
+<dd>
+
+<p>The key name of the event to log. Required.</p>
+
+</dd>
+<dt>$obj</dt>
+<dd>
+
+<p>The object for which the event is being logged. Required.</p>
+
+</dd>
+<dt>$init</dt>
+<dd>
+
+<p>The attribute values for this event. Required for those event types that require them. See Bric::Util::EventType and Bric::Util::Event for more information.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>my $bool = commit_events()</dt>
+<dd>
+
+<p>Goes through the queue of events created by calls to log_event() and actually logs them to the database.</p>
+
+<p><b>Throws:</b> See Bric::Util::Event::new().</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = clear_events()</dt>
+<dd>
+
+<p>Deletes queue of events so that they won&#39;t be logged. Used to prevent event logging when an error has occurred and all changes have been rolled back.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Event.html" name="Bric::Util::Event">Bric::Util::Event</a></p>
+
+</body>
+</html>
+

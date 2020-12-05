@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Bric.html#Name">Name</a></li>
+  <li><a href="Bric.html#Version">Version</a></li>
+  <li><a href="Bric.html#Synopsis">Synopsis</a></li>
+  <li><a href="Bric.html#Description">Description</a></li>
+  <li><a href="Bric.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Bric.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Bric.html#new">new</a></li>
+          <li><a href="Bric.html#lookup">lookup</a></li>
+          <li><a href="Bric.html#cache_as">cache_as</a></li>
+          <li><a href="Bric.html#cache_lookup">cache_lookup</a></li>
+          <li><a href="Bric.html#list">list</a></li>
+        </ul>
+      </li>
+      <li><a href="Bric.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Bric.html#list_ids">list_ids</a></li>
+          <li><a href="Bric.html#my_meths">my_meths</a></li>
+        </ul>
+      </li>
+      <li><a href="Bric.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="Bric.html#get-set">get/set</a></li>
+          <li><a href="Bric.html#get_grp_ids">get_grp_ids</a></li>
+          <li><a href="Bric.html#cache_me">cache_me</a></li>
+          <li><a href="Bric.html#uncache_me">uncache_me</a></li>
+          <li><a href="Bric.html#register_instance">register_instance</a></li>
+          <li><a href="Bric.html#unregister_instance">unregister_instance</a></li>
+          <li><a href="Bric.html#save">save</a></li>
+        </ul>
+      </li>
+      <li><a href="Bric.html#Functions">Functions</a>
+        <ul>
+          <li><a href="Bric.html#register_fields">register_fields</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Bric.html#Author">Author</a></li>
+  <li><a href="Bric.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric - The Bricolage base class.</p>
+
+<h1 id="Version">Version</h1>
+
+<p>2.0.1</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use base qw(Bric);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The Bric class is an abstract class should never be used directly. Instead new classes should be derived from it.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="new">new</h3>
+
+<pre><code>my $obj = Bric-&gt;new($init);</code></pre>
+
+<p>Call this constructor from all derived classes. This sets up some basic fields and methods.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::Gen</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="lookup">lookup</h3>
+
+<pre><code>my $obj = Bric-&gt;lookup({ id =&gt; $obj_id });</code></pre>
+
+<p>This method is similar to <code>new()</code> except it is used only to retrieve a already existing object of this type from the database whereas <code>new()</code> creates a new, empty object. All subclasses should override this method in order to look up their objects in the database. However, they must first call <code>cache_lookup()</code> to see if it can retrieve the object from the cache. If they can, they should simply return the object. Otherwise, once they look up the object in the database, they should cache it via the <code>cache_me()</code> method. For example:</p>
+
+<pre><code>sub lookup {
+    my $pkg = shift;
+    my $self = $pkg-&gt;cache_lookup(@_);
+    return $self if $self;
+    # ... Continue to look up object in the database. Then...
+    $self-&gt;cache_me;
+}</code></pre>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::MNI</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="cache_as">cache_as</h3>
+
+<pre><code>my $pkg = Bric-&gt;cache_as;</code></pre>
+
+<p>Returns the class name to use when caching objects. In this default implementation, the cache package returned is simply <code>ref $self</code>. Subclasses may wish to override this default value.</p>
+
+<h3 id="cache_lookup">cache_lookup</h3>
+
+<pre><code>my $obj = Bric-&gt;cache_lookup({ id =&gt; $obj_id });</code></pre>
+
+<p>Looks up an object in the cache and returns it if it exists. Otherwise it returns <code>undef</code>. This method is meant to be used by Bric subclasses in their <code>lookup()</code> methods. See <code>lookup()</code> for an example.</p>
+
+<h3 id="list">list</h3>
+
+<pre><code>my @objs = Bric-&gt;list($params);
+my $objs_aref = Bric-&gt;list($params);</code></pre>
+
+<p>This is an abstract method. All derived classes should override this method. It takes a list of parameters and searches the database for objects that meet the parameter serach criteria. It returns a list of objects in an array context, and an array reference of objects in a scalar context. In the concrete implementations of this method, classes should also call <code>cache_me()</code> for every object to be returned.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::MNI</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="list_ids">list_ids</h3>
+
+<pre><code>my @ids = Bric-&gt;list_ids($params);
+my $ids_aref = Bric-&gt;list_ids($params);</code></pre>
+
+<p>This is an abstract method. It takes a list of parameters and searches the database for objects that meet the parameter serach criteria. It returns a list of object IDs in an array context, and an array reference of object IDs in a scalar context.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::MNI</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="my_meths">my_meths</h3>
+
+<pre><code>my $meths = Bric-&gt;my_meths
+my @meths = Bric-&gt;my_meths(1);
+my $meths_aref = Bric-&gt;my_meths(1);
+@meths = Bric-&gt;my_meths(0, 1);
+$meths_aref = Bric-&gt;my_meths(0, 1);</code></pre>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. See each subclass for a list of the properties included in the hash. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Notes:</b> The method is a no-op here in the Bric base class. See the subclasses for implementations and detail regarding the properties they return.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="get-set">get/set</h3>
+
+<pre><code>my $val = $obj-&gt;get_field1;
+$obj = $obj-&gt;set_field1($val);</code></pre>
+
+<p>This is the AUTOLOAD handler. It translates all set and get operations into subroutines acting upon the fields in derived classes.</p>
+
+<p><b>Side Effects:</b> Creates a custom subroutine reference in the object package&#39;s namespace.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::GEN</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="get_grp_ids">get_grp_ids</h3>
+
+<pre><code>my @grp_ids = $obj-&gt;get_grp_ids;
+my $grp_ids_aref = $obj-&gt;get_grp_ids;
+my @grp_ids = Bric-&gt;get_grp_ids;
+my $grp_ids_aref = Bric-&gt;get_grp_ids;</code></pre>
+
+<p>Return a list of IDs for the Bric::Util::Grp objects to which the object belongs. When called as a class method, return the value of the class&#39; <code>INSTANCE_GROUP_ID</code> constant. Values are returned as a list in an array context, and as an array reference in a scalar context.</p>
+
+<h3 id="cache_me">cache_me</h3>
+
+<pre><code>$obj = $obj-&gt;cache_me;</code></pre>
+
+<p>Caches the object for later retrieval by the <code>lookup()</code> class method. Should be called for all objects retrieved from the database, including all objects to be returned by <code>lookup()</code>, <code>list()</code>, and <code>href()</code> methods.</p>
+
+<h3 id="uncache_me">uncache_me</h3>
+
+<pre><code>$obj-&gt;uncache_me;</code></pre>
+
+<p>Remove an object from the cache. This should be done before an object&#39;s associated data is permanently deleted from the database.</p>
+
+<h3 id="register_instance">register_instance</h3>
+
+<pre><code>$obj = $obj-&gt;register_instance;</code></pre>
+
+<p>Add the current object to the appropriate &quot;All&quot; group in the database. These are groups that contain every instance of a particular type of object.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="unregister_instance">unregister_instance</h3>
+
+<pre><code>$obj = $obj-&gt;unregister_instance;</code></pre>
+
+<p>Remove the current object from the appropriate &quot;All&quot; group in the database. These are groups that contain every instance of a particular type of object.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="save">save</h3>
+
+<pre><code>$obj = $obj-&gt;save;</code></pre>
+
+<p>Save the current object by setting an internal flag indicating that it has been saved. Subclasses should override this method to save object data to the database.</p>
+
+<h2 id="Functions">Functions</h2>
+
+<h3 id="register_fields">register_fields</h3>
+
+<pre><code>Bric::register_fields({ field1  =&gt; Bric::FIELD_READ,
+                        field2  =&gt; Bric::FIELD::RDWR
+                      });</code></pre>
+
+<p>This function is used by sub classes to register their field names and assign access levels to them.</p>
+
+<p><b>Side Effects</b>: Defines a subroutine named <code>ACCESS()</code> in the caller&#39;s package.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::GEN</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p>NONE</p>
+
+</body>
+</html>
+

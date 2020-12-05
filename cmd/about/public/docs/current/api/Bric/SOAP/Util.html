@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Util</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Util.html#Name">Name</a></li>
+  <li><a href="Util.html#Synopsis">Synopsis</a></li>
+  <li><a href="Util.html#Description">Description</a></li>
+  <li><a href="Util.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Util.html#Exportable-Functions">Exportable Functions</a></li>
+      <li><a href="Util.html#Private-Class-Methods">Private Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Util.html#Author">Author</a></li>
+  <li><a href="Util.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Util - utility class for the Bric::SOAP classes</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::SOAP::Util qw(category_path_to_script)
+
+my $category_id = category_path_to_id($path);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides various utility methods of use throughout the Bric::SOAP classes.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Exportable-Functions">Exportable Functions</h2>
+
+<dl>
+
+<dt>$category_id = category_path_to_id($path)</dt>
+<dd>
+
+<p>Returns a category_id for the path specified or undef if none match.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$output_channel_id = output_channel_name_to_id($path)</dt>
+<dd>
+
+<p>Returns an output channel ID for an output channel name.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$workflow_id = workflow_name_to_id($path)</dt>
+<dd>
+
+<p>Returns a workflow ID for a workflow name.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$site_id = site_path_to_id($path)</dt>
+<dd>
+
+<p>Returns a site_id for the path specified or undef if none match.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$db_date = xs_date_to_db_date($xs_date)</dt>
+<dd>
+
+<p>Transforms an XML Schema dateTime format date to a database format date. Returns undef if the input date is invalid.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$xs_date = db_date_to_xs_date($db_date)</dt>
+<dd>
+
+<p>Transforms a database format date into an XML Schema dataTime format date. Returns undef if the input date is invalid.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$data = parse_asset_document($document, @extra_force_array)</dt>
+<dd>
+
+<p>Parses an XML asset document and returns a hash structure. Inside the hash singular elements are stored as keys with scalar values. Potentially plural values are stored as array-ref values whether they&#39;re present multiple times in the document or not. This routine dies on parse errors with information about the error.</p>
+
+<p>After the document parameter you can pass extra items for the force_array XML::Simple option.</p>
+
+<p>At some point in the future this method will be augmented with XML Schema validation.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>@related = serialize_elements(writer =&gt; $writer, object =&gt; $story, args =&gt; $args)</dt>
+<dd>
+
+<p>Creates the &lt;elements&gt; structure for a Story or Media object given the object and the args to export(). Returns a list of two-element arrays - [ &quot;media&quot;, $id ] or [ &quot;story&quot;, $id ]. These are the related objects serialized.</p>
+
+</dd>
+<dt>load_ocs($asset, $ocdata, $elem_ocs, $key, $update)</dt>
+<dd>
+
+<p>Sets the output channels on a business asset. If it&#39;s a new asset, all of the output channels in the $ocdata array reference will be loaded into the asset. If the asset is being updated, then <code>load_ocs()</code> compares the output channels in $ocdata to those in the asset and adds and removes the appropriate output channels. The arguments are:</p>
+
+<dl>
+
+<dt><code>$asset</code></dt>
+<dd>
+
+<p>The business asset with which to associate the output channels.</p>
+
+</dd>
+<dt><code>$ocdata</code></dt>
+<dd>
+
+<p>The array reference of output channels from the SOAP data, e.g., <code>$data-</code>{stories}{story}[0]{output_channels}{output_channel}.</p>
+
+</dd>
+<dt><code>$elem_type_ocs</code></dt>
+<dd>
+
+<p>A hash reference of the output channels in the element type that define the asset (i.e., the story element type or the media element type). The hash keys are the output channel names, and the values are the corresponding output channel objects.</p>
+
+</dd>
+<dt><code>$key</code></dt>
+<dd>
+
+<p>The key name for the class of asset being updated, either &quot;story&quot; or &quot;media&quot;.</p>
+
+</dd>
+<dt><code>$update</code></dt>
+<dd>
+
+<p>Boolean value indicating whether <code>$asset</code> is being updated or not.</p>
+
+</dd>
+</dl>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p><b>Notes:</b> Only call this function if there is output channel data to be managed in the XML data. If there isn&#39;t, don&#39;t call this function, and the output channels in an asset will be left unchanged.</p>
+
+</dd>
+<dt>@relations = deseralize_elements(object =&gt; $story, data =&gt; $data, type =&gt; &#39;story&#39;)</dt>
+<dd>
+
+<p>Loads an asset object with element type data from the data hash. Calls _deserialize_element recursively down through containers.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes:</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>@related = _deserialize_element(element =&gt; $element, data =&gt; $data)</dt>
+<dd>
+
+<p>Deserializes a single element from &lt;elements&gt; data into $element. Calls recursively down through containers building up fixup data from related objects in @related.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: This method isn&#39;t checking compliance with the asset type constraints in some cases. After Bric::SOAP::Element is done I should contain the kung-fu necessary for this task.</p>
+
+</dd>
+<dt>@related = _serialize_element(writer =&gt; $writer, element =&gt; $element, args =&gt; $args)</dt>
+<dd>
+
+<p>Serializes a single element into the contents of an &lt;elements&gt; tag in the media and story elements. It calls itself recursively on containers. Returns a list of two-element arrays - [ &quot;media&quot;, $id ] or [ &quot;story&quot;, $id ]. These are the related objects serialized.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

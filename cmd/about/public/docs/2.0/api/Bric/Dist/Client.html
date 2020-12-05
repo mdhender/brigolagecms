@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Client</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Client.html#Name">Name</a></li>
+  <li><a href="Client.html#Synopsis">Synopsis</a></li>
+  <li><a href="Client.html#Description">Description</a></li>
+  <li><a href="Client.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Client.html#Constructors">Constructors</a></li>
+      <li><a href="Client.html#Destructors">Destructors</a></li>
+      <li><a href="Client.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Client.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Client.html#Private">Private</a>
+    <ul>
+      <li><a href="Client.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Client.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Client.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Client.html#Notes">Notes</a></li>
+  <li><a href="Client.html#Author">Author</a></li>
+  <li><a href="Client.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Client - LWP Client for telling Bric::Dist::Handler to execute distribution jobs.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Client;
+
+my $dist = Bric::Dist::Client-&gt;new;
+
+my $url = $dist-&gt;get_url;
+$dist = $dist-&gt;set_url($url);
+my $cookie = $dist-&gt;get_cookie;
+$dist = $dist-&gt;set_cookie($cookie);
+
+$dist-&gt;send;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class functions as a client to the distribution server. It sends a tickle request to the Bricolage distribution server, which is running Bric::Dist::Handler. It is principally used used by <a rel="section" href="../../bric_dist_mon.html" name="bric_dist_mon">bric_dist_mon</a> to publish and distribute files.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $dist = Bric::Dist::Client-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Dist::Client object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$dist-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$dist = $dist-&gt;load_ids</dt>
+<dd>
+
+<p><b>Note:</b> Deprecated. No need to call it anymore, as it is now a no-op.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $url = $dist-&gt;get_url</dt>
+<dd>
+
+<p>Returns the Distribution server URL.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;url&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;set_url($url)</dt>
+<dd>
+
+<p>Sets the distribution server URL.</p>
+
+<pre><code>$dist-&gt;set_url(&#39;http://cf.about.com/dist/&#39;);</code></pre>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;url&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $timeout = $dist-&gt;get_timeout</dt>
+<dd>
+
+<p>Returns the distribution server request timeout. This is the amount of time, in seconds, that the client should wait for a response from the distribution server before timing out. Defaults to 30 if not set.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;timeout&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;set_timeout($timeout)</dt>
+<dd>
+
+<pre><code>$dist-&gt;set_timeout(60);</code></pre>
+
+<p>Sets the distribution server request timeout.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;timeout&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $cookie = $dist-&gt;get_cookie</dt>
+<dd>
+
+<p>Returns the Distribution server cookie.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;cookie&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;set_cookie($cookie)</dt>
+<dd>
+
+<p>Sets the distribution server cookie. If no cookie is set, then none will be sent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;cookie&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@exec_jids, $exec_jids_aref) = $dist-&gt;get_exec_ids</dt>
+<dd>
+
+<p><b>Note:</b> Deprecated. No need to call it anymore. Will return an empty list or array reference.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;add_exec_ids(@exec_ids)</dt>
+<dd>
+
+<p><b>Note:</b> Deprecated. No need to call it anymore. All arguments will simply be discarded.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;del_exec_ids(@exec_ids)</dt>
+<dd>
+
+<p><b>Note:</b> Deprecated. No need to call it anymore. All arguments will simply be discarded.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $dist-&gt;send</dt>
+<dd>
+
+<p>Sends a tickle request to the distribution server.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Error sending jobs to distributor.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<p>1; __END__</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Preference</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Preference.html#Name">Name</a></li>
+  <li><a href="Preference.html#Synopsis">Synopsis</a></li>
+  <li><a href="Preference.html#Description">Description</a></li>
+  <li><a href="Preference.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Preference.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Preference.html#Private-Class-Methods">Private Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Preference.html#Author">Author</a></li>
+  <li><a href="Preference.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Preference - SOAP interface to Bricolage preferences</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use SOAP::Lite;
+import SOAP::Data &#39;name&#39;;
+
+# setup soap object to login with
+my $soap = new SOAP::Lite
+  uri      =&gt; &#39;http://bricolage.sourceforge.net/Bric/SOAP/Auth&#39;,
+  readable =&gt; DEBUG;
+$soap-&gt;proxy(&#39;http://localhost/soap&#39;,
+             cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+# login
+$soap-&gt;login(name(username =&gt; USER),
+             name(password =&gt; PASSWORD));
+
+# set uri for Preference module
+$soap-&gt;uri(&#39;http://bricolage.sourceforge.net/Bric/SOAP/Preference&#39;);
+
+# get a list of all preference IDs
+my $ids = $soap-&gt;list_ids()-&gt;result;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a SOAP interface to manipulating Bricolage preferences. Note that per-user preferences are not handled here (probably should be added to the User module).</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>list_ids</dt>
+<dd>
+
+<p>This method queries the database for matching preferences and returns a list of ids. If none are found, an empty list will be returned.</p>
+
+<p>This method can accept the following named parameters to specify the search. Some fields support matching and are marked with an (M). The value for these fields will be interpreted as an SQL match expression and will be matched case-insensitively. Other fields must specify an exact string to match. Match fields combine to narrow the search results (via ANDs in an SQL WHERE clause).</p>
+
+<dl>
+
+<dt>name (M)</dt>
+<dd>
+
+<p>The preference&#39;s name.</p>
+
+</dd>
+<dt>description (M)</dt>
+<dd>
+
+<p>The preference&#39;s description.</p>
+
+</dd>
+<dt>default (M)</dt>
+<dd>
+
+<p>The preference&#39;s default value. Note: for values listed as &quot;Off&quot; or &quot;On&quot; in the UI, this will be &quot;0&quot; or &quot;1&quot;.</p>
+
+</dd>
+<dt>value (M)</dt>
+<dd>
+
+<p>The preference&#39;s value. Note: for values listed as &quot;Off&quot; or &quot;On&quot; in the UI, this will be &quot;0&quot; or &quot;1&quot;. See <code>val_name</code>.</p>
+
+</dd>
+<dt>val_name (M)</dt>
+<dd>
+
+<p>The name of the preference&#39;s value. This is what&#39;s displayed in the UI. See <code>value</code>.</p>
+
+</dd>
+<dt>manual</dt>
+<dd>
+
+<p>Boolean indicating whether a value can be manually entered by the user, rather than selected from a list.</p>
+
+</dd>
+<dt>can_be_overridden</dt>
+<dd>
+
+<p>Boolean indicating whether or not users can override the global preference value.</p>
+
+</dd>
+<dt>opt_type</dt>
+<dd>
+
+<p>The preference option type. Current possibilities are: select, radio, text. (I think (from displayFormElement.mc) in principle also: password, textarea, checkbox, single_rad, date; and codeselect could be easily added. No preferences currently have any of these types, however.)</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>export</dt>
+<dd>
+
+<p>The export method retrieves a set of assets from the database, serializes them and returns them as a single XML document. See <a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for the schema of the returned document.</p>
+
+<p>Accepted paramters are:</p>
+
+<dl>
+
+<dt>pref_id</dt>
+<dd>
+
+<p>Specifies a single pref to be retrieved.</p>
+
+</dd>
+<dt>pref_ids</dt>
+<dd>
+
+<p>Specifies a list of pref_ids. The value for this option should be an array of integer &quot;pref_id&quot; assets.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>create</dt>
+<dd>
+
+<p>This method is unavailable for preferences, since they aren&#39;t createable.</p>
+
+</dd>
+<dt>update</dt>
+<dd>
+
+<p>The update method updates an asset using the data in an XML document of the format created by export(). A common use of update() is to export() a selected object, make changes to one or more fields and then submit the changes with update().</p>
+
+<p>Returns a list of new ids created in the order of the assets in the document.</p>
+
+<p>Takes the following options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document where the objects to be updated can be found. The document must contain at least one asset and may contain any number of related asset objects.</p>
+
+</dd>
+<dt>update_ids (required)</dt>
+<dd>
+
+<p>A list of &quot;pref_id&quot; integers for the assets to be updated. These must match id attributes on asset elements in the document. If you include objects in the document that are not listed in update_ids then they will be treated as in create(). For that reason an update() with an empty update_ids list is equivalent to a create().</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: Most information output by <code>export</code> will be ignored on update. For example, you can&#39;t change the list of possible values, or whether a preference is &quot;manual&quot;. Those are things that are hardcoded into Bricolage. See the <code>register_fields</code> call in <a rel="section" href="../Util/Pref.html" name="Bric::Util::Pref">Bric::Util::Pref</a> for which fields are &quot;RDWR&quot; (currently <code>value</code> and <code>can_be_overridden</code>).</p>
+
+</dd>
+<dt>delete</dt>
+<dd>
+
+<p>This method is unavailable for preferences, since they aren&#39;t deleteable.</p>
+
+</dd>
+<dt>$self-&gt;module</dt>
+<dd>
+
+<p>Returns the module name, that is the first argument passed to bric_soap.</p>
+
+</dd>
+<dt>is_allowed_param</dt>
+<dd>
+
+</dd>
+<dt>$pkg-&gt;is_allowed_param($param, $method)</dt>
+<dd>
+
+<p>Returns true if $param is an allowed parameter to the $method method.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>$pkg-&gt;load_asset($args)</dt>
+<dd>
+
+<p>This method provides the meat of update().</p>
+
+</dd>
+<dt>$pkg-&gt;serialize_asset( writer =&gt; $writer, pref_id =&gt; $id, args =&gt; $args)</dt>
+<dd>
+
+<p>Serializes a single pref object into a &lt;pref&gt; pref using the given writer and args.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;slanning@cpan.org&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../SOAP.html" name="Bric::SOAP">Bric::SOAP</a>, <a rel="section" href="Asset.html" name="Bric::SOAP::Asset">Bric::SOAP::Asset</a></p>
+
+</body>
+</html>
+

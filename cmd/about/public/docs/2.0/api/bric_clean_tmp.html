@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_clean_tmp</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_clean_tmp.html#Name">Name</a></li>
+  <li><a href="bric_clean_tmp.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_clean_tmp.html#Description">Description</a></li>
+  <li><a href="bric_clean_tmp.html#Author">Author</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_clean_tmp - Bricolage temp directory maintenance</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>This script is designed to be run from cron. To run it nightly at 2am put a like like this in the crontab for the web server user (often &quot;nobody&quot;):</p>
+
+<pre><code>0 2 * * * /usr/local/bricolage/bin/bric_clean_tmp</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>bric_clean_tmp will delete files from the tmp directories used by Bricolage which are over a 12 hours old. This will prevent Bricolage from filling up your hard drive with stale lockfiles and other viscera.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+</body>
+</html>
+

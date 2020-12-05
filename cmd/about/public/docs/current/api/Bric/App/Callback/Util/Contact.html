@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Callback::Util::Contact</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Contact.html#Name">Name</a></li>
+  <li><a href="Contact.html#Synopsis">Synopsis</a></li>
+  <li><a href="Contact.html#Description">Description</a></li>
+  <li><a href="Contact.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Contact.html#Functions">Functions</a>
+        <ul>
+          <li><a href="Contact.html#update_contacts">update_contacts</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Contact.html#Author">Author</a></li>
+  <li><a href="Contact.html#See-Also">See Also</a></li>
+  <li><a href="Contact.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Callback::Util::Contact - Contact utility functions for callbacks</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Callback::Util::Contact qw(:all);
+update_contacts($params, $person);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides utility functions for managing contacts in callback classes that manage Bric::Biz::Person objects.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Functions">Functions</h2>
+
+<h3 id="update_contacts">update_contacts</h3>
+
+<pre><code>update_contacts($params, $person);</code></pre>
+
+<p>Updates the contacts for <code>$person</code> by pulling the contact data from <code>$params</code>. See <a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::User">Bric::App::Callback::Profile::User</a> for a sample usage.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;lannings@who.int&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a href="http://search.cpan.org/perldoc?Bric::App::Callback::Profile::User">Bric::App::Callback::Profile::User</a></dt>
+<dd>
+
+<p>This callback class uses Bric::App::Callback::Util::Contact.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../../2.0/api/Bric/App/Callback.html" name="Bric::App::Callback">Bric::App::Callback</a></dt>
+<dd>
+
+<p>This is the base class for all callback classes.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2003-2004 World Health Organization and Kineticode, Inc. See <a rel="section" href="../../../../../../2.0/api/Bric/License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Auth</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Auth.html#Name">Name</a></li>
+  <li><a href="Auth.html#Synopsis">Synopsis</a></li>
+  <li><a href="Auth.html#Description">Description</a></li>
+  <li><a href="Auth.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Auth.html#Public-Class-Methods">Public Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Auth.html#Author">Author</a></li>
+  <li><a href="Auth.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Auth - module to handle authentication for the SOAP interface</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># setup soap object
+my $soap = new SOAP::Lite
+    uri =&gt; &#39;http://bricolage.sourceforge.net/Bric/SOAP/Auth&#39;,
+    readable =&gt; DEBUG;
+
+# setup the proxy with a cookie jar to hold the auth cookie
+$soap-&gt;proxy(&#39;http://localhost/soap&#39;,
+             cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+
+# call the login method
+my $response = $soap-&gt;login(name(username =&gt; USER),
+                            name(password =&gt; PASSWORD));
+
+# switch uri to call methods in other Bric::SOAP classes
+$soap-&gt;uri(&#39;http://bricolage.sourceforge.net/Bric/SOAP/Story&#39;);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a SOAP login service for Bricolage. Clients call the login() method before calling Bric::SOAP classes and recieve a cookie. Bric::SOAP::Handler validates this cookie using Bric::App::Auth on every request.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>$success = Bric::SOAP::Auth-&gt;login(username =&gt; $u, password =&gt; $p)</dt>
+<dd>
+
+<p>SOAP login method. If login is successful returns 1 and sets an HTTP cookie to be used on future calls to the SOAP interface. On failure returns a fault containing an error message.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes:</p>
+
+<p>Calls Bric::App::Auth::login to check permissions and set the cookie.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a>, <a rel="section" href="../../../../2.0/api/Bric/SOAP/Handler.html" name="Bric::SOAP::Handler">Bric::SOAP::Handler</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,1117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Grp::Parts::Member</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Member.html#Name">Name</a></li>
+  <li><a href="Member.html#Synopsis">Synopsis</a></li>
+  <li><a href="Member.html#Description">Description</a></li>
+  <li><a href="Member.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Member.html#Constructors">Constructors</a></li>
+      <li><a href="Member.html#Destructors">Destructors</a></li>
+      <li><a href="Member.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Member.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Member.html#Private">Private</a>
+    <ul>
+      <li><a href="Member.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Member.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Member.html#Notes">Notes</a></li>
+  <li><a href="Member.html#Author">Author</a></li>
+  <li><a href="Member.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Grp::Parts::Member - A Class for associating Members of a Group with attribute with in the group</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Constructors.
+my $member = Bric::Util::Grp::Parts::Member-&gt;new( $initial_state );
+$member = Bric::Util::Grp::Parts::Member-&gt;lookup( { id =&gt; $id} );
+my ($member_list||@members) = Bric::Util::Grp::Parts::Member-&gt;list($params);
+my $member_href = Bric::Util::Grp::Parts::Member-&gt;href($params);
+
+# Class methods.
+($ids || @ids ) = Bric::Util::Grp::Parts::Member-&gt;list_ids({grp =&gt; $grp })
+
+# Instances methods.
+my $id = $member-&gt;get_id;
+$member = $member-&gt;activate;
+$member = $member-&gt;deactivate;
+
+# Attribute methods.
+$member = $member-&gt;set_attrs( [name=&gt; $name,subsys=&gt; $subsys,val =&gt; $val}]);
+($val_list||@vals) = $member-&gt;get_attrs([ {name=&gt; $name,subsys=&gt; $subsys}]);
+
+# Retrieve the underlying Bric object.
+$object = $member-&gt;get_object;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>A Member is a container for an object and any properties that it may have with in the group it is associated with that it would not have by its self.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$member = Bric::Util::Grp::Parts::Member-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>This will create a new member object with the defined initial state</p>
+
+<p>Supported Keys:</p>
+
+<dl>
+
+<dt>object_class_id</dt>
+<dd>
+
+</dd>
+<dt>object_package</dt>
+<dd>
+
+</dd>
+<dt>grp</dt>
+<dd>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$member = Bric::Util::Grp::Parts::Member-&gt;lookup({ id =&gt; $id });</dt>
+<dd>
+
+<p>Looks up a member object for a given ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>($mbr_list||@mbrs) = Bric::Util::Grp::Parts::Member-&gt;list($params);</dt>
+<dd>
+
+<p>This will return a list or list ref of blessed Member objects that are a member of said a group. The <code>$params</code> hash reference supports the following keys:</p>
+
+<dl>
+
+<dt>grp</dt>
+<dd>
+
+<p>A Bric::Util::Grp object, the members of which are to be returned.</p>
+
+</dd>
+<dt>grp_package</dt>
+<dd>
+
+<p>The package name of a Bric::Util::Grp subclass, the members of which are to be returned.</p>
+
+</dd>
+<dt>object</dt>
+<dd>
+
+<p>A Bric object for which a list of group memberships will be returned.</p>
+
+</dd>
+<dt>object_package</dt>
+<dd>
+
+<p>The package name of a Bric object for which a list of group memberships will be returned. Use in combination with the <code>object_id</code> parameter.</p>
+
+</dd>
+<dt>object_id</dt>
+<dd>
+
+<p>The ID of a Bric object for which a list of group memberships will be returned. Use in combination with the <code>object_package</code> parameter.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $memb_href = Bric::Util::Grp::Parts::Member-&gt;href($params);</dt>
+<dd>
+
+<p>Returns an anonymous hash of group members. The hash values are Bric::Util::Grp::Parts::Member objects. Takes the same arguments as the <code>list()</code> method, although either the <code>grp</code> or <code>grp_package</code> parameter is required. If the group class method <code>get_object_class_id()</code> returns a value, then the hash keys will be the IDs of the objecs represented by the members. Otherwise, the keys will be the IDs of the member objects themselves.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$contrib-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>($ids||@ids ) = Bric::Util::Grp::Parts::Member-&gt;list_ids($params);</dt>
+<dd>
+
+<p>Return a list or anonymous array of Member object ids. The supported keys in the <code>$params</code> hash reference are the same as for the <code>list()</code> method.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Util::Grp::Parts::Member-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Util::Grp::Parts::Member-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Util::Grp-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>(@ids || $ids) = Bric::Util::Grp::Parts::Member-&gt;get_all_object_ids($grp_id)</dt>
+<dd>
+
+<p>Returns a list of the object ids that this object is a member of</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$package = $member-&gt;get_object_package();</dt>
+<dd>
+
+<p>returns the package of the object that is the member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$object = $member-&gt;get_object()</dt>
+<dd>
+
+<p>Return the object that this member reflects</p>
+
+<p><b>Notes:</b></p>
+
+<p>The object class isn&#39;t loaded by the group class, so when using the Bric API outside of Bricolage, you need to require the object class on the fly; for example:</p>
+
+<pre><code>my @members = $grp-&gt;get_members();
+foreach my $m (@members) {
+    my $pkg = $m-&gt;get_object_package();
+    eval &quot;require $pkg&quot;;
+    my $object = $m-&gt;get_object();
+}</code></pre>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;set_attr($param)</dt>
+<dd>
+
+<p>Sets an individual attribute on this member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;delete_attr();</dt>
+<dd>
+
+<p>Deletes attributes from this member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;set_attrs( [ $param] )</dt>
+<dd>
+
+<p>Takes a list of attributes and sets them upon the member object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Sets a value on the attribute object</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(@subsys, $subsys) = $mbr-&gt;subsys_names()</dt>
+<dd>
+
+<p>returns a list of the subsystems in use</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$val = $mbr-&gt;get_attr({ name =&gt; $attr })</dt>
+<dd>
+
+<p>Returns a single attribute for the member.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Returns value from the attribute object</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($attrs || @attrs) = $member-&gt;get_attrs( [ $param ])</dt>
+<dd>
+
+<p>Returns the attributes defined for this member object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Returns value from the attribute object</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;set_meta($param)</dt>
+<dd>
+
+<p>Sets meta information on the attributes</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;delete_meta($param)</dt>
+<dd>
+
+<p>Deletes meta information for this member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$meta = $member-&gt;get_meta($param)</dt>
+<dd>
+
+<p>Returns the meta information</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$all = $member-&gt;all_for_subsys( $subsys )</dt>
+<dd>
+
+<p>Returns a hash ref of all</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$attrs = $member-&gt;get_attr_hash( $param )</dt>
+<dd>
+
+<p>returns a hash ref of the attrs</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$id = $member-&gt;get_id()</dt>
+<dd>
+
+<p>This will return the id for the object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;activate()</dt>
+<dd>
+
+<p>Activated a member object that has been deactivated</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;deactivate()</dt>
+<dd>
+
+<p>Make this member object inactive</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>(undef || 1) $member-&gt;is_active()</dt>
+<dd>
+
+<p>This will return undef if the member has been deactivated and one otherwise.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;remove()</dt>
+<dd>
+
+<p>This will delete the member from the database (as opposed to deactivating)</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$member = $member-&gt;save()</dt>
+<dd>
+
+<p>Saves changes to the data base</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>The grp_id or grp property is required.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>$results = _do_list($criteria);</dt>
+<dd>
+
+<p>Executes the query for the list constructors</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$class_id = $self-&gt;_get_class_id($package)</dt>
+<dd>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$table_name = $self-&gt;_get_map_table_name();</dt>
+<dd>
+
+<p>Will return the proper mapping table name</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$package = $self-&gt;_get_package($class_id)</dt>
+<dd>
+
+<p>Returns the package name for a given class id</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$group = $self-&gt;_get_group_obj()</dt>
+<dd>
+
+<p>Returns the group that this is a member of</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_subsys_names()</dt>
+<dd>
+
+<p>Returns a list or listref of subsys names</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_set_attr( $param)</dt>
+<dd>
+
+<p>Will set an attribute on this member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$attr = $self-&gt;_get_attr($param, $group)</dt>
+<dd>
+
+<p>check for attributes on the member, will check the group and the group&#39;s parents if the flags are passed</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_meta()</dt>
+<dd>
+
+<p>Deletes meta information from the attribute object or the cache</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_attr($param);</dt>
+<dd>
+
+<p>Deletes attributes from the attribute object or its cache</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$attr_hash = $self-&gt;_get_attr_hash( $param, $group)</dt>
+<dd>
+
+<p>Returns a hash of the attributes that match the parameters. It will also return default values from the group if the <code>$group</code> argument is passed.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_set_meta($param)</dt>
+<dd>
+
+<p>Sets meta information on the member attributes</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$meta = $self-&gt;_get_meta($param, $group, $group_parents)</dt>
+<dd>
+
+<p>Returns meta information for a given attribute. Will check the group and the groups parents for defaults if the flags have been passed.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$attr_obj = $self-&gt;_get_attr_obj()</dt>
+<dd>
+
+<p>Returns the correct attribute object for this member</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_sync_attributes()</dt>
+<dd>
+
+<p>Called by save this preforms all the updates for the attribute object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_do_delete</dt>
+<dd>
+
+<p>Handles the sql to prefore a delete from the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_do_update()</dt>
+<dd>
+
+<p>Preforms an update to the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_do_insert()</dt>
+<dd>
+
+<p>Preforms the sql for an insert into the member tables</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>michael soderstrom ( miraso@pacbell.net )</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../Grp.html" name="Bric::Util::Grp">Bric::Util::Grp</a>, <a rel="section" href="../../Attribute.html" name="Bric::Util::Attribute">Bric::Util::Attribute</a></p>
+
+</body>
+</html>
+

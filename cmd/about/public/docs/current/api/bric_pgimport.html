@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_pgimport</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_pgimport.html#Name">Name</a></li>
+  <li><a href="bric_pgimport.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_pgimport.html#Description">Description</a></li>
+  <li><a href="bric_pgimport.html#Options">Options</a></li>
+  <li><a href="bric_pgimport.html#Authors">Authors</a></li>
+  <li><a href="bric_pgimport.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_pgimport - Builds a Bricolage Database</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>bric_pgimport [options]</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This is a developer program. Users should <code>make</code> and <code>make install</code> to build their Bricolage installations and database. Note that it only works with PostgreSQL 7.3 and later.</p>
+
+<h1 id="Options">Options</h1>
+
+<dl>
+
+<dt>-P</dt>
+<dd>
+
+<p>The location of the psql program. Defaults to simply &#39;psql&#39; if undefined. This should work if psql is in your path.</p>
+
+</dd>
+<dt>-w</dt>
+<dd>
+
+<p>The directory with the Subversion SQL files. Defaults to lib subdirectory of BRICOLAGE_ROOT environment variable, which itself defaults to <i>/usr/local/bricolage</i>.</p>
+
+</dd>
+<dt>-u</dt>
+<dd>
+
+<p>Database user login. Defaults to <code>PGUSER</code> environment variable.</p>
+
+</dd>
+<dt>-p</dt>
+<dd>
+
+<p>Database user password. Defaults to <code>PGPASSWORD</code> environment variable.</p>
+
+</dd>
+<dt>-d</dt>
+<dd>
+
+<p>Database name. Defaults to <code>PGDATABASE</code> environment variable.</p>
+
+</dd>
+<dt>-H</dt>
+<dd>
+
+<p>PostgreSQL server host name. Will use <code>PGHOST</code> environment variable or else PostgreSQL assumes that it&#39;s connecting via local Unix sockets.</p>
+
+</dd>
+<dt>-o</dt>
+<dd>
+
+<p>PostgreSQL server port number. Will use <code>PGPORT</code> environment variable or else PostgreSQL assumes that it&#39;s connecting via local Unix sockets.</p>
+
+</dd>
+<dt>-c</dt>
+<dd>
+
+<p>Create the database first.</p>
+
+</dd>
+<dt>-r</dt>
+<dd>
+
+<p>Drop and recreate the exiting database (assumes -c).</p>
+
+</dd>
+<dt>-m</dt>
+<dd>
+
+<p>Make a new user. Pass in the user name and password separated by a colon. Permissions will be granted to this user to access the new database (assumes -g for this user).</p>
+
+</dd>
+<dt>-g</dt>
+<dd>
+
+<p>User name to which permissions should be granted on the new database.</p>
+
+</dd>
+<dt>-t</dt>
+<dd>
+
+<p>Deprecated.</p>
+
+</dd>
+<dt>-h</dt>
+<dd>
+
+<p>Print this help message.</p>
+
+</dd>
+<dt>-q</dt>
+<dd>
+
+<p>Quiet mode.</p>
+
+</dd>
+</dl>
+
+<h1 id="Authors">Authors</h1>
+
+<p>Garth Web &lt;garth@perijove.com&gt;</p>
+
+<p>David Wheeler &lt;david@kineticode.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/Admin.html" name="Bric::Admin">Bric::Admin</a></p>
+
+</body>
+</html>
+

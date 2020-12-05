@@ -1,0 +1,1002 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Action::Akamaize</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Akamaize.html#Name">Name</a></li>
+  <li><a href="Akamaize.html#Synopsis">Synopsis</a></li>
+  <li><a href="Akamaize.html#Description">Description</a></li>
+  <li><a href="Akamaize.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Akamaize.html#Constructors">Constructors</a></li>
+      <li><a href="Akamaize.html#Destructors">Destructors</a></li>
+      <li><a href="Akamaize.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Akamaize.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Akamaize.html#Private">Private</a>
+    <ul>
+      <li><a href="Akamaize.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Akamaize.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Akamaize.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Akamaize.html#Notes">Notes</a></li>
+  <li><a href="Akamaize.html#Author">Author</a></li>
+  <li><a href="Akamaize.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Action::Akamaize - Class to Akamaize resources</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Action::Akamaize;
+
+my $id = 2; # Assume that this is an akamaize action.
+# This line will automatically instantiate the correct subclass.
+my $action = Bric::Dist::Action-&gt;lookup({ id =&gt; $id });
+
+# Access its properties.
+my $dns_name = $action-&gt;get_dns_name;
+$action = $action-&gt;set_dns_name($dns_name);
+my $cp_code = $action-&gt;get_cp_code;
+$action = $action-&gt;set_cp_code($cp_code);
+my $seed_a = $action-&gt;get_seed_a;
+$action = $action-&gt;set_seed_a($seed_a);
+my $seed_b = $action-&gt;get_seed_b;
+$action = $action-&gt;set_seed_b($seed_b);
+
+# Perform the action on a list of resources.
+action = $action-&gt;do_it($resources_href);
+# Undo the action on a list of resources.
+action = $action-&gt;undo_it($resources_href);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Dist::Action handles the Akamiazation of resources. It requires the properties DNS Name, CP Code, Seed A, and Seed B to do its job. See the accessors below.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>Inherited from Bric::Dist::Action.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$ak-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $bool = Bric::Dist::Action::Akamaize-&gt;has_more()</dt>
+<dd>
+
+<p>Returns true to indicate that this action has more properties than does the base class (Bric::Dist::Action).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Dist::Action::Akamaize-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Dist::Action::Akamaize-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Dist::Action::Akamaize-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>In addition to the methods inherited from Bric::Dist::Action, Bric::Dist::Action::Akamaize offers the following class methods:</p>
+
+<dl>
+
+<dt>my $dns_name = $action-&gt;get_dns_name</dt>
+<dd>
+
+<p>Returns the DNS name required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;set_dns_name($dns_name)</dt>
+<dd>
+
+<p>Sets the DNS name required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $cp_code = $action-&gt;get_cp_code</dt>
+<dd>
+
+<p>Returns the CP Code required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;set_cp_code($cp_code)</dt>
+<dd>
+
+<p>Sets the CP Code required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $seed_a = $action-&gt;get_seed_a</dt>
+<dd>
+
+<p>Returns seed A, which is required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;set_seed_a($seed_a)</dt>
+<dd>
+
+<p>Sets seed A, which is required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $seed_b = $action-&gt;get_seed_b</dt>
+<dd>
+
+<p>Returns seed B, which is required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;set_seed_b($seed_b)</dt>
+<dd>
+
+<p>Sets seed B, which is required to akamaize files.</p>
+
+<p><b>Throws:</b></p>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;do_it($job, $server_type)</dt>
+<dd>
+
+<p>Akamaizes the files for a given job and server type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$action = $action-&gt;_clear_attr</dt>
+<dd>
+
+<p>Deletes all attributes from this Bric::Dist::Action::Akamaize instnace. Called by Bric::Dist::Action::set_type() above so that all the attributes can be cleared before reblessing the action into a different action subclass.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $value = &amp;$get_attr($key, $self, $value, $set)</dt>
+<dd>
+
+<p>Thin accessor to attributes. The variables are defined as follows:</p>
+
+<ul>
+
+<li><p>$key - The name of the attribute to fetch or set.</p>
+
+</li>
+<li><p>$self - The Bric::Dist::Action::Akamaize object.</p>
+
+</li>
+<li><p>$value - The value to set the attribute to.</p>
+
+</li>
+<li><p>$set - A boolean - if true, sets the attribute to $value. If false, returns the existing value of the attribute.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Bad arguments.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a></p>
+
+</body>
+</html>
+

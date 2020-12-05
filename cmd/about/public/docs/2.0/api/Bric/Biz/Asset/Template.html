@@ -1,0 +1,1443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset::Template</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Template.html#Name">Name</a></li>
+  <li><a href="Template.html#Synopsis">Synopsis</a></li>
+  <li><a href="Template.html#Description">Description</a></li>
+  <li><a href="Template.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Template.html#Constructors">Constructors</a></li>
+      <li><a href="Template.html#Destructors">Destructors</a></li>
+      <li><a href="Template.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Template.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Template.html#Private">Private</a></li>
+      <li><a href="Template.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Template.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Template.html#Notes">Notes</a></li>
+  <li><a href="Template.html#Author">Author</a></li>
+  <li><a href="Template.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset::Template - Template assets</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Creation of Objects
+$fa = Bric::Biz::Asset::Template-&gt;new( $init )
+$fa = Bric::Biz::Asset::Template-&gt;lookup( { id =&gt; $id })
+($fa_list || @fas) = Bric::Biz::Asset::Template-&gt;list( $param )
+($faid_list || @fa_ids) = Bric::Biz::Asset::Template-&gt;list_ids( $param )
+
+# get / set the data that is contained with in
+$fa = $fa-&gt;set_data()
+$data = $fa-&gt;get_data()
+
+# get the file name that this will be deployed to
+$file_name = $fa-&gt;get_file_name()
+
+# get / set the date that this will activate
+$date = $fa-&gt;get_deploy_date()
+$fa = $fa-&gt;set_deploy_date($date)
+
+# get the output channel that this is associated with
+$output_channel_id = $fa-&gt;get_output_channel__id()
+
+# get the asset type that this is associated with
+$element_type_id = $fa-&gt;get_element_type_id()
+
+# get the category that this is associated with
+$category_id = $fa-&gt;get_category_id()
+
+# Methods Inheriated from Bric::Biz::Asset
+
+# Class Methods
+$key_name = Bric::Biz::Asset-&gt;key_name()
+%priorities = Bric::Biz::Asset-&gt;list_priorities()
+$data = Bric::Biz::Asset-&gt;my_meths
+
+# looking up of objects
+($asset_list || @assets) = Bric::Biz::Asset-&gt;list( $param )
+
+# General information
+$asset       = $asset-&gt;get_id()
+$asset       = $asset-&gt;set_name($name)
+$name        = $asset-&gt;get_name()
+$asset       = $asset-&gt;set_description($description)
+$description = $asset-&gt;get_description()
+$priority    = $asset-&gt;get_priority()
+$asset       = $asset-&gt;set_priority($priority)
+
+# User information
+$usr_id      = $asset-&gt;get_user__id()
+$modifier    = $asset-&gt;get_modifier()
+
+# Version information
+$vers        = $asset-&gt;get_version();
+$vers_id     = $asset-&gt;get_version_id();
+$current     = $asset-&gt;get_current_version();
+$checked_out = $asset-&gt;get_checked_out()
+
+# Expire Data Information
+$asset       = $asset-&gt;set_expire_date($date)
+$expire_date = $asset-&gt;get_expire_date()
+
+# Desk information
+$desk        = $asset-&gt;get_current_desk;
+$asset       = $asset-&gt;set_current_desk($desk);
+
+# Workflow methods.
+$id    = $asset-&gt;get_workflow_id;
+$obj   = $asset-&gt;get_workflow_object;
+$asset = $asset-&gt;set_workflow_id($id);
+
+# Access note information
+$asset         = $asset-&gt;set_note($note);
+my $note       = $asset-&gt;get_note;
+my $notes_href = $asset-&gt;get_notes()
+
+# Access active status
+$asset            = $asset-&gt;deactivate()
+$asset            = $asset-&gt;activate()
+($asset || undef) = $asset-&gt;is_active()
+
+$asset = $asset-&gt;save()
+
+# returns all the groups this is a member of
+($grps || @grps) = $asset-&gt;get_grp_ids()</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This has changed, it will need to be updated in a bit</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$fa = Bric::Biz::Asset::Template-&gt;new( $initial_state )</dt>
+<dd>
+
+<p>Constructs a new template.</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>description</p>
+
+</li>
+<li><p>data</p>
+
+</li>
+<li><p>deploy_date</p>
+
+</li>
+<li><p>expire_date</p>
+
+</li>
+<li><p>workflow_id</p>
+
+</li>
+<li><p>output_channel - Required unless output channel id passed</p>
+
+</li>
+<li><p>output_channel__id - Required unless output channel object passed</p>
+
+</li>
+<li><p>tplate_type - The type of template it is.</p>
+
+</li>
+<li><p>name - The name of the template. Only used if tplate_type is set to UTILITY_TEMPLATE.</p>
+
+</li>
+<li><p>element_type - the at object</p>
+
+</li>
+<li><p>element_type_id - the id of the asset type</p>
+
+</li>
+<li><p>category - the category object</p>
+
+</li>
+<li><p>category__id - the category id</p>
+
+</li>
+<li><p>file_type - the type of the template file - this will be used as the extension for the file_name derived from the element name. Supported file_type values are those returned as the first value in each array reference in the array reference returned by <code>Bric::Util::Burner-&gt;list_file_types</code>.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Missing required output channel parameter.</p>
+
+</li>
+<li><p>Missing required parameter &#39;element_type&#39; or &#39;element_type_id&#39;.</p>
+
+</li>
+<li><p>Invalid file_type parameter.</p>
+
+</li>
+<li><p>Missing required parameter &#39;name&#39;</p>
+
+</li>
+<li><p>Invalid tplate_type parameter.</p>
+
+</li>
+<li><p>Missing required parameter &#39;category&#39; or &#39;category_id&#39;.</p>
+
+</li>
+<li><p>The template already exists in the output channel.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$template = Bric::Biz::Template-&gt;lookup( $param )</dt>
+<dd>
+
+<p>Returns an object that matches the parameters</p>
+
+<p>Supported Keys</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>A template asset ID.</p>
+
+</dd>
+<dt>version</dt>
+<dd>
+
+<p>Pass to request a specific version otherwise the most current will be returned.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+<dt>($fa_list || @fas) = Bric::Biz::Asset::Template-&gt;list( $criteria )</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Asset::Template objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of a template. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>title</dt>
+<dd>
+
+<p>Same as <code>name</code>.</p>
+
+</dd>
+<dt>file_name</dt>
+<dd>
+
+<p>The file name of a template. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>Template description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>id</dt>
+<dd>
+
+<p>The template ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>exclude_id</dt>
+<dd>
+
+<p>A template ID to exclude from the list. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>version</dt>
+<dd>
+
+<p>The template version number. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>version_id</dt>
+<dd>
+
+<p>The ID of a version of a template. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Defaults to true</p>
+
+</dd>
+<dt>user_id</dt>
+<dd>
+
+<p>If defined will return the versions checked out to the user with this id. Otherwise , unless <code>checked_out</code> is passed, it will return the most current non-checked out versions.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>Returns a list of templates associated with a given site ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site</dt>
+<dd>
+
+<p>Returns a list of templates associated with a given site name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>category_id</dt>
+<dd>
+
+<p>Returns a list of templates in the category represented by a category ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>deployed_version</dt>
+<dd>
+
+<p>Returns the versions of the templates as they were last deployed. The <code>checked_out</code> parameter will be ignored if this parameter is passed a true value.</p>
+
+</dd>
+<dt>published_version</dt>
+<dd>
+
+<p>An alias for <code>deployed_version</code>.</p>
+
+</dd>
+<dt>category_uri</dt>
+<dd>
+
+<p>Returns a list of templates with a given category URI. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>checked_out</dt>
+<dd>
+
+<p>Indicates whether to list templates that are checked out or not. If &quot;0&quot;, then only non-checked out templates will be returned. If &quot;1&quot;, then only checked-out templates will be returned. If &quot;all&quot;, then the checked_out attributed will be ignored (unless the <code>user__id</code> parameter is passed).</p>
+
+</dd>
+<dt>checked_in</dt>
+<dd>
+
+<p>If passed a true value, this parameter causes the checked in version of the most current version of the template to be returned. When a template is checked out, there are two instances of the current version: the one checked in last, and the one currently being edited. When the <code>checked_in</code> parameter is a true value, then the instance last checked in is returned, rather than the instance currently checked out. This is useful for users who do not currently have a template checked out and wish to see the template as of the last check in, rather than as currently being worked on in the current checkout. If a template is not currently checked out, this parameter has no effect.</p>
+
+</dd>
+<dt>return_versions</dt>
+<dd>
+
+<p>Will return all the versions of the given templates</p>
+
+</dd>
+<dt>element_type_id</dt>
+<dd>
+
+<p>Returns a list of templates associated with a given element type ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>element_key_name</dt>
+<dd>
+
+<p>Returns a list of templates associated with an element with the given key name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>tplate_type</dt>
+<dd>
+
+<p>Return a list of templates of the given template type. The supported types are defined by the constants <code>ELEMENT_TEMPLATE</code>, &lt;CCATEGORY_TEMPLATE&gt;, and <code>UTILITY_TEMPLATE</code>.</p>
+
+</dd>
+<dt>note</dt>
+<dd>
+
+<p>Returns templates with a note matching the value associated with any of their versions. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>workflow_id</dt>
+<dd>
+
+<p>Return a list of templates in the workflow represented by the workflow ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>desk_id</dt>
+<dd>
+
+<p>Returns a list of templates on a desk with the given ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>output_channel_id</dt>
+<dd>
+
+<p>Returns a list of templates associated with a given output channel ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>priority</dt>
+<dd>
+
+<p>Returns a list of templates associated with a given priority value. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>deploy_status</dt>
+<dd>
+
+<p>Boolean value indicating whether to return deployed or undeployed templates.</p>
+
+</dd>
+<dt>deploy_date_start</dt>
+<dd>
+
+<p>Returns a list of templates last deployed on or after a given date/time.</p>
+
+</dd>
+<dt>deploy_date_end</dt>
+<dd>
+
+<p>Returns a list of templates last deployed on or before a given date/time.</p>
+
+</dd>
+<dt>expire_date_start</dt>
+<dd>
+
+<p>Returns a list of templates with a expire date on or after a given date/time.</p>
+
+</dd>
+<dt>expire_date_end</dt>
+<dd>
+
+<p>Returns a list of templates with a expire date on or before a given date/time.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>Returns a list of templates that are members of the group with the specified group ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean indicating whether to return active or inactive templates.</p>
+
+</dd>
+<dt>simple</dt>
+<dd>
+
+<p>Triggers a single OR search that hits name and file name.</p>
+
+</dd>
+<dt>Order</dt>
+<dd>
+
+<p>A property name or array reference of property names to order by.</p>
+
+</dd>
+<dt>OrderDirection</dt>
+<dd>
+
+<p>The direction in which to order the records, either &quot;ASC&quot; for ascending (the default) or &quot;DESC&quot; for descending. This value is applied to the property specified by the <code>Order</code> parameter, and may also be an array reference. If no value is supplied for any <code>Order</code> property name, it will default to ascending.</p>
+
+</dd>
+<dt>Limit</dt>
+<dd>
+
+<p>A maximum number of objects to return. If not specified, all objects that match the query will be returned.</p>
+
+</dd>
+<dt>Offset</dt>
+<dd>
+
+<p>The number of objects to skip before listing the remaining objcts or the number of objects specified by <code>Limit</code>.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$template-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>($ids || @ids) = Bric::Biz::Asset::Template-&gt;list_ids($param)</dt>
+<dd>
+
+<p>Returns an unordered list or array reference of template object IDs that match the criteria defined. The criteria are the same as those for the <code>list()</code> method except for <code>Order</code> and <code>OrderDirection</code>, which <code>list_ids()</code> ignore.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>Inherited from Bric::Biz::Asset.</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset::Template-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$meths = Bric::Biz::Asset::Template-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::Asset::Formattiong-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz:::Asset::Template-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs representing the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $tplate_type = Bric::Biz::Asset::Template-&gt;get_tplate_type_code($str)</dt>
+<dd>
+
+<p>Returns the template type number for a string value as returned by <code>get_tplate_type_string()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $wf_type = Bric::Biz::Asset::Template-&gt;workflow_type</dt>
+<dd>
+
+<p>Returns the value of the Bric::Biz::Workflow <code>TEMPLATE_WORKFLOW</code> constant.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$template = $template-&gt;set_deploy_date($date)</dt>
+<dd>
+
+</dd>
+<dt>$template = $template-&gt;set_cover_date($date)</dt>
+<dd>
+
+<p>Sets the deployment date for this template</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$date = $template-&gt;get_deploy_date()</dt>
+<dd>
+
+</dd>
+<dt>$date = $template-&gt;get_cover_date()</dt>
+<dd>
+
+<p>Returns the deploy date set upon this template</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$status = $template-&gt;get_deploy_status()</dt>
+<dd>
+
+</dd>
+<dt>$template = $template-&gt;get_publish_status()</dt>
+<dd>
+
+<p>Returns the deploy status of the template asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>this will return the deploy date</p>
+
+</dd>
+<dt>$template = $template-&gt;set_deploy_status()</dt>
+<dd>
+
+</dd>
+<dt>$template = $template-&gt;set_publish_status()</dt>
+<dd>
+
+<p>sets the deploy status for this template</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effect:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>This is really the deploy date</p>
+
+</dd>
+<dt>$uri = $template-&gt;get_uri</dt>
+<dd>
+
+<p>Returns the URI for the template. This differs from the file_name in that the latter uses the semantics of your local file system.w</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$file_name = $template-&gt;get_file_name()</dt>
+<dd>
+
+<p>Returns the file path of this template.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$file_name = $template-&gt;get_title()</dt>
+<dd>
+
+<p>An alias for <code>get_file_name()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $template-&gt;get_output_channel_name;</dt>
+<dd>
+
+<p>Return the name of the output channel.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$oc = $template-&gt;get_output_channel;</dt>
+<dd>
+
+</dd>
+<dt>$oc = $template-&gt;get_primary_oc;</dt>
+<dd>
+
+<p>Return the output channel associated with this Template asset. The <code>get_primary_oc()</code> alias is provided to be compatible with business assets.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $tplate_type_string = $template-&gt;get_tplate_type_string</dt>
+<dd>
+
+<p>Returns a the stringified name of the template type attribute.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$name = $template-&gt;get_element_name;</dt>
+<dd>
+
+<p>Return the name of the element associated with this object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$key_name = $template-&gt;get_element_key_name;</dt>
+<dd>
+
+<p>Return the key name of the element associated with this object.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$at_obj = $template-&gt;get_element_type</dt>
+<dd>
+
+<p>Return the element type object for this template asset.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> <code>get_element()</code> has been deprecated in favor of this method.</p>
+
+</dd>
+<dt>$fa = $fa-&gt;set_category_id($id)</dt>
+<dd>
+
+<p>Sets the category id for this template asset</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>The template already exists in the output channel.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;get_cagetory_id</dt>
+<dd>
+
+<p>Get the category ID for this template asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;get_category</dt>
+<dd>
+
+<p>Returns the category object that has been associated with this template asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;get_cagetory_path</dt>
+<dd>
+
+<p>Returns the path from the category</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;get_cagetory_name</dt>
+<dd>
+
+<p>Get the category name of the category object associated with this template asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$template = $template-&gt;set_data( $data )</dt>
+<dd>
+
+<p>Set the main data for the template asset. In future incarnations there might be more data points that surround this, but not for now.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$data = $template-&gt;get_data()</dt>
+<dd>
+
+<p>Returns the chunk of text that makes up this template.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$format = $format-&gt;checkout($param);</dt>
+<dd>
+
+<p>This will create a flag to add a new record to the instance table</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($fa || undef) = $fa-&gt;is_current()</dt>
+<dd>
+
+<p>Return whether this is the most current version or not.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;cancel()</dt>
+<dd>
+
+<p>This cancles a checkout. This will delete the record from the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;revert()</dt>
+<dd>
+
+<p>This will take an older version and copy its data to this version</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$fa = $fa-&gt;save()</dt>
+<dd>
+
+<p>this will update or create a record in the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Private">Private</h2>
+
+<ul>
+
+<p>################################################################################</p>
+
+</ul>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$cat_obj = $self-&gt;_get_category_object()</dt>
+<dd>
+
+<p>Returns the category object that this is associated with</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_template();</dt>
+<dd>
+
+<p>Inserts a row into the template table that represents a new template Asset.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_insert_instance()</dt>
+<dd>
+
+<p>Inserts a row associated with an instance of a template asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_template()</dt>
+<dd>
+
+<p>Updates the template table</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_update_instance()</dt>
+<dd>
+
+<p>Updates the row related to the instance of the template asset</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_template()</dt>
+<dd>
+
+<p>Removes the row associated with this template asset from the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $self-&gt;_delete_instance()</dt>
+<dd>
+
+<p>Removes the instance specific row from the database</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $uri = $self-&gt;_build_file_name($file_type, $name, $cat);</dt>
+<dd>
+
+<p>Builds the file name for a template. If $file_type, $name, or $cat are not passed, they&#39;ll be fetched (or for $file_type, computed) from $self.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>The template already exists in the output channel.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $name = $set_elem-&gt;($init)</dt>
+<dd>
+
+<p>Sets the name of the template based on an element association.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Missing required parameter &#39;element&#39; or &#39;element_type_id&#39;.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $name = $set_util-&gt;($init)</dt>
+<dd>
+
+<p>Sets the name of the template as a utility template, based on the <code>name</code> parameter.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Missing required parameter &#39;name&#39;.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>michael soderstrom - miraso@pacbell.net</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../Bric.html" name="Bric">Bric</a>, <a rel="section" href="../Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a></p>
+
+</body>
+</html>
+

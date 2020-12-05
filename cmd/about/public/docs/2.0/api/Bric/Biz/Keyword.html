@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Keyword</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Keyword.html#Name">Name</a></li>
+  <li><a href="Keyword.html#Synopsis">Synopsis</a></li>
+  <li><a href="Keyword.html#Description">Description</a></li>
+  <li><a href="Keyword.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Keyword.html#Constructors">Constructors</a>
+        <ul>
+          <li><a href="Keyword.html#new">new</a></li>
+          <li><a href="Keyword.html#lookup">lookup</a></li>
+          <li><a href="Keyword.html#list">list</a></li>
+          <li><a href="Keyword.html#href">href</a></li>
+        </ul>
+      </li>
+      <li><a href="Keyword.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="Keyword.html#list_ids">list_ids</a></li>
+          <li><a href="Keyword.html#my_meths">my_meths</a></li>
+        </ul>
+      </li>
+      <li><a href="Keyword.html#Accessors">Accessors</a>
+        <ul>
+          <li><a href="Keyword.html#id">id</a></li>
+          <li><a href="Keyword.html#name">name</a></li>
+          <li><a href="Keyword.html#screen_name">screen_name</a></li>
+          <li><a href="Keyword.html#sort_name">sort_name</a></li>
+          <li><a href="Keyword.html#active">active</a></li>
+        </ul>
+      </li>
+      <li><a href="Keyword.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="Keyword.html#save">save</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="Keyword.html#Authors">Authors</a></li>
+  <li><a href="Keyword.html#See-Also">See Also</a></li>
+  <li><a href="Keyword.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Keyword - Interface to Bricolage Keyword Objects</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Biz::Keyword;
+
+ # Constructors.
+ my $keyword = Bric::Biz::Keyword-&gt;new($init);
+ $keyword = Bric::Biz::Keyword-&gt;lookup({ id =&gt; $id });
+ my @keywords = Bric::Biz::Keyword-&gt;list($params);
+
+ # Class Methods.
+ my @keyword_ids = Bric::Biz::Keyword-&gt;list_ids($params);
+ my $keywords_href = Bric::Biz::Keyword-&gt;href($params);
+ my $meths = Bric::Biz::Keyword-&gt;my_meths;
+
+ # Instance methods.
+ $id = $keyword-&gt;get_id;
+ my $name = $keyword-&gt;get_name;
+ $keyword = $keyword-&gt;set_name($name)
+ my $screen_name = $keyword-&gt;get_screen_name;
+ $keyword = $keyword-&gt;set_screen_name($screen_name)
+ my $sort_name = $keyword-&gt;get_sort_name;
+ $keyword = $keyword-&gt;set_sort_name($sort_name)
+
+ $keyword = $keyword-&gt;activate;
+ $keyword = $keyword-&gt;deactivate;
+ $keyword = $keyword-&gt;is_active;
+
+ # Save the changes to the database
+ $keyword = $keyword-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The Keyword module allows assets to be characterized by a set of topical keywords. These keywords can be used to group assets or during a search on a particular topic.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<h3 id="new">new</h3>
+
+<pre><code>my $keyword = Bric::Biz::Keyword-&gt;new;
+$keyword = Bric::Biz::Keyword-&gt;new($init);</code></pre>
+
+<p>Constructs a new keyword object and returns it. An anonymous hash of initial values may be passed. The supported keys for that hash references are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of this keyword.</p>
+
+</dd>
+<dt>screen_name</dt>
+<dd>
+
+<p>The way this name should be displayed on screen (ie name=&#39;George&#39;, screen name=&#39;George Washington&#39;). If not specified name will be used for screen_name.</p>
+
+</dd>
+<dt>sort_name</dt>
+<dd>
+
+<p>The word used to sort keywords. If not specified then name will be used for sort_name.</p>
+
+</dd>
+</dl>
+
+<p>The <code>name</code> and <code>domain_name</code> attributes must be globally unique or an exception will be thrown.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="lookup">lookup</h3>
+
+<pre><code>my $keyword = Bric::Biz::Keyword-&gt;lookup({ id =&gt; $id });
+$keyword = Bric::Biz::Keyword-&gt;lookup({ name =&gt; $name });</code></pre>
+
+<p>Looks up and constructs an existing keyword object in the database and returns it. A Keyword ID or name name can be used as the keyword object unique identifier to look up. If no keyword object is found in the database, then <code>lookup()</code> will return <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="list">list</h3>
+
+<pre><code>my @keywords = Bric::Biz::Keyword-&gt;list($params);
+my $keywords_aref = Bric::Biz::Keyword-&gt;list($params);</code></pre>
+
+<p>Returns a list or anonymous array of keyword objects based on the search parameters passed via an anonymous hash. The supported lookup keys that may use valid SQL wild card characters are:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+</dd>
+<dt>screen_name</dt>
+<dd>
+
+</dd>
+<dt>sort_name</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>The <code>ANY()</code> operator may be used to specify a list of values for any of these parameters.</p>
+
+<p>The supported lookup keys that must be an exact value are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Keyword ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>A boolean value indicating if the keyword is active.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>A Bric::Util::Grp::Keyword object ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>object</dt>
+<dd>
+
+<p>Returns all keywords for a given object - may be a Bric::Biz::Category, Bric::Biz::Asset::Business::Media or a Bric::Biz::Asset::Business::Story object. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="href">href</h3>
+
+<pre><code>my $keywords_href = Bric::Biz::Keyword-&gt;href($params);</code></pre>
+
+<p>Returns an anonymous hash of keyword objects based on the search parameters passed via an anonymous hash. The hash keys will be the keyword IDs, and the values will be the corresponding keywords. The supported lookup keys are the same as those for <code>list()</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<h3 id="list_ids">list_ids</h3>
+
+<pre><code>my @keyword_ids = Bric::Biz::Keyword-&gt;list_ids($params);
+my $keyword_ids_aref = Bric::Biz::Keyword-&gt;list_ids($params);</code></pre>
+
+<p>Returns a list or anonymous array of keyword object IDs based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as for the <code>list()</code> method.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="my_meths">my_meths</h3>
+
+<pre><code>my $meths = Bric::Biz::Keyword-&gt;my_meths
+my @meths = Bric::Biz::Keyword-&gt;my_meths(1);
+my $meths_aref = Bric::Biz::Keyword-&gt;my_meths(1);
+@meths = Bric::Biz::Keyword-&gt;my_meths(0, 1);
+$meths_aref = Bric::Biz::Keyword-&gt;my_meths(0, 1);</code></pre>
+
+<p>Returns Bric::Biz::Keyword attribute accessor introspection data. See <a rel="section" href="../../Bric.html" name="Bric">Bric</a> for complete documtation of the format of that data. Returns accessor introspection data for the following attributes:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The keyword name. A unique identifier attribute.</p>
+
+</dd>
+<dt>screen_name</dt>
+<dd>
+
+<p>The keyword display name.</p>
+
+</dd>
+<dt>sort_name</dt>
+<dd>
+
+<p>The keyword sort name.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>The keyword&#39;s active status boolean.</p>
+
+</dd>
+</dl>
+
+<h2 id="Accessors">Accessors</h2>
+
+<h3 id="id">id</h3>
+
+<pre><code>my $id = $keyword-&gt;get_id;</code></pre>
+
+<p>Returns the keyword object&#39;s unique database ID.</p>
+
+<h3 id="name">name</h3>
+
+<pre><code>my $name = $keyword-&gt;get_name;
+$keyword = $keyword-&gt;set_name($name);</code></pre>
+
+<p>Get and set the keyword object&#39;s unique name. The value of this attribute must be case-insensitively globally unique. If a non-unique value is passed to <code>set_name()</code>, an exception will be thrown.</p>
+
+<p><b>Side Effects:</b> The &lt;screen_name&gt; and <code>sort_name</code> attributes will be set to the same value as the <code>name</code> attribute if they are not yet defined.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error::NotUnique</dt>
+<dd>
+
+</dd>
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="screen_name">screen_name</h3>
+
+<pre><code>my $screen_name = $keyword-&gt;get_screen_name;
+$keyword = $keyword-&gt;set_screen_name($screen_name);</code></pre>
+
+<p>Get and set the keyword object&#39;s screen_name.</p>
+
+<h3 id="sort_name">sort_name</h3>
+
+<pre><code>my $sort_name = $keyword-&gt;get_sort_name;
+$keyword = $keyword-&gt;set_sort_name($sort_name);</code></pre>
+
+<p>Get and set the keyword object&#39;s sort_name.</p>
+
+<h3 id="active">active</h3>
+
+<pre><code>$keyword = $keyword-&gt;activate;
+$keyword = $keyword-&gt;deactivate;
+$keyword = $keyword-&gt;is_active;</code></pre>
+
+<p>Get and set the keyword object&#39;s active status. <code>activate()</code> and <code>deactivate()</code> each return the keyword object. <code>is_active()</code> returns the keyword object when the keyword is active, and <code>undef</code> when it is not.</p>
+
+<p><b>Note:</b> The old <code>remove()</code>, <code>get_state()</code> <code>set_state()</code>, <code>get_active()</code>, and <code>set_active()</code> methods have been deprecated. Please use <code>is_active()</code>, <code>activate()</code>, and <code>deactivate()</code> instead.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="save">save</h3>
+
+<pre><code>$keyword = $keyword-&gt;save;</code></pre>
+
+<p>Saves any changes to the keyword object to the database. Returns the keyword object on success and throws an exception on failure.</p>
+
+<p><b>Thows:</b></p>
+
+<dl>
+
+<dt>Error::Undef</dt>
+<dd>
+
+</dd>
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Authors">Authors</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a></dt>
+<dd>
+
+<p>Business assets, including stories and media, can be associated with keywords.</p>
+
+</dd>
+<dt><a rel="section" href="Category.html" name="Bric::Biz::Category">Bric::Biz::Category</a></dt>
+<dd>
+
+<p>Categories can be associated with key words.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2001 About.com. Changes Copyright (c) 2002-2003 Kineticode, Inc. and others. See <a rel="section" href="../License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

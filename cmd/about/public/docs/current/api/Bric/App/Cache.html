@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Cache</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Cache.html#Name">Name</a></li>
+  <li><a href="Cache.html#Synopsis">Synopsis</a></li>
+  <li><a href="Cache.html#Description">Description</a></li>
+  <li><a href="Cache.html#Implementation">Implementation</a></li>
+  <li><a href="Cache.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Cache.html#Constructors">Constructors</a></li>
+      <li><a href="Cache.html#Destructors">Destructors</a></li>
+      <li><a href="Cache.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Cache.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Cache.html#Private">Private</a>
+    <ul>
+      <li><a href="Cache.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Cache.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Cache.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Cache.html#Notes">Notes</a></li>
+  <li><a href="Cache.html#Author">Author</a></li>
+  <li><a href="Cache.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Cache - Object for managing Application-wide global data.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::App::Cache;
+my $c = Bric::App::Cache-&gt;new;
+$c = $c-&gt;set($key, $val);
+my $val = $c-&gt;get($key);
+
+my $time = $c-&gt;get_lmu_time;
+$c = $c-&gt;set_lmu_time;
+
+my $site_id = $c-&gt;get_user_cx($user_id);
+$c = $c-&gt;set_user_cx($user_id, $site_id);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a cache object to cache data that needs to persist across all processes and across all requests, through time and space. The cache is cleared on server restart - for more permenant storage see <a rel="section" href="../../../../2.0/api/Bric/Util/DBI.html" name="Bric::Util::DBI">Bric::Util::DBI</a>.</p>
+
+<p>A Bric::App::Cache object is available from Mason components in the global variable <code>$c</code>.</p>
+
+<h1 id="Implementation">Implementation</h1>
+
+<p>This module is implemented as a two-level cache in order to provide the best possible performance.</p>
+
+<p>The first level is provided by Cache::Mmap. Cache::Mmap is a very fast, shared, file-based cache. However, it is also a fixed-size cache that will drop items from the cache when the cache becomes full or the item to be stored is too large.</p>
+
+<p>When an object cannot be stored in the first-level cache it is passed to the second-level. The second-level cache (also known as a backing store) is provided by Cache::Cache. Cache::Cache is quite a bit slower than Cache::Mmap but has the advantage of being variable-sized. As such it grows dynamically and won&#39;t refuse to store an object unless it runs out of disk space.</p>
+
+<p>The <code>get()</code> procedure is:</p>
+
+<ul>
+
+<li><p>Look in first-level cache for item. If found, return it and finish.</p>
+
+</li>
+<li><p>Look in second-level cache for item. If found, return it and finish.</p>
+
+</li>
+<li><p>Note in first-level cache that item is not in second-level cache. This will prevent a look in the second-level cache on the next request for this item.</p>
+
+</li>
+</ul>
+
+<p>And the <code>set()</code> prodedure is:</p>
+
+<ul>
+
+<li><p>Try to set the item in the first-level cache. If success, finish. If fail, delete old item if it exists.</p>
+
+</li>
+<li><p>Set the item in the second-level cache. This must succeed or a fatal error will result.</p>
+
+</li>
+</ul>
+
+<p>NOTE: Under <code>QA_MODE</code> all <code>set()</code>s are sent to the secondary-cache to allow the cache to be debugged. Cache::Mmap lacks the ability to list all keys in the cache which is used by the <code>QA_MODE</code> code.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $c = Bric::App::Cache-&gt;new()</dt>
+<dd>
+
+<p>Instantiates a Bric::App::Cache object. No initial values may be passed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to instantiate cache.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $org = Bric::App::Cache-&gt;lookup()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::App::Cache::lookup() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::App::Cache-&gt;list()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::App::Cache::list() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>Bric::App::Cache-&gt;list_ids()</dt>
+<dd>
+
+<p>Not implemented - not needed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::App::Cache::list_ids() method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::App::Cache-&gt;clear()</dt>
+<dd>
+
+<p>Clears the cache of all stored data.</p>
+
+<p>Throws: NONE.</p>
+
+<p>Side Effects: NONE.</p>
+
+<p>Notes: NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $val = $c-&gt;get($key)</dt>
+<dd>
+
+<p>Returns a value for the specified key. Call $c-&gt;set($key, $value) to store a value.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to fetch value from the cache.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;set($key, $value);</dt>
+<dd>
+
+<p>Stores $value as referenced by $key. Call $c-&gt;get($key) to retrieve $value.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to cache value.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $lmu_time = $c-&gt;get_lmu_time</dt>
+<dd>
+
+<p>Returns the epoch time when a user object was last modified.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to fetch value from the cache.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $c-&gt;set_lmu_time($lmu_time)</dt>
+<dd>
+
+<p>Sets the epoch time when a user object was last modified.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to cache value.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $site_id = $c-&gt;get_user_cx($user_id)</dt>
+<dd>
+
+<p>Returns the current site context for the user with the <code>$user_id</code> ID. A value of 0 (zero) means that there is no context, in which case the user can see all the workflows from all the sites to which she has access. If the value is undefined, then the context isn&#39;t set.</p>
+
+<p><b>Side Effects:</b> If <code>QA_MODE</code> is enabled, then <code>$user_id</code> and <code>$site_id</code> will be checked to ensure that they are proper arguments.</p>
+
+</dd>
+<dt>$c = $c-&gt;set_user_cx($user_id, $site_id)</dt>
+<dd>
+
+<p>Sets the site context for the user with the <code>$user_id</code> ID. Pass in <code>undef</code> to indicate an unknown context. Pass in 0 (zero) to indicate that the user has no context, and so can access all of the workflows in all of the sites to which she has access. Otherwise, simply pass in the site ID the user has selected.</p>
+
+<p><b>Side Effects:</b> If <code>QA_MODE</code> is enabled, then <code>$user_id</code> and <code>$site_id</code> will be checked to ensure that they are proper arguments.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>$val = _read_backing_store($key)</dt>
+<dd>
+
+<p>Reads a value from the backing store. See the IMPLEMENTATION section avove for details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to fetch value from the backing cache.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>_write_backing_store($key, $val)</dt>
+<dd>
+
+<p>Writes a value to the backing store. See the IMPLEMENTATION section avove for details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to cache value in the backing cache.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/App/Session.html" name="Bric::App::Session">Bric::App::Session</a>, <a href="http://search.cpan.org/perldoc?Apache::Session">Apache::Session</a></p>
+
+</body>
+</html>
+

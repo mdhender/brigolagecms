@@ -1,0 +1,1288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Action</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Action.html#Name">Name</a></li>
+  <li><a href="Action.html#Synopsis">Synopsis</a></li>
+  <li><a href="Action.html#Description">Description</a></li>
+  <li><a href="Action.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Action.html#Constructors">Constructors</a></li>
+      <li><a href="Action.html#Destructors">Destructors</a></li>
+      <li><a href="Action.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Action.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Action.html#Private">Private</a>
+    <ul>
+      <li><a href="Action.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Action.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Action.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Action.html#Adding-a-New-Action">Adding a New Action</a></li>
+  <li><a href="Action.html#Notes">Notes</a></li>
+  <li><a href="Action.html#Author">Author</a></li>
+  <li><a href="Action.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Action - Interface to actions that can be performed on resources for given server types.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Action;
+
+# Constructors.
+# Create a new object.
+my $action = Bric::Dist::Action-&gt;new;
+# Look up an existing object. May return a subclass of Bric::Dist::Action.
+$action = Bric::Dist::Action-&gt;lookup({ id =&gt; 1 });
+# Get a list of action objects.
+my @servers = Bric::Dist::Action-&gt;list({ type =&gt; &#39;Akamaize&#39; });
+
+# Class methods.
+# Get a list of object IDs.
+my @st_ids = Bric::Dist::Action-&gt;list_ids({ type =&gt; &#39;Akamaize&#39; });
+# Get an introspection hashref.
+my $int = Bric::Dist::Action-&gt;my_meths;
+my $bool = Bric::Dist::Action-&gt;has_more;
+
+# Instance Methods.
+my $id = $action-&gt;get_id;
+my $type = $action-&gt;get_type;
+# Changing the type will likely change the $action to a different subclass,
+# and will delete any attributes associated with the previous type.
+$action = $action-&gt;set_type($type);
+
+# Description is only available for types that have been looked up in the
+# database.
+my $description = $action-&gt;get_description;
+
+# The server type designation may be changed at will.
+my $st_id = $action-&gt;get_server_type_id;
+my $action = $action-&gt;set_server_type_id($st_id);
+
+# The list of MEDIA types can only be fetched on existing actions. The list
+# of MEDIA types is dependent on the type of action.
+my @medias = $action-&gt;get_media_types;
+my $medias = $action-&gt;get_media_href;
+
+# Perform the action.
+$action-&gt;do_it($job, $server_type);
+
+# Delete the action.
+$action-&gt;del
+
+# Save the action.
+$action-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class manages the actions that are applied for a given server type to the files associated with a given job. The idea is that for any given server type, an ordered list of actions will be performed whenever a job is executed for that server type. For example, if there is a server type &quot;Production Server&quot;, the list of actions (represented as Bric::Dist::Action objects) for that server type might be &quot;Akamaize&quot;, &quot;Ultraseek&quot;, &quot;Gzip&quot;, and &quot;Put&quot;. When a job (represented by a Bric::Util::Job object) is executed for that server group, then each of those actions will be instantiated in turn, and their do_it() methods called on the job&#39;s resources.</p>
+
+<p>The types of actions available to customers are created at development time, and are represented both in the database and by subclasses of Bric::Dist::Action. They can be changed and reordered for a given server type via the Bric::Dist::ServerType interface. So Bric::Dist::Action will frequently not be accessed directly, but via Bric::Dist::ServerType accessors.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $act = Bric::Dist::Action-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Dist::Action object. An anonymous hash of initial values may be passed. The supported initial value keys are:</p>
+
+<ul>
+
+<li><p>type</p>
+
+</li>
+<li><p>server_type_id</p>
+
+</li>
+</ul>
+
+<p>The active property will be set to true by default. Call $act-&gt;save() to save the new object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $act = Bric::Dist::Action-&gt;lookup({ id =&gt; $id })</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Dist::Action object based on the Bric::Dist::Action object ID passed. If $id is not found in the database, lookup() returns undef.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Too many Bric::Dist::Action objects found.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> If $id is found, populates the new Bric::Dist::Action object with data from the database before returning it.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@acts || $acts_aref) = Bric::Dist::Action-&gt;list($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Action objects based on the search parameters passed via an anonymous hash. The supported lookup keys are:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Action ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>action_type_id</dt>
+<dd>
+
+<p>The ID of an action type. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>action_type</dt>
+<dd>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The name of an action type. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>server_type_id</dt>
+<dd>
+
+<p>The ID of a destination (server type) with which actions may be associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>An action type description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::Action object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $actions_href = Bric::Dist::Action-&gt;href($params)</dt>
+<dd>
+
+<p>Returns an anonymous hash of Bric::Dist::Action objects, where the keys are the object IDs and the values are the objects themselves, based on the search parameters passed via an anonymous hash. The supported lookup keys are the same as for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Populates each Bric::Dist::Action object with data from the database before returning them all.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$act-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $ord = Bric::Dist::Action-&gt;next_ord($server_type_id)</dt>
+<dd>
+
+<p>Returns the next ordinal number in the sequence of actions for a given server_type_id.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@act_ids || $act_ids_aref) = Bric::Dist::Action-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Dist::Action object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for list().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@types || $types_aref) = Bric::Dist::Action-&gt;list_types</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the types of the supported actions.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = Bric::Dist::Action-&gt;has_more()</dt>
+<dd>
+
+<p>Returns true if the action has more properties than does the base class (Bric::Dist::Action), and false if not. Here in Bric::Dist::Action it returns false, so it only needs to be overridden to return true in subclasses of Bric::Dist::Action that contain extra properties (such as Bric::Dist::Action::Akamaize).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$meths = Bric::Dist::Action-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Dist::Action-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Dist::Action-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs representing the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $id = $act-&gt;get_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Dist::Action object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> If the Bric::Dist::Action object has been instantiated via the new() constructor and has not yet been <code>save</code>d, the object will not yet have an ID, so this method call will return undef.</p>
+
+</dd>
+<dt>my $type = $act-&gt;get_type</dt>
+<dd>
+
+</dd>
+<dt>my $type = $act-&gt;get_name</dt>
+<dd>
+
+<p>Returns the type of the action, e.g., &quot;FTP&quot; or &quot;Akamaize.&quot;</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot load action class.</p>
+
+</li>
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;type&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;set_type($type)</dt>
+<dd>
+
+<p>Sets the type of the action. The type must be the type of a supported action. Call Bric::Dist::Action-&gt;list_types() to get a list of supported actions.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $order = $act-&gt;get_ord</dt>
+<dd>
+
+<p>Returns the number representing this action&#39;s place in the order of execution for all the actions associated with the server_type_id with which this action is associated.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;set_ord($order)</dt>
+<dd>
+
+<p>Sets the order of the action. This number represents where in the sequence of actions associated with the server_type_id with which this action is associated that this action will be executed. If this property is never set on a new action, then the order will default to the last in the sequence of actions. If it is set, and it comes before other, pre-existing actions, those actions will be shifted down in the list of actions.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $description = $act-&gt;get_description</dt>
+<dd>
+
+<p>Returns the description of the action.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;description&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $server_type_id = $act-&gt;get_server_type_id</dt>
+<dd>
+
+<p>Returns the ID of the Bric::Dist::ServerType object for which this action will be performed.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;server_type_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;set_server_type_id($server_type_id)</dt>
+<dd>
+
+<p>Associates this action with a Bric::Dist::ServerType object so that this action can be performed for servers of that type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;server_type_id&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@medias || $medias_aref) = $action-&gt;get_media_types</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the MEDIA types that apply to this action. Returns an empty list (or undef in a scalar context) if this action applies to <b>all</b> MEDIA types.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@medias || $medias_aref) = $action-&gt;get_media_href</dt>
+<dd>
+
+<p>Returns an anonymous hash of the MEDIA types that apply to this action. Returns undef if this action applies to <b>all</b> MEDIA types.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$action = $action-&gt;del</dt>
+<dd>
+
+<p>Marks the Bric::Dist::Action object to be deleted from the database. Call $action-&gt;save to actually finish it off.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;activate</dt>
+<dd>
+
+<p>Activates the Bric::Dist::Action object. Call $action-&gt;save to make the change persistent. Bric::Dist::Action objects instantiated by new() are active by default.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;deactivate</dt>
+<dd>
+
+<p>Deactivates (deletes) the Bric::Dist::Action object. Call $action-&gt;save to make the change persistent.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $action-&gt;is_active</dt>
+<dd>
+
+<p>Returns $self if the Bric::Dist::Action object is active, and undef if it is not.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;save</dt>
+<dd>
+
+<p>Saves any changes to the Bric::Dist::Action object. Returns $self on success and undef on failure.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to select row.</p>
+
+</li>
+<li><p>Incorrect number of args to _set.</p>
+
+</li>
+<li><p>Bric::_set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;do_it($job)</dt>
+<dd>
+
+<p>Performs the action on the resources associated with $job. Must be overridden in Bric::Dist::Action subclasses.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $act-&gt;undo_it($job)</dt>
+<dd>
+
+<p>Undoes the action on the resources associated with $job. Here is is actually a no-op that returns false, but when overridden, it should return true, as Bric::Util::Job uses this return value to determine whether or not to log an event.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Method not implemented.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>__PACKAGE__-&gt;_register_action($key)</dt>
+<dd>
+
+<p>Protected method called by action subclasses at startup time so they can register themselves as available actions. Some may wish to not register themselves under certain circumstances. For example, Bric::Dist::Action::DTDValidate should only be registered if XML::LibXML has been installed. Thus that class only registers itself if XML::LibXML does not load.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>my $attr = $action-&gt;_get_attr</dt>
+<dd>
+
+<p>Used by subclasses to access an action&#39;s Bric::Util::Attribute::Action object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Problems retrieving fields.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$action = $action-&gt;_clear_attr</dt>
+<dd>
+
+<p>A No-op function that may be overridden in subclasses with attributes. It is called by set_type() above so that subclasses of Bric::Dist::Action can clear their attributes before the Bric::Dist::Action object is blessed into a different class. See Bric::Dist::Action::Akamaize for an example.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$action = $action-&gt;_rebless</dt>
+<dd>
+
+<p>Called by <code>set_type()</code> to rebless an action into a new class. Useful for for subclasses to override in order to set default values on attributes, such as they would typically do in <code>new()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $act_aref = &amp;$get_em( $pkg, $params )</dt>
+<dd>
+
+</dd>
+<dt>my $act_ids_aref = &amp;$get_em( $pkg, $params, 1 )</dt>
+<dd>
+
+<p>Function used by lookup() and list() to return a list of Bric::Dist::Action objects or, if called with an optional third argument, returns a list of Bric::Dist::Action object IDs (used by list_ids()).</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $action = &amp;$make_obj( $pkg, $init )</dt>
+<dd>
+
+<p>Instantiates a Bric::Dist::Action object. Used by &amp;$get_em().</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = &amp;$reorder( $server_type_id, $from_ord, $to_ord )</dt>
+<dd>
+
+<p>Reorders the list of actions for a given server_type_id. Pass in the server_type_id and the ordinal number to change from to the ordinal number to change to. The action that was number $from_ord will be changed to number $to_ord, and the order of the other actions will be shifted to accommodate it. For example, if you had the following actions:</p>
+
+<pre><code>Order  ID  Action
+-----  --  ------------------
+    1  11  Clean HTML
+    2  12  Akamaize
+    3  13  Move
+    4  14  Go Home</code></pre>
+
+<p>To change the order so that &quot;Akamaize&quot; precedes &quot;Clean HTML&quot;, call this function like so:</p>
+
+<pre><code>&amp;$reorder(12, 2, 1);</code></pre>
+
+<p>And the Data will be reordered in this manner:</p>
+
+<pre><code>Order  ID  Action
+-----  --  ------------------
+    1  12  Akamaize
+    2  11  Clean HTML
+    3  13  Move
+    4  14  Go Home</code></pre>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to load action subclass.</p>
+
+</li>
+<li><p>Invalid parameter passed to constructor method.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Adding-a-New-Action">Adding a New Action</h1>
+
+<ul>
+
+<li><p>Add a new subclass for Bric::Dist::Action. Use Bric::Dist::Action::Email and Bric::Dist::Action::DTDValidate as models. Be sure to call <code>__PACKAGE__-&gt;_register_action($key)</code> to register your action subclass.</p>
+
+</li>
+<li><p>Add inserts to <i>sql/Pg/Bric/Dist/ActionType.val</i>. Note that the name inserted here must be exactly the same as the $key argument to your call <code>_register_action()</code>. If your action can act on files of any type, add one record to the action_type__media_type table with the media_type__id column set to 0, which corresponds to no (and therefore all) media types.</p>
+
+</li>
+<li><p>Add an upgrade script with the above inserts. Use <i>inst/upgrade/1.7.0/email_action.pl</i> as a model.</p>
+
+</li>
+<li><p>Add a test class to test your action. Subclass Bric::Dist::Action::DevTest. Use Bric::Dist::Action::Email::DevTest as a model.</p>
+
+</li>
+<li><p>Run <code>make devtest</code> to make sure that all tests pass.</p>
+
+</li>
+<li><p>Add a <code>use</code> statement for your new action to Bric::App::Handler.</p>
+
+</li>
+<li><p>Follow the instructions in <a rel="section" href="../Hacker.html" name="Bric::Hacker">Bric::Hacker</a> to create a patch and send it to bricolage-devel@lists.sourceforge.net.</p>
+
+</li>
+</ul>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

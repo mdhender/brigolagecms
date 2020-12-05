@@ -1,0 +1,316 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.8.2 Changes</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.8.2" class="news announce changes">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.8.2 Changes</h2>
+	<div id="articlemeta">
+            <p class="date">2004.09.13</p>
+          </div>
+          <h3>Improvements</h3>
+        <div class="list">
+          <ul>
+            <li><p>Added note to the context-sensitive help for the story, media, and template search pages to search on <q>/</q> to return all records, and to use SQL wildcards such as <q>%</q> to generalize the search. [David]</p></li>
+            <li><p><code>make upgrade</code> no longer copies the entire installed component root to a new directory as a way to get rid of old UI component files. We now require that any deleted component files get removed from an existing installation via an upgrade script, instead. See <em>inst/upgrade/1.7.0/delete_old_components.pl</em> for an example. [David]</p></li>
+            <li><p>Bricolage now runs under a DSO <code>mod_perl</code> as long as it uses a Perl compiled with <code>-Uusemymalloc</code> <em>or</em> <code>-Ubincompat5005</code>. See <a href="http://perl.apache.org/docs/1.0/guide/install.html#When_DSO_can_be_Used">The <code>mod_perl</code> FAQ</a> for details. Thanks to Marshall Roch for finding that link. [David]</p></li>
+            <li><p>The New Story and New Media profiles by default no longer have a value selected for the Story Type or Media type (respectively), so as to prevent the inadvertent creation of documents of the wrong type. [David]</p></li>
+            <li><p>Alerts triggered to be sent to users who don't have the appropriate contact information will now be logged for those users so that they can see them and acknowledge them under <q>My Alerts</q>. [David]</p></li>
+            <li><p>Added <code>bric_media_dump</code> script to <code>contrib/</code>. [David]</p></li>
+            <li><p>The category association interface used in the story profile when the <code>ENABLE_CATEGORY_BROWSER</code> <em>bricolage.conf</em> directive is enabled now uses radio buttons instead of a link to select the primary category. Suggested by Scott Lanning. [David]</p></li>
+            <li><p>Search by site is now supported in the <q>Advanced Search</q> interface of <q>Find Stories</q>, <q>Find Media</q>, and <q>Find Templates</q> when there is more than one site and the <q>Filter by Site Context</q> preference is not turned on. [David]</p></li>
+            <li><p>Removed Bric::FAQ, since it is now maintained on the Website, instead. [David]</p></li>
+            <li><p>Updated Bric::Admin to suggest that PostgreSQL's <code>initdb</code> be run with <code>--no-locale</code> so as to avoid collation issues with non-Western characters. See <a href="http://archives.postgresql.org/pgsql-general/2004-08/threads.php#01079">this discussion</a> for more information.</p></li>
+            <li><p>Added a warning to the story and media profiles for when related stories and media have been deactivated and a different story or media document should be related.</p></li>
+            <li><p>Added output to the Apache log consisting of the 20 most recent events on an asset that has lost track of what workflow and/or desk it is on. This is to provide debugging information that might help us to track down when an asset forgets its workflow and/or desk, so that we might eventually be able to eliminate the code that picks up on this and corrects it. [David]</p></li>
+            <li><p>The distribution monitor, <em>bric_dist_mon</em>, now prints error information to <code>STDERR</code> when there is an error, instead of just printing it to the system log. [David]</p></li>
+            <li><p>Existing jobs are now executed within their own transactions, as opposed to no transaction specification. This means that each job must succeed or fail independent of any other jobs. New jobs are executed before being inserted into the database so as to keep them atomic within their surrounding transaction (generally a UI request). All this means that transactionality is much more intelligent for jobs and will hopefully eliminate job table deadlocks. Reported by Mark Jaroski, Serge Sozonoff, Patrick Michael Kane, and others. [David]</p></li>
+            <li><p>The workflow, destination, and output channel profiles only display site information if the user has EDIT access to more than one site. The <q>Find Stories</q> and <q>Find Media</q> managers only display the site information for the listed documents if there is more than one site in Bricolage. Suggested by Scott Lanning. [David]</p></li>
+            <li><p>Updated documentation of parameters to the <code>list()</code> method of Bric::Biz::Asset::Formatting (the template class). Also documented a few parameters to the story and media class <code>list()</code> methods that were supported but previously undocumented. [David]</p></li>
+            <li><p>Variables are now properly decoded to UTF-8 when they are populated from the database. [David]</p></li>
+            <li><p>The strings used in translations are now all properly decoded to UTF-8. [David]</p></li>
+            <li><p>All templates now execute with UTF-8 character strings enabled. This means that any templates that convert content to other character sets might need to change the way they do so. For example, templates that had used <code>&lt;%filter&gt;</code> blocks to convert content to another encoding using something like <code>Encode::from_to($_, 'utf-8', $encoding)</code> must now use something like <code>$_ = Encode::encode($encoding, $_)</code>, instead. Bric::Util::CharTrans should continue to do the right thing. [David]</p></li>
+            <li><p>Added <code>encoding</code> attribute to Bric::Util::Burner so that, if templates are outputting something other than Perl <code>utf8</code> decoded data, they can specify what they're outputting, and the file opened for output from the templates will be set to the proper mode. Applies to Perl 5.8.0 and later only. [David]</p></li>
+            <li><p>Added example use for <code>$burner-&gt;display_pages</code> to Bric::AdvTemplates. [Cinly Ooi]</p></li>
+            <li><p>Added <em>README.Mandrake</em>. [Cameron Miller]</p></li>
+            <li><p>Added <code>SFTP_HOME</code> <em>bricolage.conf</em> directive to specify the home directory and location of SSH keys when SSH is enabled. [Cameron Miller]</p></li>
+            <li><p>Users can no longer implicitly publish related stories and media via the UI that they don't have PUBLISH access to. [David]</p></li>
+            <li><p>Users can no longer publish related documents via the UI or SOAP that are in workflow but not on a publish desk. [David]</p></li>
+            <li><p>Added search by output channel to <q>Find Templates</q>. [David]</p></li>
+          </ul>
+        </div>
+          <h3>Bug Fixes</h3>
+        <div class="list">
+          <ul>
+            <li><p>The burner <code>next_page_file()</code> and <code>next_page_uri()</code> methods now properly return a value if the <code>burn_again</code> attribute has been set to a true value in the Mason burner. [David]</p></li>
+            <li><p>The <code>list()</code> and <code>list_ids()</code> methods of the story, media, and template classes no longer return <code>undef</code> in a scalar context when there are no objects to be returned. They return an empty array reference, instead. [David]</p></li>
+            <li><p>The <code>is_fixed()</code> method in the story and media classes now works properly. Reported by Marshall Roch. [David]</p></li>
+            <li><p><code>make clone</code> once again properly copies the <em>lib/Makefile.PL</em> and <em>bin/Makefile.PL</em> files from the source directory. [David]</p></li>
+            <li><p>Fixed the <code>my_meths()</code> method of Bric::Biz::AssetType::Parts::Data to return metadata for the the <code>key_name</code> attribute instead of an <code>undef</code> for the removed <code>name</code> attribute. [Scott]</p></li>
+            <li><p>Added missing language-specifying HTML attributes so as to properly localize story titles and the like. Reported by Joshua Edelstein. [David]</p></li>
+            <li><p>The list of output channels to add to an element in the element profile now contains the name of the site that each is associated with, since different sites can have output channels with the same names. [David]</p></li>
+            <li><p>You can no longer delete a category from a story when you have also marked it to become the primary category. Reported by Simon Wilcox. [David]</p></li>
+            <li><p>Editing notes from My Workspace now works properly. Thanks to Simon Wilcox for the spot! [David]</p></li>
+            <li><p>The <q>Advanced Search</q> interface once again works for searching for related story and media documents. Reported by Ben Bangert and many others. [David]</p></li>
+            <li><p>Renaming a site and its domain name now always properly renames the associated site permission user groups. Reported by Will Trillich. [David]</p></li>
+            <li><p>The <q>Alias Story</q> interface now works properly when the <code>USE_THUMBNAILS</code> directive is enabled. Reported by Ben Bangert. [David]</p></li>
+            <li><p>Attempting to create a new source with the same name as an existing but deactivated source no longer throws an SQL error, but provides a nice error message. Reported by Marshall Roch. [David]</p></li>
+            <li><p>Bricolage no longer attempts to email alerts to an empty list of recipients. This will make your SMTP server happier. [David]</p></li>
+            <li><p>The version numbering issues of Bricolage modules have all been worked out after the confusion in 1.8.1. This incidentally allows the HTML::Template and Template Toolkit burners to be available again. Reported by Mike W. [David]</p></li>
+            <li><p>Misspelling the name of a key name tag or including a non-repeatable field more than once in Super Bulk Edit no longer causes all of the changes in that screen to be lost. [David]</p></li>
+            <li><p>When a user overrides the global <q>Date/Time Format</q> and <q>Time Zone</q> preferences, the affects of the overrides are now properly reflected in the UI. [David]</p></li>
+            <li><p>The <q>Default Asset Sort</q> preference now actually works. Reported by Simon Wilcox. [David]</p></li>
+            <li><p>Publishing a story or media document along with its related story or media documents from a publish desk again correctly publishes the original asset as well as the relateds. Reported by Paul Orrock. [David]</p></li>
+            <li><p>Users can now set their own values for overrideable preferences. [David]</p></li>
+            <li><p>The <code>list()</code> and <code>list_ids()</code> methods of the Story, Media, and Template (<em>Formatting.pm</em>) classes no longer have the side effect of changing values in the hash references passed to them. This had caused problems for date/time parameters. Reported by Paul Orrock. [David]</p></li>
+            <li><p>Auto-generated slugs (enabled via the <code>AUTOGENERATE_SLUG</code> <em>bricolage.conf</em> directive) no longer convert uppercase characters to underscores. Thanks to Paul Orrock for the spot! [David]</p></li>
+            <li><p>Changes made to story content in the story profile are no longer preserved when clicking the <q>Cancel</q> button. Reported by Paul Orrock. [David]</p></li>
+            <li><p>The story and media profiles now clear out the session cache for the story or media element when leaving the story or media profile. This is to prevent perceived caching of changes that were canceled in a profile, noticed only when one canceled an edit of a story or media document and immediately edited the same document. [David]</p></li>
+            <li><p>Clicking the <q>Add More</q> button to add more keywords to a new category no longer causes an error. [David]</p></li>
+            <li><p>Adding a new category to a group and asking it to cascade that group membership into subcategories no longer causes an error. Thanks to Adam Rinehart for the spot! [David]</p></li>
+            <li><p>Adding an existing publish desk to a workflow no longer unsets its publish attribute. [David]</p></li>
+            <li><p>Deleted output channels no longer show up in the select list for story type and media type elements. [David]</p></li>
+            <li><p>Deleting a workflow from the workflow manager now properly updates the workflow cache so that the deleted workflow is removed from the left navigation without a reboot. [David]</p></li>
+            <li><p>Creating a story, checking it in, checking it out, and then canceling the checkout no longer incorrectly removes the story from workflow. [David]</p></li>
+            <li><p>The source of a story can now be changed. [David]</p></li>
+            <li><p>Status messages sent to the browser during previews are now hidden if an error is triggered. [Marshall]</p></li>
+            <li><p>Publishing a document with deactivated related documents no longer causes those deactivated documents to be published, too. Reported by Paul Orrock. [David]</p></li>
+            <li><p>The Bricolage 404, 403, and 500 error pages now send the appropriate HTTP header to the browser. Thanks to Marshall Roch for the spot! [David]</p></li>
+            <li><p>The Output Channel URI Prefix and URI Suffix fields are once again allowed to include a slash (<em>/</em>). Reported by Kevin Elliott. [David]</p></li>
+            <li><p>An attempt to create a new template with the proper extension as part of the name (e.g., <em>foo.mc</em> for a Mason template) now keeps the extension instead of changing the dot to an underscore and adding the extension (e.g., it stays <em>foo.mc</em> instead of becoming <em>foo_mc.mc</em>). This is especially useful when creating utility templates and for users of <code>bric_dev_sync</code>. Thanks to Paul Orrock for the spot! [David]</p></li>
+            <li><p>When Bricolage notices that a document or template is not in workflow or on a desk when it should be, it is now more intelligent in trying to select the correct workflow and/or desk to put it on, based on current workflow context and user permissions. Reported by Hal Creech. [David]</p></li>
+            <li><p>Content submitted to Bricolage in the UTF-8 character set is now always has the <code>utf8</code> flag set on the Perl strings that store it. This allows fields that have a maximum length to be truncated to that length in characters instead of bytes. Thanks to Kang-min Liu for the spot! [David]</p></li>
+            <li><p><code>Bric::Biz::OutputChannel-&gt;list_ids</code> no longer returns duplicate IDs. This incidentally allows output channels that happen to be in groups to be edited, eliminating the 'name <q>Web</q> is already used by another Output Channel' error. Thanks to John Greene for the spot! [David]</p></li>
+            <li><p>The media type of media documents now defaults to <q>none</q> instead of inserting a <code>NULL</code> into the database. The column has also be marked <code>NOT NULL</code> in order to ensure that this remains the pattern. [David]</p></li>
+            <li><p>Changed the <q>name</q> and <q>error_message</q> columns in the <q>job</q> table in the database from <code>VARCHAR</code> to &lt;TEXT&gt;. This is so that we don't have to truncate them before inserting them. [David]</p></li>
+            <li><p>Elements with autopopulated fields (e.g., for image documents) can now be created via the SOAP interface. Reported by Todd Tyree. [David]</p></li>
+            <li><p>Fixed a number of the parameters to the <code>list()</code> method of the Story, Media, and Template classes to properly handle an argument using the <code>ANY</code> operator. These include the <code>keyword</code> and <code>category_uri</code> parameters. Passing an <code>ANY</code> argument to these parameters before this release could cause a well-populated database to lock up with an impossible query for hours at a time. [David]</p></li>
+            <li><p>Restored foreign keys and constraints missing on the <q>job</q> table and related tables since version 1.8.0. [David]</p></li>
+            <li><p>The error message for failed distribution jobs is now properly displayed in the UI. [Mark]</p></li>
+            <li><p>Fixed bug with the execution of jobs in <em>bric_queued</em>. [Mark]</p></li>
+            <li><p>Attempting to create a new desk with the same name as a deactivated desk no longer returns an SQL error, but a more informative error.</p></li>
+            <li><p>Template sandboxes now work for the Template Toolkit burner. [David]</p></li>
+            <li><p>The output channel and element profiles no longer display deactivated output channels in their output channel select lists (for output channel includes in the output channel profile and for primary output channels in the element profile). [David]</p></li>
+            <li><p>The side navigation layer now works correctly with Internet Explorer 5.5 for Windows. [Marshall]</p></li>
+          </ul>
+        </div>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+            <dl id="downloads">
+              <dt>Downloads</dt>
+              <dd class="current"><a href="../../../../downloads/bricolage-1.8.2.tar.gz" title="Download Bricolage 1.8.2">Download Now!</a><br />(Version 1.8.2)</dd>
+              <dd class="more"><a href="../../../../downloads.html" title="Older releases and other downloads">More Downloads</a></dd>
+            </dl>
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

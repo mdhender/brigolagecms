@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Language</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Language.html#Name">Name</a></li>
+  <li><a href="Language.html#Synopsis">Synopsis</a></li>
+  <li><a href="Language.html#Description">Description</a></li>
+  <li><a href="Language.html#Adding-New-Languages">Adding New Languages</a></li>
+  <li><a href="Language.html#Author">Author</a></li>
+  <li><a href="Language.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Language - Bricolage Localization</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>To follow</p>
+
+<h1 id="Description">Description</h1>
+
+<p>To follow</p>
+
+<h1 id="Adding-New-Languages">Adding New Languages</h1>
+
+<ul>
+
+<li><p>Add new Bric::Util::Language subclass, named for your language code with dashes changed to underscores and all lowercase letters. For example, en-US would be &quot;en_us&quot;. This will be known as the &quot;key&quot; for your language. Add the constant <code>key</code> to your new subclass and have it return the key.</p>
+
+</li>
+<li><p>Copy the localization messages from Bric::Util::Language::de_de into your new subclass and change the German translations of the English words and phrases into your language. Be sure to use the UTF-8 character set.</p>
+
+</li>
+<li><p>Add your name to <i>comp/widgets/help/translators.html</i> for your language.</p>
+
+</li>
+<li><p>Copy <i>contrib/button_gen/bric_buttons.de_de.txt</i> to a new file named with your language key substituted for &quot;de_de&quot;. Translate the button labels in your new text file. Make sure that the character set you use is supported by the Gimp. Then run the scripts to generate the buttons (or ask someone on bricolage-devel to do so) and put them into a new subdirectory in <i>comp/media/images</i> named for your language key.</p>
+
+</li>
+<li><p>Create a new subdirectory in <i>comp/help</i> named for your language key. Copy all of the subdirectories and files from the <i>comp/help/en_us</i> directory to your new language directory and translate them. Be sure to use the UTF-8 character set.</p>
+
+</li>
+<li><p>Copy <i>comp/media/js/en_us_messages.js</i> to a new JavaScript file named with your language key substituted for &quot;en_us&quot;. Translate the JavaScript messages in your new JavaScript file. Be sure to use the UTF-8 character set.</p>
+
+</li>
+<li><p>Copy <i>comp/media/css/en_us.css</i> to a new CSS file named with your language key substituted for &quot;en_us&quot;. Add any CSS that your langauge requires, such as special fonts, right-to-left text, font sizes, etc. Many languages will require no special CSS, in which case you can leave your new CSS file empty.</p>
+
+</li>
+<li><p>Add an <code>INSERT</code> statement to <i>sql/Pg/Bric/Util/Pref.val</i>.</p>
+
+</li>
+<li><p>Write a migration script to add the new language key to the database. It should go into a subdirectory of <i>instup/upgrade</i> named for the expected next version of Bricolage. Model it on <i>inst/upgrade/1.10.2/add_ja.pl</i>; all you need to is change all instances of &quot;ja&quot; to your new language key.</p>
+
+</li>
+</ul>
+
+<h1 id="Author">Author</h1>
+
+<p>Cl&aacute;udio Valente &lt;cvalente@co.sapo.pt&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+</body>
+</html>
+

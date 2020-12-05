@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Time</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Time.html#Name">Name</a></li>
+  <li><a href="Time.html#Synopsis">Synopsis</a></li>
+  <li><a href="Time.html#Description">Description</a></li>
+  <li><a href="Time.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Time.html#Constants">Constants</a>
+        <ul>
+          <li><a href="Time.html#PRECISIONS">PRECISIONS</a></li>
+        </ul>
+      </li>
+      <li><a href="Time.html#Constructors">Constructors</a></li>
+      <li><a href="Time.html#Destructors">Destructors</a></li>
+      <li><a href="Time.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Time.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Time.html#Functions">Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Time.html#Private">Private</a>
+    <ul>
+      <li><a href="Time.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Time.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Time.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Time.html#Notes">Notes</a></li>
+  <li><a href="Time.html#Author">Author</a></li>
+  <li><a href="Time.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Time - Bricolage Time &amp; Date Functions</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Time &#39;:all&#39;;
+my $formatted_date = strfdate($epoch_time, $format, $utc);
+my $local_date = local_date($db_date, $format);
+my $db_date = db_date($iso_local_date);
+my $dt = datetime($iso_format_date, $tz);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This package provides time and date formatting functions that may be imported into other Bricolage packages and classes.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<p>To use any of the functons in Bric::Util::Time, you must explicitly import them into your module&#39;s namespace. This can be done in one of two ways: All of them can be imported at once, or they can be imported individually, one a a time:</p>
+
+<pre><code>use Bric::Util::Time qw(:all);               # Imports them all.
+use Bric::Util::Time qw(local_date db_date); # Imports only those listed.</code></pre>
+
+<h2 id="Constants">Constants</h2>
+
+<p>These constants define values that can be used comparatively to determine which are the more precise time parts. The higher the value, the more precise the time part.</p>
+
+<dl>
+
+<dt>YEAR</dt>
+<dd>
+
+</dd>
+<dt>MONTH</dt>
+<dd>
+
+</dd>
+<dt>DAY</dt>
+<dd>
+
+</dd>
+<dt>HOUR</dt>
+<dd>
+
+</dd>
+<dt>MINUTE</dt>
+<dd>
+
+</dd>
+<dt>SECOND</dt>
+<dd>
+
+</dd>
+<dt>MILLISECOND</dt>
+<dd>
+
+</dd>
+<dt>MICROSECOND</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="PRECISIONS">PRECISIONS</h3>
+
+<p>This constant contains an array reference of array references with strings corresponding to the numeric value of each time part. This constant is suitable for passing to a select list for display.</p>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Functions">Functions</h2>
+
+<dl>
+
+<dt>strfdate([$time[, $format[, $utc]]])</dt>
+<dd>
+
+<p>Returns a formatted date/time string. <code>$time</code> is the epoch time to be formatted. It will use the Time Zone preference set via Bric::App::Pref unless <code>$utc</code> is true, in which case the time will be formatted in UTC time. Use <code>DateTime-&gt;DefaultLocale()</code> to have the <code>strfdate()</code> output a localized format of <code>$time</code>--otherwise it defaults to the &quot;English&quot; locale. <code>$format</code> is the stftime format in which <code>$time</code> should be formatted; defaults to ISO 8601-compliant time formatting (&quot;%Y-%m-%d %T.%6N&quot;).</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects</b>: NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<ul>
+
+<li><p>Unable to format date.</p>
+
+</li>
+</ul>
+
+</dd>
+<dt>local_date($db_date)</dt>
+<dd>
+
+</dd>
+<dt>local_date($db_date, $format)</dt>
+<dd>
+
+</dd>
+<dt>local_date(undef, undef, $bool)</dt>
+<dd>
+
+</dd>
+<dt>local_date(undef, $format, $bool)</dt>
+<dd>
+
+<p>Takes a date/time string formatted for the database, converts it to the time zone set in the &quot;Time Zone&quot; preference, and returns it in the <code>strftime</code> format provided by <code>$format</code>. If <code>$format</code> is not provided, the date/time will be returned in the format set in the &quot;Date/Time Format&quot; preference. If <code>$format</code> is &#39;epoch&#39;, it will return the time in epoch seconds. If <code>$format</code> is &#39;object&#39;, it will return a <a href="http://search.cpan.org/perldoc?DateTime">DateTime</a> object. If <code>$db_date</code> is not provided and <code>$bool</code> is false, then <code>local_date()</code> returns <code>undef</code>. If <code>$db_date</code> is not provided and <code>$bool</code> is true, then <code>local_date()</code> returns the current date/time.</p>
+
+<p>Use this function in Bricolage accessor methods to return a localized date/time string.</p>
+
+<pre><code>sub get_date { local_date($_[0]-&gt;_get(&#39;date&#39;), $_[1]); }</code></pre>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to parse date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects</b>: NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>db_date($local_date)</dt>
+<dd>
+
+</dd>
+<dt>db_date($local_date, $now)</dt>
+<dd>
+
+</dd>
+<dt>db_date($local_date, undef, $tz)</dt>
+<dd>
+
+<p>Takes an ISO 8601 formatted date/time string in the time zone set in the &quot;Time Zone&quot; preference, converts it to UTC, and returns it in the format required by the database. If <code>$local_date</code> is not provided, it returns <code>undef</code>, unless <code>$now</code> is true, in which case it provides the current UTC time. If <code>$tz</code> is set, then <code>db_date()</code> uses the supplied time zone instead of using the local time zone.</p>
+
+<p>Use this function to convert a date/time string provided by your object&#39;s consumer into the format required by the database.</p>
+
+<pre><code>sub set_date { db_date($_[1]); }</code></pre>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to parse date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects</b>: NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>datetime($iso_formatted_date)</dt>
+<dd>
+
+</dd>
+<dt>datetime($iso_formatted_date, $tz)</dt>
+<dd>
+
+<p>Takes an ISO 8601 formatted date/time string and returns a DateTime object. The timze zone set on the DateTime object will be either the value of <code>$tz</code> or the value set in the &quot;Time Zone&quot; preference.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to parse date.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects</b>: NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<p>NONE.</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>ISO 8601 date support is incomplete. Currently, time-zone information in the date string is ignored. Also, date and time parts (CCYY, MM, DD, hh, mm and ss) must be separated by a single character.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David E. Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/DBI.html" name="Bric::Util::DBI">Bric::Util::DBI</a></p>
+
+</body>
+</html>
+

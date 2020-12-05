@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_apachectl</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_apachectl.html#Name">Name</a></li>
+  <li><a href="bric_apachectl.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_apachectl.html#Description">Description</a></li>
+  <li><a href="bric_apachectl.html#Author">Author</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_apachectl - Bricolage Apache controller</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>bric_apachectl start
+
+bric_apachectl stop
+
+bric_apachectl restart
+
+bric_apachectl single
+
+bric_apachectl debug</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This script controls the Bricolage Apache server. The usage of the script is the same as the normal apache &quot;apachectl&quot; script but only &quot;start&quot;, &quot;stop&quot; and &quot;restart&quot; are supported. Also, &quot;restart&quot; performs a hard stop and start since a SIGHUP isn&#39;t enough for mod_perl. The &quot;debug&quot; command starts the server under the Perl debugger - see <a rel="section" href="../../2.0/api/Bric/Hacker.html" name="Bric::Hacker">Bric::Hacker</a> for details.</p>
+
+<p>Usage information can be obtained by running the script with no arguments.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+</body>
+</html>
+

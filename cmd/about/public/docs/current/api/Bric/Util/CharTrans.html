@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::CharTrans</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="CharTrans.html#Name">Name</a></li>
+  <li><a href="CharTrans.html#Synopsis">Synopsis</a></li>
+  <li><a href="CharTrans.html#Description">Description</a></li>
+  <li><a href="CharTrans.html#Interface">Interface</a>
+    <ul>
+      <li><a href="CharTrans.html#Constructors">Constructors</a></li>
+      <li><a href="CharTrans.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="CharTrans.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::CharTrans - Interface to Bricolage UTF-8 Character Translations</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Constructors.
+my $chartrans = Bric::Util::CharTrans-&gt;new(&#39;iso-8859-1&#39;);
+
+# Instance Methods.
+my $charset     = $chartrans-&gt;charset;
+my $charset     = $chartrans-&gt;charset(&#39;iso-8859-1&#39;);
+
+# (note: this is only in-place now -- it used to also return the string)
+$chartrans-&gt;to_utf8(\$some_data);
+$chartrans-&gt;from_utf8(\$some_data);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Bric::Util::CharTrans provides an object-oriented interface to conversion of characters from a target character set to Unicode UTF-8 and from Unicode UTF-8 to a target character set.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $chartrans = Bric::Util::CharTrans-&gt;new($charset)</dt>
+<dd>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unspecified charset</p>
+
+</li>
+<li><p>Unknown charset</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p><b>Notes:</b> Use new() to get a working CharTrans object.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>None.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $charset = $chartrans-&gt;charset;</dt>
+<dd>
+
+</dd>
+<dt>$chartrans = $chartrans-&gt;charset($new_charset);</dt>
+<dd>
+
+<p>Gets the current target character set in use.</p>
+
+<p>Optionally sets the current character set.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$chartrans = $chartrans-&gt;to_utf8($somedata);</dt>
+<dd>
+
+<p>Performs an in-place conversion of the data in <code>$somedata</code> from the character set specified via <code>charset()</code> to UTF-8. References to SCALARs, ARRAYs, and HASHes will be recursively processed and their data replaced.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error converting data from [charset] to utf-8.</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This used to return the converted string, but it doesn&#39;t any more. Instead, it returns the Bric::Util::CharTrans object itself.</p>
+
+</dd>
+<dt>my $target_text = $chartrans-&gt;from_utf8($utf8_text);</dt>
+<dd>
+
+<p>Performs an in-place conversion of the UTF-8 data in <code>$utf8_text</code> to the character set specified via <code>charset()</code>. References to SCALARs, ARRAYs, and HASHes will be recursively processed and their data replaced.</p>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Error converting data from utf-8 to [charset].</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>This used to return the converted string, but it doesn&#39;t any more. Instead, it returns the Bric::Util::CharTrans object itself.</p>
+
+</dd>
+</dl>
+
+</body>
+</html>
+

@@ -1,0 +1,1360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::ElementType</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="ElementType.html#Name">Name</a></li>
+  <li><a href="ElementType.html#Synopsis">Synopsis</a></li>
+  <li><a href="ElementType.html#Description">Description</a></li>
+  <li><a href="ElementType.html#Interface">Interface</a>
+    <ul>
+      <li><a href="ElementType.html#Constructors">Constructors</a></li>
+      <li><a href="ElementType.html#Destructors">Destructors</a></li>
+      <li><a href="ElementType.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="ElementType.html#Accessors">Accessors</a>
+        <ul>
+          <li><a href="ElementType.html#id">id</a></li>
+          <li><a href="ElementType.html#name">name</a></li>
+          <li><a href="ElementType.html#description">description</a></li>
+          <li><a href="ElementType.html#key_name">key_name</a></li>
+          <li><a href="ElementType.html#top_level">top_level</a></li>
+          <li><a href="ElementType.html#biz_type_id">biz_type_id</a></li>
+          <li><a href="ElementType.html#paginated">paginated</a></li>
+          <li><a href="ElementType.html#fixed_uri">fixed_uri</a></li>
+          <li><a href="ElementType.html#related_story">related_story</a></li>
+          <li><a href="ElementType.html#related_media">related_media</a></li>
+          <li><a href="ElementType.html#media">media</a></li>
+          <li><a href="ElementType.html#displayed">displayed</a></li>
+          <li><a href="ElementType.html#biz_class_id">biz_class_id</a></li>
+          <li><a href="ElementType.html#primary_oc_id">primary_oc_id</a></li>
+          <li><a href="ElementType.html#active">active</a></li>
+        </ul>
+      </li>
+      <li><a href="ElementType.html#Instance-Methods">Instance Methods</a>
+        <ul>
+          <li><a href="ElementType.html#Output-Channels">Output Channels</a></li>
+          <li><a href="ElementType.html#Sites">Sites</a></li>
+          <li><a href="ElementType.html#Field-Types">Field Types</a></li>
+          <li><a href="ElementType.html#Containers">Containers</a></li>
+          <li><a href="ElementType.html#save">save</a></li>
+          <li><a href="ElementType.html#Arbitrary-Attribute-Management">Arbitrary Attribute Management</a></li>
+          <li><a href="ElementType.html#Arbitrary-Attribute-Metadata-Management">Arbitrary Attribute Metadata Management</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="ElementType.html#Private">Private</a>
+    <ul>
+      <li><a href="ElementType.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="ElementType.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="ElementType.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="ElementType.html#Notes">Notes</a></li>
+  <li><a href="ElementType.html#Author">Author</a></li>
+  <li><a href="ElementType.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::ElementType - Bricolage element types</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Create new types of elements.
+$element = Bric::Biz::ElementType-&gt;new($init)
+$element = Bric::Biz::ElementType-&gt;lookup({id =&gt; $id})
+($at_list || @ats) = Bric::Biz::ElementType-&gt;list($param)
+($id_list || @ids) = Bric::Biz::ElementType-&gt;list_ids($param)
+
+# Return the ID of this object.
+$id = $element-&gt;get_id()
+
+# Get/set this element type&#39;s name.
+$element = $element-&gt;set_name( $name )
+$name       = $element-&gt;get_name()
+
+# Get/set the description for this element type
+$element  = $element-&gt;set_description($description)
+$description = $element-&gt;get_description()
+
+# Get/set the primary output channel ID for this element type.
+$element = $element-&gt;set_primary_oc_id($oc_id, $site_id);
+$oc_id = $element-&gt;get_primary_oc_id($site_id);
+
+# Attribute methods.
+$val  = $element-&gt;set_attr($name, $value);
+$val  = $element-&gt;get_attr($name);
+\%val = $element-&gt;all_attr;
+
+# Attribute metadata methods.
+$val = $element-&gt;set_meta($name, $meta, $value);
+$val = $element-&gt;get_meta($name, $meta);
+
+# Manage output channels.
+$element        = $element-&gt;add_output_channels([$output_channel])
+($oc_list || @ocs) = $element-&gt;get_output_channels()
+$element        = $element-&gt;delete_output_channels([$output_channel])
+
+# Manage sites
+$element               = $element-&gt;add_sites([$site])
+($site_list || @sites) = $element-&gt;get_sites()
+$element               = $element-&gt;remove_sites([$site])
+
+# Manage the parts of an element type.
+$element            = $element-&gt;add_field_types($field);
+$field_type         = $element-&gt;new_field_type($param);
+$element            = $element-&gt;copy_field_type($at, $field);
+($part_list || @parts) = $element-&gt;get_field_types($field);
+$element            = $element-&gt;del_field_types($field);
+
+# Add, retrieve and delete containers from this element type.
+$element            = $element-&gt;add_containers($at || [$at]);
+(@at_list || $at_list) = $element-&gt;get_containers();
+$element            = $element-&gt;del_containers($at || [$at]);
+
+# Get/set the active flag.
+$element  = $element-&gt;activate()
+$element  = $element-&gt;deactivate()
+(undef || 1) = $element-&gt;is_active()
+
+# Save this element type.
+$element = $element-&gt;save()</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The element type class registers new type of elements that define the structures of story and media documents. Element type objects are composed of subelement types and fields, and top-level (story and media type) element types are associated with sites and output channels to define how documents based on them will be output and in what sites they can be created.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$element = Bric::Biz::ElementType-&gt;new($init)</dt>
+<dd>
+
+<p>Will return a new element type object with the optional initial state</p>
+
+<p>Supported Keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+</dd>
+<dt>top_level</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>paginated</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>fixed_uri</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>related_story</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>related_media</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>media</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>displayed</dt>
+<dd>
+
+<p>Defaults to false.</p>
+
+</dd>
+<dt>biz_class_id</dt>
+<dd>
+
+<p>Defaults to the ID for Bric::Biz::Asset::Business::Story.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element = Bric::Biz::ElementType-&gt;lookup({id =&gt; $id})</dt>
+<dd>
+
+</dd>
+<dt>$element = Bric::Biz::ElementType-&gt;lookup({key_name =&gt; $key_name})</dt>
+<dd>
+
+<p>Looks up and instantiates a new Bric::Biz::ElementType object based on the Bric::Biz::ElementType object ID or name passed. If <code>$id</code> or <code>$key_name</code> is not found in the database, <code>lookup()</code> returns <code>undef</code>.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many Bric::Biz::ElementType objects found.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>($at_list || @at_list) = Bric::Biz::ElementType-&gt;list($param);</dt>
+<dd>
+
+<p>This will return a list of objects that match the criteria defined.</p>
+
+<p>Supported Keys:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Element ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the element type. Matched with case-insentive LIKE. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>key_name</dt>
+<dd>
+
+<p>The unique key name of the element type. Matched with case insensitive LIKE. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>The description of the element type. Matched with case-insentive LIKE. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>output_channel_id</dt>
+<dd>
+
+<p>The ID of an output channel. Returned will be all ElementType objects that contain this output channel. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>field_name</dt>
+<dd>
+
+</dd>
+<dt>data_name</dt>
+<dd>
+
+<p>The name of an ElementType::Parts::FieldType (field type) object. Returned will be all ElementType objects that reference this particular field type object. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+<p>Boolean value for active or inactive element types.</p>
+
+</dd>
+<dt>type_id</dt>
+<dd>
+
+<p>Match elements of a particular attype. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>Match against the given site_id. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>top_level</dt>
+<dd>
+
+<p>Boolean value for top-level (story type and media type) element types.</p>
+
+</dd>
+<dt>media</dt>
+<dd>
+
+<p>Boolean value for media element types.</p>
+
+</dd>
+<dt>paginated</dt>
+<dd>
+
+<p>Boolean value for paginated element types.</p>
+
+</dd>
+<dt>fixed_uri</dt>
+<dd>
+
+<p>Boolean value for fixed URI element types.</p>
+
+</dd>
+<dt>displayed</dt>
+<dd>
+
+<p>Boolean value for displayed element types.</p>
+
+</dd>
+<dt>related_story</dt>
+<dd>
+
+<p>Boolean value for related story element types.</p>
+
+</dd>
+<dt>related_media</dt>
+<dd>
+
+<p>Boolean value for related media element types.</p>
+
+</dd>
+<dt>biz_class_id</dt>
+<dd>
+
+<p>The ID of a Bric::Util::Class object representing a business class. The ID must be for a class object representing one of <a rel="section" href="Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a>, <a rel="section" href="Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a>, or one of its subclasses. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>child_id</dt>
+<dd>
+
+<p>ElementType id for children with the specified id.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>ElementType id for parents with the specified id</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<dl>
+
+<dt>Exception::DA</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>($at_list || @ats) = Bric::Biz::ElementType-&gt;list_ids($param)</dt>
+<dd>
+
+<p>This will return a list of objects that match the criteria defined. See the <code>list()</code> method for the allowed keys of the <code>$param</code> hash reference.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>$meths = Bric::Biz::ElementType-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>(@meths || $meths_aref) = Bric::Biz::ElementType-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::ElementType-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Accessors">Accessors</h2>
+
+<h3 id="id">id</h3>
+
+<pre><code>my $id = $element_type-&gt;get_id;</code></pre>
+
+<p>Returns the element type object&#39;s unique database ID.</p>
+
+<h3 id="name">name</h3>
+
+<pre><code>my $name = $element_type-&gt;get_name;
+$element_type = $element_type-&gt;set_name($name);</code></pre>
+
+<p>Get and set the element type object&#39;s unique name.</p>
+
+<h3 id="description">description</h3>
+
+<pre><code>my $description = $element_type-&gt;get_description;
+$element_type = $element_type-&gt;set_description($description);</code></pre>
+
+<p>Get and set the element type object&#39;s description. The setter converts non-Unix line endings.</p>
+
+<h3 id="key_name">key_name</h3>
+
+<pre><code>my $key_name = $element_type-&gt;get_key_name;
+$element_type = $element_type-&gt;set_key_name($key_name);</code></pre>
+
+<p>Get and set the element type object&#39;s unique key name.</p>
+
+<h3 id="top_level">top_level</h3>
+
+<pre><code>my $is_top_level = $element_type-&gt;is_top_level;
+$element_type = $element_type-&gt;set_top_level($is_top_level);</code></pre>
+
+<p>The <code>top_level</code> attribute is a boolean that indicates whether the element type is a story type or a media type, and therefore a top-level element. In other words, elements based on it cannot be subelements of any other elements.</p>
+
+<h3 id="biz_type_id">biz_type_id</h3>
+
+<pre><code>my $biz_type_id = $element_type-&gt;get_biz_type_id;
+$element_type = $element_type-&gt;set_biz_type_id($biz_type_id);</code></pre>
+
+<p>The <code>biz_type_id</code> attribute is contains the ID for a <code>Bric::Util::Class|Bric::Util::Class</code> indicating the class of object with whic the elements based on the type can be associated. The values allowed are only those for <a rel="section" href="Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a>, <a rel="section" href="Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a>, and the latter&#39;s subclasses.</p>
+
+<h3 id="paginated">paginated</h3>
+
+<pre><code>my $is_paginated = $element_type-&gt;is_paginated;
+$element_type = $element_type-&gt;set_paginated($is_paginated);</code></pre>
+
+<p>The <code>paginated</code> attribute is a boolean that indicates whether the elements based on the element type represent pages. Paginated elements generally trigger the output of multiple files, one for each paginated element in a document, by the burner. This attribute is ignored for top level elements.</p>
+
+<h3 id="fixed_uri">fixed_uri</h3>
+
+<pre><code>my $is_fixed_uri = $element_type-&gt;is_fixed_uri;
+$element_type = $element_type-&gt;set_fixed_uri($is_fixed_uri);</code></pre>
+
+<p>The <code>fixed_uri</code> attribute is a boolean that indicates whether documents based on the element type will use the &quot;URI Format&quot; or &quot;Fixed URI Format&quot; of an output channel through which the document is published. This attribute is ignored for non-top level elements.</p>
+
+<h3 id="related_story">related_story</h3>
+
+<pre><code>my $is_related_story = $element_type-&gt;is_related_story;
+$element_type = $element_type-&gt;set_related_story($is_related_story);</code></pre>
+
+<p>The <code>related_story</code> attribute is a boolean that indicates whether elements based on the element type can have another story related to them.</p>
+
+<h3 id="related_media">related_media</h3>
+
+<pre><code>my $is_related_media = $element_type-&gt;is_related_media;
+$element_type = $element_type-&gt;set_related_media($is_related_media);</code></pre>
+
+<p>The <code>related_media</code> attribute is a boolean that indicates whether elements based on the element type can have another media related to them.</p>
+
+<h3 id="media">media</h3>
+
+<pre><code>my $is_media = $element_type-&gt;is_media;
+$element_type = $element_type-&gt;set_media($is_media);</code></pre>
+
+<p>The <code>media</code> attribute is a boolean that indicates whether elements based on the element type are media documents. This attribute is a redundant combination fo the <code>biz_type_id</code> and <code>top_level</code> attributes.</p>
+
+<h3 id="displayed">displayed</h3>
+
+<pre><code>my $is_displayed = $element_type-&gt;is_displayed;
+$element_type = $element_type-&gt;set_displayed($is_displayed);</code></pre>
+
+<p>The <code>displayed</code> attribute is a boolean that indicates whether elements based on the element type are displayed in the document profile when they are first created. Note that it&#39;s ignored for top-level elements.</p>
+
+<h3 id="biz_class_id">biz_class_id</h3>
+
+<pre><code>my $biz_class_id   = $element_type-&gt;get_biz_class_id;
+my $biz_class_name = $element_type-&gt;get_biz_class;
+$element_type-&gt;set_biz_class_id($biz_class_id);</code></pre>
+
+<p>Get and set the ID of the Bric::Util::Class object that represents the class for which elements of this type can be created. Must be the ID for either <a rel="section" href="Asset/Business/Story.html" name="Bric::Biz::Asset::Business::Story">Bric::Biz::Asset::Business::Story</a>, <a rel="section" href="Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a>, or one of its subclasses. <code>get_biz_class()</code> actually returns the package name of the business class represented by the <code>biz_class_id</code> attribute.</p>
+
+<h3 id="primary_oc_id">primary_oc_id</h3>
+
+<pre><code>my $primary_oc_id = $element_type-&gt;get_primary_oc_id($site_id);
+   $primary_oc_id = $element_type-&gt;get_primary_oc_id($site);
+
+$element_type-&gt;set_primary_oc_id($primary_oc_id, $site_id);
+$element_type-&gt;set_primary_oc_id($primary_oc_id, $site);</code></pre>
+
+<p>Gets and sets the primary output channel within the given site for the element type. Either a site object or ID can be used. Only top-level element types have site and output channel associations.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>No site parameter passed to Bric::Biz::ElementType-&gt;set_primary_oc_id</p>
+
+</li>
+<li><p>No output channels associated with non top-level element types.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+<h3 id="active">active</h3>
+
+<pre><code>my $is_active = $element_type-&gt;is_active;
+$element_type-&gt;activate;
+$element_type-&gt;deactivate;</code></pre>
+
+<p>This boolean attribute indicates whether the element type is active.</p>
+
+<h2 id="Instance-Methods">Instance Methods</h2>
+
+<h3 id="Output-Channels">Output Channels</h3>
+
+<dl>
+
+<dt>get_output_channels</dt>
+<dd>
+
+<pre><code>my @ocs = $element_type-&gt;get_output_channels;
+   @ocs = $element_type-&gt;get_output_channels(@oc_ids);
+my $ocs_aref = $element_type-&gt;get_output_channels;
+   $ocs_aref = $element_type-&gt;get_output_channels(@oc_ids);</code></pre>
+
+<p>Returns a list or array reference of output channels that have been associated with this element type. If <code>@oc_ids</code> is passed, then only the output channels with those IDs are returned, if they&#39;re associated with this element type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> The objects returned will be Bric::Biz::OutputChannel::Element objects, and these objects contain extra information relevant to the assocation between each output channel and this element object.</p>
+
+</dd>
+<dt>add_output_channel</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_output_channel($oc);
+$element_type-&gt;add_output_channel($oc_id);</code></pre>
+
+<p>Adds an output channel to this element object and returns the resulting Bric::Biz::OutputChannel::Element object. Can pass in either an output channel object or an output channel ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> If a Bric::Biz::OutputChannel object is passed in as the first argument, it will be converted into a Bric::Biz::OutputChannel::Element object.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>add_output_channels</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_output_channels(@ocs);
+$element_type-&gt;add_output_channels(\@ocs);
+$element_type-&gt;add_output_channels(@oc_ids);
+$element_type-&gt;add_output_channels(\@oc_ids);</code></pre>
+
+<p>This accepts a list or array reference of output channel objects or IDs to be associated with this element type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Any Bric::Biz::OutputChannel objects passed in will be converted into Bric::Biz::OutputChannel::Element objects.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>delete_output_channels</dt>
+<dd>
+
+<pre><code>$element_type-&gt;delete_output_channels(@output_channels);
+$element_type-&gt;delete_output_channels(\@output_channels);</code></pre>
+
+<p>This accepts a list or array reference of output channels and removes their association from the object.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot delete a primary output channel.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h3 id="Sites">Sites</h3>
+
+<dl>
+
+<dt>get_sites</dt>
+<dd>
+
+<pre><code>my @sites = $element_type-&gt;get_sites;
+   @sites = $element_type-&gt;get_sites(@site_ids);
+my $sites_aref = $element_type-&gt;get_sites;
+   $sites_aref = $element_type-&gt;get_sites(@site_ids);</code></pre>
+
+<p>Returns a list or array reference of sites that have been asssociated with this element type. If <code>@site_ids</code> is passed, then only the sites with those IDs are returned, if they&#39;re associated with this element type.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> The objects returned will be Bric::Biz::Site objects, and these objects contain extra information relevant to the assocation between each output channel and this element object.</p>
+
+</dd>
+<dt>add_site</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_site($site);
+$element_type-&gt;add_site($site_id);</code></pre>
+
+<p>Adds a site to this element object and returns the resulting Bric::Biz::Site object. Can pass in either an site object or a site ID.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>You can only add sites to top level objects</p>
+
+</li>
+<li><p>Cannot add sites to non top-level element types.</p>
+
+</li>
+<li><p>No such site.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>add_sites</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_sites(@sites);
+$element_type-&gt;add_sites(\@sites);
+$element_type-&gt;add_sites(@site_ids);
+$element_type-&gt;add_sites(\@site_ids);</code></pre>
+
+<p>This accepts a list or array reference of site objects or IDs to be associated with this element type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>You can only add sites to top level objects</p>
+
+</li>
+<li><p>Couldn&#39;t find site</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>remove_sites</dt>
+<dd>
+
+<pre><code>$element_type-&gt;remove_sites(@sites);
+$element_type-&gt;remove_sites(\@sites);</code></pre>
+
+<p>Removes a list or array reference of sites from association with the element type.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Cannot remove last site from an element type.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> Also disassociates any output channels for the site that are associated with this element.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h3 id="Field-Types">Field Types</h3>
+
+<dl>
+
+<dt>get_field_types</dt>
+<dd>
+
+</dd>
+<dt>get_data</dt>
+<dd>
+
+<pre><code>my @field_types = $element_type-&gt;get_field_types;
+my $field_type  = $element_type-&gt;get_field_types($key_name);
+   @field_types = $element_type-&gt;get_data;
+   $field_type  = $element_type-&gt;get_data($key_name);</code></pre>
+
+<p>Returns a list or array reference of the field types that the element type contains. Pass in a key name to get back a single field type.</p>
+
+<p><b>Note:</b> <code>get_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>add_field_types</dt>
+<dd>
+
+</dd>
+<dt>add_data</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_field_types(@field_types);
+$element_type-&gt;add_field_types(\@field_types);
+$element_type-&gt;add_data(@field_types);
+$element_type-&gt;add_data(\@field_types);</code></pre>
+
+<p>This takes a list of field typess and associates them with the element type object.</p>
+
+<p><b>Note:</b> <code>add_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>new_field_type</dt>
+<dd>
+
+</dd>
+<dt>new_data</dt>
+<dd>
+
+<pre><code>my $field_type = $element_type-&gt;new_field_type(\%params);
+   $field_type = $element_type-&gt;new_data(\%params);</code></pre>
+
+<p>Adds a new field type to the element type, creating a new Bric::Biz::ElementType::Parts::FieldType object. See <a rel="section" href="ElementType/Parts/FieldType.html" name="Bric::Biz::ElementType::Parts::FieldType">Bric::Biz::ElementType::Parts::FieldType</a> for a list of the parameters to its <code>new()</code> method for the parameters that can be specified in the parameters hash reference passsed to <code>new_field_type()</code>.</p>
+
+<p><b>Note:</b> <code>new_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>copy_field_type</dt>
+<dd>
+
+</dd>
+<dt>copy_data</dt>
+<dd>
+
+<pre><code>my $field_type = $element_type-&gt;copy_field_type(\%params);
+   $field_type = $element_type-&gt;copy_data(\%params);</code></pre>
+
+<p>Copies the definition for a field type from another eelement type. The parameters expected in the hash reference argument are:</p>
+
+<dl>
+
+<dt>field_type</dt>
+<dd>
+
+</dd>
+<dt>field_obj</dt>
+<dd>
+
+<p>The field type object to copy into this element type. Required unless <code>element_type</code> and <code>field_key_name</code> have been specified.</p>
+
+</dd>
+<dt>element_type</dt>
+<dd>
+
+</dd>
+<dt>at</dt>
+<dd>
+
+<p>An existing element type object from which to extract a field to copy. Required unless <code>field_type</code> has been specified.</p>
+
+</dd>
+<dt>field_key_name</dt>
+<dd>
+
+</dd>
+<dt>field_name</dt>
+<dd>
+
+<p>The key name of a field associated with the element type passed via the <code>element_type</code> parameter. Required unless <code>field_type</code> has been specified.</p>
+
+</dd>
+</dl>
+
+<p><b>Note:</b> <code>copy_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+<dt>del_field_types</dt>
+<dd>
+
+</dd>
+<dt>del_data</dt>
+<dd>
+
+<pre><code>$element_type-&gt;del_field_types(@field_types);
+$element_type-&gt;del_field_types(\@field_types);
+$element_type-&gt;del_data(@field_types);
+$element_type-&gt;del_data(\@field_types);</code></pre>
+
+<p>Removes the specified field types from the element type.</p>
+
+<p><b>Note:</b> <code>del_data()</code> is the deprecated form of this method.</p>
+
+</dd>
+</dl>
+
+<h3 id="Containers">Containers</h3>
+
+<dl>
+
+<dt>add_containers</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_containers(@element_types);
+$element_type-&gt;add_containers(\@element_types);
+$element_type-&gt;add_containers(@element_type_ids);
+$element_type-&gt;add_containers(\@element_type_ids);</code></pre>
+
+<p>Add element types to the element type as subelement types. This function accepts a list or array reference of ElementTypes, or ElementType ids.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> Any Bric::Biz::ElementType objects passed in will be converted into Bric::Biz::ElementType::Subelement objects.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>add_container</dt>
+<dd>
+
+<pre><code>$element_type-&gt;add_container($et);
+$element_type-&gt;add_container($et_id);</code></pre>
+
+<p>Adds a subelement to this element type object and returns the resulting Bric::Biz::ElementType::Subelement object. Can pass in either an ElementType object or an ElementType ID.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> If a Bric::Biz::ElementType object is passed in as the first argument, it will be converted into a Bric::Biz::ElementType::Subelement object.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>get_containers</dt>
+<dd>
+
+<pre><code>my @element_types      = $element_type-&gt;get_containers;
+my @element_types      = $element_type-&gt;get_containers(@et_ids);
+my $element_types_aref = $element_type-&gt;get_containers;
+my $element_types_aref = $element_type-&gt;get_containers(@et_ids);
+my $element_type       = $element_type-&gt;get_containers($key_name);</code></pre>
+
+<p>Returns a list or array reference of subelement element types. If <code>@et_ids</code> is passed, then only the subelements with those IDs are returned, if they are indeed children of this container.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> The objects returned will be Bric::Biz::ElementType::Subelement objects, and these objects contain extra information relevant to the assocation between each subelement of this container, and the container itself.</p>
+
+</dd>
+<dt>del_containers</dt>
+<dd>
+
+<pre><code>$element_type-&gt;del_containers(@element_types);
+$element_type-&gt;del_containers(\@element_types);</code></pre>
+
+<p>Remove subelement element types from the element type. The subelement element types will not be deactivated, just disassociated with the parent element type.</p>
+
+</dd>
+</dl>
+
+<h3 id="save">save</h3>
+
+<pre><code>$element_type-&gt;save;</code></pre>
+
+<p>Saves changes to the element type, including its subelement element type and field type associatesions, to the database.</p>
+
+<h3 id="Arbitrary-Attribute-Management">Arbitrary Attribute Management</h3>
+
+<pre><code>$val = $element_type-&gt;set_attr($name =&gt; $value);
+$val = $element_type-&gt;get_attr($name);
+$val = $element_type-&gt;del_attr($name);</code></pre>
+
+<p>Get/Set/Delete attributes on this element type.</p>
+
+<h3 id="Arbitrary-Attribute-Metadata-Management">Arbitrary Attribute Metadata Management</h3>
+
+<pre><code>$val = $element_type-&gt;set_meta($name, $field =&gt; $value);
+$val = $element_type-&gt;get_meta($name =&gt; $field);
+$val = $element_type-&gt;get_meta($name);</code></pre>
+
+<p>Get/Set attribute metadata on this element type. Calling the <code>get_meta()</code> method without $field returns all metadata names and values as a hash.</p>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>_do_list</dt>
+<dd>
+
+<p>called from list and list ids this will query the db and return either ids or objects</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>These need documenting.</p>
+
+<dl>
+
+<dt>_is_referenced</dt>
+<dd>
+
+</dd>
+<dt>$element_type-&gt;$remove</dt>
+<dd>
+
+<p>Removes this object completely from the DB. Returns 1 if active or undef otherwise</p>
+
+</dd>
+<dt>_get_attr_obj</dt>
+<dd>
+
+</dd>
+<dt>_get_at_type_obj</dt>
+<dd>
+
+</dd>
+<dt>_save_attr</dt>
+<dd>
+
+</dd>
+<dt>_sync_parts</dt>
+<dd>
+
+</dd>
+<dt>$element_type-&gt;_update_element_type()</dt>
+<dd>
+
+<p>Update values in the element_type table.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element_type-&gt;_insert_element_type()</dt>
+<dd>
+
+<p>Insert new values into the element_type table.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$element_type-&gt;_get_parts()</dt>
+<dd>
+
+<p>Call the list function of Bric::Biz::ElementType::Parts::Container to return a list of conainer parts of this ElementType object, or return the existing parts if weve already loaded them.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $oc_coll = $get_oc_coll-&gt;($element_type)</dt>
+<dd>
+
+<p>Returns the collection of output channels for this element type. The collection is a <a rel="section" href="../Util/Coll/OCElement.html" name="Bric::Util::Coll::OCElement">Bric::Util::Coll::OCElement</a> object. See that class and its parent, <a rel="section" href="../Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $site_coll = $get_site_coll-&gt;($element_type)</dt>
+<dd>
+
+<p>Returns the collection of sites for this element type. The collection is a <a rel="section" href="../Util/Coll/Site.html" name="Bric::Util::Coll::Site">Bric::Util::Coll::Site</a> object. See that class and its parent, <a rel="section" href="../Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sub_coll = $get_sub_coll-&gt;($element_type)</dt>
+<dd>
+
+<p>Returns the collection of subelements for this element type. The collection is a <a rel="section" href="../Util/Coll/Subelement.html" name="Bric::Util::Coll::Subelement">Bric::Util::Coll::Subelement</a> object. See that class and its parent, <a rel="section" href="../Util/Coll.html" name="Bric::Util::Coll">Bric::Util::Coll</a>, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $key_name = $make_key_name-&gt;($name)</dt>
+<dd>
+
+<p>Takes an element type name and turns it into the key name. This is the name that will be used in templates and in the super bulk edit interface.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Michael Soderstrom &lt;miraso@pacbell.net&gt;</p>
+
+<p>Refactored by David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="Element.html" name="Bric::Biz::Element">Bric::Biz::Element</a>, <a rel="section" href="../Util/Coll/OCElement.html" name="Bric::Util::Coll::OCElement">Bric::Util::Coll::OCElement</a>.</p>
+
+</body>
+</html>
+

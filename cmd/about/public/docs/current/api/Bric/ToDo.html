@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::ToDo</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="ToDo.html#Name">Name</a></li>
+  <li><a href="ToDo.html#Description">Description</a></li>
+  <li><a href="ToDo.html#Overview">Overview</a>
+    <ul>
+      <li><a href="ToDo.html#High-Priority-Minor-Items">High Priority Minor Items</a></li>
+      <li><a href="ToDo.html#High-Priority-Major-Items">High Priority Major Items</a></li>
+      <li><a href="ToDo.html#Low-Priority-Minor-Items">Low Priority Minor Items</a></li>
+      <li><a href="ToDo.html#Low-Priority-Major-Items">Low Priority Major Items</a></li>
+      <li><a href="ToDo.html#Blue-Sky">Blue Sky</a></li>
+    </ul>
+  </li>
+  <li><a href="ToDo.html#Author">Author</a></li>
+  <li><a href="ToDo.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::ToDo - Bricolage To Do List</p>
+
+<h1 id="Description">Description</h1>
+
+<p>This document lists the items on Bricolage&#39;s To Do list.</p>
+
+<h1 id="Overview">Overview</h1>
+
+<p>Bricolage versions are determined by the types of changes required. Minor version numbers require no changes to the database schema (though data in the database can be added or changed, e.g, for new preferences), and require few changes to the libraries. The idea is to try to use the existing tools in the libraries and the database to do more in the UI, though minor changes to the libraries are allowed. Major version numbers, on the other hand, change when the database schema has been altered, or when the changes to the libraries are significant (including the addition of new libraries), or simply when significant features have been added.</p>
+
+<p>At any one time, we will list the tasks that contributors have accepted for the next minor version and for the next major version. After that, we list other outstanding to do items in descending order of importance: &quot;High Priority Minor Items,&quot; &quot;High Priority Major Items,&quot; &quot;Low Priority Minor Items,&quot; and &quot;Low Priority Major Items.&quot; Developers who wish to volunteer to take on one or more of these tasks should announce their plans and version goal on the Bricolage Developers list &lt;bricolage-devel@lists.sourceforge.net&gt;. Contributions are welcome.</p>
+
+<p>At the end of this document, the &quot;Blue Sky&quot; section features items that will likely never be done for the 1.x development of Bricolage, but we&#39;d like to keep in mind as long term goals further down the line.</p>
+
+<h2 id="High-Priority-Minor-Items">High Priority Minor Items</h2>
+
+<ul>
+
+<li><p>Add ability to reverse the sort order of items on desks.</p>
+
+</li>
+<li><p>Add &quot;Checkout&quot; button to the &quot;View&quot; screens for stories, media, and templats. It must be careful about permissions in the same way that <i>comp/workflow/manager/dhandler</i> currently is. That is to say, in order for the button to be displayed, the user must have EDIT permission to the asset. If the asset isn&#39;t currently in workflow, the user must have RECALL permission to the asset or to the assets on the start desk in the current workflow, and at least EDIT permission to the assets on the start desk.</p>
+
+</li>
+<li><p>Add Checkin &amp; Shelve (And Checkin &amp; Publish?) to the dropdown menu on My Workspace.</p>
+
+</li>
+<li><p>When clicking &quot;New&quot; for an existing contributor, allow choice of Contributor Type, and <b>then</b> role. Right now, if you want an existing contributor to be a contributor of a different type, you have to create a new person, and this duplication is bad.</p>
+
+</li>
+<li><p>When adding a new person, have user search for existing persons first to ensure that the person doesn&#39;t already exist. That is, when adding a new user, it could be that the person being added is already in the system as a contributor, so the new user object can be based on the person object underlying the contributor object. Similarly, when adding a new contributor, the person being added could have an existing person record as an existing contributor or user.</p>
+
+</li>
+<li><p>Resolve the &quot;Adding Element and hitting Cancel&quot; issue.</p>
+
+</li>
+<li><p>Add interface to select from existing keywords for associating with assets. Note that support Keyword Groups will have to be returned to the API.</p>
+
+</li>
+<li><p>Create backup and restore scripts that make it easy to do, especially given the difficulties of importing a PostgreSQL database dump from Bricolage (Sam has more details on this).</p>
+
+</li>
+<li><p>Write distribution documentation.</p>
+
+</li>
+<li><p>Add preferences and the code to enforce them to allow admins to specify that keywords follow certain rules, such as being all lowercase, or to exclude certain words (e.g., About.com excludes the keyword &quot;about.com&quot;).</p>
+
+</li>
+<li><p>Add ability to &quot;undeploy&quot; templates without deactivating them.</p>
+
+</li>
+<li><p>Add option to the installation system to always use the defaults and never prompt the user.</p>
+
+</li>
+<li><p>Disallow the Find Stories and Find Media interfaces from searching for and returning all of the stories and media in the database. [David]</p>
+
+</li>
+<li><p>Update exception handling to allow for option to send error details to a valid email address or URI. The error page (500.mc) would have a form with all the details in hidden fields, and a button. When the button is pressed, the info in the form would either be sent to the specified email adddress or to the specified URL (on the assumption that that URL would process the form data).</p>
+
+</li>
+<li><p>Adjust listManager and desk interfaces so that they remember the field use to sort items until the end of a session.</p>
+
+</li>
+<li><p>Add a &quot;preview&quot; action to the Workflow SOAP interfaces. It will work just like &quot;publish&quot; except, of course, that it &quot;previews&quot; and doesn&#39;t checkin the assets or remove them from desks or workflows.</p>
+
+</li>
+<li><p>Implement a funky hack so that we can have story components like /story.mc inherit based on the location to which we&#39;re publishing (/foo/bar/story), not the actual location of the component.</p>
+
+</li>
+<li><p>Add media thumbnail to desk view (is there room?).</p>
+
+</li>
+</ul>
+
+<h2 id="High-Priority-Major-Items">High Priority Major Items</h2>
+
+<ul>
+
+<li><p>Add browser-based UI for scheduled burning/syndication.</p>
+
+</li>
+<li><p>Add browser-based UI for mass publication and distribution. This will primarily be useful for template redesigns that need to be applied to a large set of pages or a whole site.</p>
+
+</li>
+<li><p>Add better tools for handling special characters (e.g., high ASCII, Latin-1 letters with umlauts and accents and such). May need to select a character set to be associated with output channels, and convert characters based on the character set.</p>
+
+</li>
+<li><p>Since elements and element types aren&#39;t really deleted from the database and you can&#39;t change an element&#39;s type once it has been created, the default templates are very restrictive. For example, I wanted to change the pull quote element from an Inset to a new general Subelement type, but when you delete pull_quote and try to recreate it as a Subelement, it fails because &quot;pull_quote&quot; already exists.</p>
+
+<p>The installer should have an option to not install the default elements. This seems easy enough by moving those SQL commands to a separate file and executing them based on whether the user opts to install them.</p>
+
+<p>Better yet, if there was a way to import elements and element types (through SOAP?[1]), there could be no default, but several different pre-made element sets that the user could choose to import right after installation depending on what type of site they wanted (daily newspaper, montly magazine, normal website, etc.).</p>
+
+</li>
+<li><p>Revamp the element system. See the <a href="../../../design/ElementRevision.html">specification</a> for details.</p>
+
+</li>
+<li><p>Add support for Instant messaging (using Jabber server) in Alerts.</p>
+
+</li>
+<li><p>Port installation system to use Module::Build.</p>
+
+</li>
+<li><p>Add <code>Limit</code>, <code>Offset</code>, <code>SortBy</code>, and <code>SortDirection</code> parameters to <code>list()</code> in all classes. The <code>SortBy</code> parameter can be either a string identifying a single attribute (column) to sort by, or an array of attributes (columns) to sort by Note that no matter what attributes are selected, the object id column must <i>always</i> be the last sorted. Existing <code>Order</code> and <code>OrderDirection</code> parameters should be considered aliases to be deprecated. <code>Limit</code> and <code>Offset</code> can be added by using aggregates to ensure that all objects are selected as single rows instead of multiple rows. See how Story, Media, and Template do this now for examples. If this isn&#39;t possible, it can be done using derived tables (Stephan Szabo is my hero for suggesting this -- I didn&#39;t even know it was possible!). Here&#39;s a quick example for person objects:</p>
+
+<pre><code>select p.id, p.prefix, p.fname, p.mname, p.lname, p.suffix, p.active,
+       m.grp__id
+FROM   ( SELECT id, prefix, fname, mname, lname, suffix, active
+         FROM   person
+         LIMIT  2
+         OFFSET 1) AS p,
+        member m, user_member c
+WHERE  p.id = c.object_id AND c.member__id = m.id and m.active = &#39;1&#39;;</code></pre>
+
+<p>Obviously, you only change the query to use a derived table if the <code>Limit</code> or <code>Offset</code> parameter is passed to <code>list()</code>.</p>
+
+<p>MySQL 4.1 also supports this feature, so I feel totally comfortable adding it to Bricolage and feeling like it&#39;s still portable to other databases.</p>
+
+</li>
+<li><p>Add media type associations to actions and allow users to select the media types they want associated with a particular action. Use the hard-coded action type media type associations as the default associations when a new action is created.</p>
+
+</li>
+<li><p>Allow deactivation of objects to cascade into their associations. For example, if one wanted to delete an output channel, the UI should present the user with a list of objects it is associated with (story and media type elements, stories and media, destinations) and ask if the user is sure she wants to delete it and remove all of the associations. This might be tricky if, for example, a given story has only that one OC associated with it, or it is the primary output channel for a story.</p>
+
+</li>
+</ul>
+
+<h2 id="Low-Priority-Minor-Items">Low Priority Minor Items</h2>
+
+<ul>
+
+<li><p>Add interface for editing Contact Types.</p>
+
+</li>
+<li><p>Create Makefile for distribution engine only.</p>
+
+</li>
+<li><p>Add UI support for Organizations.</p>
+
+</li>
+<li><p>Add UI support for addresses.</p>
+
+</li>
+<li><p>Add HTML Cleaning Action.</p>
+
+</li>
+<li><p>Link contributors to their assets -- provide a link in the Contributor Manager and/or the Contributor Profile).</p>
+
+</li>
+<li><p>Add preferences for listManagers to indicate whether they should default to expand or narrow behavior.</p>
+
+</li>
+<li><p>Add command-line argument to <i>bric_dist_mon</i> that will kill the currently-running instance.</p>
+
+</li>
+<li><p>Add autopopulation of video media type properties, such as codec, bit rate, fps, length, etc. Use a tool such as Video::Info.</p>
+
+</li>
+<li><p>Add thumbnails for videos (using a snap from the first frame?) and other media files (using icons).</p>
+
+</li>
+<li><p>Change template deployment to not append the output-channel post_path to the template filename. Currently the burners have hacks in them to look in the post_path for templates but ultimately this should be fixed the right way. If you choose to accept this mission you&#39;ll need to write an upgrade script to correct template entries in the database and move deployed templates on the filesystem.</p>
+
+</li>
+</ul>
+
+<h2 id="Low-Priority-Major-Items">Low Priority Major Items</h2>
+
+<ul>
+
+<li><p>Add a callback option to custom fields. This feature would allow custom Perl code to be associated with the field, and to be executed when the field is filled in by a user. This would perhaps be the best way to allow fields to be &quot;customized,&quot; e.g., when a field needs to be looked up in another database via the DBI. Yes, this could be a security issue (a serious one!), but we put the onus on the Bricolage administrator to ensure that the people with access can&#39;t bollocks things up. We just have to make it difficult for people to hack in and exploit such a field.</p>
+
+</li>
+<li><p>Add a Relational custom field option. This field would allow a link to be made to another arbitrary object in Bricolage. The custom field form would have a select list of Bricolage object names (e.g., Story, User, Output Channel, Event, etc.). When the user wishes to make the link, she&#39;s presented with a manager-type search interface from which to find a pick the object she wants.</p>
+
+</li>
+<li><p>Add user-created help for user-created fields (add a &quot;Help Text&quot; field to Form Builder).</p>
+
+</li>
+<li><p>Make Session an object.</p>
+
+</li>
+<li><p>Add ordering to desks, such that their position in workflow can be ordered. This will likely need some sort of attribute on the desks&#39;s membership in the group for a workflow (since desks can be in multiple workflows).</p>
+
+</li>
+<li><p>Add a flag to the category object to indicate whether or not assets can be associated with it, and then check that flag in the new asset profiles.</p>
+
+</li>
+<li><p>Add a flag to the category object to indicate whether or not the category is allowed to have subcategories, and then check that flag in the category profile.</p>
+
+</li>
+<li><p>Add preference groupings (secret groups would probably work well) and present the grouped preferences together in a profile. Then just list the preference groups in the Preference Manager.</p>
+
+</li>
+<li><p>Add support for contributor contracts.</p>
+
+</li>
+<li><p>Add support for LDAP authentication.</p>
+
+</li>
+<li><p>Change way objects are deactivated (archived?) in the database such that, where there are name uniqueness constraints, a new object can be created with the name of a deleted one without any clashes (e.g., for Elements and Element Types).</p>
+
+</li>
+<li><p>Add file system-like asset browsing (especially for templates and media).</p>
+
+</li>
+<li><p>Create a different way of distinguishing which desks are shared and which are not, rather than relying solely on the desk name.</p>
+
+</li>
+<li><p>Add explicit directory (a.k.a. story index) support.</p>
+
+</li>
+<li><p>Add object so that a new group can start with the settings (including permissions) of an existing group.</p>
+
+</li>
+<li><p>Allow Element Types to be subelements. This means that all elements of a particular type will be subelements, so that if you add or remove elements of that type, they will automatically be subelements of whatever element for which the type is defined.</p>
+
+</li>
+<li><p>Add specification for whether Elements added as Subelements of another are &quot;Required&quot; or not -- just as we currently do for fields in an Element.</p>
+
+</li>
+<li><p>Create separate sand box for previewing stories with templates while templates are under development -- that is, without deploying them.</p>
+
+</li>
+<li><p>Add support for individual user preferences that can override (some) global preferences. (Also add group-level prefs?)</p>
+
+</li>
+<li><p>Allow multiple files to be associated with a single media asset (e.g., when there&#39;s an image, a thumbnail, a high-res version, etc., all essentially for the same asset).</p>
+
+</li>
+<li><p>Implement keyword synonyms. This might include support for various meanings among keywords and/or support for a prefered keyword among a group of synonymous keywords. Past versions of Bricolage (pre 1.3.2) included an incomplete implementation that you might use as inspiration.</p>
+
+</li>
+<li><p>Add a max size option to media Element profiles, for setting a per-element size cap on uploaded media.</p>
+
+</li>
+</ul>
+
+<h2 id="Blue-Sky">Blue Sky</h2>
+
+<ul>
+
+<li><p>Add support for Java templates.</p>
+
+</li>
+<li><p>Add basic project management. Tie project tasks to workflow desks.</p>
+
+</li>
+<li><p>Add support for concurrent checkouts, including support for conflict resolution.</p>
+
+</li>
+<li><p>Add support for display of deltas between versions -- something like what CVSWeb does, in terms of allowing editors to see what has changed between versions of an asset.</p>
+
+</li>
+<li><p>Integrate with Subversion.</p>
+
+</li>
+<li><p>Integrate with WebDAV (Slide? mod_dav?).</p>
+
+</li>
+<li><p>Add full-text indexing of the database. It might be nice to allow different search engines to work via plugins, but probably the simplest thing to do is to use <a href="http://www.postgresql.org/docs/current/static/textsearch.html">PostgreSQL&#39;s full text search</a> support.</p>
+
+</li>
+<li><p>Add stronger type checking.</p>
+
+</li>
+<li><p>Add thorough directory (LDAP, NDS, ADS) integration, including group and permission management.</p>
+
+</li>
+<li><p>Add support for document translation (e.g., Word, QuarkXPress, Acrobat, etc.).</p>
+
+</li>
+<li><p>Add support for skins -- different colors, etc, probably via preferences.</p>
+
+</li>
+<li><p>Allow Elements to be previewed before they&#39;re added.</p>
+
+</li>
+<li><p>Add permission granularity down to the user, property, field, and attribute levels.</p>
+
+</li>
+<li><p>Add reporting, where reports can be templated and saved for particular users, or to be shared between users.</p>
+
+</li>
+<li><p>Allow items to move through different workflows and/or desks in parallel.</p>
+
+</li>
+</ul>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../2.0/api/Bric/Changes.html" name="Bric::Changes">Bric::Changes</a>.</p>
+
+</body>
+</html>
+

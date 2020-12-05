@@ -1,0 +1,1243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Burner</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Burner.html#Name">Name</a></li>
+  <li><a href="Burner.html#Synopsis">Synopsis</a></li>
+  <li><a href="Burner.html#Description">Description</a></li>
+  <li><a href="Burner.html#Adding-a-New-Burner">Adding a New Burner</a></li>
+  <li><a href="Burner.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Burner.html#Constructors">Constructors</a></li>
+      <li><a href="Burner.html#Destructors">Destructors</a></li>
+      <li><a href="Burner.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Burner.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Burner.html#Protected-Class-Methods">Protected Class Methods</a></li>
+      <li><a href="Burner.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Burner.html#Notes">Notes</a></li>
+  <li><a href="Burner.html#Author">Author</a></li>
+  <li><a href="Burner.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Burner - Publishes stories and deploys templates</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Burner qw(:modes);
+
+# Create a new publish object.
+$burner = new Bric::Util::Burner;
+
+# Deploy a template.
+$burner = $burner-&gt;deploy($template_asset);
+
+# Undeploy a template.
+$burner = $burner-&gt;undeploy($template_asset);
+
+# Burn an asset given an output chanels and category
+$burner-&gt;burn_one($asset, $output_channel, $category);
+
+# set list of page extensions
+$burner-&gt;set_page_extensions(@page_extensions);
+
+# get list of page extensions
+@page_extensions = $burner-&gt;get_page_extensions();
+
+# set page numbering start
+$burner-&gt;set_page_numb_start($start);
+
+# retrieve page numbering start
+$page_numb_start = burner-&gt;get_page_numb_start;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module accomplishes two tasks:</p>
+
+<ol>
+
+<li><p>Manages the process of deploying and undeploying of templates through <code>deploy()</code> and <code>undeploy()</code>.</p>
+
+</li>
+<li><p>Manages the process of publishing and previewing business assets via the <code>publish()</code> and <code>preview()</code> methods, respectively. The actual work of publishing is done by one of Bric::Util::Burner&#39;s subclasses depending on the <code>burner_type</code> of the asset being published. See <a rel="section" href="../../../../2.0/api/Bric/Util/Burner/Mason.html" name="Bric::Util::Burner::Mason">Bric::Util::Burner::Mason</a> and <a rel="section" href="../../../../2.0/api/Bric/Util/Burner/Template.html" name="Bric::Util::Burner::Template">Bric::Util::Burner::Template</a> for details.</p>
+
+</li>
+</ol>
+
+<h1 id="Adding-a-New-Burner">Adding a New Burner</h1>
+
+<p>We anticipate that new Burner subclasses will be added to the system. Here&#39;s a brief guide to adding a new Burner to Bricolage:</p>
+
+<ul>
+
+<li><p>Modify Bric::Biz::OutputChannel.</p>
+
+<p>To use your Burner you&#39;ll need to be able to assign output channels to it. To do this edit Bric::Biz::OutputChannel and add a constant for your burner. For example, Bric::Util::Burner::Template&#39;s constant is <code>BURNER_TEMPLATE</code>. Next, edit the <code>my_meths()</code> entry for the &quot;burner&quot; type to include an entry for your constant.</p>
+
+</li>
+<li><p>Decide on a file naming scheme for your templating architecture. The file name suffix or suffixes must be unique across Bricolage burners, as must the base file name of your category templates. See the calls to _register_subclass() in the other burner classes to ensure that your choices are unique. You must also decide whether or not your category template file names will have suffixes. We generally recommend that they don&#39;t, so as to prevent possible conflicts with the names of element templates (see the Mason and PHP burners for an example).</p>
+
+</li>
+<li><p>Write the burner tests by implementing <i>/t/Bric/Util/Burner/Foo/DevTest.pm</i>. See <i>/t/Bric/Util/Burner/Mason/DevTest.pm</i> for an example. You will need to use the constant defined in Bric::Biz::OutputChannel and the file name standards defined in the last step to have the base class, <i>/t/Bric/Util/Burner/DevTest.pm</i>, properly create and load the test templates.</p>
+
+<p>You will also have to create the test templates. The templates go into the same directory as the new <i>DevTest.pm</i> file. For example, if you had elected to go with the file suffix &quot;foo&quot; and gone with &quot;cat_me&quot; for your category template name, and the category template does <i>not</i> include the file suffix, the templates you would need to create would be:</p>
+
+<dl>
+
+<dt><i>cat_me</i></dt>
+<dd>
+
+<p>The root-level category template. Port the Mason test&#39;s <i>autohandler</i> template.</p>
+
+</dd>
+<dt><i>sub_cat_me</i></dt>
+<dd>
+
+<p>A subcategory template. This template will wrap the execution of the story template and be wrapped by the execution of the <i>cat_me</i> template. Port the Mason test&#39;s <i>sub_autohandler</i> template.</p>
+
+</dd>
+<dt><i>story.foo</i></dt>
+<dd>
+
+<p>The story element template. Port the Mason test&#39;s <i>story.mc</i> template.</p>
+
+</dd>
+<dt><i>page.foo</i></dt>
+<dd>
+
+<p>A page subelement template. Port the Mason test&#39;s <i>pull_quote.mc</i> template. This template should be used from paginated content, which will result in the output of two separate files for the test story.</p>
+
+</dd>
+<dt><i>pull_quote.foo</i></dt>
+<dd>
+
+<p>The pull quote subelement template. Port the Mason test&#39;s <i>pull_quote.mc</i> template.</p>
+
+</dd>
+<dt><i>util.foo</i></dt>
+<dd>
+
+<p>A utility template. Should be called from some other template, usually <i>cat_me</i>. Port from the Mason test&#39;s <i>util.mc</i> template.</p>
+
+</dd>
+</dl>
+
+</li>
+<li><p>Write Bric::Util::Burner::Foo.</p>
+
+<p>You&#39;ll need to create a new subclass of Bric::Util::Burner that implements three methods - <code>new()</code>, <code>chk_syntax()</code>, and <code>burn_one()</code>. You can use an existing subclasses as a model for the interface and implementation of these methods. Make sure that when you execute your templates, you do it in the name space reserved by the <code>TEMPLATE_BURN_PKG</code> directive -- get this constant by adding</p>
+
+<pre><code>use Bric::Config qw(:burn);</code></pre>
+
+<p>to your new Burner subclass.</p>
+
+<p>Your burner class will also need to call the <code>_register_burner()</code> method when it loads so as to register itself, its category base file name and its file name suffix or suffixes. Again, see the existing subclasses for some examples.</p>
+
+</li>
+<li><p>Modify Bric::Util::Burner to load your burner subclass, provided the necessary prerequisites are installed. For example, the PHP burner is loaded like so:</p>
+
+<pre><code>require Bric::Util::Burner::PHP if eval { require PHP::Interpreter };</code></pre>
+
+</li>
+<li><p>If all of your tests pass, you&#39;re done! You must have a freshly-built Bricolage database to successfully run the tests. To just run your new burner&#39;s tests, use this command:</p>
+
+<pre><code>perl inst/runtests.pl -V t/Bric/Util/Burner/Foo/DevTest.pm</code></pre>
+
+<p>When that&#39;s working, make sure that <i>all</i> tests pass by running:</p>
+
+<pre><code>make devtest TEST_VERBOSE=1</code></pre>
+
+</li>
+<li><p>Create a patch using the instructions in <a rel="section" href="../../../../2.0/api/Bric/Hacker.html" name="Bric::Hacker">Bric::Hacker</a> and send them to the Bricolage developer&#39;s mailing list!</p>
+
+</li>
+<li><p>Profit.</p>
+
+</li>
+</ul>
+
+<h1 id="Interface">Interface</h1>
+
+<p>In addition to the class and object methods documented below, Bric::Util::Burner can export a number of constants. These constants are used for comparing the values stored in the <code>mode</code> property of a burner object. They can be imported individually, or by using the <code>:modes</code> or <code>:all</code> export tags. The supported constants are:</p>
+
+<dl>
+
+<dt><code>PUBLISH_MODE</code></dt>
+<dd>
+
+<p>The burner object is in the process of publishing an asset.</p>
+
+</dd>
+<dt><code>PREVIEW_MODE</code></dt>
+<dd>
+
+<p>The burner object is in the process of previewing an asset.</p>
+
+</dd>
+<dt><code>SYNTAX_MODE</code></dt>
+<dd>
+
+<p>The burner object is in the process of checking the syntax of a template.</p>
+
+</dd>
+</dl>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = new Bric::Util::Burner($init);</dt>
+<dd>
+
+<p>Creates a new burner object. The parameters that can be passed via the <code>$init</code> hash reference are:</p>
+
+<dl>
+
+<dt><code>data_dir</code></dt>
+<dd>
+
+<p>The directory where the Burner stores compiled template files. Defaults to the value stored in the <code>BURN_DATA_ROOT</code> directive set in <i>bricolage.conf</i>.</p>
+
+</dd>
+<dt><code>user_id</code></dt>
+<dd>
+
+<p>ID of the user to get a sandbox to deploy/undeploy templates for previewing. <code>sandbox_dir</code> is set from this value.</p>
+
+</dd>
+<dt><code>comp_dir</code></dt>
+<dd>
+
+<p>The directory to which the burner deploys and can find templates for burning. Defaults to the value stored in the <code>BURN_COMP_ROOT</code> directive set in <i>bricolage.conf</i>.</p>
+
+</dd>
+<dt><code>out_dir</code></dt>
+<dd>
+
+<p>The directory in which the burner writes burned content files upon publication or preview. Defaults to the value stored in the <code>BURN_DATA_ROOT</code> directive set in <i>bricolage.conf</i>.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $burner_class = Bric::Util::Burner-&gt;class_for_ext($ext);</dt>
+<dd>
+
+<p>Returns the name of the burner class that handles templates with the extension passed in. The extension must be the full extension name without with the &quot;.&quot;, such as &quot;mc&quot; or &quot;tmpl&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $burner_class = Bric::Util::Burner-&gt;class_for_cat_fn($filename);</dt>
+<dd>
+
+<p>Returns the name of the burner class that handles category templates with the base file name passed in. The file name must be the base file name, omitting any exception, such as &quot;autohandler&quot; or &quot;category&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $burner_class = Bric::Util::Burner-&gt;cat_fn_has_ext($filename);</dt>
+<dd>
+
+<p>Returns true if the category template with the base file name <code>$filename</code> has a file extension, and false if it doesn&#39;t. For example Mason category templates have no extension, so this method returns false for the <code>$filename</code> &quot;autohandler&quot;. On the other hand, HTML::Template templates do have extensions, so this method returns true for the <code>$filename</code> &quot;category&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $file_types = Bric::Util::Burner-&gt;list_file_types($burner_id)</dt>
+<dd>
+
+<p>Returns an array reference of array references of burner file name extensions mapped to labels for each. Suitable for use in select widgets. Pass in a Burner ID (such as <code>BURNER_MASON</code>, as exported by Bric::Biz::OutputChannel) to get back an array reference of only the burner file name extensions available for that burner.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>Bric::Util::Burner-&gt;flush_another_queue</dt>
+<dd>
+
+<p>Goes through the list of documents queued for publish by <code>publish_another()</code> and schedules them to be published. This method is called by the cleanup handler and/or by <code>bric_queued</code>, and therefore not generally of interest to template developers (unless you want to flush the queue to force a publish after every call to <code>publish_another()</code>, but be careful! You might force the publication of documents passed to <code>publish_another()</code> by other templates in the same request!).</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $data_dir = $burner-&gt;get_data_dir</dt>
+<dd>
+
+<p>Returns the data directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_data_dir($data_dir)</dt>
+<dd>
+
+<p>Sets the data directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $comp_dir = $burner-&gt;get_comp_dir</dt>
+<dd>
+
+<p>Returns the component directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_comp_dir($comp_dir)</dt>
+<dd>
+
+<p>Sets the component directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $out_dir = $burner-&gt;get_out_dir</dt>
+<dd>
+
+<p>Returns the output directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_out_dir($out_dir)</dt>
+<dd>
+
+<p>Sets the output directory.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $mode = $burner-&gt;get_mode</dt>
+<dd>
+
+<p>Returns the burn mode. The value is an integer corresponding to one of the following constants: &quot;PUBLISH_MODE&quot;, &quot;PREVIEW_MODE&quot;, and &quot;SYNTAX_MODE&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $publishing = $burner-&gt;publishing</dt>
+<dd>
+
+</dd>
+<dt>my $previewing = $burner-&gt;previewing</dt>
+<dd>
+
+</dd>
+<dt>my $compiling = $burner-&gt;compiling</dt>
+<dd>
+
+<p>Returns true if the burner is currently in publish, preview, or syntax mode, respectively. Really it&#39;s just sugar for checking the mode directly.</p>
+
+</dd>
+<dt>my $encoding = $burner-&gt;get_encoding</dt>
+<dd>
+
+<p>Returns the character set encoding to be used to write out the contents of a burn to a file. Defaults to &quot;utf8&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_encoding($encoding)</dt>
+<dd>
+
+<p>Sets the character set encoding to be used to write out the contents of a burn to a file under Perl 5.8.0 and later. Use this attribute if templates are converting output data from Bricolage&#39;s native UTF-8 encoding to another encoding. Use &quot;raw&quot; if your templates are outputting binary data. Defaults to &quot;utf8&quot;.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $story = $burner-&gt;get_story</dt>
+<dd>
+
+<p>Returns the story currently being burned -- that is, during the execution of templates by <code>burn_one()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $story = $burner-&gt;get_element</dt>
+<dd>
+
+<p>Returns the element currently being burned -- that is, during the execution of the various element templates by <code>burn_one()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $oc = $burner-&gt;get_oc</dt>
+<dd>
+
+<p>Returns the output channel in which the story returned by <code>get_story()</code> is currently being burned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $cat = $burner-&gt;get_cat</dt>
+<dd>
+
+<p>Returns the category to which the story returned by <code>get_story()</code> is currently being burned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $page = $burner-&gt;get_page</dt>
+<dd>
+
+<p>Returns the index number of the page that&#39;s currently being burned. The index is 0-based. The first page is &quot;0&quot;, the second page is &quot;1&quot; and so on.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $output_filename = $burner-&gt;get_output_filename</dt>
+<dd>
+
+<p>Returns the base name used to create the file names of all files created by the current burn. This will have the same value as <code>$burner-&gt;get_oc-&gt;get_filename</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $output_ext = $burner-&gt;get_output_ext</dt>
+<dd>
+
+<p>Returns the filename extension used to create the file names of all files created by the current burn. This will have the same value as <code>$burner-&gt;get_oc-&gt;get_file_ext</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $output_path = $burner-&gt;get_base_path</dt>
+<dd>
+
+<p>Returns the local file system path to the directory that will be used as the base path for all files written for documents within a given output channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $output_path = $burner-&gt;get_output_path</dt>
+<dd>
+
+<p>Returns the local file system path to the directory into which all files created by the current burn will be written.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $base_uri = $burner-&gt;get_base_uri</dt>
+<dd>
+
+<p>Returns the base URI to the directory into which all files created by the current burn will be written.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_page_extensions(@page_extensions)</dt>
+<dd>
+
+<p>Sets page extensions to be used during burning. Will revert to page numbering once the extensions are all used. Each of the page extensions passed must be unique or an exception will be thrown.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>Example:</p>
+
+<pre><code>$burner-&gt;set_page_extensions(qw(intro main conc));
+$burner-&gt;display_pages(&#39;page&#39;);</code></pre>
+
+<p>for a 3 page story with a slug of story and a filetype of html will produce burnt pages with filenames storyintro.html, storymain.html, and storyconc.html.</p>
+
+</dd>
+<dt>my @page_extensions = $burner-&gt;get_page_extensions();</dt>
+<dd>
+
+<p>Returns the page extensions to be used during burning.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$b = $burner-&gt;set_page_numb_start($start);</dt>
+<dd>
+
+<p>Sets the start to be used when numbering pages after array passed to set_page_extensions has been exhausted.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>Normally after all page extension strings have been used, pages are numbered using the page number, where the first page after the explicitly named pages is page 1.</p>
+
+<p>Setting page extensions to qw(en de) and burning three pages will give:</p>
+
+<p>storyen.html storyde.html story1.html</p>
+
+<p>If you want numbering to correspond to the actual story page number, then you would pass the number of page extensions plus 1.</p>
+
+</dd>
+<dt>my $page_numb_start = $burner-&gt;get_page_numb_start;</dt>
+<dd>
+
+<p>Returns the page extension start.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $burner-&gt;deploy($fa);</dt>
+<dd>
+
+<p>Deploys a template to the file system. If the burner object was provided with a user_id, the template is deployed into the user&#39;s sandbox.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $burner-&gt;undeploy($fa);</dt>
+<dd>
+
+<p>Deletes a template from the file system. If the burner object was provided with a user_id, the template is undeployed from the user&#39;s sandbox.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$url = $burner-&gt;preview($ba, $key, $user_id, $oc_id);</dt>
+<dd>
+
+<p>Not designed to be called from a template, <code>preview()</code> sends story or media to preview server and returns URL. The supported arguments are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to preview.</p>
+
+</dd>
+<dt><code>$key</code></dt>
+<dd>
+
+<p>The string &quot;story&quot; or &quot;media&quot;.</p>
+
+</dd>
+<dt><code>$user_id</code></dt>
+<dd>
+
+<p>The ID of the user publishing the asset.</p>
+
+</dd>
+<dt><code>$oc_id</code></dt>
+<dd>
+
+<p>Output channel ID (optional).</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$url = $b-&gt;preview_another($ba, $oc_id);</dt>
+<dd>
+
+<p>Burns a story or media document, distributes it to the preview server and returns the URL. It is designed to be the complement of <code>publish_another()</code>, to be used in templates during previews to burn and distribute related documents so that they&#39;ll be readily available on the preview server within the context of previewing another document. Like <code>publish_another()</code>, it will not bother to preview the document if it&#39;s the same story as the currently burning story. The supported arguments are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to burn and send to the preview server.</p>
+
+</dd>
+<dt><code>$oc_id</code></dt>
+<dd>
+
+<p>The ID of the output channel to use to burn a story. Defaults to the primary output channel of the story.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$url = $b-&gt;preview_another_all_ocs($ba);</dt>
+<dd>
+
+<p>Designed to be called from a template, <code>preview_another_all_ocs()</code> complements <code>preview_another()</code> and previews a story or media document in all of the the output channels it is associated with. The supported arguments are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to burn and send to the preview servers.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$url = $b-&gt;blaze_another($ba);</dt>
+<dd>
+
+<p>Designed to be called from a template, <code>blaze_another()</code> is a high level method that wraps around the entire publish/preview process. It takes a story or media document as an argument, and in publish mode, it publishes it, and in preview mode, it previews it with <code>preview_another_all_ocs()</code>. The supported arguments are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to publish or to burn and preview, based on the burn context.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$published = $burner-&gt;publish($ba, $key, $user_id, $publish_date);</dt>
+<dd>
+
+<p>Not designed to be called from a template, <code>publish()</code> publishes an asset. Returns 1 if publish was successful, else 0. The supported arguments are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to publish.</p>
+
+</dd>
+<dt><code>$key</code></dt>
+<dd>
+
+<p>The string &quot;story&quot; or &quot;media&quot;.</p>
+
+</dd>
+<dt><code>$user_id</code></dt>
+<dd>
+
+<p>The ID of the user publishing the asset.</p>
+
+</dd>
+<dt><code>$publish_date</code></dt>
+<dd>
+
+<p>The date to set to schedule publishing job. If not defined it will default set up the asset to be published immediately.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;publish_another($ba);</dt>
+<dd>
+
+<pre><code>$burner-&gt;publish_another($ba);
+$burner-&gt;publish_another($ba, $publish_time);
+$burner-&gt;publish_another($ba, $publish_time, $anytime);</code></pre>
+
+<p>Designed to be called from within a template, this method schedules the publication of a document other than the one currently being published. This is useful when a template for one document type needs to trigger the publication of another document. Look up that document via the Bricolage API and then pass it to this method to have it scheduled for publication at the same time as the story currently being published.</p>
+
+<p>If the mode isn&#39;t <code>PUBLISH_MODE</code> or if the document passed in is the same story as the currently burning story, the publish will not actually be executed. Pass in an ISO-8601 datetime string to specify a date and time different than the current story to publish the document at a different time. Pass in a true value as the third argument to trigger the publish in any mode, including <code>PREVIEW_MODE</code> (not recommended).</p>
+
+<p>If the document to be published has been published before, then the previously-published version will be published instead of the current version. This will help prevent removing stories from workflow while users are working on them.</p>
+
+<p>Note that any values stored in the <code>notes</code> attribute of the current burner will be copied to the publish job, and will therefore be available in templates when the other document is published, but <b>only</b> if the publish date and time is before <i>now</i> and if the <code>QUEUE_PUBLISH_JOBS</code> <i>bricolage.conf</i> directive is not enabled.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b></p>
+
+<p>All documents passed to <code>publish_another()</code> are stored in a publish queue internal to Bric::Util::Burner; they will <b>not</b> be published immediately. The queue may be cleared and all documents in it published by calling the <code>flush_another_queue()</code> class method.</p>
+
+<p>You do not need to flush the publish queue from your templates, however, unless you want to always force an immediate republish. The reason for this is so that, if the bulk publication of a lot of stories at once causes the same document to be repeatedly passed to <code>publish_another</code>, it will only be published once per Apache request or per poll time by <code>bric_queued</code>. So in principal, you don&#39;t need to worry about this at all.</p>
+
+</dd>
+<dt>@resources = $burner-&gt;burn_one($ba, $oc, $cat);</dt>
+<dd>
+
+<p>Burn an asset in a given output channel and category, this is usually called by the preview or publish method. Returns a list of resources burned.</p>
+
+<p>Parameters are:</p>
+
+<dl>
+
+<dt><code>$ba</code></dt>
+<dd>
+
+<p>A business asset object to burn.</p>
+
+</dd>
+<dt><code>$oc</code></dt>
+<dd>
+
+<p>The output channel to which to burn the asset.</p>
+
+</dd>
+<dt><code>$cat</code></dt>
+<dd>
+
+<p>A category in which to burn the asset.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = $burner-&gt;chk_syntax($template, \$err)</dt>
+<dd>
+
+<p>Compiles the template. If the compile succeeds with no errors, chk_syntax() returns true. Otherwise, it returns false, and the error will be in the $err varible passed by reference.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $b-&gt;set_burn_again(1)</dt>
+<dd>
+
+</dd>
+<dt>my $again = $b-&gt;get_burn_again</dt>
+<dd>
+
+<p>This method is designed to be called from within a template. When passed a true value, it causes the burner to burn the current story and page again, creating another file. This is useful for creating multi-file output without extra paginated subelements. For example, if you need to create an index of stories, and you only want to list 10 on a page over multiple pages, you can use this method to force the burner to burn as many pages as you need to get the job done.</p>
+
+<p>When the burner prepares to burn the page again, it resets the <code>burn_again</code> attribute. So you&#39;ll need to set it for every page for which another page burned.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $repub = $b-&gt;is_republish</dt>
+<dd>
+
+<p>Returns true if the document being published has been published before. Returns false if it has not. Only relevant during a call to <code>publish()</code>, so in templates, that&#39;s when <code>publish_mode</code> is set to <code>PUBLISH</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $repub = $b-&gt;is_first_publish</dt>
+<dd>
+
+<p>Returns true if the document is being published for the first time. Returns false if it has not. Only relevant during a call to <code>publish()</code>, so in templates, that&#39;s when <code>publish_mode</code> is set to <code>PUBLISH</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $page_file = $burner-&gt;page_file($number)</dt>
+<dd>
+
+<pre><code>% # Mason syntax.
+% my $page_file = $burner-&gt;page_file($number);
+&lt;a href=&quot;&lt;% $page_file %&gt;&quot;&gt;Page Number &lt;% $number %&gt;&lt;/a&gt;</code></pre>
+
+<p>Returns the file name for a page in a story as the story is being burned. The page number must be greater than 0.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Page number not greater than zero.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method does not check to see if the page number passed in is actually a page in the story. Caveat templator.</p>
+
+</dd>
+<dt>my $page_uri = $burner-&gt;page_uri($number)</dt>
+<dd>
+
+<pre><code>% # Mason syntax.
+% my $page_uri = $burner-&gt;page_uri($number);
+&lt;a href=&quot;&lt;% $page_uri %&gt;&quot;&gt;Page Number &lt;% $number %&gt;&lt;/a&gt;</code></pre>
+
+<p>Returns the URI for a page in a story as the story is being burned. The page number must be greater than 0.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Page number not greater than zero.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method does not check to see if the page number passed in is actually a page in the story. Caveat templator.</p>
+
+</dd>
+<dt>my $page_filepath = $burner-&gt;page_filepath($number)</dt>
+<dd>
+
+<p>Returns the complete local file system file name for a page in a story as the story is being burned. The page number must be greater than 0.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Page number not greater than zero.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method does not check to see if the page number passed in is actually a page in the story. Caveat templator.</p>
+
+</dd>
+<dt>my $prev_page_file = $burner-&gt;prev_page_file</dt>
+<dd>
+
+<pre><code>% if (my $prev = $burner-&gt;prev_page_file) {
+    &lt;a href=&quot;&lt;% $prev %&gt;&quot;&gt;Previous Page&lt;/a&gt;
+% }</code></pre>
+
+<p>Returns the file name for the previous file in a story as the story is being burned. If there is no previous file, <code>prev_page_file()</code> returns undef.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $prev_page_uri = $burner-&gt;prev_page_uri</dt>
+<dd>
+
+<pre><code>% if (my $prev = $burner-&gt;prev_page_uri) {
+    &lt;a href=&quot;&lt;% $prev %&gt;&quot;&gt;Previous Page&lt;/a&gt;
+% }</code></pre>
+
+<p>Returns the URI for the previous file in a story as the story is being burned. If there is no previous URI, <code>prev_page_uri()</code> returns undef.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $next_page_file = $burner-&gt;next_page_file</dt>
+<dd>
+
+<pre><code>% if (my $next = $burner-&gt;next_page_file) {
+    &lt;a href=&quot;&lt;% $next %&gt;&quot;&gt;Next Page&lt;/a&gt;
+% }</code></pre>
+
+<p>Returns the file name for the next file in a story as the story is being burned. If there is no next file, <code>next_page_file()</code> returns undef.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $next_page_uri = $burner-&gt;next_page_uri</dt>
+<dd>
+
+<pre><code>% if (my $next = $burner-&gt;next_page_uri) {
+    &lt;a href=&quot;&lt;% $next %&gt;&quot;&gt;Next Page&lt;/a&gt;
+% }</code></pre>
+
+<p>Returns the URI for the next file in a story as the story is being burned. If there is no next URI, <code>next_page_uri()</code> returns undef.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $uri = $burner-&gt;best_uri($story)</dt>
+<dd>
+
+<pre><code>% if (my $rel_story = $element-&gt;get_related_story) {
+    &lt;a href=&quot;&lt;% $burner-&gt;best_uri($rel_story)-&gt;as_string %&gt;&quot;&gt;
+      &lt;% $rel_story-&gt;get_title %&gt;
+    &lt;/a&gt;
+% }</code></pre>
+
+<p>Returns a URI object representing Bricolage&#39;s best guess as to the appropriate URI to use to link to the story or media object passed as an argument. See the <a href="http://search.cpan.org/perldoc?URI">URI</a> docs for information on its interface. The semantics that <code>best_uri()</code> uses to create the URI are as follows:</p>
+
+<p>First, it checks to see if the asset&#39;s Site ID is the same as the the Site ID for the current output channel. If it is, then the URI is returned without the protocol or server name, but formatted for either the current output channel or for the document&#39;s primary output channel.</p>
+
+<p>If the document isn&#39;t in the current output channel&#39;s site, <code>best_uri()</code> looks for an alias to the document in the current output channel&#39;s site. If there is one the alias is used to create the URI, and the URI is returned without the protocol or server name, but formatted for either the current output channel or for the alias&#39; primary output channel.</p>
+
+<p>And finally, if the document is in another site and there is no alias in the current site, <code>best_uri()</code> will return a full URI with the prtocol and the document&#39;s site&#39;s domain name, formatted according to the settings of the document&#39;s primary output channel.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;notes</dt>
+<dd>
+
+<pre><code>my $notes = $burner-&gt;notes;
+while (my ($k, $v) = each %$notes) {
+    print &quot;$k =&gt; $v\n&quot;;
+}
+
+my $last = 10;
+$burner-&gt;notes( last_story =&gt; $last );
+$last = $burner-&gt;notes(&#39;last_story&#39;);</code></pre>
+
+<p>The <code>notes()</code> method provides a place to store burn data data, giving template developers a way to share data among multiple burns over the course of publishing a single story in a single category to a single output channel. Any data stored here persists for the lifetime of the burner object, as well as to any burners generated by calls to <code>publish_another()</code> or <code>preview_another()</code>. Use <code>clear_notes()</code> to manually clear the notes.</p>
+
+<p>Conceptually, <code>notes()</code> contains a hash of key-value pairs. <code>notes($key, $value)</code> stores a new entry in this hash. <code>notes($key)</code> returns a previously stored value. <code>notes()</code> without any arguments returns a reference to the entire hash of key-value pairs.</p>
+
+<p><code>notes()</code> is similar to the mod_perl method <code>$r-&gt;pnotes()</code>. The main differences are that this <code>notes()</code> can be used in a non-mod_perl environment (such as when a story is published by <i>bric_queued</i>), and that its lifetime is tied to the lifetime of the burner object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;clear_notes</dt>
+<dd>
+
+<pre><code>$cb_request-&gt;clear_notes;</code></pre>
+
+<p>Use this method to clear out the notes hash.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;display_pages(\@element_key_names);</dt>
+<dd>
+
+<pre><code>$burner-&gt;display_pages($element_key_name)
+$burner-&gt;display_pages($element_key_name, %ARGS)
+$burner-&gt;display_pages(\@element_key_names, %ARGS)</code></pre>
+
+<p>A method to be called from template space. Use this method to display paginated elements. If this method is used, the burn system will run once for every page element listed in <code>\@paginated_element_key_names</code> (or just <code>$paginated_element_key_name</code>) in the story; this is so that category templates and story element type templates will be executed when appropriate. All arguments after the first argument will be passed to the template executed as its <code>%ARGS</code> hash.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> This method requires that the burner subclass has implemented a <code>display_element()</code> method.</p>
+
+</dd>
+<dt>$burner-&gt;throw_error(@message);</dt>
+<dd>
+
+<pre><code>my $media = $element-&gt;get_related_media or $burner-&gt;throw_error(
+    &#39;Hey, you forgot to associate a media document! &#39;,
+    &#39;What were you thinking?&#39;,
+);</code></pre>
+
+<p>Throws a Bric::Util::Fault::Exception::Burner::User exception. The arguments passed to the method will be joined into a single erroor message that will be displayed in the UI so that your user can see any mistakes you caught and fix them.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$success = $b-&gt;add_resource();</dt>
+<dd>
+
+<pre><code>$burner-&gt;add_resource($filename, $uri);</code></pre>
+
+<p>Adds a Bric::Dist::Resource object to a burn. Pass in the file name and URI of the resource. Called by the burner subclasess after they&#39;ve written files to disk.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Protected-Class-Methods">Protected Class Methods</h2>
+
+<dl>
+
+<dt>__PACKAGE__-&gt;_register_burner(@args)</dt>
+<dd>
+
+<pre><code>__PACKAGE__-&gt;_register_burner( Bric::Biz::OutputChannel::BURNER_TEMPLATE,
+                               category_fn =&gt; &#39;category&#39;,
+                               exts        =&gt;
+                                 { &#39;pl&#39;   =&gt; &#39;HTML::Template Script (.pl)&#39;,
+                                   &#39;tmpl&#39; =&gt; &#39;HTML::Template Template (.tmpl)&#39;
+                                 }
+                             );</code></pre>
+
+<p>Protected method only called by Burner subclasses when they&#39;re loaded. This method registers the subclasses, along with their Bric::Biz::OutputChannel constants, file names, and file extenstions. Note that the <code>category_fn</code> and must be unique among all burners, as must the file extensions passed via the <code>exts</code> directive.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>$burner-&gt;_get_subclass($ba, $oc)</dt>
+<dd>
+
+<p>Returns the subclass of Bric::Util::Burner appropriate for handling the $ba template object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;_expire($expire_date, $ba, $server_types, $exp_name, $user_id, $resources)</dt>
+<dd>
+
+<p>Sets up an expiration job for resources.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$burner-&gt;_get_resource( $path, $uri )</dt>
+<dd>
+
+<p>Looks up or creates a resource objct for the given path/URI combination. SQL LIKE wildcard characters are escaped so as to avoid bogus lookups.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<p>Matt Vella &lt;mvella@about-inc.com&gt;</p>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Burner/Mason.html" name="Bric::Util::Burner::Mason">Bric::Util::Burner::Mason</a>, <a rel="section" href="../../../../2.0/api/Bric/Util/Burner/Template.html" name="Bric::Util::Burner::Template">Bric::Util::Burner::Template</a>.</p>
+
+</body>
+</html>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Dist::Action::DTDValidate</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="DTDValidate.html#Name">Name</a></li>
+  <li><a href="DTDValidate.html#Synopsis">Synopsis</a></li>
+  <li><a href="DTDValidate.html#Description">Description</a></li>
+  <li><a href="DTDValidate.html#Class-Interface">Class Interface</a>
+    <ul>
+      <li><a href="DTDValidate.html#Constructors">Constructors</a></li>
+      <li><a href="DTDValidate.html#Class-Methods">Class Methods</a>
+        <ul>
+          <li><a href="DTDValidate.html#has_more">has_more</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="DTDValidate.html#Instance-Interface">Instance Interface</a>
+    <ul>
+      <li><a href="DTDValidate.html#Other-Instance-Methods">Other Instance Methods</a>
+        <ul>
+          <li><a href="DTDValidate.html#do_it">do_it</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="DTDValidate.html#Author">Author</a></li>
+  <li><a href="DTDValidate.html#See-Also">See Also</a></li>
+  <li><a href="DTDValidate.html#Copyright-and-License">Copyright and License</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Dist::Action::DTDValidate - Validates XML against a DTD</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Dist::Action::DTDValidate;
+
+my $id = 5; # Assume that this is an validate against DTD action.
+# This line will automatically instantiate the correct subclass.
+my $action = Bric::Dist::Action-&gt;lookup({ id =&gt; $id });
+
+# Perform the action on a list of resources.
+$action = $action-&gt;do_it($resources_href);
+
+# Undo is a no-op.
+$action = $action-&gt;undo_it($resources_href);</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This subclass of Bric::Dist::Action can be used to validate XML or XHTML against a DTD. Note that it requires XML::LibXML, and since it downloads the DTD over via the Internet for every resource, it can be quite slow. Set your DOCTYPE tag to point to a a copy of the DTD on your LAN to make things faster.</p>
+
+<h1 id="Class-Interface">Class Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>See Bric::Dist::Action.</p>
+
+<h2 id="Class-Methods">Class Methods</h2>
+
+<p>The following class method is in addition to those provided by Bric::Dist::Action, and overrides the same method in that class.</p>
+
+<h3 id="has_more">has_more</h3>
+
+<pre><code>if (Bric::Dist::Action::DTDValidate-&gt;has_more) {
+    print &quot;It has more attributes than Bric::Dist::Action\n&quot;;
+}</code></pre>
+
+<p>Returns true to indicate that this action has more properties than does the base class (Bric::Dist::Action).</p>
+
+<h1 id="Instance-Interface">Instance Interface</h1>
+
+<h2 id="Other-Instance-Methods">Other Instance Methods</h2>
+
+<h3 id="do_it">do_it</h3>
+
+<pre><code>$action = $action-&gt;do_it($job, $server_type);</code></pre>
+
+<p>Validates the resources (files) against a DTD for a given job and server type.</p>
+
+<p><b>Thows:</b></p>
+
+<dl>
+
+<dt>Exception::DP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@kineticode.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<dl>
+
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/Action.html" name="Bric::Dist::Action">Bric::Dist::Action</a></dt>
+<dd>
+
+<p>Base class from which Bric::Dist::Action::DTDValidate inherits much of its interface.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/ActionType.html" name="Bric::Dist::ActionType">Bric::Dist::ActionType</a></dt>
+<dd>
+
+<p>Defines the types of actions that the Bricolage distribution supports, including validating resources.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Dist/ServerType.html" name="Bric::Dist::ServerType">Bric::Dist::ServerType</a></dt>
+<dd>
+
+<p>Defines the interface for Bricolage distribution destinations, including a list of actions to be performed before distributing to a given destination, as well as a list of servers for that destination.</p>
+
+</dd>
+<dt><a rel="section" href="../../../../../2.0/api/Bric/Util/Job/Dist.html" name="Bric::Util::Job::Dist">Bric::Util::Job::Dist</a></dt>
+<dd>
+
+<p>Manages distribution jobs, including processing all the actions required for each destination for which resources are to be distributed.</p>
+
+</dd>
+</dl>
+
+<h1 id="Copyright-and-License">Copyright and License</h1>
+
+<p>Copyright (c) 2003 Kineticode, Inc. See <a rel="section" href="../../../../../2.0/api/Bric/License.html" name="Bric::License">Bric::License</a> for complete license terms and conditions.</p>
+
+</body>
+</html>
+

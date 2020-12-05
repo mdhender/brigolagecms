@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Trans::Jabber</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Jabber.html#Name">Name</a></li>
+  <li><a href="Jabber.html#Synopsis">Synopsis</a></li>
+  <li><a href="Jabber.html#Description">Description</a></li>
+  <li><a href="Jabber.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Jabber.html#Constructors">Constructors</a></li>
+      <li><a href="Jabber.html#Destructors">Destructors</a></li>
+      <li><a href="Jabber.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Jabber.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Jabber.html#Private">Private</a>
+    <ul>
+      <li><a href="Jabber.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Jabber.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Jabber.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Jabber.html#Notes">Notes</a></li>
+  <li><a href="Jabber.html#Author">Author</a></li>
+  <li><a href="Jabber.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Trans::Jabber - Utility class for sending instant messages.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Trans::Jabber;
+my $j = Bric::Util::Trans::Jabber-&gt;new(
+  { to      =&gt; [&#39;jchaddickerson@aol.jabber.org&#39;],
+    subject =&gt; &#39;Greetings&#39;,
+    message =&gt; &#39;This is an instant message sent via Bric::Util::Trans::Jabber&#39;
+   });
+$j-&gt;send;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This class provides a thin abstraction to the Net::Jabber module. Use it to send instant messages from within Bricolage applications.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>my $j = Bric::Util::Trans::Jabber-&gt;new($init)</dt>
+<dd>
+
+<p>Instantiates a Bric::Util::Trans::Jabber object. An anonymous of initial values may be passed. The supported intial value keys are:</p>
+
+<ul>
+
+<li><p>to - Anonymous array of instant message addresses to send mail to. Be sure to include a full address and server name in email address style, as this is what jabber uses to send the message to the proper network. For example, &#39;jchaddickerson@aol.jabber.org&#39;.</p>
+
+</li>
+<li><p>subject - The subject of the message.</p>
+
+</li>
+<li><p>message - The message to be sent.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$org-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $to_aref = $j-&gt;get_to</dt>
+<dd>
+
+<p>Returns an anonymous array of addresses to which to send the instant message.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $j-&gt;set_to($to_aref)</dt>
+<dd>
+
+<p>Sets the list of addresses to which to send the instant message. Pass in the list as an anonymous array.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;to&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $sub = $j-&gt;get_subject</dt>
+<dd>
+
+<p>Returns the subject of the instant message.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $j-&gt;set_subject($sub)</dt>
+<dd>
+
+<p>Sets subject of the instant message.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;subject&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $msg = $j-&gt;get_message</dt>
+<dd>
+
+<p>Returns the message (body) of the instant message.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: READ access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $j-&gt;set_message($msg)</dt>
+<dd>
+
+<p>Sets message (body) of the instant message.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bad AUTOLOAD method format.</p>
+
+</li>
+<li><p>Cannot AUTOLOAD private methods.</p>
+
+</li>
+<li><p>Access denied: WRITE access for field &#39;message&#39; required.</p>
+
+</li>
+<li><p>No AUTOLOAD method.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$self = $j-&gt;send</dt>
+<dd>
+
+<p>Sends the instant message to the addresses stored in to.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to send instant message.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a href="http://search.cpan.org/perldoc?Net::Jabber">Net::Jabber</a></p>
+
+</body>
+</html>
+

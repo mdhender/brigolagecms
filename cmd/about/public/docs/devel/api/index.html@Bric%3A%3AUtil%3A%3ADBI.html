@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Bricolage 2.0.0 API Browser</title>
+    <link rel="stylesheet" type="text/css" href="podsite.css" />
+    <meta name="base-uri" content="/docs/devel/api/" />
+    <script type="text/javascript" src="podsite.js"></script>
+    <meta name="generator" content="Pod::Site 0.50" />
+  </head>
+  <body>
+    <div id="nav">
+      <h3>Bricolage 2.0.0</h3>
+      <ul id="tree">
+        <li id="toc"><a href="https://bricolagecms.org/docs/devel/api/toc.html">TOC</a></li>
+        <li id="Bric"><a href="https://bricolagecms.org/docs/devel/api/Bric.html">Bric</a>
+          <ul>
+            <li id="Bric::Admin"><a href="https://bricolagecms.org/docs/devel/api/Bric/Admin.html">Admin</a></li>
+            <li id="Bric::AdvTemplates"><a href="https://bricolagecms.org/docs/devel/api/Bric/AdvTemplates.html">AdvTemplates</a></li>
+            <li id="Bric::Alert"><a href="https://bricolagecms.org/docs/devel/api/Bric/Alert.html">Alert</a></li>
+            <li id="Bric::App">App
+              <ul>
+                <li id="Bric::App::AccessHandler"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/AccessHandler.html">AccessHandler</a></li>
+                <li id="Bric::App::ApacheConfig"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/ApacheConfig.html">ApacheConfig</a></li>
+                <li id="Bric::App::ApacheHandler"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/ApacheHandler.html">ApacheHandler</a></li>
+                <li id="Bric::App::ApacheStartup"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/ApacheStartup.html">ApacheStartup</a></li>
+                <li id="Bric::App::Auth"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Auth.html">Auth</a></li>
+                <li id="Bric::App::Authz"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Authz.html">Authz</a></li>
+                <li id="Bric::App::Cache"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Cache.html">Cache</a></li>
+                <li id="Bric::App::Callback"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback.html">Callback</a>
+                  <ul>
+                    <li id="Bric::App::Callback::Profile"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback/Profile.html">Profile</a>
+                      <ul>
+                        <li id="Bric::App::Callback::Profile::Action"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback/Profile/Action.html">Action</a></li>
+                      </ul>
+                    </li>
+                    <li id="Bric::App::Callback::Util">Util
+                      <ul>
+                        <li id="Bric::App::Callback::Util::Asset"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback/Util/Asset.html">Asset</a></li>
+                        <li id="Bric::App::Callback::Util::Contact"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback/Util/Contact.html">Contact</a></li>
+                        <li id="Bric::App::Callback::Util::OutputChannel"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Callback/Util/OutputChannel.html">OutputChannel</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::App::CleanupHandler"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/CleanupHandler.html">CleanupHandler</a></li>
+                <li id="Bric::App::Event"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Event.html">Event</a></li>
+                <li id="Bric::App::Handler"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Handler.html">Handler</a></li>
+                <li id="Bric::App::MediaFunc"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/MediaFunc.html">MediaFunc</a></li>
+                <li id="Bric::App::PreviewHandler"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/PreviewHandler.html">PreviewHandler</a></li>
+                <li id="Bric::App::Session"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Session.html">Session</a></li>
+                <li id="Bric::App::Util"><a href="https://bricolagecms.org/docs/devel/api/Bric/App/Util.html">Util</a></li>
+              </ul>
+            </li>
+            <li id="Bric::AssetEditing"><a href="https://bricolagecms.org/docs/devel/api/Bric/AssetEditing.html">AssetEditing</a></li>
+            <li id="Bric::Biz">Biz
+              <ul>
+                <li id="Bric::Biz::ATType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/ATType.html">ATType</a></li>
+                <li id="Bric::Biz::Asset"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset.html">Asset</a>
+                  <ul>
+                    <li id="Bric::Biz::Asset::Business"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business.html">Business</a>
+                      <ul>
+                        <li id="Bric::Biz::Asset::Business::Media"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Media.html">Media</a>
+                          <ul>
+                            <li id="Bric::Biz::Asset::Business::Media::Audio"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Media/Audio.html">Audio</a></li>
+                            <li id="Bric::Biz::Asset::Business::Media::Image"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Media/Image.html">Image</a></li>
+                            <li id="Bric::Biz::Asset::Business::Media::Video"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Media/Video.html">Video</a></li>
+                          </ul>
+                        </li>
+                        <li id="Bric::Biz::Asset::Business::Parts">Parts
+                          <ul>
+                            <li id="Bric::Biz::Asset::Business::Parts::Tile"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Parts/Tile.html">Tile</a>
+                              <ul>
+                                <li id="Bric::Biz::Asset::Business::Parts::Tile::Container"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Parts/Tile/Container.html">Container</a></li>
+                                <li id="Bric::Biz::Asset::Business::Parts::Tile::Data"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Parts/Tile/Data.html">Data</a></li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                        <li id="Bric::Biz::Asset::Business::Story"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Business/Story.html">Story</a></li>
+                      </ul>
+                    </li>
+                    <li id="Bric::Biz::Asset::Formatting"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Formatting.html">Formatting</a></li>
+                    <li id="Bric::Biz::Asset::Template"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Asset/Template.html">Template</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::AssetType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/AssetType.html">AssetType</a>
+                  <ul>
+                    <li id="Bric::Biz::AssetType::Parts">Parts
+                      <ul>
+                        <li id="Bric::Biz::AssetType::Parts::Data"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/AssetType/Parts/Data.html">Data</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::Category"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Category.html">Category</a></li>
+                <li id="Bric::Biz::Contact"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Contact.html">Contact</a></li>
+                <li id="Bric::Biz::Element"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Element.html">Element</a>
+                  <ul>
+                    <li id="Bric::Biz::Element::Container"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Element/Container.html">Container</a></li>
+                    <li id="Bric::Biz::Element::Field"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Element/Field.html">Field</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::ElementType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/ElementType.html">ElementType</a>
+                  <ul>
+                    <li id="Bric::Biz::ElementType::Parts">Parts
+                      <ul>
+                        <li id="Bric::Biz::ElementType::Parts::FieldType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/ElementType/Parts/FieldType.html">FieldType</a></li>
+                      </ul>
+                    </li>
+                    <li id="Bric::Biz::ElementType::Subelement"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/ElementType/Subelement.html">Subelement</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::Keyword"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Keyword.html">Keyword</a></li>
+                <li id="Bric::Biz::Org"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Org.html">Org</a>
+                  <ul>
+                    <li id="Bric::Biz::Org::Parts">Parts
+                      <ul>
+                        <li id="Bric::Biz::Org::Parts::Addr"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Org/Parts/Addr.html">Addr</a></li>
+                      </ul>
+                    </li>
+                    <li id="Bric::Biz::Org::Person"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Org/Person.html">Person</a></li>
+                    <li id="Bric::Biz::Org::Source"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Org/Source.html">Source</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::OutputChannel"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/OutputChannel.html">OutputChannel</a>
+                  <ul>
+                    <li id="Bric::Biz::OutputChannel::Element"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/OutputChannel/Element.html">Element</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::Person"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Person.html">Person</a>
+                  <ul>
+                    <li id="Bric::Biz::Person::User"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Person/User.html">User</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Biz::Site"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Site.html">Site</a></li>
+                <li id="Bric::Biz::Workflow"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Workflow.html">Workflow</a>
+                  <ul>
+                    <li id="Bric::Biz::Workflow::Parts">Parts
+                      <ul>
+                        <li id="Bric::Biz::Workflow::Parts::Desk"><a href="https://bricolagecms.org/docs/devel/api/Bric/Biz/Workflow/Parts/Desk.html">Desk</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li id="Bric::Changes"><a href="https://bricolagecms.org/docs/devel/api/Bric/Changes.html">Changes</a></li>
+            <li id="Bric::Config"><a href="https://bricolagecms.org/docs/devel/api/Bric/Config.html">Config</a></li>
+            <li id="Bric::DBA"><a href="https://bricolagecms.org/docs/devel/api/Bric/DBA.html">DBA</a></li>
+            <li id="Bric::Dist">Dist
+              <ul>
+                <li id="Bric::Dist::Action"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action.html">Action</a>
+                  <ul>
+                    <li id="Bric::Dist::Action::Akamaize"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action/Akamaize.html">Akamaize</a></li>
+                    <li id="Bric::Dist::Action::DTDValidate"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action/DTDValidate.html">DTDValidate</a></li>
+                    <li id="Bric::Dist::Action::Email"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action/Email.html">Email</a></li>
+                    <li id="Bric::Dist::Action::HTMLClean"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action/HTMLClean.html">HTMLClean</a></li>
+                    <li id="Bric::Dist::Action::Mover"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Action/Mover.html">Mover</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Dist::ActionType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/ActionType.html">ActionType</a></li>
+                <li id="Bric::Dist::Client"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Client.html">Client</a></li>
+                <li id="Bric::Dist::Handler"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Handler.html">Handler</a></li>
+                <li id="Bric::Dist::Resource"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Resource.html">Resource</a></li>
+                <li id="Bric::Dist::Server"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/Server.html">Server</a></li>
+                <li id="Bric::Dist::ServerType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Dist/ServerType.html">ServerType</a></li>
+              </ul>
+            </li>
+            <li id="Bric::ElementAdmin"><a href="https://bricolagecms.org/docs/devel/api/Bric/ElementAdmin.html">ElementAdmin</a></li>
+            <li id="Bric::FAQ"><a href="https://bricolagecms.org/docs/devel/api/Bric/FAQ.html">FAQ</a></li>
+            <li id="Bric::HTMLTemplate"><a href="https://bricolagecms.org/docs/devel/api/Bric/HTMLTemplate.html">HTMLTemplate</a></li>
+            <li id="Bric::Hacker"><a href="https://bricolagecms.org/docs/devel/api/Bric/Hacker.html">Hacker</a></li>
+            <li id="Bric::License"><a href="https://bricolagecms.org/docs/devel/api/Bric/License.html">License</a></li>
+            <li id="Bric::SOAP"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP.html">SOAP</a>
+              <ul>
+                <li id="Bric::SOAP::ATType"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/ATType.html">ATType</a></li>
+                <li id="Bric::SOAP::Asset"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Asset.html">Asset</a></li>
+                <li id="Bric::SOAP::Auth"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Auth.html">Auth</a></li>
+                <li id="Bric::SOAP::Category"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Category.html">Category</a></li>
+                <li id="Bric::SOAP::ContribType"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/ContribType.html">ContribType</a></li>
+                <li id="Bric::SOAP::Desk"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Desk.html">Desk</a></li>
+                <li id="Bric::SOAP::Destination"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Destination.html">Destination</a></li>
+                <li id="Bric::SOAP::ElementType"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/ElementType.html">ElementType</a></li>
+                <li id="Bric::SOAP::Handler"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Handler.html">Handler</a></li>
+                <li id="Bric::SOAP::Keyword"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Keyword.html">Keyword</a></li>
+                <li id="Bric::SOAP::Media"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Media.html">Media</a></li>
+                <li id="Bric::SOAP::MediaType"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/MediaType.html">MediaType</a></li>
+                <li id="Bric::SOAP::OutputChannel"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/OutputChannel.html">OutputChannel</a></li>
+                <li id="Bric::SOAP::Preference"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Preference.html">Preference</a></li>
+                <li id="Bric::SOAP::Site"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Site.html">Site</a></li>
+                <li id="Bric::SOAP::Story"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Story.html">Story</a></li>
+                <li id="Bric::SOAP::Template"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Template.html">Template</a></li>
+                <li id="Bric::SOAP::User"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/User.html">User</a></li>
+                <li id="Bric::SOAP::Util"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Util.html">Util</a></li>
+                <li id="Bric::SOAP::Workflow"><a href="https://bricolagecms.org/docs/devel/api/Bric/SOAP/Workflow.html">Workflow</a></li>
+              </ul>
+            </li>
+            <li id="Bric::Security"><a href="https://bricolagecms.org/docs/devel/api/Bric/Security.html">Security</a></li>
+            <li id="Bric::Templates"><a href="https://bricolagecms.org/docs/devel/api/Bric/Templates.html">Templates</a></li>
+            <li id="Bric::ToDo"><a href="https://bricolagecms.org/docs/devel/api/Bric/ToDo.html">ToDo</a></li>
+            <li id="Bric::Util">Util
+              <ul>
+                <li id="Bric::Util::Alert"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Alert.html">Alert</a></li>
+                <li id="Bric::Util::AlertType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/AlertType.html">AlertType</a>
+                  <ul>
+                    <li id="Bric::Util::AlertType::Parts">Parts
+                      <ul>
+                        <li id="Bric::Util::AlertType::Parts::Rule"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/AlertType/Parts/Rule.html">Rule</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Alerted"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Alerted.html">Alerted</a>
+                  <ul>
+                    <li id="Bric::Util::Alerted::Parts">Parts
+                      <ul>
+                        <li id="Bric::Util::Alerted::Parts::Sent"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Alerted/Parts/Sent.html">Sent</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::ApacheConst"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/ApacheConst.html">ApacheConst</a></li>
+                <li id="Bric::Util::ApacheReq"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/ApacheReq.html">ApacheReq</a></li>
+                <li id="Bric::Util::ApacheUtil"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/ApacheUtil.html">ApacheUtil</a></li>
+                <li id="Bric::Util::Attribute"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute.html">Attribute</a>
+                  <ul>
+                    <li id="Bric::Util::Attribute::Action"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/Action.html">Action</a></li>
+                    <li id="Bric::Util::Attribute::Category"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/Category.html">Category</a></li>
+                    <li id="Bric::Util::Attribute::ElementType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/ElementType.html">ElementType</a></li>
+                    <li id="Bric::Util::Attribute::FieldType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/FieldType.html">FieldType</a></li>
+                    <li id="Bric::Util::Attribute::Grp"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/Grp.html">Grp</a></li>
+                    <li id="Bric::Util::Attribute::Member"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Attribute/Member.html">Member</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::AuthInternal"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/AuthInternal.html">AuthInternal</a></li>
+                <li id="Bric::Util::AuthLDAP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/AuthLDAP.html">AuthLDAP</a></li>
+                <li id="Bric::Util::Burner"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Burner.html">Burner</a>
+                  <ul>
+                    <li id="Bric::Util::Burner::Mason"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Burner/Mason.html">Mason</a></li>
+                    <li id="Bric::Util::Burner::PHP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Burner/PHP.html">PHP</a></li>
+                    <li id="Bric::Util::Burner::Template"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Burner/Template.html">Template</a></li>
+                    <li id="Bric::Util::Burner::TemplateToolkit"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Burner/TemplateToolkit.html">TemplateToolkit</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::CharTrans"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/CharTrans.html">CharTrans</a></li>
+                <li id="Bric::Util::Class"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Class.html">Class</a></li>
+                <li id="Bric::Util::Coll"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll.html">Coll</a>
+                  <ul>
+                    <li id="Bric::Util::Coll::Action"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Action.html">Action</a></li>
+                    <li id="Bric::Util::Coll::Addr"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Addr.html">Addr</a>
+                      <ul>
+                        <li id="Bric::Util::Coll::Addr::Person"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Addr/Person.html">Person</a></li>
+                      </ul>
+                    </li>
+                    <li id="Bric::Util::Coll::Contact"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Contact.html">Contact</a></li>
+                    <li id="Bric::Util::Coll::Keyword"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Keyword.html">Keyword</a></li>
+                    <li id="Bric::Util::Coll::Member"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Member.html">Member</a></li>
+                    <li id="Bric::Util::Coll::OCElement"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/OCElement.html">OCElement</a></li>
+                    <li id="Bric::Util::Coll::OCInclude"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/OCInclude.html">OCInclude</a></li>
+                    <li id="Bric::Util::Coll::OutputChannel"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/OutputChannel.html">OutputChannel</a></li>
+                    <li id="Bric::Util::Coll::Priv"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Priv.html">Priv</a></li>
+                    <li id="Bric::Util::Coll::Resource"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Resource.html">Resource</a></li>
+                    <li id="Bric::Util::Coll::Rule"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Rule.html">Rule</a></li>
+                    <li id="Bric::Util::Coll::Server"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Server.html">Server</a></li>
+                    <li id="Bric::Util::Coll::ServerType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/ServerType.html">ServerType</a></li>
+                    <li id="Bric::Util::Coll::Site"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Site.html">Site</a></li>
+                    <li id="Bric::Util::Coll::Subelement"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Coll/Subelement.html">Subelement</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Cookie"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Cookie.html">Cookie</a></li>
+                <li id="Bric::Util::DBD">DBD
+                  <ul>
+                    <li id="Bric::Util::DBD::Oracle"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/DBD/Oracle.html">Oracle</a></li>
+                    <li id="Bric::Util::DBD::Pg"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/DBD/Pg.html">Pg</a></li>
+                    <li id="Bric::Util::DBD::mysql"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/DBD/mysql.html">mysql</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::DBI"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/DBI.html">DBI</a></li>
+                <li id="Bric::Util::Event"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Event.html">Event</a></li>
+                <li id="Bric::Util::EventType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/EventType.html">EventType</a></li>
+                <li id="Bric::Util::FTP">FTP
+                  <ul>
+                    <li id="Bric::Util::FTP::DirHandle"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/FTP/DirHandle.html">DirHandle</a></li>
+                    <li id="Bric::Util::FTP::FileHandle"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/FTP/FileHandle.html">FileHandle</a></li>
+                    <li id="Bric::Util::FTP::Server"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/FTP/Server.html">Server</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Fault"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault.html">Fault</a>
+                  <ul>
+                    <li id="Bric::Util::Fault::Exception"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception.html">Exception</a>
+                      <ul>
+                        <li id="Bric::Util::Fault::Exception::AP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception/AP.html">AP</a></li>
+                        <li id="Bric::Util::Fault::Exception::DA"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception/DA.html">DA</a></li>
+                        <li id="Bric::Util::Fault::Exception::DP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception/DP.html">DP</a></li>
+                        <li id="Bric::Util::Fault::Exception::GEN"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception/GEN.html">GEN</a></li>
+                        <li id="Bric::Util::Fault::Exception::MNI"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Fault/Exception/MNI.html">MNI</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Grp"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp.html">Grp</a>
+                  <ul>
+                    <li id="Bric::Util::Grp::ATType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/ATType.html">ATType</a></li>
+                    <li id="Bric::Util::Grp::AlertType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/AlertType.html">AlertType</a></li>
+                    <li id="Bric::Util::Grp::Asset"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Asset.html">Asset</a></li>
+                    <li id="Bric::Util::Grp::AssetLanguage"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/AssetLanguage.html">AssetLanguage</a></li>
+                    <li id="Bric::Util::Grp::AssetVersion"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/AssetVersion.html">AssetVersion</a></li>
+                    <li id="Bric::Util::Grp::CategorySet"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/CategorySet.html">CategorySet</a></li>
+                    <li id="Bric::Util::Grp::ContribType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/ContribType.html">ContribType</a></li>
+                    <li id="Bric::Util::Grp::Desk"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Desk.html">Desk</a></li>
+                    <li id="Bric::Util::Grp::Dest"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Dest.html">Dest</a></li>
+                    <li id="Bric::Util::Grp::ElementType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/ElementType.html">ElementType</a></li>
+                    <li id="Bric::Util::Grp::Event"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Event.html">Event</a></li>
+                    <li id="Bric::Util::Grp::Grp"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Grp.html">Grp</a></li>
+                    <li id="Bric::Util::Grp::Job"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Job.html">Job</a></li>
+                    <li id="Bric::Util::Grp::Keyword"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Keyword.html">Keyword</a></li>
+                    <li id="Bric::Util::Grp::Media"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Media.html">Media</a></li>
+                    <li id="Bric::Util::Grp::MediaType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/MediaType.html">MediaType</a></li>
+                    <li id="Bric::Util::Grp::Org"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Org.html">Org</a></li>
+                    <li id="Bric::Util::Grp::OutputChannel"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/OutputChannel.html">OutputChannel</a></li>
+                    <li id="Bric::Util::Grp::Parts">Parts
+                      <ul>
+                        <li id="Bric::Util::Grp::Parts::Member"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Parts/Member.html">Member</a>
+                          <ul>
+                            <li id="Bric::Util::Grp::Parts::Member::Contrib"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Parts/Member/Contrib.html">Contrib</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li id="Bric::Util::Grp::Person"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Person.html">Person</a></li>
+                    <li id="Bric::Util::Grp::Pref"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Pref.html">Pref</a></li>
+                    <li id="Bric::Util::Grp::Site"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Site.html">Site</a></li>
+                    <li id="Bric::Util::Grp::Source"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Source.html">Source</a></li>
+                    <li id="Bric::Util::Grp::Story"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Story.html">Story</a></li>
+                    <li id="Bric::Util::Grp::SubelementType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/SubelementType.html">SubelementType</a></li>
+                    <li id="Bric::Util::Grp::Template"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Template.html">Template</a></li>
+                    <li id="Bric::Util::Grp::User"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/User.html">User</a></li>
+                    <li id="Bric::Util::Grp::Workflow"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Grp/Workflow.html">Workflow</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Job"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Job.html">Job</a>
+                  <ul>
+                    <li id="Bric::Util::Job::Dist"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Job/Dist.html">Dist</a></li>
+                    <li id="Bric::Util::Job::Pub"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Job/Pub.html">Pub</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Language"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language.html">Language</a>
+                  <ul>
+                    <li id="Bric::Util::Language::bo"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/bo.html">bo</a></li>
+                    <li id="Bric::Util::Language::de_de"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/de_de.html">de_de</a></li>
+                    <li id="Bric::Util::Language::en_us"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/en_us.html">en_us</a></li>
+                    <li id="Bric::Util::Language::it_it"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/it_it.html">it_it</a></li>
+                    <li id="Bric::Util::Language::ja"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/ja.html">ja</a></li>
+                    <li id="Bric::Util::Language::km"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/km.html">km</a></li>
+                    <li id="Bric::Util::Language::ko_ko"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/ko_ko.html">ko_ko</a></li>
+                    <li id="Bric::Util::Language::lo"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/lo.html">lo</a></li>
+                    <li id="Bric::Util::Language::my"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/my.html">my</a></li>
+                    <li id="Bric::Util::Language::pt_pt"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/pt_pt.html">pt_pt</a></li>
+                    <li id="Bric::Util::Language::ru_ru"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/ru_ru.html">ru_ru</a></li>
+                    <li id="Bric::Util::Language::ug"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/ug.html">ug</a></li>
+                    <li id="Bric::Util::Language::vi_vn"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/vi_vn.html">vi_vn</a></li>
+                    <li id="Bric::Util::Language::zh_cn"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/zh_cn.html">zh_cn</a></li>
+                    <li id="Bric::Util::Language::zh_hk"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/zh_hk.html">zh_hk</a></li>
+                    <li id="Bric::Util::Language::zh_tw"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Language/zh_tw.html">zh_tw</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::MediaType"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/MediaType.html">MediaType</a></li>
+                <li id="Bric::Util::Pref"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Pref.html">Pref</a></li>
+                <li id="Bric::Util::Priv"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Priv.html">Priv</a>
+                  <ul>
+                    <li id="Bric::Util::Priv::Parts">Parts
+                      <ul>
+                        <li id="Bric::Util::Priv::Parts::Const"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Priv/Parts/Const.html">Const</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::Time"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Time.html">Time</a></li>
+                <li id="Bric::Util::Trans">Trans
+                  <ul>
+                    <li id="Bric::Util::Trans::FS"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/FS.html">FS</a></li>
+                    <li id="Bric::Util::Trans::FTP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/FTP.html">FTP</a></li>
+                    <li id="Bric::Util::Trans::Jabber"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/Jabber.html">Jabber</a></li>
+                    <li id="Bric::Util::Trans::Mail"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/Mail.html">Mail</a></li>
+                    <li id="Bric::Util::Trans::SFTP"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/SFTP.html">SFTP</a></li>
+                    <li id="Bric::Util::Trans::WebDAV"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/Trans/WebDAV.html">WebDAV</a></li>
+                  </ul>
+                </li>
+                <li id="Bric::Util::UserPref"><a href="https://bricolagecms.org/docs/devel/api/Bric/Util/UserPref.html">UserPref</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li id="bin">bin
+          <ul>
+            <li id="bric_apachectl"><a href="https://bricolagecms.org/docs/devel/api/bric_apachectl.html">bric_apachectl</a></li>
+            <li id="bric_clean_tmp"><a href="https://bricolagecms.org/docs/devel/api/bric_clean_tmp.html">bric_clean_tmp</a></li>
+            <li id="bric_dbprof"><a href="https://bricolagecms.org/docs/devel/api/bric_dbprof.html">bric_dbprof</a></li>
+            <li id="bric_dev_sync"><a href="https://bricolagecms.org/docs/devel/api/bric_dev_sync.html">bric_dev_sync</a></li>
+            <li id="bric_dist_mon"><a href="https://bricolagecms.org/docs/devel/api/bric_dist_mon.html">bric_dist_mon</a></li>
+            <li id="bric_ftpd"><a href="https://bricolagecms.org/docs/devel/api/bric_ftpd.html">bric_ftpd</a></li>
+            <li id="bric_pgimport"><a href="https://bricolagecms.org/docs/devel/api/bric_pgimport.html">bric_pgimport</a></li>
+            <li id="bric_queued"><a href="https://bricolagecms.org/docs/devel/api/bric_queued.html">bric_queued</a></li>
+            <li id="bric_republish"><a href="https://bricolagecms.org/docs/devel/api/bric_republish.html">bric_republish</a></li>
+            <li id="bric_soap"><a href="https://bricolagecms.org/docs/devel/api/bric_soap.html">bric_soap</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="doc"></div>
+  </body>
+</html>

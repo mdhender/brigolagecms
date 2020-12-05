@@ -1,0 +1,1077 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Category</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Category.html#Name">Name</a></li>
+  <li><a href="Category.html#Synopsis">Synopsis</a></li>
+  <li><a href="Category.html#Description">Description</a></li>
+  <li><a href="Category.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Category.html#Constructors">Constructors</a></li>
+      <li><a href="Category.html#Destructors">Destructors</a></li>
+      <li><a href="Category.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Category.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="Category.html#Private-Methods">Private Methods</a></li>
+      <li><a href="Category.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Category.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Category.html#Notes">Notes</a></li>
+  <li><a href="Category.html#Author">Author</a></li>
+  <li><a href="Category.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Category - A module to group assets into categories.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Return a new category object.
+my $cat = Bric::Biz::Category-&gt;new($init);
+
+# Look up an existing category object.
+my $cat = Bric::Biz::Category-&gt;lookup({&#39;id&#39; =&gt; $cat_id});
+
+# Search for a list of categories.
+my @cats = Bric::Biz::Category-&gt;list($crit);
+
+# Attribute accessors.
+my $id = $cat-&gt;get_id;
+my $name = $cat-&gt;get_name;
+$cat = $cat-&gt;set_name($name);
+my $desc = $cat-&gt;get_description;
+$cat = $cat-&gt;set_description($desc);
+my $site_id = $cat-&gt;get_site_id;
+$cat = $cat-&gt;set_site_id($site_id);
+
+# Return a list of child categories of this category.
+@cats   = $cat-&gt;get_children();
+# Return the parent of this category.
+$parent = $cat-&gt;get_parent();
+
+# Attribute methods.
+$val = $element-&gt;set_attr($name, $value);
+$val = $element-&gt;get_attr($name);
+$val = $element-&gt;set_meta($name, $field, $value);
+$val = $element-&gt;get_meta($name, $field);
+
+# Ad string methods
+$txt = $element-&gt;get_ad_string;
+$element-&gt;set_ad_string($value);
+$txt = $element-&gt;get_ad_string2;
+$element-&gt;set_ad_string2($value);
+
+# Add/Delete child categories for this category.
+$cat-&gt;add_child([$cat || $cat_id]);
+$cat-&gt;del_child([$cat || $cat_id]);
+
+# Manage keyword associations.
+@keys = $cat-&gt;get_keywords;
+$cat-&gt;add_keywords(@keywords);
+$cat-&gt;del_keywords(@keywords);
+
+# Save information for this category to the database.
+$cat-&gt;save;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Allows assets to be grouped into categories. In addition to assets a category can contain other categories, allowing a hierarchical layout of categories and assets. New categories will inherit group memberships and asset group permissions from their parents, but those relationships will thereafter be independent of the parent&#39;s.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = new Bric::Biz::Category($init);</dt>
+<dd>
+
+<p>Create a new object of type Bric::Biz::Category. Once <code>save()</code>d, the new category will have the same group memberships as the parent, and have the same permissions granted to its asset group as are granted to the parent&#39;s asset group.</p>
+
+<p>Keys for $init are:</p>
+
+<ul>
+
+<li><p>name</p>
+
+<p>The name for this category.</p>
+
+</li>
+<li><p>site_id</p>
+
+<p>The ID for the site this category is in.</p>
+
+</li>
+<li><p>description</p>
+
+<p>A description of this category</p>
+
+</li>
+<li><p>directory</p>
+
+<p>The directory name this category should be associated with.</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>@objs = Bric::Biz::Category-&gt;lookup({ id =&gt; $cat_id });</dt>
+<dd>
+
+</dd>
+<dt>@objs = Bric::Biz::Category-&gt;lookup({ uri =&gt; $uri });</dt>
+<dd>
+
+<p>Return an object given an ID or URI, both of which are unique across URIs.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Too many category objects found.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>@objs = Bric::Biz::Category-&gt;list($crit);</dt>
+<dd>
+
+<p>Return a list of category objects based on certain criteria</p>
+
+<p>Criteria keys:</p>
+
+<dl>
+
+<dt>id</dt>
+<dd>
+
+<p>Category ID. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>name</dt>
+<dd>
+
+<p>The name of the category. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>directory</dt>
+<dd>
+
+<p>The category directory name. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>uri</dt>
+<dd>
+
+<p>The category URI. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active</dt>
+<dd>
+
+</dd>
+<dt>description</dt>
+<dd>
+
+<p>The category description. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>parent_id</dt>
+<dd>
+
+<p>The ID category of a parent category. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>grp_id</dt>
+<dd>
+
+<p>The ID of a Bric::Util::Grp object to which the category belongs. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>site_id</dt>
+<dd>
+
+<p>The ID of a Bric::Biz::Site object with which the category is associated. May use <code>ANY</code> for a list of possible values.</p>
+
+</dd>
+<dt>active_sites</dt>
+<dd>
+
+<p>A boolean causing only categories associated with active sites to be returned.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b></p>
+
+<p>&quot;Method not implemented&quot;</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>This is the default list constructor which should be overridden in all derived classes even if it just calls &#39;die&#39;.</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$cat-&gt;DESTROY()</dt>
+<dd>
+
+<p>Deletes the object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $meths = Bric::Biz::Category-&gt;my_meths</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Category-&gt;my_meths(TRUE)</dt>
+<dd>
+
+</dd>
+<dt>my (@meths || $meths_aref) = Bric::Biz::Category-&gt;my_meths(0, TRUE)</dt>
+<dd>
+
+<p>Returns an anonymous hash of introspection data for this object. If called with a true argument, it will return an ordered list or anonymous array of introspection data. If a second true argument is passed instead of a first, then a list or anonymous array of introspection data will be returned for properties that uniquely identify an object (excluding <code>id</code>, which is assumed).</p>
+
+<p>Each hash key is the name of a property or attribute of the object. The value for a hash key is another anonymous hash containing the following keys:</p>
+
+<dl>
+
+<dt>name</dt>
+<dd>
+
+<p>The name of the property or attribute. Is the same as the hash key when an anonymous hash is returned.</p>
+
+</dd>
+<dt>disp</dt>
+<dd>
+
+<p>The display name of the property or attribute.</p>
+
+</dd>
+<dt>get_meth</dt>
+<dd>
+
+<p>A reference to the method that will retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>get_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to get_meth in order to retrieve the value of the property or attribute.</p>
+
+</dd>
+<dt>set_meth</dt>
+<dd>
+
+<p>A reference to the method that will set the value of the property or attribute.</p>
+
+</dd>
+<dt>set_args</dt>
+<dd>
+
+<p>An anonymous array of arguments to pass to a call to set_meth in order to set the value of the property or attribute.</p>
+
+</dd>
+<dt>type</dt>
+<dd>
+
+<p>The type of value the property or attribute contains. There are only three types:</p>
+
+<dl>
+
+<dt>short</dt>
+<dd>
+
+</dd>
+<dt>date</dt>
+<dd>
+
+</dd>
+<dt>blob</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>len</dt>
+<dd>
+
+<p>If the value is a &#39;short&#39; value, this hash key contains the length of the field.</p>
+
+</dd>
+<dt>search</dt>
+<dd>
+
+<p>The property is searchable via the list() and list_ids() methods.</p>
+
+</dd>
+<dt>req</dt>
+<dd>
+
+<p>The property or attribute is required.</p>
+
+</dd>
+<dt>props</dt>
+<dd>
+
+<p>An anonymous hash of properties used to display the property or attribute. Possible keys include:</p>
+
+<dl>
+
+<dt>type</dt>
+<dd>
+
+<p>The display field type. Possible values are</p>
+
+<dl>
+
+<dt>text</dt>
+<dd>
+
+</dd>
+<dt>textarea</dt>
+<dd>
+
+</dd>
+<dt>password</dt>
+<dd>
+
+</dd>
+<dt>hidden</dt>
+<dd>
+
+</dd>
+<dt>radio</dt>
+<dd>
+
+</dd>
+<dt>checkbox</dt>
+<dd>
+
+</dd>
+<dt>select</dt>
+<dd>
+
+</dd>
+</dl>
+
+</dd>
+<dt>length</dt>
+<dd>
+
+<p>The Length, in letters, to display a text or password field.</p>
+
+</dd>
+<dt>maxlength</dt>
+<dd>
+
+<p>The maximum length of the property or value - usually defined by the SQL DDL.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt>rows</dt>
+<dd>
+
+<p>The number of rows to format in a textarea field.</p>
+
+</dd>
+<dt>cols</dt>
+<dd>
+
+<p>The number of columns to format in a textarea field.</p>
+
+</dd>
+<dt>vals</dt>
+<dd>
+
+<p>An anonymous hash of key/value pairs reprsenting the values and display names to use in a select list.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my (@person_ids || $person_ids_aref) = Bric::Biz::Person-&gt;list_ids($params)</dt>
+<dd>
+
+<p>Returns a list or anonymous array of Bric::Biz::Category object IDs based on the search criteria passed via an anonymous hash. The supported lookup keys are the same as those for <code>list()</code>.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>$cat = Bric::Biz::Category-&gt;site_root_category($site || $site_id)</dt>
+<dd>
+
+</dd>
+<dt>$cat_id = Bric::Biz::Category-&gt;site_root_category_id($site || $site_id)</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;site_root_category()</dt>
+<dd>
+
+</dd>
+<dt>$cat_id = $cat-&gt;site_root_category_id()</dt>
+<dd>
+
+<p>Return the root category and the root category ID for a particular site. If called as an instance method the site or site ID is not necessary; that information will be pulled from $cat-&gt;get_site_id.</p>
+
+<p>Returns the category or category ID of the root category for this site.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Could not determine the site ID for the current site.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>@objs = $cat-&gt;ancestry();</dt>
+<dd>
+
+<p>Return all the parent category of this category</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $path = $cat-&gt;ancestry_path();</dt>
+<dd>
+
+<p>An alias for get_uri().</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $uri = $cat-&gt;get_uri();</dt>
+<dd>
+
+<p>Returns the list of ancestors for this category formatted into a URI.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $path = $cat-&gt;ancestry_dir();</dt>
+<dd>
+
+<p>Returns the list of ancestors for this category formatted into a localized directory structure.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $dir = $cat-&gt;set_directory($dir);</dt>
+<dd>
+
+<p>Sets this category&#39;s directory.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Sets the <i>_update_uri</i> flag, which means that when the category&#39;s information is saved to the database, the URI field needs to be updated for itself and all its children.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $dir = $cat-&gt;set_parent_id($parent_id);</dt>
+<dd>
+
+<p>Sets this category&#39;s parent ID, making it a child of that category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>Sets the <i>_update_uri</i> flag, which means that when the category&#39;s information is saved to the database, the URI field needs to be updated for itself and all its children.</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$val = $element-&gt;set_ad_string($value);</dt>
+<dd>
+
+</dd>
+<dt>$self = $element-&gt;get_ad_string;</dt>
+<dd>
+
+</dd>
+<dt>$val = $element-&gt;set_ad_string2($value);</dt>
+<dd>
+
+</dd>
+<dt>$self = $element-&gt;get_ad_string2;</dt>
+<dd>
+
+<p>Get/Set ad strings on this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $cat-&gt;get_id;</dt>
+<dd>
+
+<p>Return the ID of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $cat-&gt;get_name;</dt>
+<dd>
+
+<p>Return the name of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $cat-&gt;set_name($name);</dt>
+<dd>
+
+<p>Sets the name of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $cat-&gt;get_site_id;</dt>
+<dd>
+
+<p>Return the site ID for this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$name = $cat-&gt;set_site_id($id);</dt>
+<dd>
+
+<p>Set the site ID for this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$desc = $cat-&gt;get_description;</dt>
+<dd>
+
+<p>Returns the description of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$self = $cat-&gt;set_description($desc);</dt>
+<dd>
+
+<p>Sets the description of this category, first converting non-Unix line endings.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$val = $element-&gt;set_attr($name, $value);</dt>
+<dd>
+
+</dd>
+<dt>$val = $element-&gt;get_attr($name);</dt>
+<dd>
+
+<p>Get/Set attributes on this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$val = $element-&gt;set_meta($name, $field, $value);</dt>
+<dd>
+
+</dd>
+<dt>$val = $element-&gt;get_meta($name, $field);</dt>
+<dd>
+
+<p>Get/Set attribute metadata on this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>@keys = $cat-&gt;get_keywords;</dt>
+<dd>
+
+</dd>
+<dt>@keys = $cat-&gt;get_keywords(@keyword_ids);</dt>
+<dd>
+
+<p>Returns a list of keyword objects associated with this category. If passed a list of keyword IDs, it will return only those keyword objects.</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> The old <code>keywords()</code> method has been deprecated. Please use <code>get_keywords()</code>, instead.</p>
+
+</dd>
+<dt>@cats = $cat-&gt;get_children;</dt>
+<dd>
+
+<p>Returns the children of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $parent = $cat-&gt;get_parent;</dt>
+<dd>
+
+<p>Returns the parent of this category or undef if it is a top level category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$success = $cat-&gt;add_child([$cat || $cat_id]);</dt>
+<dd>
+
+<p>Addes a category as a child of this category.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$cat = $cat-&gt;add_keywords(@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;add_keywords(\@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;add_keywords(@keyword_ids);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;add_keywords(\@keyword_ids);</dt>
+<dd>
+
+<p>Associates a each of the keyword in a list or array reference of keywords with the category object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> The old <code>add_keyword()</code> method has been deprecated. Please use <code>add_keywords()</code>, instead.</p>
+
+</dd>
+<dt>$cat = $cat-&gt;del_keywords(@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;del_keywords(\@keywords);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;del_keywords(@keyword_ids);</dt>
+<dd>
+
+</dd>
+<dt>$cat = $cat-&gt;del_keywords(\@keyword_ids);</dt>
+<dd>
+
+<p>Dissociates a list or array reference of keyword objects or IDs from the category object.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> The old <code>del_keyword()</code> method has been deprecated. Please use <code>del_keywords()</code>, instead.</p>
+
+</dd>
+<dt>$att = $att-&gt;is_root_category;</dt>
+<dd>
+
+<p>Return whether this is a root category or not</p>
+
+<p><b>Throws:</b> NONE</p>
+
+<p><b>Side Effects:</b> NONE</p>
+
+<p><b>Notes:</b> NONE</p>
+
+</dd>
+<dt>$att = $att-&gt;is_active;</dt>
+<dd>
+
+</dd>
+<dt>$att = $att-&gt;activate;</dt>
+<dd>
+
+</dd>
+<dt>$att = $att-&gt;deactivate;</dt>
+<dd>
+
+<p>Get/Set the active flag.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$cat = $cat-&gt;save</dt>
+<dd>
+
+<p>Save this category</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> A new category will automatically be added to the same category groups as its parent, and permissions will be granted to its asset group exactly as they are granted to the parent.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Methods">Private Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>Several that need documenting!</p>
+
+<dl>
+
+<dt>_do_list</dt>
+<dd>
+
+</dd>
+<dt>_save_attr</dt>
+<dd>
+
+</dd>
+<dt>_load_grp</dt>
+<dd>
+
+</dd>
+<dt>_update_category</dt>
+<dd>
+
+</dd>
+<dt>_insert_category</dt>
+<dd>
+
+</dd>
+<dt>my $kw_coll = &amp;$get_kw_coll($self)</dt>
+<dd>
+
+<p>Returns the collection of keywords for this category. The collection is a Bric::Util::Coll::Keyword object. See that class and its parent, Bric::Util::Coll, for interface details.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Bric::_get() - Problems retrieving fields.</p>
+
+</li>
+<li><p>Unable to prepare SQL statement.</p>
+
+</li>
+<li><p>Unable to connect to database.</p>
+
+</li>
+<li><p>Unable to select column into arrayref.</p>
+
+</li>
+<li><p>Unable to execute SQL statement.</p>
+
+</li>
+<li><p>Unable to bind to columns to statement handle.</p>
+
+</li>
+<li><p>Unable to fetch row from statement handle.</p>
+
+</li>
+<li><p>Incorrect number of args to Bric::_set().</p>
+
+</li>
+<li><p>Bric::set() - Problems setting fields.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<p>Jeff &quot;japhy&quot; Pinyan &lt;japhy@pobox.com&gt;</p>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a href="http://search.cpan.org/perldoc?Bric::Util::Grp::Category">Bric::Util::Grp::Category</a>, <a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/Keyword.html" name="Bric::Biz::Keyword">Bric::Biz::Keyword</a>, <a rel="section" href="../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a></p>
+
+</body>
+</html>
+

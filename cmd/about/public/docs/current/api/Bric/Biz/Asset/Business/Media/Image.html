@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Biz::Asset::Business::Media::Image</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Image.html#Name">Name</a></li>
+  <li><a href="Image.html#Date">Date</a></li>
+  <li><a href="Image.html#Synopsis">Synopsis</a></li>
+  <li><a href="Image.html#Description">Description</a></li>
+  <li><a href="Image.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Image.html#Constructors">Constructors</a></li>
+      <li><a href="Image.html#Destructors">Destructors</a></li>
+      <li><a href="Image.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Image.html#Public-Instance-Methods">Public Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Image.html#Private">Private</a>
+    <ul>
+      <li><a href="Image.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Image.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Image.html#Notes">Notes</a></li>
+  <li><a href="Image.html#Author">Author</a></li>
+  <li><a href="Image.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Biz::Asset::Business::Media::Image - the media class that represents static images</p>
+
+<h1 id="Date">Date</h1>
+
+<p>$Data$</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code># Creation of new Image objects
+$image = Bric::Biz::Asset::Business::Media::Image-&gt;new( $init )
+$image = Bric::Biz::Asset::Business::Media::Image-&gt;lookup( { id =&gt; $id })
+($images || @images) = Bric::Biz::Asset::Business::Media::Image-&gt;list( $param)
+
+# list of ids
+($id_list || @ids) = Bric::Biz::Asset::Business::Media::Image-&gt;list_ids($param)</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>The Subclass of Media that pretains to Images</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$image = Bric::Biz::Asset::Business::Media::Image-&gt;new($init)</dt>
+<dd>
+
+<p>This will create a new image object.</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>Put Itmes here</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$media = Bric::Biz::Asset::Business::Media::Image-&gt;lookup( { id =&gt; $id })</dt>
+<dd>
+
+<p>This will return the matched looked up object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>($imgs || @imgs) = Bric::Biz::Asset::Business::Media::Image-&gt;list($param)</dt>
+<dd>
+
+<p>Returns a list of image objects that match the params passed in</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>dummy method to not wast the time of AUTHLOAD</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>(@ids || $ids) = Bric::Biz::Asset::Business::Media::Image-&gt;list_ids($param)</dt>
+<dd>
+
+<p>Returns a list of ids that match the particular params</p>
+
+<p>Supported Keys:</p>
+
+<ul>
+
+<li><p>Put Keys Here</p>
+
+</li>
+</ul>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>$class_id = Bric::Biz::Asset::Business::Media::Image-&gt;get_class_id()</dt>
+<dd>
+
+<p>Returns the class id of the Image class</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $key_name = Bric::Biz::Asset::Business::Media::Image-&gt;key_name()</dt>
+<dd>
+
+<p>Returns the key name of this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my_meths()</dt>
+<dd>
+
+<p>Data Dictionary for introspection of the object</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>my $thumbnail_uri = $image-&gt;thumbnail_uri</dt>
+<dd>
+
+<p>If the image document has an associated thumbnail image, this method returns its local URI.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $new_img = $image-&gt;find_or_create_alternate(\%params)</dt>
+<dd>
+
+<pre><code>my $new_image = $image-&gt;find_or_create_alternate({
+    file_suffix =&gt; &#39;_alt&#39;,
+    et_key_name =&gt; &#39;thumb&#39;,
+    user        =&gt; $user,
+    relate      =&gt; 0,
+    transformer =&gt; sub {
+        shift-&gt;scale( xpixels =&gt; 115 )-&gt;crop( top =&gt; 76 );
+    },
+});</code></pre>
+
+<p>Creates an alternate representation of the current image document and returns it. This is useful for creating thumbnails and the like. Note that the user must have CREATE access to the start desk in the first available workflow.</p>
+
+<p>The first thing this method does is see if a likely alternate already exists by looking for a media document in the same site, with the appropriate URI (as formed by the current media document&#39;s category, cover date, and file name as modified by the <code>file_prefix</code> and <code>file_suffix</code> parameters), and based on the appropriate element type. If such a media document is found, it is simply returned and no further actions are taken.</p>
+
+<p>If such a media document does <i>not</i> exist, <code>find_or_create_alternate()</code> creates it, moves it into workflow, takes other actions as determined by the parameters, and returns it.</p>
+
+<p>It&#39;s important to get the parameters right in order to properly find or create the alternate representation of an image that you need for your site. So read these descriptions carefully!</p>
+
+<dl>
+
+<dt>title_prefix</dt>
+<dd>
+
+</dd>
+<dt>title_suffix</dt>
+<dd>
+
+<p>Strings to add to the beginning and/or end of the media document&#39;s title to create a new title for the new media document. They will also be used to modify the image description. The prefex defaults to &quot;Thumbnail for &quot; while the suffix defaults to an empty string.</p>
+
+</dd>
+<dt>file_prefix</dt>
+<dd>
+
+</dd>
+<dt>file_suffix</dt>
+<dd>
+
+<p>String to add to the beginning and/end of the media document&#39;s file name to create a new document&#39;s file name. The prefix defaults to the empty string while the suffix defaults to &quot;_thumb&quot;. The resulting file name will be used both to search for an exsting image with this file name and, if there isn&#39;t one, to provide the file name for the new image document.</p>
+
+<p>Note that the suffix will be inserted into the file name <i>before</i> the file name extension. For example, <i>foo.png</i> will become <i>foo_thumb.png</i>, not <i>foo.png_thumb</i>.</p>
+
+</dd>
+<dt>user</dt>
+<dd>
+
+<p>The user who will &quot;create&quot; the new media document. Defaults to the current user. Useful in templates to provide a user who might have more extensive permissions than the current user.</p>
+
+</dd>
+<dt>element_type</dt>
+<dd>
+
+<p>The media element type on which the alternate will be based. Also used to find an existing media document.</p>
+
+</dd>
+<dt>et_key_name</dt>
+<dd>
+
+<p>The key name for the element type on which the alternate will be based. Also used to find an existing media document. If both <code>element</code> and <code>et_key_name</code> are passed, <code>et_key_name</code> will be used.</p>
+
+</dd>
+<dt>transformer</dt>
+<dd>
+
+<p>A code reference that expects a single argument, an <a href="http://search.cpan.org/perldoc?Imager">Imager</a> object, and returns an <a href="http://search.cpan.org/perldoc?Imager">Imager</a> object. Use this code reference to transform the media document file into a new file to be used for the alternate. For example, if you wanted to create a new image that&#39;s 115 pixels wide and crops the image to get only the top 76 pixels, you can pass something like this:</p>
+
+<pre><code>transformer =&gt; sub {
+    shift-&gt;scale( xpixels =&gt; 115 )-&gt;crop( top =&gt; 76 );
+},</code></pre>
+
+<p>Consult the <a href="http://search.cpan.org/perldoc?Imager">Imager</a> documentation, and especially <a href="http://search.cpan.org/perldoc?Imager::Transformations">Imager::Transformations</a>, for its complete API, examples, etc. Note taht the <code>transformer</code> code reference will only be called if the alternate does not already exist.</p>
+
+</dd>
+<dt>width</dt>
+<dd>
+
+</dd>
+<dt>height</dt>
+<dd>
+
+<p>The height and width, in pixels, to make the alternate image. Only used if an existing image is not found, and if the <code>transformer</code> parameter has not been passed.</p>
+
+</dd>
+<dt>use_thumb</dt>
+<dd>
+
+<p>Boolean indicating whether or not to use the thumbnail file to create the alternate document. If true, the <code>transform</code>, <code>width</code>, and <code>height</code> parameters will be ignored and the existing thumbnail file will simply be used. Defaults to false.</p>
+
+</dd>
+<dt>relate</dt>
+<dd>
+
+<p>Boolean to indicate whether or not to relate the new image, if one is created to the current image. If true, and an alternate is created, it will be added as a related media document to the original media document&#39;s top-level element. Defaults to true.</p>
+
+</dd>
+<dt>checkin</dt>
+<dd>
+
+<p>Boolean to indicate whether or not to check in the newly created alternate image document. Defaults to true.</p>
+
+</dd>
+<dt>move_to_pub</dt>
+<dd>
+
+<p>Boolean to indicate whether or not to move in the newly created alternate image document to a publish desk. Defaults to true. Note that the user must have READ access to a PUBLISH desk or else an exception will be thrown.</p>
+
+</dd>
+</dl>
+
+<p><b>Throws:</b> Exceptions when the user does not have permission to create a media document in a media workflow, or does not have permission to move it to a publish desk, or if the necessary libraries to support the desired transformations are not included in the <a href="http://search.cpan.org/perldoc?Imager">Imager</a> build.</p>
+
+<p><b>Side Effects:</b> If no alternate can be found, a new media document will be created, put into workflow, and possibly checked in and moved to the publish desk.</p>
+
+<p><b>Notes:</b> Isn&#39;t the above enough?</p>
+
+</dd>
+<dt>my $created_ok = $image-&gt;create_thumbnail</dt>
+<dd>
+
+<p>Creates a thumbnail image from the supplied image object. Returns 1 on successful completion and <code>undef</code> on failure.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>($imgs || @imgs) = $image-&gt;upload_file</dt>
+<dd>
+
+<p>Overrides the <code>upload_file()</code> method in the parent class and then makes a call to the <code>create_thumbnail()</code> method.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<dl>
+
+<dt>_thumb_location</dt>
+<dd>
+
+<pre><code>my $thumb_location = $self-&gt;_thumb_location;</code></pre>
+
+<p>Returns the location of a thumnail image file. This method simply modifies the value returned by <code>get_location</code> to generate the name of the image file. Returns <code>undef</code> if the image has no location.</p>
+
+</dd>
+<dt>_thumb_file</dt>
+<dd>
+
+<pre><code>my $thumb_file = $self-&gt;_thumb_file;</code></pre>
+
+<p>Returns the absolute path to the thumnail image file for this image.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>&quot;Michael Soderstrom&quot; &lt;miraso@pacbell.net&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a> , <a rel="section" href="../../../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset.html" name="Bric::Biz::Asset">Bric::Biz::Asset</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset/Business.html" name="Bric::Biz::Asset::Business">Bric::Biz::Asset::Business</a>, <a rel="section" href="../../../../../../../2.0/api/Bric/Biz/Asset/Business/Media.html" name="Bric::Biz::Asset::Business::Media">Bric::Biz::Asset::Business::Media</a></p>
+
+</body>
+</html>
+

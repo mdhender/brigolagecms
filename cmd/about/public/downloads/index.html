@@ -1,0 +1,280 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- How to get Bricolage</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="downloads" class="downloads">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>How to get Bricolage</h2>
+          <p>Bricolage is free, open source software released under the BSD license. It requires Perl version 5.8.0 or higher (5.8.8 is the minimum recommended), and it has dependencies on a several <a href="http://bricolagecms.org/docs/current/api/Bric::Admin#PACKAGES">Perl libraries</a>, as well as Apache, mod_perl, PostgreSQL or MySQL, and Expat (which you should probably install and configure before proceeding). </p>
+          <p>There are two ways you can get Bricolage:</p>
+          <h2>Option 1. Download the latest stable version</h2>
+          <p>The latest stable version is 2.0.1 and you can download it directly <a href="bricolage-2.0.1.tar.gz">here</a>.</p>
+          <h2>Option 2. Get the latest version from Github</h2>
+          <p>The latest Bricolage version is the one that's in our <a href="http://github.com/bricoleurs/bricolage">GitHub repository</a>. Get it using this shell command, which requires Git:</p>
+          <p><code>git clone git://github.com/bricoleurs/bricolage.git</code></p>
+          <p>Alternately, you can use the "Download" link on the Github page to download a .zip or .tar.gz archive.</p>
+          <h2>Just evaluating? Try the VMware or QEMU image</h2>
+          <p><a id="vm"></a>
+Adams University has been kind enough to make up-to-date versions of Bricolage available as both VMware and QEMU images. You can download the images from their public FTP site <a href="ftp://anonymous@ftp.adams.edu/pub/bricolage">here</a>.</p>
+          <h2>After you get it</h2>
+          <p>See the <a href="http://bricolagecms.org/docs/current/api/Bric::Admin">administration guide</a> for installation instructions.</p>
+          <p>And be sure to sign up for the <a href="../downloads.html">bricolage-users mailing list</a>, where other Bricolage users and the Bricolage developers themselves all hang out to help each other.</p>
+          <h2>Stable releases</h2>
+          <h3>Bricolage 2.0</h3>
+          <ul>
+            <li><a href="bricolage-2.0.1.tar.gz" title="Download Bricolage 2.0.1">bricolage-2.0.1.tar.gz</a> (2011.02.09) <span class="small">[ <a href="../news/announce/changes/bricolage-2.0.1.html">Changelog</a> ] (MD5: b3051d47282233205dfe9f6c5f6a0bd3)</span></li>
+            <li><a href="bricolage-2.0.0.tar.gz" title="Download Bricolage 2.0.0">bricolage-2.0.0.tar.gz</a> (2010.04.12) <span class="small">[ <a href="../news/announce/changes/bricolage-2.0.0.html">Changelog</a> ] (MD5: ac729a7fc4b3d7478d648c25667e9230)</span></li>
+          </ul>
+          <h3>Bricolage 1.10</h3>
+          <ul>
+            <li><a href="bricolage-1.10.10.tar.gz" title="Bricolage 1.10.10">bricolage-1.10.10.tar.gz</a> (2010.04.11) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.10/index.html">Changelog</a> ] (MD5: 2e8b198cab58f99dbfca4467586592f2)</span></li>
+            <li><a href="bricolage-1.10.9.tar.gz" title="Bricolage 1.10.9">bricolage-1.10.9.tar.gz</a> (2010.01.28) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.9/index.html">Changelog</a> ] (MD5: 2c160c280820c08795567ea0fb839b2b)</span></li>
+            <li><a href="bricolage-1.10.8.tar.gz" title="Bricolage 1.10.8">bricolage-1.10.8.tar.gz</a> (2009.11.14) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.8/index.html">Changelog</a> ] (MD5: be6d64945e8253abddfc2994d908896d)</span></li>
+            <li><a href="bricolage-1.10.7.tar.gz" title="Bricolage 1.10.7">bricolage-1.10.7.tar.gz</a> (2009.03.12) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.7/index.html">Changelog</a> ] (MD5: 21ca2789b6b72572873a2c6aa331b967)</span></li>
+            <li><a href="bricolage-1.10.6.tar.gz" title="Bricolage 1.10.6">bricolage-1.10.6.tar.gz</a> (2008.10.02) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.6/index.html">Changelog</a> ] (MD5: 777ed9e93f405bf28eab38219ef3b261)</span></li>
+            <li><a href="bricolage-1.10.5.tar.gz" title="Bricolage 1.10.5">bricolage-1.10.5.tar.gz</a> (2008.04.29) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.5/index.html">Changelog</a> ] (MD5: ed91e20d1ee7b38c2c792bee9c4c5ef2)</span></li>
+            <li><a href="bricolage-1.10.4.tar.gz" title="">bricolage-1.10.4.tar.gz</a> (2008.03.10) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.4/index.html">Changelog</a> ] (MD5: 9ac690b1cd0f9b1936125fe1f265b60a)</span></li>
+            <li><a href="bricolage-1.10.3.tar.gz" title="">bricolage-1.10.3.tar.gz</a> (2007.08.10) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.3/index.html">Changelog</a> ] (MD5: 351489f7c1f5182b49c027b2f549e0bd)</span></li>
+            <li><a href="bricolage-1.10.2.tar.gz" title="">bricolage-1.10.2.tar.gz</a> (2006.06.22) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.2/index.html">Changelog</a> ] (MD5: 04e26c62c002c1bf3b20ebf069d53b9a)</span></li>
+            <li><a href="bricolage-1.10.1.tar.gz" title="">bricolage-1.10.1.tar.gz</a> (2006.03.20) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.1/index.html">Changelog</a> ] (MD5: 530150a73a2b42f4e635400099d97913)</span></li>
+            <li><a href="bricolage-1.10.0.tar.gz" title="">Bricolage-1.10.0.tar.gz</a> (2006.01.23) <span class="small">[ <a href="../news/announce/changes/bricolage-1.10.0/index.html">Changelog</a> ] (MD5: 5bbdc7906d00e74e444c17c6113500ea)</span></li>
+          </ul>
+          <h3>Bricolage 1.8</h3>
+          <ul>
+            <li><a href="bricolage-1.8.11.tar.gz" title="Download Bricolage 1.8.11">bricolage-1.8.11.tar.gz</a> (2006.06.19) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.11/index.html">Changelog</a> ] (MD5: b469aa5204729b602ae5070d69d84b60)</span></li>
+            <li><a href="bricolage-1.8.10.tar.gz" title="Download Bricolage 1.8.10">bricolage-1.8.10.tar.gz</a> (2006.03.16) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.10/index.html">Changelog</a> ] (MD5: 65cb4d22b6fa9f5f40396ee5dacba868)</span></li>
+            <li><a href="bricolage-1.8.9.tar.gz" title="Download Bricolage 1.8.9">bricolage-1.8.9.tar.gz</a> (2006.01.23) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.9/index.html">Changelog</a> ] (MD5: 6eb9102388b00c669f52b59efb0fce9b)</span></li>
+            <li><a href="bricolage-1.8.8.tar.gz" title="Download Bricolage 1.8.8">bricolage-1.8.8.tar.gz</a> (2005.10.27) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.8/index.html">Changelog</a> ] (MD5: 8546d21ddea434abcd33539c2b460ced)</span></li>
+            <li><a href="bricolage-1.8.7.tar.gz" title="Download Bricolage 1.8.7">bricolage-1.8.7.tar.gz</a> (2005.10.24) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.7/index.html">Changelog</a> ] (MD5: f9394758622aeaf57971813feae36bbd)</span></li>
+            <li><a href="bricolage-1.8.6.tar.gz" title="Download Bricolage 1.8.6">bricolage-1.8.6.tar.gz</a> (2005.07.19) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.6/index.html">Changelog</a> ] (MD5: 31471d279b8dc68b7ddc8f8282924f75)</span></li>
+            <li><a href="bricolage-1.8.5.tar.gz" title="Download Bricolage 1.8.5">bricolage-1.8.5.tar.gz</a> (2005.03.18) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.5/index.html">Changelog</a> ] (MD5: b226db1637a596cd53dec6784fd3d070)</span></li>
+            <li><a href="bricolage-1.8.3.tar.gz" title="Download Bricolage 1.8.3">bricolage-1.8.3.tar.gz</a> (2004.11.09) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.3/index.html">Changelog</a> ] (MD5: 20a2fbec28f9595a26224c307b2786f9)</span></li>
+            <li><a href="bricolage-1.8.2.tar.gz" title="Download Bricolage 1.8.2">bricolage-1.8.2.tar.gz</a> (2004.09.13) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.2/index.html">Changelog</a> ] (MD5: e91150571658a5289c0521b5bfa313b2)</span></li>
+            <li><a href="bricolage-1.8.1.tar.gz" title="Download Bricolage 1.8.1">bricolage-1.8.1.tar.gz</a> (2004.07.08) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.1/index.html">Changelog</a> ] (MD5: 93525168d152ac12f438b3ae6b4ac669)</span></li>
+            <li><a href="bricolage-1.8.0.tar.gz" title="Download Bricolage 1.8.0">bricolage-1.8.0.tar.gz</a> (2004.05.03) <span class="small">[ <a href="../news/announce/changes/bricolage-1.8.0/index.html">Changelog</a> ] (MD5: bf06cde4eaef7549702d9648274fe235)</span></li>
+          </ul>
+          <h3>Bricolage 1.6</h3>
+          <ul>
+            <li><a href="bricolage-1.6.14.tar.gz" title="Download Bricolage 1.6.14">bricolage-1.6.14.tar.gz</a> (2004.05.02) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=235549">Changelog</a> ] (MD5: c15454d87ea130c8e27342f7f3dfbe66)</span></li>
+            <li><a href="bricolage-1.6.13.tar.gz" title="Download Bricolage 1.6.13">bricolage-1.6.13.tar.gz</a> (2004.04.10) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=230267">Changelog</a> ] (MD5: 62242b615b4349c37fecb3dbcea3189d)</span></li>
+            <li><a href="bricolage-1.6.12.tar.gz" title="Download Bricolage 1.6.12">bricolage-1.6.12.tar.gz</a> (2004.04.09) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=230088">Changelog</a> ] (MD5: 1a9685891c0002612e47c20321b273f3)</span></li>
+            <li><a href="bricolage-1.6.11.tar.gz" title="Download Bricolage 1.6.11">bricolage-1.6.11.tar.gz</a> (2004.03.17) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=224326">Changelog</a> ] (MD5: fe14643646c7d2816d66361e76bddfcb)</span></li>
+            <li><a href="bricolage-1.6.10.tar.gz" title="Download Bricolage 1.6.10">bricolage-1.6.10.tar.gz</a> (2004.02.29) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=220606">Changelog</a> ] (MD5: 41bc579bc69fa31bad71653720945610)</span></li>
+            <li><a href="bricolage-1.6.9.tar.gz" title="Download Bricolage 1.6.9">bricolage-1.6.9.tar.gz</a> (2004.02.06) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=215294">Changelog</a> ] (MD5: d6efeb84f1dd3595092834f4d2ed6f6e)</span></li>
+            <li><a href="bricolage-1.6.8.tar.gz" title="Download Bricolage 1.6.8">bricolage-1.6.8.tar.gz</a> (2003.11.29) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=200747">Changelog</a> ] (MD5: a16d4e9e3e05f3a3ba1b145653ab0733)</span></li>
+            <li><a href="bricolage-1.6.7.tar.gz" title="Download Bricolage 1.6.7">bricolage-1.6.7.tar.gz</a> (2004.10.22) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=192775">Changelog</a> ] (MD5: 255910b59b467341f5a5c77841dde979)</span></li>
+            <li><a href="bricolage-1.6.6.tar.gz" title="Download Bricolage 1.6.6">bricolage-1.6.6.tar.gz</a> (2003.10.03) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=188766">Changelog</a> ] (MD5: 5a84a7e18f150442843cce05bde6efa5)</span></li>
+            <li><a href="bricolage-1.6.5.tar.gz" title="Download Bricolage 1.6.5">bricolage-1.6.5.tar.gz</a> (2003.09.10) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=183771">Changelog</a> ] (MD5: 8312172ba701fcd752858b59094f6f23)</span></li>
+            <li><a href="bricolage-1.6.4.tar.gz" title="Download Bricolage 1.6.4">bricolage-1.6.4.tar.gz</a> (2003.08.12) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=177713">Changelog</a> ] (MD5: a3d704bc223f79eb7ce1de90c3a7ffeb)</span></li>
+            <li><a href="bricolage-1.6.2.tar.gz" title="Download Bricolage 1.6.2">bricolage-1.6.2.tar.gz</a> (2003.07.28) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=174317">Changelog</a> ] (MD5: 1ac1fcfe60c7874e61ad8a06e8cbeee2)</span></li>
+            <li><a href="bricolage-1.6.1.tar.gz" title="Download Bricolage 1.6.1">bricolage-1.6.1.tar.gz</a> (2003.06.12) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=165152">Changelog</a> ] (MD5: 5772af8d973bd9e40eae28e0f4f0ff61)</span></li>
+            <li><a href="bricolage-1.6.0.tar.gz" title="Download Bricolage 1.6.0">bricolage-1.6.0.tar.gz</a> (2003.04.29) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=155949">Changelog</a> ] (MD5: e755d4ea1f53e0502abc9bb4c229677d)</span></li>
+          </ul>
+          <h3>Bricolage 1.4</h3>
+          <ul>
+            <li><a href="bricolage-1.4.6.tar.gz" title="Download Bricolage 1.4.6">bricolage-1.4.6.tar.gz</a> (2003.01.06) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=132033">Changelog</a> ] (MD5: b2c7e4338732820bc25c9602609eb099)</span></li>
+            <li><a href="bricolage-1.4.5.tar.gz" title="Download Bricolage 1.4.5">bricolage-1.4.5.tar.gz</a> (2002.11.13) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=122230">Changelog</a> ] (MD5: b9addb74cc8f248b6b06ecdf94f8a416)</span></li>
+            <li><a href="bricolage-1.4.4.tar.gz" title="Download Bricolage 1.4.4">bricolage-1.4.4.tar.gz</a> (2002.10.27) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=118945">Changelog</a> ] (MD5: b9fb38d858d595081b9f9074f8ca746f)</span></li>
+            <li><a href="bricolage-1.4.3.tar.gz" title="Download Bricolage 1.4.3">bricolage-1.4.3.tar.gz</a> (2002.09.28) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=113437">Changelog</a> ] (MD5: b0fa1a4e034a586196f9a38ce1255f55)</span></li>
+            <li><a href="bricolage-1.4.2.tar.gz" title="Download Bricolage 1.4.2">bricolage-1.4.2.tar.gz</a> (2002.09.27) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=113261">Changelog</a> ] (MD5: 9fdd15341596fade3831ec7054a24b2a)</span></li>
+            <li><a href="bricolage-1.4.1.tar.gz" title="Download Bricolage 1.4.1">bricolage-1.4.1.tar.gz</a> (2002.09.25) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=112832">Changelog</a> ] (MD5: cd5bb6e3e0902d62c262075d4d8a2801)</span></li>
+            <li><a href="bricolage-1.4.0.tar.gz" title="Download Bricolage 1.4.0">bricolage-1.4.0.tar.gz</a> (2002.09.02) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=108803">Changelog</a> ] (MD5: 8624a8d26fccc46bcc89fc9fc8820449)</span></li>
+          </ul>
+          <h3>Bricolage 1.2</h3>
+          <ul>
+            <li><a href="bricolage-1.2.3.tar.gz" title="Download Bricolage 1.2.3">bricolage-1.2.3.tar.gz</a> (2002.03.17) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=80073">Changelog</a> ] (MD5: 34d5f994ee290e0adb61922ce00ced95)</span></li>
+            <li><a href="bricolage-1.2.1.tar.gz" title="Download Bricolage 1.2.1">bricolage-1.2.1.tar.gz</a> (2002.02.25) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=76960">Changelog</a> ] (MD5: d8476d6dd382805c36120a8e4e963626)</span></li>
+            <li><a href="bricolage-1.2.0.tar.gz" title="Download Bricolage 1.2.0">bricolage-1.2.0.tar.gz</a> (2002.01.10) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=69380">Changelog</a> ] (MD5: f7bc69bd1e7dc19bed0b9ded72488a01)</span></li>
+          </ul>
+          <h3>Bricolage 1.0</h3>
+          <ul>
+            <li><a href="bricolage-1.0.2.tar.gz" title="Download Bricolage 1.0.2">bricolage-1.0.2.tar.gz</a> (2001.12.10) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=65073">Changelog</a> ] (MD5: d0e3cfb443b6a99d9c84d8eb48166d98)</span></li>
+            <li><a href="bricolage-1.0.1.tar.gz" title="Download Bricolage 1.0.1">bricolage-1.0.1.tar.gz</a> (2001.09.28) <span class="small">[ <a href="http://sourceforge.net/project/shownotes.php?release_id=54884">Changelog</a> ] (MD5: f51b292700ed7740fa8561eb807bc8e2)</span></li>
+          </ul>
+          <h2>Website Releases</h2>
+          <p>The Bricolage templates used to create this site are available for download. The corresponding elements are also included as XML exported from the SOAP server. See the <em>README</em> file for details.</p>
+          <h3>Templates and Elements</h3>
+          <ul>
+            <li><a href="bricolage.cc-1.4.tar.gz" title="Download Bricolage Templates and Elements 1.4">Templates and Elements 1.4</a> (2006.03.20) <span class="small">[ <a href="../news/announce/changes/bricolage.cc-1.4/index.html">Changelog</a> ] (MD5: 73c78697434fdc325c57729b967ee199)</span></li>
+            <li><a href="bricolage.cc-1.3.tar.gz" title="Download Bricolage Templates and Elements 1.3">Templates and Elements 1.3</a> (2006.02.01) <span class="small">[ <a href="../news/announce/changes/bricolage.cc-1.3/index.html">Changelog</a> ] (MD5: ca300372df06e2dcecce2811d5d45ef1)</span></li>
+            <li><a href="bricolage.cc-1.2.tar.gz" title="Download Bricolage Site Templates and Elements 1.2">Templates and Elements 1.2</a> (2005.01.10) <span class="small">[ <a href="../news/announce/changes/bricolage.cc-1.2/index.html">Changelog</a> ] (MD5: 08ad93c7ec294dad3ec42d001026f7ed)</span></li>
+            <li><a href="bricolage.cc-1.1.tar.gz" title="Download Bricolage Site Templates and Elements 1.1">Templates and Elements 1.1</a> (2004.08.19) <span class="small">[ <a href="../news/announce/changes/bricolage.cc-1.1/index.html">Changelog</a> ] (MD5: 5a695c57cb8503f383f24f03192c9c7f)</span></li>
+            <li><a href="bricolage.cc-1.00.tar.gz" title="Download Bricolage Site Templates and Elements 1.0">Templates and Elements 1.0</a> (2004.07.28) <span class="small">[ <a href="../news/announce/changes/bricolage.cc-1.0/index.html">Changelog</a> ] (MD5: 6193319aeed7d846b37b726d01772209)</span></li>
+          </ul>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_republish</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_republish.html#Name">Name</a></li>
+  <li><a href="bric_republish.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_republish.html#Description">Description</a></li>
+  <li><a href="bric_republish.html#Examples">Examples</a></li>
+  <li><a href="bric_republish.html#Author">Author</a></li>
+  <li><a href="bric_republish.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_republish - republishes stories automatically</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<p>bric_republish [options]</p>
+
+<pre><code>--help     - shows this screen
+
+--man      - shows the full documentation
+
+--verbose  - print a running description to STDERR.  Add a second
+            --verbose and you&#39;ll get debugging output too.  Without
+            this option bric_republish is silent when successful.
+
+--server   - specifies the Bricolage server URL, defaults to
+            the BRICOLAGE_SERVER environment variable if set,
+            http://localhost otherwise.
+
+--username - the Bricolage username, defaults to the BRICOLAGE_USERNAME
+            environment variable if set.
+
+--password - the password for the Bricolage user.  Default to the
+            BRICOLAGE_PASSWORD environment variable if set.
+
+--story-id - specify a single story to publish
+
+--no-media - don&#39;t publish related media with story.  By default all
+            related media are published with each story.
+
+--element  - only publish stories of this element (story type)
+
+--category - only publish stories in this category, specified by path
+
+--site     - only publish stories in this site, specified by name
+
+--published-only - Deprecated; kept for backwards compatibility; Only
+            the published version of all stories will be published.
+
+--chunks   - publish stories in chunks of this many.  Defaults to 0,
+            which means to process them all at once.  This option can
+            be used to avoid timing out on large jobs.
+
+--timeout  - specify the HTTP timeout for SOAP requests in seconds.
+            Defaults to 30.</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This program publishes stories with no user interaction required. It looks up and publishes the last published version of published stories (publish_status is 1). This is useful to automatically update stories after element and template changes. Also, some elements may have automated functionality that benefits from being republished periodically - a &quot;new stories&quot; box on a Cover, for example.</p>
+
+<h1 id="Examples">Examples</h1>
+
+<p>The most common use of this program will be from cron. Setup a crontab like this to republish all stories hourly:</p>
+
+<pre><code>BRICOLAGE_USERNAME=admin
+BRICOLAGE_PASSWORD=admin_pass
+PATH=/usr/local/bricolage/bin:$PATH
+MAILTO=your-email@your-domain.com
+0 * * * * bric_republish</code></pre>
+
+<p>Or to republish Covers hourly and everything else once a day at 11:30</p>
+
+<pre><code>BRICOLAGE_USERNAME=admin
+BRICOLAGE_PASSWORD=admin_pass
+PATH=/usr/local/bricolage/bin:$PATH
+MAILTO=your-email@your-domain.com
+0  *  * * * bric_republish --element Cover
+30 11 * * * bric_republish</code></pre>
+
+<p>Or to republish all stories every other hour but never republish media:</p>
+
+<pre><code>BRICOLAGE_USERNAME=admin
+BRICOLAGE_PASSWORD=admin_pass
+PATH=/usr/local/bricolage/bin:$PATH
+MAILTO=your-email@your-domain.com
+0 */2 * * * bric_republish --no-media</code></pre>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

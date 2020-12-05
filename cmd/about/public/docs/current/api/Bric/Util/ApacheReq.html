@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::ApacheReq</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="ApacheReq.html#Name">Name</a></li>
+  <li><a href="ApacheReq.html#Synopsis">Synopsis</a></li>
+  <li><a href="ApacheReq.html#Description">Description</a></li>
+  <li><a href="ApacheReq.html#Interface">Interface</a>
+    <ul>
+      <li><a href="ApacheReq.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="ApacheReq.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="ApacheReq.html#Author">Author</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::ApacheReq - Wrapper around Apache 1 and 2 Request classes</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::ApacheReq;
+my $r = Bric::Util::ApacheReq-&gt;instance;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This package encapsulates the <a href="http://search.cpan.org/perldoc?Apache::Request">Apache::Request</a> and <a href="http://search.cpan.org/perldoc?Apache2::RequestUtil">Apache2::RequestUtil</a> classes so that Bricolage doesn&#39;t have to care about which version of Apache is running. So instead of doing this:</p>
+
+<pre><code>use Bric::Config qw(MOD_PERL_VERSION);
+BEGIN {
+    if (MOD_PERL_VERSION &lt; 2) {
+        require Apache;
+        require Apache::Request;
+    } else {
+        require Apache2::Request::Util;
+    }
+}
+my $r = (MOD_PERL_VERSION &lt; 2
+    ? Apache::Request-&gt;instance(Apache-&gt;request)
+    : Apache2::RequestUtil-&gt;request);</code></pre>
+
+<p>you do what&#39;s shown in the SYNOPSIS.</p>
+
+<p>It also adds the <code>server</code> method from <a href="http://search.cpan.org/perldoc?Apache">Apache</a> or <a href="http://search.cpan.org/perldoc?Apache2::ServerUtil">Apache2::ServerUtil</a>, as appropriate.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $req = Bric::Util::ApacheReq-&gt;request;</dt>
+<dd>
+
+<p>Returns either <code>Apache-&gt;request</code> for mod_perl 1 or <code>Apache2::RequestUtil-&gt;request</code> for mod_perl 2.</p>
+
+</dd>
+<dt>my $r = Bric::Util::ApacheReq-&gt;instance;</dt>
+<dd>
+
+<p>Returns the Apache request object, i.e. <code>$r</code>. Optionally takes the following argument:</p>
+
+<ul>
+
+<p>$req - the Apache request object obtained by <code>request</code>. In the case of mod_perl 2, this is already the instance itself so it&#39;s just returned.</p>
+
+</ul>
+
+</dd>
+<dt>my $server = Bric::Util::ApacheReq-&gt;server;</dt>
+<dd>
+
+<p>Returns either <code>Apache-&gt;server</code> for mod_perl 1 or <code>Apache2::ServerUtil-&gt;server</code> for mod_perl 2.</p>
+
+</dd>
+<dt>my $url = Bric::Util::ApacheReq-&gt;url();</dt>
+<dd>
+
+<pre><code>my $url = Bric::Util::ApacheReq-&gt;url;
+my $url = Bric::Util::ApacheReq-&gt;url( uri =&gt; &#39;/foo/bar&#39; );
+my $url = Bric::Util::ApacheReq-&gt;url( ssl =&gt; 1 );</code></pre>
+
+<p>Returns a URL for the server, with the correct scheme (http or https), host name, and port (if needed). Pass in a <code>url</code> parameter (including a leading slash) to have a particular URI path included in the URL. If it&#39;s not passed, or is <code>undef</code>, it defaults to &quot;/&quot;. If you&#39;re prefer to have SSL if it&#39;s enabled, pass in an <code>ssl</code> parameter with a true value.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my %args = parse_args(scalar $r-&gt;args);</dt>
+<dd>
+
+<p>In mod_perl, <code>$r-&gt;args</code> could be used in list context, to return a parsed hash of <code>key =&gt; value</code>, but in mod_perl2 it can only be used in scalar context. This implements the old behavior for mod_perl2 using <code>parse_args</code> from <code>Apache2::compat</code>. Always call <code>$r-&gt;args</code> in scalar context in Bricolage code, then use this function to parse the result if necessary.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;slanning@cpan.org&gt;</p>
+
+</body>
+</html>
+

@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Grp::CategorySet</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="CategorySet.html#Name">Name</a></li>
+  <li><a href="CategorySet.html#Synopsis">Synopsis</a></li>
+  <li><a href="CategorySet.html#Description">Description</a></li>
+  <li><a href="CategorySet.html#Interface">Interface</a>
+    <ul>
+      <li><a href="CategorySet.html#Constructors">Constructors</a></li>
+      <li><a href="CategorySet.html#Destructors">Destructors</a></li>
+      <li><a href="CategorySet.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="CategorySet.html#Public-Instance-Methods">Public Instance Methods</a></li>
+      <li><a href="CategorySet.html#Private-Methods">Private Methods</a></li>
+      <li><a href="CategorySet.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="CategorySet.html#Private-Instance-Methods">Private Instance Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="CategorySet.html#Notes">Notes</a></li>
+  <li><a href="CategorySet.html#Author">Author</a></li>
+  <li><a href="CategorySet.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Grp::CategorySet - A module to hold sets of categories.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Grp::CategorySet;
+
+# Normal group methods.</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>Allows assets to be grouped into categories. In addition to assets a category can contain other categories, allowing a hierarchical layout of categories and assets.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<dl>
+
+<dt>$obj = new Bric::Util::Grp::CategorySet($init);</dt>
+<dd>
+
+<p>Inherited</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>@objs = lookup Bric::Util::Grp::CategorySet($cat_id);</dt>
+<dd>
+
+<p>Inherited</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>This is the default lookup constructor which should be overrided in all derived classes even if it just calls &#39;die&#39;.</p>
+
+</dd>
+<dt>@objs = list Bric::Util::Grp::CategorySet($param);</dt>
+<dd>
+
+<p>Inherited.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+</dl>
+
+<h2 id="Destructors">Destructors</h2>
+
+<dl>
+
+<dt>$self-&gt;DESTROY</dt>
+<dd>
+
+<p>Dummy method to prevent wasting time trying to AUTOLOAD DESTROY</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>my $class = Bric::Util::Grp::CategorySet-&gt;my_class()</dt>
+<dd>
+
+<p>Returns a Bric::Util::Class object describing this class.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Class-&gt;lookup() internally.</p>
+
+</dd>
+<dt>my $class = Bric::Util::Grp::CategorySet-&gt;member_class()</dt>
+<dd>
+
+<p>Returns a Bric::Util::Class object describing the members of this group.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> Uses Bric::Util::Class-&gt;lookup() internally.</p>
+
+</dd>
+</dl>
+
+<h2 id="Public-Instance-Methods">Public Instance Methods</h2>
+
+<dl>
+
+<dt>$class_id = Bric::Util::Grp::CategorySet-&gt;get_class_id()</dt>
+<dd>
+
+<p>This will return the class id that this group is associated with it should have an id that maps to the class object instance that is associated with the class of the grp ie Bric::Util::Grp::AssetVersion</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>Overwite this in your sub classes</p>
+
+</dd>
+<dt>$class_id = Bric::Util::Grp::CategorySet-&gt;get_object_class_id()</dt>
+<dd>
+
+<p>Forces all Objects to be considered as this class.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my $h = $cat-&gt;get_supported_classes;</dt>
+<dd>
+
+<p>This supplies a package to table name mapping.</p>
+
+<p><b>Throws:</b></p>
+
+<p>NONE</p>
+
+<p><b>Side Effects:</b></p>
+
+<p>NONE</p>
+
+<p><b>Notes:</b></p>
+
+<p>NONE</p>
+
+</dd>
+<dt>my @list_classes = Bric::Util::Grp::CategorySet-&gt;get_list_classes</dt>
+<dd>
+
+<p>Returns a list or anonymous array of the supported classes in the group that can have their <code>list()</code> methods called in succession to assemble a list of member objects. This data varies from that stored in the keys in the hash reference returned by <code>get_supported_classes</code> in that some classes&#39; <code>list()</code> methods may inherit from others, and we don&#39;t want the same <code>list()</code> method executed more than once.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $secret = Bric::Util::Grp::Category-&gt;get_secret()</dt>
+<dd>
+
+<p>Returns false, because this is not a secret type of group, but one that can be used by users.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Methods">Private Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE</p>
+
+<h1 id="Author">Author</h1>
+
+<p>Garth Webb &lt;garth@perijove.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a href="http://search.cpan.org/perldoc?perl">perl</a>, <a rel="section" href="../../../../../2.0/api/Bric.html" name="Bric">Bric</a>, <a rel="section" href="../../../../../2.0/api/Bric/Util/Grp.html" name="Bric::Util::Grp">Bric::Util::Grp</a></p>
+
+</body>
+</html>
+

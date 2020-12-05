@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Handler</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Handler.html#Name">Name</a></li>
+  <li><a href="Handler.html#Synopsis">Synopsis</a></li>
+  <li><a href="Handler.html#Description">Description</a></li>
+  <li><a href="Handler.html#Constants">Constants</a></li>
+  <li><a href="Handler.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Handler.html#Public-Class-Methods">Public Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Handler.html#Author">Author</a></li>
+  <li><a href="Handler.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Handler - Apache/mod_perl handler for SOAP interfaces</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>&lt;Location /soap&gt;
+  SetHandler perl-script
+  PerlHandler Bric::SOAP::Handler
+  PerlCleanupHandler Bric::App::CleanupHandler
+  PerlAccessHandler Apache::HTTP_OK
+&lt;/Location&gt;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides an Apache/mod_perl PerlHandler for the Bricolage SOAP interface. This handler dispatches calls to the various Bric::SOAP modules.</p>
+
+<h1 id="Constants">Constants</h1>
+
+<dl>
+
+<dt>SOAP_CLASSES</dt>
+<dd>
+
+<p>Array of SOAP interface module names. The handler will only dispatch calls to these classes.</p>
+
+</dd>
+</dl>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>Bric::SOAP::Handler-&gt;handler()</dt>
+<dd>
+
+<p>Handles a request for a SOAP interface. Calls SOAP::Transport::HTTP::Apache-&gt;handler() to dispatch the request.</p>
+
+<p>Throws: NONE</p>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

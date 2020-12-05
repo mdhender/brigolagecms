@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::DBA</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="DBA.html#Name">Name</a></li>
+  <li><a href="DBA.html#Description">Description</a></li>
+  <li><a href="DBA.html#Security">Security</a></li>
+  <li><a href="DBA.html#Backup-and-Restore">Backup and Restore</a></li>
+  <li><a href="DBA.html#Write-Ahead-Logging-WAL-">Write-Ahead Logging (WAL)</a></li>
+  <li><a href="DBA.html#Tuning">Tuning</a>
+    <ul>
+      <li><a href="DBA.html#Shared-Buffers">Shared Buffers</a></li>
+      <li><a href="DBA.html#Work-Memory">Work Memory</a></li>
+      <li><a href="DBA.html#Maximum-Connections">Maximum Connections</a></li>
+      <li><a href="DBA.html#Effective-Cache-Size">Effective Cache Size</a></li>
+      <li><a href="DBA.html#Autovacuum">Autovacuum</a></li>
+      <li><a href="DBA.html#Maintenance-Work-Memory">Maintenance Work Memory</a></li>
+      <li><a href="DBA.html#Maximum-Free-Space-Map-Pages">Maximum Free Space Map Pages</a></li>
+      <li><a href="DBA.html#Genetic-Query-Optimizer">Genetic Query Optimizer</a></li>
+      <li><a href="DBA.html#Where-to-Learn-More">Where to Learn More</a></li>
+    </ul>
+  </li>
+  <li><a href="DBA.html#More-Performance-Tips">More Performance Tips</a></li>
+  <li><a href="DBA.html#Authors">Authors</a></li>
+  <li><a href="DBA.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::DBA - Bricolage Database Administration Guide.</p>
+
+<h1 id="Description">Description</h1>
+
+<p>This guide is intended for the database administrator in charge of maintaining the Bricolage PostgreSQL database.</p>
+
+<h1 id="Security">Security</h1>
+
+<p>By default, PostgreSQL has pretty lax authentication settings, at least locally. Client authentication is controlled by the file pg_hba.conf in the $PGDATA directory, e.g., /usr/local/pgsql/data/pg_hba.conf. The default settings allow completely trusted connections to the server by any local user using either Unix domain sockets or TCP/IP connections (although by default, PostgreSQL does not bind to a TCP socket). These settings are as follows:</p>
+
+<pre><code>local  all                                       trust
+host   all         127.0.0.1    255.255.255.255  trust</code></pre>
+
+<p>These settings allow anyone connecting via <b>local</b> Unix domain sockets to connect to <b>all</b> databases in a completely <b>trust</b>ed manor. They won&#39;t even be prompted for a password! Similarly, <b>host</b>s connecting from the local IP address, <b>127.0.0.1</b> with Mask <b>255.255.255.255</b>, are completely <b>trust</b>ed to connect to <b>all</b> databases.</p>
+
+<p>While these settings are fine for limited local use (provided you trust all users on the local system!), they are not good for a production environment. We recommend that clients be required to provide a password -- and preferably that it be encrypted. If the Bricolage web server runs on the local box and no other box will need to connect, we recommend the following settings:</p>
+
+<pre><code>local  all                                        md5
+# host  all         127.0.0.1    255.255.255.255  md5</code></pre>
+
+<p>These are similar to the defaults, except that they require a password, but the password is sent over the wire encrypted using a simple challenge-response protocol. We have commented out the <b>host</b> entry because Bric is running locally and can therefore rely solely on Unix domain sockets. (In this case, you may also wish to remove the -i switch from the PostgreSQL startup script.) Enable it if you find a need to connect locally via TCP/IP.</p>
+
+<p>If you&#39;re running PostgreSQL on its own box, and Bricolage (or any subset of the Bricolage application, such as the distribution server) runs on another box, you will need to enable secure connections to that box. To limit the connections to come from that single box, use this configuration:</p>
+
+<pre><code>local  all                                         md5
+host   all           127.0.0.1    255.255.255.255  md5
+host   bric_dbname   192.168.1.2  255.255.255.255  md5</code></pre>
+
+<p>Where the IP address <b>192.168.1.2</b> is the IP address of the box running Bricolage, and <b>255.255.255.255</b> is its mask. If you feel comfortable allowing more broad access to the server -- say you have a number of database applications running on multiple servers in the same subnet to connect -- try the following configuration:</p>
+
+<pre><code>local  all                                         md5
+host   all           127.0.0.1    255.255.255.255  md5
+host   bric_dbname   192.168.1.0  255.255.255.255  md5</code></pre>
+
+<p>Here the <b>192.168.1.0</b> IP address represents the 192.168.1 subnet on which the multiple clients live.</p>
+
+<p>Many other combinations of authentication settings are of course possible via the flexible pg_hba.con configuration syntax, but the above are our recommended settings for ensuring the security and integrity of your data. Refer to the <a href="http://www.postgresql.org/docs/current/">PostgreSQL documentation</a> for more details, including other levels of encryption.</p>
+
+<h1 id="Backup-and-Restore">Backup and Restore</h1>
+
+<p>PostgreSQL supports backups and restores via its pg_dump, pg_dumpall, and psql utilities. File system backups are also a good idea. We recommend that you use the pg_dumpall utility on a regular basis to backup the Bricolage database:</p>
+
+<pre><code>pg_dumpall &gt; outfile</code></pre>
+
+<p>This program outputs a series of SQL statements that can then be reloaded into the database using the psql utility:</p>
+
+<pre><code>psql &lt; infile</code></pre>
+
+<p>We recommend the use of pg_dumpall in order to preserve the the entire database system. Read the pg_dumpall man page for more details. However, if you use your PostgreSQL server for other databases, you may wish to place them on separate backup schedules. In that case, use pg_dump to backup each of the databases, including the Bricolage database:</p>
+
+<pre><code>pg_dump bric_dbname &gt; outfile</code></pre>
+
+<p>The restoration is the same as for the pg_dumpall file, except that you must be sure to create the database and users, first.</p>
+
+<pre><code>psql bric_dbname &lt; infile</code></pre>
+
+<p>Read the pg_dump man page for more details. Note that neither pg_dump nor pg_dumpall prevent database access by other processes (e.g., Bricolage), but they will affect performance. It&#39;s a good idea to dump the file to a different partition or disk or even server (since pg_dump and pg_dumpall can be used on any server with access to the PostgreSQL server). Changes made to the database during the process of the backup will not be backed up.</p>
+
+<p>In either case, if your Bricolage database is getting big, you may wish to compress the backupfile, or break it into smaller chunks. This can be done using *nix system utilities. For example, to compress a backupfile, use gzip:</p>
+
+<pre><code>pg_dumpall | gzip &gt; filename.gz
+gunzip -c filename.gz | psql</code></pre>
+
+<p>You can also use split to break the backup file into smaller chunks. This example breaks the file up into 1 MB chunks:</p>
+
+<pre><code>pg_dumpall | split -b 1m - filename
+cat filename.* | psql</code></pre>
+
+<p>New to PostgreSQL is the custom dump format. You can use it to compress dumpfiles on the fly. Consult the pg_dump and pg_dumpall man pages for more information.</p>
+
+<p>File system backups are another option, and may in fact be useful as a backup backup methodology. Use whatever methodology for file system backups that you prefer. Here is an example using tar:</p>
+
+<pre><code>tar -cf backup.tar /usr/local/pgsql/data</code></pre>
+
+<p>There are two restrictions to file system backups, however. First, the PostgreSQL server <b>must</b> be shut down during the backup or during restoration. Second, you can&#39;t do selective backups of databases or tables, only the whole database cluster.</p>
+
+<p>For more detail on PostgreSQL backup and restore, please consult the <a href="http://www.postgresql.org/docs/current/">PostgreSQL documentation</a>.</p>
+
+<h1 id="Write-Ahead-Logging-WAL-">Write-Ahead Logging (WAL)</h1>
+
+<p>Write Ahead Logging (WAL) is a standard approach to transaction logging. It is automatically enabled in the PostgreSQL server. WAL ensures that the log is written before database records are altered, thereby minimizing the number of disk writes; and in the event of a crash, the database can be recovered using using the log.</p>
+
+<p>Please consult the PostgreSQL documentation for more information on configuring WAL and recovering databases with WAL.</p>
+
+<h1 id="Tuning">Tuning</h1>
+
+<p>PostgreSQL requires a certain amount of tuning to operate at optimum efficiency. The default settings for a new PostgreSQL installation are very conservative, and are intended to make sure that the postmaster will be able to start up so that you can get started setting up your databases. It is not, however, a very useful setup for a production database environment, since it severely limits the amount of shared memory that the postmaster can allocate for itself.</p>
+
+<p>To tune PostgreSQL, first determine the amount of memory you want to give to your running PostgreSQL server. In a production environment where PostgreSQL is running on a dedicated machine, this will be the entire memory minus the amount needed to run kernel services. In other situations it will pay to observe the machine while running Bricolage and whatever other services are necessary, and make a guesstimate of the amount of memory you are willing to give to the database server. The amount of memory you decide on may be considered your &quot;available RAM.&quot;</p>
+
+<h2 id="Shared-Buffers">Shared Buffers</h2>
+
+<p>After you have decided on the amount of available RAM to allocate, there are several settings to make. First is the shared memory setting, which in PostgreSQL can be set via the <code>shared_buffers</code> setting in the <i>postgresql.conf</i> file in your PostgreSQL data directory. This setting controls the number of shared buffers that the database server can use. Each buffer is 8 KB. (Usually. Some OSs have different shared buffer settings compiled into their kernels. Consult your server admin for details.)</p>
+
+<p>It&#39;s important to remember that this is only a holding area, and <i>not</i> the total memory available to the server. As such, resist the urge to set this number to a large portion of your RAM, as doing so will actually degrade performance on many OSs. Members of the pgsql-performance mailing list have found useful values in the range of 6% to 20% of available RAM, depending on database size and number of concurrent queries.</p>
+
+<p>Since Bricolage is a large database and we recommend the use of a server with lots of RAM, you will likely want to set <code>shared_buffers</code> to around 10%. In the following example, we&#39;ll demonstrate how to set the value to 24576 (192 MB, or 10% of 2 GB RAM).</p>
+
+<p>First you may need to set your kernel to allow for the shared memory allocation. On a Red Hat Linux system, shared memory is controlled through settings in <i>/etc/sysctl.conf</i>. So, for our example, where we&#39;ve decided to give PostgreSQL up to 192 MB of shared memory, here&#39;s how you would make the kernel setting (note that the kernel setting is in bytes, so our setting is <code>192 * 1024 * 1024 = 201326592</code>):</p>
+
+<pre><code>kernel.shmmax = 201326592</code></pre>
+
+<p>These settings can then be enabled by running <code>/sbin/sysctl -p</code>. See the PostgreSQL <a href="http://www.postgresql.org/docs/current/interactive/kernel-resources.html">Kernel Resources</a> documentation for more information on shared buffers and changing your operating system&#39;s shared buffer settings. Now you can update your <i>postgresql.conf</i> file&#39;s shared memory buffers setting to take advantage of this shared memory:</p>
+
+<pre><code>shared_buffers = 24576</code></pre>
+
+<h2 id="Work-Memory">Work Memory</h2>
+
+<p>Next, it&#39;s probably also a good idea to boost your work memory to get a better response time to the very large queries used to look up Bricolage objects. The work memory has to do with number of concurrent queries. Never risk going over total memory, or else PostgreSQL will go into swap and things will get <i>really</i> slow. Bricolage generally uses no more than three or four concurrent queries, so 8 MB should be okay. Unlike <code>shared_buffers</code>, the <code>work_mem</code> (or <code>sort_mem</code>) setting is in KB buffers, so setting it to 8 MB would be:</p>
+
+<pre><code>work_mem = 8192</code></pre>
+
+<p>The difficult issue with <code>work_mem</code> is that more is needed for bigger queries, but <code>work_mem</code> is not shared, being allocated on a <i>per-task</i> basis. You do not, <b>ever</b>, want to use more cumulative <code>work_mem</code> than your computer actually has, because it will go into swap and slow PostgreSQL down to glacial speed.</p>
+
+<p>Bricolage uses some complex queries that require 3 or even 4 sorts per query. This means that you have to be prepared to have <code>3 * work_mem</code> available for each concurrent query. Overall, this means (with fudge factors) that when you can calculate the maximum <code>work_mem</code> it is completely safe to set as: <code>Available RAM / max_connections * 3</code>. But more than 12 MB <code>work_mem</code> should not be needed except on the largest Bricolage installations (5GB + database).</p>
+
+<p>You must remember that if your Bricolage usage forces you to increase <code>max_connections</code>, then you will have to think about lowering <code>work_mem</code>...or buying more RAM.</p>
+
+<h2 id="Maximum-Connections">Maximum Connections</h2>
+
+<p>Since Bricolage is a web application with persistent database connections, you can likely decrease the value of the <code>max_connections</code> setting in <i>postgresql.conf</i> To the maximum number of concurrent connections you&#39;d expect, plus a couple extra for good measure. In a very busy Bricolage environment with 100s of users, that number is probably around 50. For less busy installations, the number can be lower, but in any event, probably should not be less than 8 (since you might have that many Apache processes running, even on a single-user system).</p>
+
+<p>If you&#39;re not sure what number to assign to the <code>max_connections</code> directive, watch your Bricolage server to see how many connections it holds to the database to determine the optimum setting. Since there is an inverse relation between <code>max_connections</code> and <code>work_mem</code>, lowering this number can also help you to find a middle ground between a healthy value for <code>work_mem</code> and needing to reconfigure the kernel&#39;s SHMMAX (See <a rel="subsection" href="DBA.html#Shared-Buffers" name="Bric::DBA">&quot;Shared Buffers&quot;</a>).</p>
+
+<pre><code>max_connections = 50</code></pre>
+
+<h2 id="Effective-Cache-Size">Effective Cache Size</h2>
+
+<p>The effective cache size is the amount of memory available to PostgreSQL for caching your database. This setting should be 2/3 - 3/4 the amount of available RAM. This setting is typically set in 8 KB blocks. So for a system with 2 GB available RAM where you want to allocate 75% for the effective cache size, the number would be calculated <code>2 * 1024 * 1024 * .75 / 8 = 196608</code>:</p>
+
+<pre><code>effective_cache_size = 196608</code></pre>
+
+<h2 id="Autovacuum">Autovacuum</h2>
+
+<p>The <code>autovacuum</code> directive turns on the autovacuum daemon included in PostgreSQL. We strongly recommend that you take advantage of the autovacuum feature in order to keep database performance optimal. See the <a href="http://www.postgresql.org/docs/current/static/maintenance.html#AUTOVACUUM">autovacuum documenation</a> for details. To enable autovacuum, you <i>must</i> set these direcives:</p>
+
+<pre><code>stats_start_collector = on
+stats_row_level       = on
+autovacuum            = on</code></pre>
+
+<p>In PostgreSQL 8.3 and later autovacuum is enabled by default, but just in case, the directives have changed:</p>
+
+<pre><code>autovacuum   = on
+track_counts = on</code></pre>
+
+<p>If you enable <code>autovacuum</code> but forget to enable <code>stats_start_collector</code> and/or <code>stats_row_level</code>, or <code>track_counts</code>, autovacuum will not actually work. But it&#39;s not fatal; you&#39;ll just happen to see this warning if you&#39;re watching your PostgreSQL log:</p>
+
+<pre><code>WARNING: autovacuum not started because of misconfiguration
+HINT: Enable options &quot;stats_start_collector&quot; and stats_row_level&quot;.</code></pre>
+
+<p>So be sure to enable them!</p>
+
+<p>Beyond these required settings, our current recommendation for running autovacuum on a Bricolage database are to set the following directives:</p>
+
+<pre><code>autovacuum_vacuum_threshold    = 300
+autovacuum_analyze_threshold   = 500
+autovacuum_vacuum_scale_factor = 0.5</code></pre>
+
+<h2 id="Maintenance-Work-Memory">Maintenance Work Memory</h2>
+
+<p>The <code>maintenance_work_mem</code> directive reserves memory for database maintenance work, such as <code>vacuum</code>ing the database. If your PostgreSQL server has a decent amount of RAM (say 1-2 GB), increase the value of <code>maintenance_work_mem</code> to allow <code>vacuum</code>s and other mainentance work to go faster. We recommend 64 MB (set in KB):</p>
+
+<pre><code>maintenance_work_mem = 65536</code></pre>
+
+<h2 id="Maximum-Free-Space-Map-Pages">Maximum Free Space Map Pages</h2>
+
+<p>The <code>max_fsm_pages</code> directive should be set relative to the amount of update activity. No one is really sure how much daily update activity there is in a typical Bricolage database, and the amount will likely vary from installation to installation. However, if you&#39;re using <code>pg_autovacuum</code> with a threshold of 30%, then you can set <code>max_fsm_pages</code> to 30% of the expected quantity of data pages.</p>
+
+<p>The number of data pages is divided into 8 KB pages. So for a 1 GB database, the number of data pages would be <code>1024 * 1024 / 8 = 131072</code>. For each record updated in the database, PostgreSQL must store a dead tuple. The <code>fsm_map</code> setting determines how much space is held open so that dead tuples don&#39;t crowd the data pages. If you estimate 50% updates, then set <code>max_fsm_pages</code> to <code>131072 * .5 = 65536</code>:</p>
+
+<pre><code>max_fsm_pages = 65536</code></pre>
+
+<p>For a large database on a system with lots of memory, you can assign more. A value of 75000 should be more than enough for expected activity in a 1 GB database.</p>
+
+<h2 id="Genetic-Query-Optimizer">Genetic Query Optimizer</h2>
+
+<p>The Genetic Query Optimizer (or GEQO) is an algorithm that attempts to do query planning without exhaustive searching. It can be very useful when you execute a query with a lot of joins. Note, however, that GEQO queries generally run more slowly than regular queries. In particular, in some installations of Bricolage, templates calling <code>Bric::Biz::Assset::Business::Story-&gt;list</code> with a lot of parameters have been found to really confuse the GEQO. For that reason, if you your templates pass a parameters to <code>Bric::Biz::Assset::Business::Story-&gt;list</code> that cause many tables to be joined, we recommend that you increase the value of <code>geqo_threshold</code> to greater than the number of joined tables. In one installation, we found that setting</p>
+
+<pre><code>geqo_threshold = 15</code></pre>
+
+<p>reduced query times from 20 minutes or more to under a second. You&#39;ll know that you need to tweak this setting when you find that publish jobs just go on forever and never finish. Note, also, that such queries may run quickly in one run, and then much longer in subsequent runs on the same connection. If you don&#39;t notice execution times that are that slow, you can probably leave this paramter alone.</p>
+
+<h2 id="Where-to-Learn-More">Where to Learn More</h2>
+
+<dl>
+
+<dt><a href="http://www.pgexperts.com/document.html?id=34">The Mighty GUCS</a></dt>
+<dd>
+
+<p>By Josh Berkus. Includes annotated GUCs (PostgreSQL configuration directives), presentation slides, and <i>postgresql.conf.simple</i> updated for version 8.4.</p>
+
+</dd>
+<dt><a href="http://archives.postgresql.org/pgsql-performance/">pgsql-performance archives</a></dt>
+<dd>
+
+<p>Search the archives of the pgsql-performance list.</p>
+
+</dd>
+</dl>
+
+<h1 id="More-Performance-Tips">More Performance Tips</h1>
+
+<p>Note: <b>Do this at your own risk!!!</b></p>
+
+<p>Another common cause of poor performance in a PostgreSQL database is the existence of very very large tables. Bricolage can sometimes have this sort of problem since by design it is very conservative about eliminating old data. As a result, certain tables tend to grow quite large.</p>
+
+<p>For instance, if you notice that the Bricolage database has become quite large you might decide that it makes sense to actually delete some of the old data. In particular the <code>job</code> table tends to grow quite large, with most of the data actually not being used for much of anything, so from time to time we do this:</p>
+
+<pre><code>DELETE FROM member
+WHERE  class__id IN (54, 79, 80)
+       AND id NOT IN (
+         SELECT member__id
+         FROM   job_member, job
+         WHERE  job.id = job_member.object_id
+                AND (
+                   executing = true
+                   OR comp_time IS NULL
+                )
+         );
+
+DELETE FROM job
+WHERE  executing = false
+       AND (
+         comp_time IS NOT NULL
+         OR failed = true
+       );</code></pre>
+
+<p>This can result in significant boosts in preview and publish performance, since, for each job-related query, PostgreSQL will no longer have to load a very very large index into memory, sometimes paging it several times. Of course it also saves disk space.</p>
+
+<p>Of course if you have some reason to generate reports on complete jobs you won&#39;t be able to do this.</p>
+
+<h1 id="Authors">Authors</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<p>Mark Jaroski &lt;jaroskim@who.int&gt;</p>
+
+<p>With input and suggestions from Josh Berkus.</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

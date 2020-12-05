@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::SOAP::Media</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Media.html#Name">Name</a></li>
+  <li><a href="Media.html#Synopsis">Synopsis</a></li>
+  <li><a href="Media.html#Description">Description</a></li>
+  <li><a href="Media.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Media.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Media.html#Private-Class-Methods">Private Class Methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Media.html#Author">Author</a></li>
+  <li><a href="Media.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::SOAP::Media - SOAP interface to Bricolage media.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use SOAP::Lite;
+import SOAP::Data &#39;name&#39;;
+
+# setup soap object to login with
+my $soap = new SOAP::Lite
+  uri      =&gt; &#39;http://bricolage.sourceforge.net/Bric/SOAP/Auth&#39;,
+  readable =&gt; DEBUG;
+$soap-&gt;proxy(&#39;http://localhost/soap&#39;,
+             cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+# login
+$soap-&gt;login(name(username =&gt; USER),
+             name(password =&gt; PASSWORD));
+
+# set uri for Media module
+$soap-&gt;uri(&#39;http://bricolage.sourceforge.net/Bric/SOAP/Media&#39;);
+
+# get a list of media_ids for all Illustrations (a Media Type)
+my $media_ids = $soap-&gt;list_ids(name(element =&gt; &#39;Illustration&#39;));</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module provides a SOAP interface to manipulating Bricolage media.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<dl>
+
+<dt>list_ids</dt>
+<dd>
+
+<p>This method queries the database for matching media and returns a list of ids. If no media is found an empty list will be returned.</p>
+
+<p>This method can accept the following named parameters to specify the search. Some fields support matching and are marked with an (M). The value for these fields will be interpreted as an SQL match expression and will be matched case-insensitively. Other fields must specify an exact string to match. Match fields combine to narrow the search results (via ANDs in an SQL WHERE clause).</p>
+
+<dl>
+
+<dt>title (M)</dt>
+<dd>
+
+<p>The media title.</p>
+
+</dd>
+<dt>description (M)</dt>
+<dd>
+
+<p>The media description.</p>
+
+</dd>
+<dt>uri (M)</dt>
+<dd>
+
+<p>The media uri.</p>
+
+</dd>
+<dt>file_name (M)</dt>
+<dd>
+
+<p>The name of the file inside the media object.</p>
+
+</dd>
+<dt>simple (M)</dt>
+<dd>
+
+<p>A single OR search that hits title, description and uri.</p>
+
+</dd>
+<dt>category</dt>
+<dd>
+
+<p>The category containing the media, given as the complete category path from the root. Example: &quot;/news/linux&quot;.</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>The name of the workflow containing the media. (ex. Media)</p>
+
+</dd>
+<dt>priority</dt>
+<dd>
+
+<p>The priority of the media object.</p>
+
+</dd>
+<dt>element</dt>
+<dd>
+
+<p>The name of the top-level element for the media. Also know as the &quot;Media Type&quot;. This value corresponds to the element attribute on the media element in the asset schema.</p>
+
+</dd>
+<dt>site</dt>
+<dd>
+
+<p>The name of the site which the story is in.</p>
+
+</dd>
+<dt>publish_date_start</dt>
+<dd>
+
+<p>Lower bound on publishing date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>publish_date_end</dt>
+<dd>
+
+<p>Upper bound on publishing date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>first_publish_date_start</dt>
+<dd>
+
+<p>Lower bound on the first date a media document was published. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>first_publish_date_end</dt>
+<dd>
+
+<p>Upper bound on the first date a media document was published. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>cover_date_start</dt>
+<dd>
+
+<p>Lower bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>cover_date_end</dt>
+<dd>
+
+<p>Upper bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>expire_date_start</dt>
+<dd>
+
+<p>Lower bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>expire_date_end</dt>
+<dd>
+
+<p>Upper bound on cover date. Given in XML Schema dateTime format (CCYY-MM-DDThh:mm:ssTZ).</p>
+
+</dd>
+<dt>element_key_name (M)</dt>
+<dd>
+
+<p>The key name of the top-level element for the media document. This is more accurate than the <code>element</code> parameter, since there can be multiple elements with the same name.</p>
+
+</dd>
+<dt>unexpired</dt>
+<dd>
+
+<p>Set to a true value to get a list of only unexpired stories.</p>
+
+</dd>
+<dt>subelement_key_name (M)</dt>
+<dd>
+
+<p>The key name for a container element that&#39;s a subelement of a media document.</p>
+
+</dd>
+<dt>data_text (M)</dt>
+<dd>
+
+<p>Text stored in the fields of the media document element or any of its subelements. Only fields that use the &quot;short&quot; storage type will be searched.</p>
+
+</dd>
+<dt>output_channel</dt>
+<dd>
+
+<p>The name of an ouput channel that stories must be associated with.</p>
+
+</dd>
+<dt>keyword (M)</dt>
+<dd>
+
+<p>A keyword associated with a media document.</p>
+
+</dd>
+<dt>contrib_id</dt>
+<dd>
+
+<p>A Bricolage contributor object ID. Only stories associated with that contributor will have their IDs listed.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: In addition to the parameters listed above, you can use most of the parameters listed in the documentation for the list method in Bric::Biz::Asset::Business::Media.</p>
+
+</dd>
+<dt>export</dt>
+<dd>
+
+<p>The export method retrieves a set of media from the database, serializes them and returns them as a single XML document. See <a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a> for the schema of the returned document.</p>
+
+<p>Accepted paramters are:</p>
+
+<dl>
+
+<dt>media_id</dt>
+<dd>
+
+<p>Specifies a single media_id to be retrieved.</p>
+
+</dd>
+<dt>media_ids</dt>
+<dd>
+
+<p>Specifies a list of media_ids. The value for this option should be an array of interger &quot;media_id&quot; elements.</p>
+
+</dd>
+<dt>no_file</dt>
+<dd>
+
+<p>Boolean value that, when true, indicates that the resulting XML should not include the <code>&lt;file&gt;</code> element with the Base-64 encoded content for any exported media.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: Bric::SOAP::Media-&gt;export doesn&#39;t provide equivalents to the export_related_stories and export_related_media options in Bric::SOAP::Story-&gt;export. Related media and related stories will always be returned with absolute id references. If you&#39;re... creative... enough to be using related media and stories in your Media types then you&#39;ll have to manually fetch the relations.</p>
+
+</dd>
+<dt>create</dt>
+<dd>
+
+<p>The create method creates new objects using the data contained in an XML document of the format created by export().</p>
+
+<p>Returns a list of new ids created in the order of the assets in the document.</p>
+
+<p>Available options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document containing objects to be created. The document must contain at least one media object.</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>Specifies the initial workflow the story is to be created in</p>
+
+</dd>
+<dt>desk</dt>
+<dd>
+
+<p>Specifies the initial desk the story is to be created on</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: The setting for publish_status in the incoming media is ignored and always 0 for new media.</p>
+
+<p>New stories are put in the first &quot;media workflow&quot; unless you pass in the --workflow option. The start desk of the workflow is used unless you pass the --desk option.</p>
+
+</dd>
+<dt>update</dt>
+<dd>
+
+<p>The update method updates media using the data in an XML document of the format created by export(). A common use of update() is to export() a selected media object, make changes to one or more fields and then submit the changes with update().</p>
+
+<p>Returns a list of new ids created in the order of the assets in the document.</p>
+
+<p>Takes the following options:</p>
+
+<dl>
+
+<dt>document (required)</dt>
+<dd>
+
+<p>The XML document where the objects to be updated can be found. The document must contain at least one media and may contain any number of related media objects.</p>
+
+</dd>
+<dt>update_ids (required)</dt>
+<dd>
+
+<p>A list of &quot;media_id&quot; integers for the assets to be updated. These must match id attributes on media elements in the document. If you include objects in the document that are not listed in update_ids then they will be treated as in create(). For that reason an update() with an empty update_ids list is equivalent to a create().</p>
+
+</dd>
+<dt>workflow</dt>
+<dd>
+
+<p>Specifies the workflow to move the media to</p>
+
+</dd>
+<dt>desk</dt>
+<dd>
+
+<p>Specifies the desk to move the media to</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: The setting for publish_status for new media is ignored and always 0 for new stories. Updated media do get their publish_status set from the incoming document.</p>
+
+</dd>
+<dt>delete</dt>
+<dd>
+
+<p>The delete() method deletes media. It takes the following options:</p>
+
+<dl>
+
+<dt>media_id</dt>
+<dd>
+
+<p>Specifies a single media_id to be deleted.</p>
+
+</dd>
+<dt>media_ids</dt>
+<dd>
+
+<p>Specifies a list of media_ids to delete.</p>
+
+</dd>
+</dl>
+
+<p>Throws:</p>
+
+<dl>
+
+<dt>Exception::AP</dt>
+<dd>
+
+</dd>
+</dl>
+
+<p>Side Effects: NONE</p>
+
+<p>Notes: NONE</p>
+
+</dd>
+<dt>$self-&gt;module</dt>
+<dd>
+
+<p>Returns the module name, that is the first argument passed to bric_soap.</p>
+
+</dd>
+<dt>is_allowed_param</dt>
+<dd>
+
+</dd>
+<dt>$pkg-&gt;is_allowed_param($param, $method)</dt>
+<dd>
+
+<p>Returns true if $param is an allowed parameter to the $method method.</p>
+
+</dd>
+</dl>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<dl>
+
+<dt>$pkg-&gt;load_asset($args)</dt>
+<dd>
+
+<p>This method provides the meat of both create() and update(). The only difference between the two methods is that update_ids will be empty on create().</p>
+
+</dd>
+<dt>$pkg-&gt;serialize_asset(writer =&gt; $writer, media_id =&gt; $media_id, args =&gt; $args)</dt>
+<dd>
+
+<p>Serializes a single media object into a &lt;media&gt; element using the given writer and args.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Sam Tregar &lt;stregar@about-inc.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric/SOAP.html" name="Bric::SOAP">Bric::SOAP</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>bric_dist_mon</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="bric_dist_mon.html#Name">Name</a></li>
+  <li><a href="bric_dist_mon.html#Synopsis">Synopsis</a></li>
+  <li><a href="bric_dist_mon.html#Description">Description</a></li>
+  <li><a href="bric_dist_mon.html#Options">Options</a></li>
+  <li><a href="bric_dist_mon.html#Author">Author</a></li>
+  <li><a href="bric_dist_mon.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>bric_dist_mon - Bricolage distribution monitor</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>bric_dist_mon -u username -p password
+
+bric_dist_mon -u username -p password -i 15
+
+bric_dist_mon -u username -p password -c
+
+bric_dist_mon -u username -p password</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This program triggers the execution of distribution jobs when they&#39;re due. It does this by sending a ticler request to the Bricolage server on a regular basis.</p>
+
+<p><i>bric_dist_mon</i> works in one of two ways. The first is as a cron job. Use the <code>-c</code> option in a crontab and <i>bric_dist_mon</i> will always execute once and then exit. Using <i>bric_dist_mon</i> in a cron job allows the interval for its execution to be managed by cron, but limits it to the intervals supported by cron. For example, cron typically allows jobs to be scheduled to run as frequently as every minute. This will be fine for most applications. However, in a busy Bricolage environment with highly time-critical content, it may be important to have <i>bric_dist_mon</i> trigger new distribution jobs more frequently than cron will allow.</p>
+
+<p>For those environments, <i>bric_dist_mon</i> can be used as a persistent, forking program. This is the default way to run <i>bric_dist_mon</i>, and the interval can be set via the <code>-i</code> option. For example, if a busy environment needed distribution jobs checked for and executed every 15 seconds, <code>-i 15</code> will cause <i>bric_dist_mon</i> to fork a new process every fifteen seconds to send a tickle request to the distribution server.</p>
+
+<p>Note that, to run <i>bric_dist_mon</i> as a persistent forking application, some method of ensuring that it remains running and gets restarted if it exits will need to be put in place. But since most environments will be well served by the 1-minute intervals allowed by cron, we expect that approach to be the main way of running <i>bric_dist_mon</i>, thus avoiding the persistence issues.</p>
+
+<h1 id="Options">Options</h1>
+
+<dl>
+
+<dt>-u</dt>
+<dd>
+
+<p>Bricolage user login. All distribution jobs will be executed by this user. <b>Required.</b></p>
+
+</dd>
+<dt>-p</dt>
+<dd>
+
+<p>Bricolage user password. <b>Required.</b></p>
+
+</dd>
+<dt>-i</dt>
+<dd>
+
+<p>Interval (in seconds) between checks for jobs to execute and expire. Defaults to 30 seconds.</p>
+
+</dd>
+<dt>-U</dt>
+<dd>
+
+<p>The distribution server URL, including the protocol. Defaults to &quot;http://localhost/dist/&quot;. If &quot;/dist&quot; isn&#39;t appended to the end of the URL, <i>bric_dist_mon</i> will append it for you.</p>
+
+</dd>
+<dt>-t</dt>
+<dd>
+
+<p>The distribution server request timeout, in seconds. Defaults to 30.</p>
+
+</dd>
+<dt>-a</dt>
+<dd>
+
+<p>IP Address from which the distribution requests will be sent to the distribution server. If not provided, <i>bric_dist_mon</i> will do its best to figure out what the IP address is.</p>
+
+</dd>
+<dt>-c</dt>
+<dd>
+
+<p>Cron mode. Will run only once and then exit.</p>
+
+</dd>
+<dt>-f</dt>
+<dd>
+
+<p>An integer representing the number of times the script should fork. Useful for testing. Does not apply with <code>-c</code>.</p>
+
+</dd>
+<dt>-d</dt>
+<dd>
+
+<p>Print and log debugging data to the system logs. This can be very verbose and fill up your logs, so use with care.</p>
+
+</dd>
+<dt>-h</dt>
+<dd>
+
+<p>Print a usage statement.</p>
+
+</dd>
+<dt>-v</dt>
+<dd>
+
+<p>Print the version number.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../2.0/api/Bric/Dist/Client.html" name="Bric::Dist::Client">Bric::Dist::Client</a>, <a rel="section" href="../../2.0/api/Bric/Dist/Handler.html" name="Bric::Dist::Handler">Bric::Dist::Handler</a>.</p>
+
+</body>
+</html>
+

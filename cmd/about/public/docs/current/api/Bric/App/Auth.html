@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::Auth</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Auth.html#Name">Name</a></li>
+  <li><a href="Auth.html#Synopsis">Synopsis</a></li>
+  <li><a href="Auth.html#Description">Description</a></li>
+  <li><a href="Auth.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Auth.html#Constructors">Constructors</a></li>
+      <li><a href="Auth.html#Destructors">Destructors</a></li>
+      <li><a href="Auth.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="Auth.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Auth.html#Private">Private</a>
+    <ul>
+      <li><a href="Auth.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="Auth.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="Auth.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="Auth.html#Notes">Notes</a></li>
+  <li><a href="Auth.html#Author">Author</a></li>
+  <li><a href="Auth.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::Auth - Does the dirty work of authentication.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>&lt;Perl&gt;
+use lib &#39;/usr/local/bricolage/lib&#39;;
+&lt;/Perl&gt;
+&lt;VirtualHost _default_:443&gt;
+    ErrorLog /usr/local/apache/logs/error_log
+    TransferLog /usr/local/apache/logs/access_log
+    SSLEngine on
+    SSLCipherSuite ALL:!ADH:!EXP56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+    SSLCertificateFile /usr/local/apache/conf/ssl.crt/server.crt
+    SSLCertificateKeyFile /usr/local/apache/conf/ssl.key/server.key
+    &lt;Location /login&gt;
+        SetHandler perl-script
+        PerlHandler Bric::App::Auth
+    &lt;/Location&gt;
+&lt;/VirtualHost&gt;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module handles the user authentication.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my ($res, $msg) = auth($r)</dt>
+<dd>
+
+<p>Checks to see if the user is logged in to the current session. Used by Bric::App::AccessHandler.</p>
+
+<p><b>Throws:</b> NONE.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my ($bool, $msg) = login($r, $username, $password)</dt>
+<dd>
+
+<p>Logs the user into Bricolage, setting the authentication cookie to allow future access that can be checked by a call to auth(). $bool is true on successful login. $bool is undef on failed login, and $msg contains the reason why the login failed.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>masquerade($r, $user)</dt>
+<dd>
+
+<p>Sets up a different user for the current user to masquerade as. This is useful when an administrator needs a to masquerade as another user in order to check in assets that user hasn&#39;t checked in. Note that <code>masquerade()</code> performs no authentication. It is expected that the current user will have permission to masquerade as the user passed in.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my $bool = logout($r)</dt>
+<dd>
+
+<p>Logs the currently logged-in user out.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<dl>
+
+<dt>my $cookie = $make_cookie-&gt;($r, $username)</dt>
+<dd>
+
+</dd>
+<dt>my $cookie = $make_cookie-&gt;($r, $username, $lul_time)</dt>
+<dd>
+
+<p>Bakes the authentication cookie.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my ($hash, $exp, $ip) = &amp;$make_hash($r, $un)</dt>
+<dd>
+
+</dd>
+<dt>my ($hash, $exp, $ip) = &amp;$make_hash($r, $un, $exp, $ip, $lul)</dt>
+<dd>
+
+<p>Returns the data points required for baking cookies. These include the MD5 hash, the expiration time, and the IP subnet.</p>
+
+<p><b>Throws:</b> None.</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+<dt>my ($ret, $msg) = &amp;$fail($r, $msg)</dt>
+<dd>
+
+<p>Expires the user session and then returns an error message explaining why the user wasn&#39;t able to authenticate.</p>
+
+<p><b>Throws:</b></p>
+
+<ul>
+
+<li><p>Unable to expire user session.</p>
+
+</li>
+<li><p>Difficulties tie&#39;ing the session hash.</p>
+
+</li>
+</ul>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+

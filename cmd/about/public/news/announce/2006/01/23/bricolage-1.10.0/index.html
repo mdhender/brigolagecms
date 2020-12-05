@@ -1,0 +1,353 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bricolage CMS -- Bricolage 1.10.0 is in da House</title>
+	<meta name="keywords" content="" />
+    <meta name="generator" content="Bricolage 2.0.0" />
+	<link rel="stylesheet" href="../../../../../../ui/css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../../../../../ui/css/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]>
+            <link rel="stylesheet" href="/ui/css/blueprint/ie.css" type="text/css" media="screen, projection">
+        <![endif]-->
+	<link rel="stylesheet" href="../../../../../../ui/css/bricolagecms-org.css@v04112010-2.css" type="text/css" media="screen, projection">
+	
+    <link rel="alternate" type="application/rss+xml" title="Bricolage CMS RSS Feed" href="http://feeds.feedburner.com/BricolageCMS" />
+
+	<script type="text/javascript" src="../../../../../../ui/js/jquery/jquery-1.3.2.min.js">
+    </script> 
+    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.2.72.js"></script>
+	<script src="../../../../../../ui/js/jquery.corner.js" type="text/javascript">
+    </script> 
+    <script type="text/javascript">
+			$(function(){
+			$('#header').corner("bottom");
+			$('.box').corner("keep");
+			$('#teaser').corner("keep");
+			$('#enterprise').corner("keep");
+			$('#sidebar dl').corner("keep");
+			$('#slides').cycle({
+				fx: 'fade',
+   				timeout: 8000,  // milliseconds between slide transitions (0 to disable auto advance) 
+    			pause: 1,     // true to enable "pause on hover" 
+				});
+			});
+		</script> 
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body id="bricolage-1.10.0" class="news announce">
+	<div class="container">
+		<div id="header">
+			<div class="header span-24 last">
+				<a href="../../../../../../index.html"><h1>Bricolage Content Management System</h1></a> 
+				<ul id="main-nav">
+					<li>
+						<a href="../../../../../../tour/index.html">Tour</a> 
+					</li>
+					<li>
+						<a href="../../../../../../showcase/index.html">Showcase</a> 
+					</li>
+					<li>
+						<a href="../../../../../../downloads.html">Download</a> 
+					</li>
+					<li>
+						<a href="../../../../../../support/index.html">Support</a> 
+					</li>
+					<li>
+						<a href="https://github.com/bricoleurs/bricolage/wiki">Wiki</a> 
+					</li>
+					<li>
+						<a href="../../../../../../docs/current/api/index.html">API</a> 
+					</li>
+				</ul>
+			</div>
+		</div>	
+
+<div id="content" class="column span-15 prepend-1">
+	<h2>Bricolage 1.10.0 is in da House</h2>
+		<div id="articlemeta">
+            <p class="date">2006.01.23</p>
+          </div>
+
+          <p>It is with great pleasure that the Bricolage development team announces the
+release of Bricolage 1.10. The culmination of over 19 months of development,
+version 1.10 represents a significant advance for the celebrated open-source
+content management and publishing system. Here are some of the highlights:</p>
+          <h4>PHP Templating</h4>
+          <p>Bricolage is the first content management system to support three different
+Perl-based templating architectures (Mason, Template Toolkit, and
+HTML::Template) as well as one in a completely different programming language:
+PHP 5. Bricolage 1.10 adds PHP templating support, allowing template
+developers to use the popular Web programming language to formatting their
+documents for output. This functionality is thanks to a killer new technology,
+known as <a href="http://search.cpan.org/dist/PHP-Interpreter"
+title="PHP::Interpreter on CPAN"> PHP::Interpreter</a>, that loads the PHP 5
+interpreter into a Perl 5 interpreter, and affords transparent access between
+PHP and Perl code. The upshot is that PHP templaters get full access to the
+entire Bricolage API, as well as the ability to use whatever other PHP or Perl
+libraries they wish.</p>
+          <p>Our expect is that this development will push Bricolage into new environments
+where PHP developers can make use of the powerful content management and
+publishing system without having to learn a new programming language.
+Furthermore, we hope that PHP::Interpreter will act as a bridge between the
+Perl and PHP communities, such that there is a greater exchange of ideas and a
+greater ability to use each other's libraries.</p>
+          <p>PHP::Interpreter was developed by OmniTI. PHP::Interpreter and the PHP
+templating support in Bricolage were sponsored by SAPO--Portugal Online.</p>
+          <h4>LDAP Authentication</h4>
+          <p>Bricolage 1.10 includes support for a pluggable authentication architecture,
+and in addition to its built-in authentication has added a module for
+authentication against an LDAP directory server. This new feature is sure to
+be welcome in busy enterprises that rely on a directory server, such as
+<a href="http://www.microsoft.com/windowsserver2003/technologies/directory/activedirectory/default.mspx" title="The Micrososft Windows Active Directory product page">Windows Active Directory</a>
+<a href="http://www.novell.com/products/edirectory/" title="The Novel eDirectory product page">Novel eDirectory</a>, or 
+<a href="http://www.openldap.org/" title="The OpenLDAP Open-Source directory
+server home page">OpenLDAP</a>. Authentication can be limited to members of a
+directory group, and supports LDAP v.3 and TLS connectivity. Contributed by
+Kineticode.</p>
+          <h4>Revamped Interface</h4>
+          <p>Bricolage 1.10 sports a completely revamped browser interface that is XHTML
+compliant and handles all styling via CSS. Yes, our 1999-era table-driven
+interface is officially a thing of the past. The upshot is that the interface
+is much more elegant, easier to skin with your own look (by overriding its CSS
+files), allows search results and editing fields to expand and contract with
+the browser window size, and delivers pages as much as 70% smaller than they
+were before. The new interface was Contributed by Marshall Roch.</p>
+          <p>A second major new UI feature is the revamped <q>Bulk Edit</q> interface. Gone is
+the old <q>Super Bulk Edit</q> interface, with the Bulk Edit revisions overtaking
+its functionality. Now you can edit the entire contents of a story document,
+from the top-most element to the bottom-most field, in a single textarea field
+with no reloads.</p>
+          <p>The secret to allowing the full-text editing of Bricolage's unique
+hierarchical element structures is Plain Old Documentation, or <q>POD</q>.
+Subelements are denoted by a new <code>=begin</code> POD tag, and end with a matching
+<code>=end tag</code>. The result is a much more natural editing interface.
+Even related stories and media are supported by new POD tags. We believe that
+this improvement will greatly facilitate the editing process, making Bricolage
+a much more enjoyable product for content editors to work with.</p>
+          <p>The Bulk Edit revision is complemented by two new additions: diff support and
+a JavaScript-powered <q>Find and Replace</q> dialog box. Users can now see at a
+glance the changes between one version of a document and another. The changes
+are shown on a word-by-word basis, with additions in green with an underline
+and deletions in red with a strikeout. A similar interface is used to show the
+differences between versions of templates using the traditional <q>unified diff</q>
+format rather than word-by word.</p>
+          <p>The JavaScript-powered <q>Find and Replace</q> dialog box can be used to search by
+strings or regular expressions in a Bulk Edit or Template editing environment.
+Found bits of text can also be replaced or even globally replaced. We believe
+that this powerful new feature, combined with the new Bulk Edit interface,
+makes Bricolage a compelling content editing environment.</p>
+          <p>The Bulk Edit, diff, and Find and Replace features were contributed by
+Kineticode.</p>
+          <h4>What's in a Name?</h4>
+          <p>A somewhat less apparent but no less massive change in Bricolage 1.10 is a
+system-wide naming normalization. Now all objects in Bricolage are known by
+the same names, from the UI to the class to the database to the SOAP server.
+Most noticeable in the UI will be the elimination of the old <q>Element Type</q>
+object, and the renaming of <q>Element</q> objects to <q>Element Types.</q> This change
+has the benefit of disambiguating element types, which define the structure of
+documents, and elements, which are the document parts that contain content.
+Gone is the confusion between element administration and content elements;
+there are now only element types and elements.</p>
+          <p>Another example is the renaming of <q>Data Elements</q> to <q>Field Types</q> and
+<q>Fields</q>. And in tandem with this change, the storage of field values in the
+database has been normalized, so that every field value does not also store
+the name and key name of the field. This greatly reduces the size of the
+database, and should make field lookups much faster, particularly in
+formatting templates.</p>
+          <p>And while we were going about normalizing field storage, the data types of
+the database columns were also normalized. Old-style, inefficient column types
+have been dumped in favor of more efficient, precise column types. For
+example, all <q>NUMERIC</q> columns, which everywhere only contained integers
+or booleans, have been converted the <q>INTEGER</q> and <q>BOOLEAN</q> data
+types, as appropriate. This change will also be invisible to the everyday
+Bricolage user, but should enhance database performance by optimizing the
+storage of object attributes.</p>
+          <p>And finally, a more visible change: Bricolage 1.10 introduces much more
+flexible URI formats. You can now use many more parts of the cover date in the
+URI, and in whatever format you like. So you could have a format of
+<q>/%{categories}/%Y-%m-%d/</q> and end up with the URI <q>/foo/bar/2004-09-22/</q> if
+you wanted. Or even <q>/%{categories}/%Y/%V/</q> to get the week number as part of
+the URI. You can also include document UUIDs, and even your own text, (e.g.
+foobar in <q>/%{categories}/%Y/%m/foobar/%{uuid}/</q>. This enhancement finally
+allows users to almost always be able to replicate legacy URI formats in
+Bricolage, for a seamless upgrade from an older CMS.</p>
+          <h3>What are You Waiting For?</h3>
+          <p>There are many, many more changes in Bricolage 1.10 that, overall, make using
+it a joy. For a complete list of the changes, see
+the <a href="http://www.bricolage.cc/news/announce/changes/bricolage-1.10.0/"
+title="The complete list of changes in Bricolage 1.10">changes list. For the
+complete history of ongoing changes in Bricolage, see at
+<a href="https://bricolagecms.org/docs/current/api/Bric::Changes" title="The complet history of Bricolage changes">Bric::Changes</a>.</p>
+          <p>Download Bricolage 1.10.0 now from the Bricolage Web site <a
+href="http://www.bricolage.cc/downloads/">Downloads page</a>, from the <a
+href="http://sourceforge.net/project/showfiles.php?group_id=34789">SourceForge
+download page</a>, and from the <a
+href="http://www.kineticode.com/bricolage/index2.html">Kineticode download
+page</a>.</p>
+          <h3>About Bricolage</h3>
+          <p>Bricolage is a full-featured, enterprise-class content management and
+publishing system. It offers a browser-based interface for ease-of use, a
+full-fledged templating system with complete HTML::Mason, HTML::Template,
+PHP5, and Template Toolkit support for flexibility, and many other features.
+It operates in an Apache/mod_perl environment and uses the PostgreSQL RDBMS
+for its repository. A comprehensive, actively-developed open source CMS,
+Bricolage has been hailed by <cite>eWEEK</cite> as <q>quite possibly the most
+capable enterprise-class open-source application available.</q></p>
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bricolagecms/embed.js"></script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bricolagecms">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div id="sidebar" class="column span-8 last">
+
+
+		<dl id="recent-project-activity">
+			<dt>
+				Recent project activty
+			</dt>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41115" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41114" title="Doorself, la porta in legno massello per il professionista" target="_blank" rel="nofollow">Doorself, la porta in legno massello per il professionista</a><br /="/">January 28, 2017</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41109" title="Cloned Bric 1.10.2 fails to start" target="_blank" rel="nofollow">Cloned Bric 1.10.2 fails to start</a><br /="/">June 15, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/devel/41107" title="You have been added to Bricolage Developers" target="_blank" rel="nofollow">You have been added to Bricolage Developers</a><br /="/">June 2, 2016</dd>
+<dd><a href="http://www.gossamer-threads.com/lists/bricolage/users/41108" title="You have been added to Bricolage Users" target="_blank" rel="nofollow">You have been added to Bricolage Users</a><br /="/">June 2, 2016</dd>
+	
+		</dl>
+		<dl id="planet-bricolage" class="box">
+			<dt>
+				Planet Bricolage
+			</dt>
+<dd><a href="http://www.youtube.com/watch?v=uU0FBda4sX0&feature=youtube_gdata" title="A sneak-peak at Bricolage 1.11&#39;s new AJAX features" target="_blank" rel="nofollow">A sneak-peak at Bricolage 1.11&#39;s new AJAX features</a><br /="/">June 2, 2009</dd>
+	
+		</dl>
+		<dl id="search" class="box">
+				<dt>
+					Search Bricolage
+				</dt>
+				<div id="cse" style="width: 99%;">Loading</div>
+				<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+				<script type="text/javascript">
+				  google.load('search', '1', {language : 'en'});
+				  google.setOnLoadCallback(function(){
+					var customSearchControl = new google.search.CustomSearchControl('013635470282570704404:c3ljue3ezoy');
+					customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+					customSearchControl.draw('cse');
+				  }, true);
+				</script>
+				<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+		</dl>
+</div>
+
+    
+<!-- #bbinclude "footer.html" -->
+ 
+<div id="footer" class="column span-24 last">
+	<div class="menu column span-24 last">
+		<ul>
+			<li>
+				<a href="../../../../../../index.html">Home</a> 
+			</li>
+			<li>
+				<a href="../../../../../../tour/index.html">Tour</a> 
+			</li>
+			<li>
+				<a href="../../../../../../showcase/index.html">Showcase</a> 
+			</li>
+			<li>
+				<a href="../../../../../../downloads.html">Download</a> 
+			</li>
+			<li>
+				<a href="../../../../../../support/index.html">Support</a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://github.com/bricoleurs/bricolage">Source Code</a> 
+			</li>
+			<li>
+				<a href="http://wiki.github.com/bricoleurs/bricolage/">Wiki</a> 
+			</li>
+			<li>
+				<a href="../../../../../../docs/current/api/index.html">API Documentation</a> 
+			</li>
+			<li>
+				<a href="../../../../../../support/index.html#mailinglists">Mailing lists</a> 
+			</li>
+			<li>
+				<a href="http://bricolage.lighthouseapp.com/projects/29601-bricolage">Report a Site Bug </a> 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="http://www.linkedin.com/groups?gid=74787&trk=myg_ugrp_ovr">LinkedIn group</a> 
+			</li>
+			<li>
+				<a href="http://twitter.com/bricolagecms">Twitter</a> 
+			</li>
+			<li>
+				<a href="http://www.facebook.com/pages/Bricolage-CMS/108168125880618">Facebook page</a> 
+			</li>
+			<li>
+				<a href="http://feeds.feedburner.com/BricolageCMS">RSS updates</a> 
+			</li>
+			<li>
+				<a href="http://feedburner.google.com/fb/a/mailverify?uri=BricolageCMS">E-mail updates</a> 
+			</li>
+		</ul>
+		<div class="logo">
+			&nbsp; 
+		</div>
+	</div>
+	<p id="copyright">
+		&copy; 2004-2010 Bricolage Development Team.
+		<br />
+		The contents of this site are licensed under a <a href="http://creativecommons.org/licenses/by-nc/2.0/">Creative Commons License</a>. 
+	</p>
+	<div class="center">
+		<span id="tagline"> The mature, no-bullshit, built-like-a-tank web publishing system. </span> 
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-2885748-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/bricolagecms/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+<script type="text/javascript">
+var _sf_async_config={uid:5276,domain:"bricolagecms.org"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+</body>
+</html>	

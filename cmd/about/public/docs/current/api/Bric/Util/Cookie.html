@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::Util::Cookie</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="Cookie.html#Name">Name</a></li>
+  <li><a href="Cookie.html#Synopsis">Synopsis</a></li>
+  <li><a href="Cookie.html#Description">Description</a></li>
+  <li><a href="Cookie.html#Interface">Interface</a>
+    <ul>
+      <li><a href="Cookie.html#Constructor">Constructor</a></li>
+      <li><a href="Cookie.html#Class-methods">Class methods</a></li>
+      <li><a href="Cookie.html#Instance-methods">Instance methods</a></li>
+    </ul>
+  </li>
+  <li><a href="Cookie.html#Author">Author</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::Util::Cookie - Wrapper around Apache::Cookie, Apache2::Cookie, and CGI::Cookie</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>use Bric::Util::Cookie;
+my $cookie = Bric::Util::Cookie-&gt;new($r);
+$cookie-&gt;bake;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This package subclasses the <code>Apache::Cookie</code>, <code>Apache2::Cookie</code>, or <code>CGI::Cookie</code> class so that Bricolage doesn&#39;t have to care about which version of Apache is running, or whether it is running at all.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructor">Constructor</h2>
+
+<dl>
+
+<dt>my $cookie = Bric::Util::Cookie-&gt;new($r, ...);</dt>
+<dd>
+
+<p>Returns a new <code>Bric::Util::Cookie</code> object, which is actually either an <code>Apache::Cookie</code> object for mod_perl 1 or an <code>Apache2::Cookie</code> object for mod_perl 2.</p>
+
+<p>In <code>Apache::Cookie</code> or <code>Apache2::Cookie</code> this method requires the <code>$r</code> object to be passed in, so you should always pass the <code>$r</code> object for compatibility.</p>
+
+</dd>
+</dl>
+
+<h2 id="Class-methods">Class methods</h2>
+
+<dl>
+
+<dt>my %cookies = Bric::Util::Cookie-&gt;fetch($r);</dt>
+<dd>
+
+<p>Returns a cookies hash. In <code>Apache2::Cookie</code> this method requires the <code>$r</code> object to be passed in, so you should always pass the <code>$r</code> object for compatibility.</p>
+
+</dd>
+</dl>
+
+<h2 id="Instance-methods">Instance methods</h2>
+
+<p>Methods not documented here, like <code>value</code>, are inherited from the base class.</p>
+
+<dl>
+
+<dt>$cookie-&gt;bake($r);</dt>
+<dd>
+
+<p>In <code>Apache2::Cookie</code> this method requires the <code>$r</code> object to be passed in, so you should always pass the <code>$r</code> object for compatibility.</p>
+
+</dd>
+</dl>
+
+<h1 id="Author">Author</h1>
+
+<p>Scott Lanning &lt;slanning@cpan.org&gt;</p>
+
+</body>
+</html>
+

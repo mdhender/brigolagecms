@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Pod::Site 0.50" />
+    <title>Bric::App::CleanupHandler</title>
+  </head>
+  <body class="pod">
+
+<ul id="index">
+  <li><a href="CleanupHandler.html#Name">Name</a></li>
+  <li><a href="CleanupHandler.html#Synopsis">Synopsis</a></li>
+  <li><a href="CleanupHandler.html#Description">Description</a></li>
+  <li><a href="CleanupHandler.html#Interface">Interface</a>
+    <ul>
+      <li><a href="CleanupHandler.html#Constructors">Constructors</a></li>
+      <li><a href="CleanupHandler.html#Destructors">Destructors</a></li>
+      <li><a href="CleanupHandler.html#Public-Class-Methods">Public Class Methods</a></li>
+      <li><a href="CleanupHandler.html#Public-Functions">Public Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="CleanupHandler.html#Private">Private</a>
+    <ul>
+      <li><a href="CleanupHandler.html#Private-Class-Methods">Private Class Methods</a></li>
+      <li><a href="CleanupHandler.html#Private-Instance-Methods">Private Instance Methods</a></li>
+      <li><a href="CleanupHandler.html#Private-Functions">Private Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="CleanupHandler.html#Notes">Notes</a></li>
+  <li><a href="CleanupHandler.html#Author">Author</a></li>
+  <li><a href="CleanupHandler.html#See-Also">See Also</a></li>
+</ul>
+
+<h1 id="Name">Name</h1>
+
+<p>Bric::App::CleanupHandler - Cleans up at the end of a request.</p>
+
+<h1 id="Synopsis">Synopsis</h1>
+
+<pre><code>&lt;Perl&gt;
+use lib &#39;/usr/local/bricolage/lib&#39;;
+&lt;/Perl&gt;
+PerlModule Bric::App::Handler
+PerlModule Bric::App::AccessHandler
+PerlModule Bric::App::CleanupHandler
+PerlFreshRestart    On
+DocumentRoot &quot;/usr/local/bricolage/comp&quot;
+&lt;Directory &quot;/usr/local/bricolage/comp&quot;&gt;
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+    SetHandler perl-script
+    PerlHandler Bric::App::Handler
+    PerlAccessHandler Bric::App::AccessHandler
+    PerlCleanupHandler Bric::App::CleanupHandler
+&lt;/Directory&gt;</code></pre>
+
+<h1 id="Description">Description</h1>
+
+<p>This module handles the cleanup phase of an Apache request. It logs all events to the database (which in turn send any alerts), syncs the session data, and clears out the request cache.</p>
+
+<h1 id="Interface">Interface</h1>
+
+<h2 id="Constructors">Constructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Destructors">Destructors</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Class-Methods">Public Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Public-Functions">Public Functions</h2>
+
+<dl>
+
+<dt>my $status = handler()</dt>
+<dd>
+
+<p>Handles the apache request.</p>
+
+<p><b>Throws:</b> None - the buck stops here!</p>
+
+<p><b>Side Effects:</b> NONE.</p>
+
+<p><b>Notes:</b> NONE.</p>
+
+</dd>
+</dl>
+
+<h1 id="Private">Private</h1>
+
+<h2 id="Private-Class-Methods">Private Class Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Instance-Methods">Private Instance Methods</h2>
+
+<p>NONE.</p>
+
+<h2 id="Private-Functions">Private Functions</h2>
+
+<p>NONE.</p>
+
+<h1 id="Notes">Notes</h1>
+
+<p>NONE.</p>
+
+<h1 id="Author">Author</h1>
+
+<p>David Wheeler &lt;david@justatheory.com&gt;</p>
+
+<h1 id="See-Also">See Also</h1>
+
+<p><a rel="section" href="../../../../2.0/api/Bric.html" name="Bric">Bric</a></p>
+
+</body>
+</html>
+
