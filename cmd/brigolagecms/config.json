@@ -1,0 +1,8 @@
+{
+  "debug": true,
+  "host": "localhost",
+  "port": "8080",
+  "idle-timeout": "10s",
+  "read-timeout": "5s",
+  "write-timeout": "10s"
+}
