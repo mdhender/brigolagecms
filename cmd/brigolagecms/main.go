@@ -1,4 +1,4 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/cmd/brigolagecms/main.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -28,27 +28,39 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// Package main implements the BrigolageCMS server.
 package main
 
 import (
-	"net"
-	"net/http"
+	"encoding/json"
+	"fmt"
+	"log"
+	"mime"
+	"os"
 )
 
-type server struct {
-	http.Server
-	routes http.Handler
-}
+func main() {
+	// go depends on the operating system to associate extensions with mime-types.
+	// the default usually works, but some containers need a helping hand.
+	if err := mime.AddExtensionType(".css", "text/css; charset=utf-8"); err != nil {
+		log.Fatal(err)
+	}
 
-func newServer(cfg *config) *server {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
+	cfg, err := newConfig()
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(2)
+	} else if cfg.FileName != "" {
+		log.Printf("[main] loaded config from %q\n", cfg.FileName)
+	} else if data, err := json.MarshalIndent(cfg, "  ", "  "); err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(2)
+	} else {
+		log.Printf("[main] config %s\n", string(data))
+	}
 
-	srv.routes = http.DefaultServeMux
-
-	return srv
+	if err := run(cfg); err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(2)
+	}
 }

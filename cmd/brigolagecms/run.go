@@ -1,4 +1,4 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/cmd/brigolagecms/run.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -31,24 +31,20 @@
 package main
 
 import (
-	"net"
-	"net/http"
+	"fmt"
+	"log"
 )
 
-type server struct {
-	http.Server
-	routes http.Handler
-}
+func run(cfg *config) error {
+	if cfg == nil {
+		return fmt.Errorf("assert(cfg != nil)")
+	}
+	if cfg.Server.Scheme == "https" {
+		return fmt.Errorf("assert(http.Scheme != https)")
+	}
 
-func newServer(cfg *config) *server {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
+	srv := newServer(cfg)
 
-	srv.routes = http.DefaultServeMux
-
-	return srv
+	log.Printf("[server] listening on %s\n", srv.Addr)
+	return srv.ListenAndServe()
 }

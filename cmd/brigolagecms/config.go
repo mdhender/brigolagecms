@@ -32,14 +32,14 @@ package main
 
 import (
 	"flag"
-	ff "github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3"
 	"os"
 	"time"
 )
 
 type config struct {
-	FileName string
 	Debug    bool
+	FileName string
 	Server   struct {
 		Scheme  string
 		Host    string
@@ -58,11 +58,8 @@ type config struct {
 // If provided, the file must contain a valid JSON object.
 //
 // The command line overrides environment variables overides configuration file override default values.
-func newConfig(name string) (*config, error) {
-	fs := flag.NewFlagSet("brigolagecms", flag.ExitOnError)
-
+func newConfig() (*config, error) {
 	var cfg config
-	cfg.FileName = name
 	cfg.Server.Scheme = "http"
 	cfg.Server.Host = "localhost"
 	cfg.Server.Port = "8080"
@@ -72,29 +69,29 @@ func newConfig(name string) (*config, error) {
 	cfg.Server.Root = "D:/GoLand/brigolagecms/public"
 
 	var (
-		file_name            = fs.String("config", cfg.FileName, "config file (optional)")
-		debug                = fs.Bool("debug", cfg.Debug, "log debug information (optional)")
-		server_scheme        = fs.String("scheme", cfg.Server.Scheme, "http scheme, either 'http' or 'https'")
-		server_host          = fs.String("host", cfg.Server.Host, "host name (or IP) to listen on")
-		server_port          = fs.String("port", cfg.Server.Port, "port to listen on")
-		server_timeout_idle  = fs.Duration("idle-timeout", cfg.Server.Timeout.Idle, "http idle timeout")
-		server_timeout_read  = fs.Duration("read-timeout", cfg.Server.Timeout.Read, "http read timeout")
-		server_timeout_write = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
+		fs                 = flag.NewFlagSet("brigolagecms", flag.ExitOnError)
+		fileName           = fs.String("config", cfg.FileName, "config file (optional)")
+		debug              = fs.Bool("debug", cfg.Debug, "log debug information (optional)")
+		serverScheme       = fs.String("scheme", cfg.Server.Scheme, "http scheme, either 'http' or 'https'")
+		serverHost         = fs.String("host", cfg.Server.Host, "host name (or IP) to listen on")
+		serverPort         = fs.String("port", cfg.Server.Port, "port to listen on")
+		serverTimeoutIdle  = fs.Duration("idle-timeout", cfg.Server.Timeout.Idle, "http idle timeout")
+		serverTimeoutRead  = fs.Duration("read-timeout", cfg.Server.Timeout.Read, "http read timeout")
+		serverTimeoutWrite = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
 	)
 
 	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("BRIGOLAGECMS"), ff.WithConfigFileFlag("config"), ff.WithConfigFileParser(ff.JSONParser)); err != nil {
 		return nil, err
 	}
-	if file_name != nil {
-		cfg.FileName = *file_name
-	}
+
 	cfg.Debug = *debug
-	cfg.Server.Scheme = *server_scheme
-	cfg.Server.Host = *server_host
-	cfg.Server.Port = *server_port
-	cfg.Server.Timeout.Idle = *server_timeout_idle
-	cfg.Server.Timeout.Read = *server_timeout_read
-	cfg.Server.Timeout.Write = *server_timeout_write
+	cfg.FileName = *fileName
+	cfg.Server.Scheme = *serverScheme
+	cfg.Server.Host = *serverHost
+	cfg.Server.Port = *serverPort
+	cfg.Server.Timeout.Idle = *serverTimeoutIdle
+	cfg.Server.Timeout.Read = *serverTimeoutRead
+	cfg.Server.Timeout.Write = *serverTimeoutWrite
 
 	return &cfg, nil
 }
