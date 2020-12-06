@@ -45,8 +45,6 @@ type Storage struct {
 		alertTypeMember          *sequence
 		alertTypeRule            *sequence
 		alerted                  *sequence
-		atType                   *sequence
-		atTypeMember             *sequence
 		attrAction               *sequence
 		attrActionMeta           *sequence
 		attrActionVal            *sequence
@@ -90,12 +88,10 @@ type Storage struct {
 		jobMember                *sequence
 		keyword                  *sequence
 		keywordMember            *sequence
-		media                    *sequence
 		mediaContributor         *sequence
 		mediaElement             *sequence
 		mediaField               *sequence
 		mediaFields              *sequence
-		mediaInstance            *sequence
 		mediaMember              *sequence
 		mediaType                *sequence
 		mediaTypeExt             *sequence
@@ -151,8 +147,8 @@ type Storage struct {
 		alertTypeRule            map[int]*alertTypeRule
 		alerted                  map[int]*alerted
 		alertedContactValue      map[int]*alertedContactValue
-		atType                   map[int]*atType
-		atTypeMember             map[int]*atTypeMember
+		atType                   *atTypeTable
+		atTypeMember             *atTypeMemberTable
 		attrAction               map[int]*attrAction
 		attrActionMeta           map[int]*attrActionMeta
 		attrActionVal            map[int]*attrActionVal
@@ -200,16 +196,16 @@ type Storage struct {
 		jobMember                map[int]*jobMember
 		keyword                  map[int]*keyword
 		keywordMember            map[int]*keywordMember
-		media                    map[int]*media
+		media                    *mediaTable
 		mediaContributor         map[int]*mediaContributor
-		mediaOutputChannel       map[int]*mediaOutputChannel
-		mediaResource            map[int]*mediaResource
 		mediaElement             map[int]*mediaElement
 		mediaField               map[int]*mediaField
 		mediaFields              map[int]*mediaFields
-		mediaInstance            map[int]*mediaInstance
+		mediaInstance            *mediaInstanceTable
 		mediaKeyword             map[int]*mediaKeyword
 		mediaMember              map[int]*mediaMember
+		mediaOutputChannel       map[int]*mediaOutputChannel
+		mediaResource            map[int]*mediaResource
 		mediaType                map[int]*mediaType
 		mediaTypeExt             map[int]*mediaTypeExt
 		mediaTypeMember          map[int]*mediaTypeMember
@@ -272,8 +268,6 @@ func New() (*Storage, error) {
 	s.sequences.alertTypeMember = newSequence(1024)
 	s.sequences.alertTypeRule = newSequence(1024)
 	s.sequences.alerted = newSequence(1024)
-	s.sequences.atType = newSequence(1024)
-	s.sequences.atTypeMember = newSequence(1024)
 	s.sequences.attrAction = newSequence(1024)
 	s.sequences.attrActionMeta = newSequence(1024)
 	s.sequences.attrActionVal = newSequence(1024)
@@ -317,12 +311,10 @@ func New() (*Storage, error) {
 	s.sequences.jobMember = newSequence(1024)
 	s.sequences.keyword = newSequence(1024)
 	s.sequences.keywordMember = newSequence(1024)
-	s.sequences.media = newSequence(1024)
 	s.sequences.mediaContributor = newSequence(1024)
 	s.sequences.mediaElement = newSequence(1024)
 	s.sequences.mediaField = newSequence(1024)
 	s.sequences.mediaFields = newSequence(1024)
-	s.sequences.mediaInstance = newSequence(1024)
 	s.sequences.mediaMember = newSequence(1024)
 	s.sequences.mediaType = newSequence(1024)
 	s.sequences.mediaTypeExt = newSequence(1024)
@@ -377,8 +369,8 @@ func New() (*Storage, error) {
 	s.tables.alertTypeRule = make(map[int]*alertTypeRule)
 	s.tables.alerted = make(map[int]*alerted)
 	s.tables.alertedContactValue = make(map[int]*alertedContactValue)
-	s.tables.atType = make(map[int]*atType)
-	s.tables.atTypeMember = make(map[int]*atTypeMember)
+	s.tables.atType = &atTypeTable{seq: newSequence(1024), rows: make(map[int]*atType)}
+	s.tables.atTypeMember = &atTypeMemberTable{seq: newSequence(1024), rows: make(map[int]*atTypeMember)}
 	s.tables.attrAction = make(map[int]*attrAction)
 	s.tables.attrActionMeta = make(map[int]*attrActionMeta)
 	s.tables.attrActionVal = make(map[int]*attrActionVal)
@@ -426,14 +418,14 @@ func New() (*Storage, error) {
 	s.tables.jobMember = make(map[int]*jobMember)
 	s.tables.keyword = make(map[int]*keyword)
 	s.tables.keywordMember = make(map[int]*keywordMember)
-	s.tables.media = make(map[int]*media)
+	s.tables.media = &mediaTable{seq: newSequence(1024), rows: make(map[int]*media)}
 	s.tables.mediaContributor = make(map[int]*mediaContributor)
 	s.tables.mediaOutputChannel = make(map[int]*mediaOutputChannel)
 	s.tables.mediaResource = make(map[int]*mediaResource)
 	s.tables.mediaElement = make(map[int]*mediaElement)
 	s.tables.mediaField = make(map[int]*mediaField)
 	s.tables.mediaFields = make(map[int]*mediaFields)
-	s.tables.mediaInstance = make(map[int]*mediaInstance)
+	s.tables.mediaInstance = &mediaInstanceTable{seq: newSequence(1024), rows: make(map[int]*mediaInstance)}
 	s.tables.mediaKeyword = make(map[int]*mediaKeyword)
 	s.tables.mediaMember = make(map[int]*mediaMember)
 	s.tables.mediaType = make(map[int]*mediaType)

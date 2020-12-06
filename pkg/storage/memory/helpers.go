@@ -1,6 +1,8 @@
-// brigolagecms/pkg/storage/memory/repository.go
+// brigolagecms/pkg/storage/memory/helpers.go
 //
 // Copyright (c) 2020, Michael D Henderson.
+// Copyright (c) 2002-2009 Kineticode, Inc. and others.
+// Copyright (c) 2001-2002 About.com.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -30,13 +32,11 @@
 
 package memory
 
-import "github.com/mdhender/brigolage/pkg/version"
-
-// GetVersion implements the version.Repository interface.
-func (s *Storage) GetVersion() (version.Version, error) {
-	return version.Version{
-		Major: "0",
-		Minor: "0",
-		Patch: "0",
-	}, nil
+func bcopy(src []byte) []byte {
+	if src == nil {
+		return nil
+	}
+	dst := make([]byte, len(src))
+	copy(dst, src)
+	return dst
 }

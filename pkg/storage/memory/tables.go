@@ -32,7 +32,10 @@
 
 package memory
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 //  -----------------------------------------------------------------------------
 //  Table: atType
@@ -41,9 +44,14 @@ import "time"
 //    The table that holds the information for a given asset type.
 //    Holds name and description information and is references by elementType rows.
 //
-func (s *Storage) newAtType() *atType {
+type atTypeTable struct {
+	seq  *sequence
+	rows map[int]*atType
+}
+
+func (tbl *atTypeTable) create() *atType {
 	o := atType{
-		id:           s.sequences.atType.next(), // seqAtType.NextVal(),
+		id:           tbl.seq.next(), // seqAtType.NextVal(),
 		topLevel:     false,
 		paginated:    false,
 		fixedURL:     false,
@@ -55,30 +63,97 @@ func (s *Storage) newAtType() *atType {
 	return &o
 }
 
-func (s *Storage) getAtType(id int) *atType {
-	if o, ok := s.tables.atType[id]; !ok {
-		return nil
-	} else {
-		return o
+func (tbl *atTypeTable) del(id int) error {
+	if _, ok := tbl.rows[id]; !ok {
+		return ErrNotFound
 	}
+	delete(tbl.rows, id)
+	return nil
+}
+
+func (tbl *atTypeTable) get(ids ...int) (rows []*atType) {
+	for _, id := range ids {
+		if row, ok := tbl.rows[id]; ok {
+			rows = append(rows, row)
+		}
+	}
+	return rows
+}
+
+func (tbl *atTypeTable) ins(row *atType) error {
+	if _, ok := tbl.rows[row.id]; ok {
+		return ErrDuplicate
+	}
+	tbl.rows[row.id] = row
+	return nil
+}
+
+func (tbl *atTypeTable) upd(upd *atType) error {
+	row, ok := tbl.rows[upd.id]
+	if !ok {
+		return ErrNotFound
+	}
+	row.active = upd.active
+	row.bizClassID = upd.bizClassID
+	row.description = upd.description
+	row.fixedURL = upd.fixedURL
+	row.media = upd.media
+	row.name = upd.name
+	row.paginated = upd.paginated
+	row.relatedStory = upd.relatedStory
+	row.relatedMedia = upd.relatedMedia
+	row.topLevel = upd.topLevel
+	return nil
 }
 
 //  -----------------------------------------------------------------------------
 //  TABLE: atTypeMember
 //
-func (s *Storage) newAtTypeMember() *atTypeMember {
+type atTypeMemberTable struct {
+	seq  *sequence
+	rows map[int]*atTypeMember
+}
+
+func (tbl *atTypeMemberTable) create() *atTypeMember {
 	o := atTypeMember{
-		id: s.sequences.atTypeMember.next(), // seqAtTypeMember.NextVal(),
+		id: tbl.seq.next(), // seqAtTypeMember.NextVal(),
 	}
 	return &o
 }
 
-func (s *Storage) getAtTypeMember(id int) *atTypeMember {
-	if o, ok := s.tables.atTypeMember[id]; !ok {
-		return nil
-	} else {
-		return o
+func (tbl *atTypeMemberTable) del(id int) error {
+	if _, ok := tbl.rows[id]; !ok {
+		return ErrNotFound
 	}
+	delete(tbl.rows, id)
+	return nil
+}
+
+func (tbl *atTypeMemberTable) get(ids ...int) (rows []*atTypeMember) {
+	for _, id := range ids {
+		if row, ok := tbl.rows[id]; ok {
+			rows = append(rows, row)
+		}
+	}
+	return rows
+}
+
+func (tbl *atTypeMemberTable) ins(row *atTypeMember) error {
+	if _, ok := tbl.rows[row.id]; ok {
+		return ErrDuplicate
+	}
+	tbl.rows[row.id] = row
+	return nil
+}
+
+func (tbl *atTypeMemberTable) upd(upd *atTypeMember) error {
+	row, ok := tbl.rows[upd.id]
+	if !ok {
+		return ErrNotFound
+	}
+	row.memberID = upd.memberID
+	row.objectID = upd.objectID
+	return nil
 }
 
 //  -----------------------------------------------------------------------------
@@ -87,14 +162,78 @@ func (s *Storage) getAtTypeMember(id int) *atTypeMember {
 //  Description: The Media table this houses the data for a given media asset
 //                               and its related asset_version_data
 //
-func (s *Storage) newMedia() *media {
+type mediaTable struct {
+	seq  *sequence
+	rows map[int]*media
+}
+
+// check aliasID ( aliasID  !  =  id )
+func (tbl *mediaTable) check(row *media) error {
+	if row.aliasID == row.id {
+		return fmt.Errorf("constraint: aliasID != id")
+	}
+	return nil
+}
+
+func (tbl *mediaTable) create() *media {
 	o := media{
-		id:            s.sequences.media.next(), // seqMedia.NextVal(),
+		id:            tbl.seq.next(), // seqMedia.NextVal(),
 		publishStatus: false,
 		active:        true,
 	}
-	// check aliasID ( aliasID  !  =  id )
 	return &o
+}
+
+func (tbl *mediaTable) del(id int) error {
+	if _, ok := tbl.rows[id]; !ok {
+		return ErrNotFound
+	}
+	delete(tbl.rows, id)
+	return nil
+}
+
+func (tbl *mediaTable) get(ids ...int) (rows []*media) {
+	for _, id := range ids {
+		if row, ok := tbl.rows[id]; ok {
+			rows = append(rows, row)
+		}
+	}
+	return rows
+}
+
+func (tbl *mediaTable) ins(row *media) error {
+	if err := tbl.check(row); err != nil {
+		return err
+	}
+	if _, ok := tbl.rows[row.id]; ok {
+		return ErrDuplicate
+	}
+	tbl.rows[row.id] = row
+	return nil
+}
+
+func (tbl *mediaTable) upd(upd *media) error {
+	if err := tbl.check(upd); err != nil {
+		return err
+	}
+	row, ok := tbl.rows[upd.id]
+	if !ok {
+		return ErrNotFound
+	}
+	row.active = upd.active
+	row.aliasID = upd.aliasID
+	row.currentVersion = upd.currentVersion
+	row.deskID = upd.deskID
+	row.elementTypeID = upd.elementTypeID
+	row.firstPublishDate = upd.firstPublishDate
+	row.publishDate = upd.publishDate
+	row.publishStatus = upd.publishStatus
+	row.publishedVersion = upd.publishedVersion
+	row.siteID = upd.siteID
+	row.usrID = upd.usrID
+	row.uuid = bcopy(upd.uuid)
+	row.workflowID = upd.workflowID
+	return nil
 }
 
 //  -----------------------------------------------------------------------------
@@ -102,15 +241,84 @@ func (s *Storage) newMedia() *media {
 //
 //  Description: An instance of a media object
 //
-func (s *Storage) newMediaInstance() *mediaInstance {
+type mediaInstanceTable struct {
+	seq  *sequence
+	rows map[int]*mediaInstance
+}
+
+// check priority ( priority  between  1  and  5 )
+func (tbl *mediaInstanceTable) check(row *mediaInstance) error {
+	if !(1 <= row.priority && row.priority <= 5) {
+		return fmt.Errorf("constraint: priority between 1 and 5")
+	}
+	return nil
+}
+
+func (tbl *mediaInstanceTable) create() *mediaInstance {
 	o := mediaInstance{
-		id:         s.sequences.mediaInstance.next(), // seqMediaInstance.NextVal(),
+		id:         tbl.seq.next(), // seqMediaInstance.NextVal(),
 		priority:   3,
 		coverDate:  time.Now(),
 		checkedOut: false,
 	}
-	// check priority ( priority  between  1  and  5 )
 	return &o
+}
+
+func (tbl *mediaInstanceTable) del(id int) error {
+	if _, ok := tbl.rows[id]; !ok {
+		return ErrNotFound
+	}
+	delete(tbl.rows, id)
+	return nil
+}
+
+func (tbl *mediaInstanceTable) get(ids ...int) (rows []*mediaInstance) {
+	for _, id := range ids {
+		if row, ok := tbl.rows[id]; ok {
+			rows = append(rows, row)
+		}
+	}
+	return rows
+}
+
+func (tbl *mediaInstanceTable) ins(row *mediaInstance) error {
+	if err := tbl.check(row); err != nil {
+		return err
+	}
+	if _, ok := tbl.rows[row.id]; ok {
+		return ErrDuplicate
+	}
+	tbl.rows[row.id] = row
+	return nil
+}
+
+func (tbl *mediaInstanceTable) upd(upd *mediaInstance) error {
+	if err := tbl.check(upd); err != nil {
+		return err
+	}
+	row, ok := tbl.rows[upd.id]
+	if !ok {
+		return ErrNotFound
+	}
+	row.checkedOut = upd.checkedOut
+	row.categoryID = upd.categoryID
+	row.coverDate = upd.coverDate
+	row.description = upd.description
+	row.expireDate = upd.expireDate
+	row.fileName = upd.fileName
+	row.fileSize = upd.fileSize
+	row.location = upd.location
+	row.mediaID = upd.mediaID
+	row.mediaTypeID = upd.mediaTypeID
+	row.note = bcopy(upd.note)
+	row.primaryOcID = upd.primaryOcID
+	row.priority = upd.priority
+	row.name = upd.name
+	row.sourceID = upd.sourceID
+	row.usrID = upd.usrID
+	row.version = upd.version
+	row.uri = upd.uri
+	return nil
 }
 
 //  -----------------------------------------------------------------------------
