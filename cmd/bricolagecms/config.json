@@ -1,0 +1,8 @@
+{
+  "host": "localhost",
+  "port": "8888",
+  "idle-timeout": "10s",
+  "read-timeout": "5s",
+  "write-timeout": "10s",
+  "root": "D:/GoLand/brigolagecms/cmd/bricolagecms/public"
+}

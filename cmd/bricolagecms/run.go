@@ -1,4 +1,4 @@
-// brigolagecms/cmd/bricolagecms/server.go
+// brigolagecms/cmd/bricolagecms/run.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // Copyright (c) 2002-2009 Kineticode, Inc. and others.
@@ -30,14 +30,46 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Package main implements a static web service for our copy of the BricolageCMS website.
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net"
 	"net/http"
+	"os"
 )
 
-type server struct {
-	http.Server
-	routes http.Handler
+func run(cfg *config) error {
+	if cfg == nil {
+		return fmt.Errorf("assert(cfg != nil)")
+	}
+	if data, err := json.MarshalIndent(cfg, "  ", "  "); err != nil {
+		return err
+	} else {
+		log.Printf("[config] %s\n", string(data))
+	}
+
+	if cfg.Server.Scheme == "https" {
+		return fmt.Errorf("assert(http.Scheme != https)")
+	}
+
+	log.Printf("[server] serving files from %q\n", cfg.Server.Root)
+	if err := os.Chdir(cfg.Server.Root); err != nil {
+		return err
+	}
+
+	srv := &server{}
+	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
+	srv.IdleTimeout = cfg.Server.Timeout.Idle
+	srv.ReadTimeout = cfg.Server.Timeout.Read
+	srv.WriteTimeout = cfg.Server.Timeout.Write
+	srv.MaxHeaderBytes = 1 << 20
+
+	srv.routes = http.DefaultServeMux
+	http.Handle("/", http.FileServer(http.Dir(".")))
+
+	log.Printf("[server] listening on %s\n", srv.Addr)
+	return srv.ListenAndServe()
 }

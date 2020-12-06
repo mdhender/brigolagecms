@@ -1,4 +1,4 @@
-// brigolagecms/cmd/bricolagecms/server.go
+// brigolagecms/cmd/bricolagecms/main.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // Copyright (c) 2002-2009 Kineticode, Inc. and others.
@@ -34,10 +34,29 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
+	"log"
+	"mime"
+	"os"
 )
 
-type server struct {
-	http.Server
-	routes http.Handler
+func main() {
+	// go depends on the operating system to associate extensions with mime-types.
+	// the default usually works, but some containers need a helping hand.
+	if err := mime.AddExtensionType(".css", "text/css; charset=utf-8"); err != nil {
+		log.Fatal(err)
+	}
+
+	cfg, err := newConfig()
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(2)
+	} else if cfg.FileName != "" {
+		log.Printf("[main] loaded config from %q\n", cfg.FileName)
+	}
+
+	if err := run(cfg); err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(2)
+	}
 }
