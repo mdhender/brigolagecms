@@ -1,6 +1,8 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/pkg/storage/memory/unused.go
 //
 // Copyright (c) 2020, Michael D Henderson.
+// Copyright (c) 2002-2009 Kineticode, Inc. and others.
+// Copyright (c) 2001-2002 About.com.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,37 +30,19 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package main
+package memory
 
-import (
-	"net"
-	"net/http"
-)
-
-type server struct {
-	http.Server
-}
-
-// newServer returns an initialized server.
-// the main change from the default server is that we override the default timeouts.
-// see the following sources for an explanation of why:
-//   https://blog.cloudflare.com/exposing-go-on-the-internet/
-//   https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
-//   https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
-func newServer(cfg *config, options ...func(*server) error) (*server, error) {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
-
-	// allow caller to override the default values
-	for _, option := range options {
-		if err := option(srv); err != nil {
-			return nil, err
-		}
-	}
-
-	return srv, nil
-}
+// unused tables
+//type attrPerson struct{}
+//type attrPersonMeta struct{}
+//type attrPersonVal struct{}
+//type grpPrivGrp struct {}
+//type grpPrivPerson struct {}
+//type grpPrivUsr struct {}
+//type language struct {}
+//type privTable struct {}
+//type usrPriv struct {}
+//type usrPrivGrp struct {}
+//type usrPrivGrpMember struct {}
+//type usrPrivPerson struct {}
+//type usrPrivUsr struct {}

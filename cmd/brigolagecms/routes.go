@@ -1,4 +1,4 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/cmd/brigolagecms/routes.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -31,34 +31,33 @@
 package main
 
 import (
-	"net"
+	"errors"
+	"github.com/mdhender/brigolage/pkg/http/jsonapi"
+	"github.com/mdhender/brigolage/pkg/version"
+	"github.com/mdhender/brigolage/pkg/way"
 	"net/http"
 )
 
-type server struct {
-	http.Server
+func (s *server) routes(v version.Service) {
+	router := way.NewRouter()
+
+	router.Handle("GET", "/version", getVersion(v))
+
+	s.Handler = router
 }
 
-// newServer returns an initialized server.
-// the main change from the default server is that we override the default timeouts.
-// see the following sources for an explanation of why:
-//   https://blog.cloudflare.com/exposing-go-on-the-internet/
-//   https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
-//   https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
-func newServer(cfg *config, options ...func(*server) error) (*server, error) {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
-
-	// allow caller to override the default values
-	for _, option := range options {
-		if err := option(srv); err != nil {
-			return nil, err
+// getVersion returns a handler for GET /version requests
+func getVersion(svc version.Service) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		data, err := svc.GetVersion()
+		if err != nil {
+			if errors.Is(err, version.ErrNotFound) {
+				jsonapi.Error(w, r, http.StatusNotFound, err.Error())
+				return
+			}
+			jsonapi.Error(w, r, http.StatusInternalServerError, err.Error())
+			return
 		}
+		jsonapi.Ok(w, r, http.StatusOK, data)
 	}
-
-	return srv, nil
 }

@@ -32,10 +32,24 @@ package main
 
 import (
 	"fmt"
+	"github.com/mdhender/brigolage/pkg/storage/memory"
+	"github.com/mdhender/brigolage/pkg/version"
 	"log"
+	"mime"
 )
 
 func run(cfg *config) error {
+	// go depends on the operating system to associate extensions with mime-types.
+	// the default usually works, but some containers need a helping hand.
+	for _, content := range []struct{ ext, typ string }{
+		{".css", "text/css; charset=utf-8"},
+		{".json", "application/json"},
+	} {
+		if err := mime.AddExtensionType(content.ext, content.typ); err != nil {
+			return fmt.Errorf("adding mime type %q %w", content.ext, err)
+		}
+	}
+
 	if cfg == nil {
 		return fmt.Errorf("assert(cfg != nil)")
 	}
@@ -43,7 +57,16 @@ func run(cfg *config) error {
 		return fmt.Errorf("assert(http.Scheme != https)")
 	}
 
-	srv := newServer(cfg)
+	ds, err := memory.New()
+	if err != nil {
+		return err
+	}
+
+	srv, err := newServer(cfg)
+	if err != nil {
+		return err
+	}
+	srv.routes(version.NewService(ds))
 
 	log.Printf("[server] listening on %s\n", srv.Addr)
 	return srv.ListenAndServe()

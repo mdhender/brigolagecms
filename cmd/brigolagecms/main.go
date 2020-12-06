@@ -35,17 +35,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"mime"
 	"os"
 )
 
 func main() {
-	// go depends on the operating system to associate extensions with mime-types.
-	// the default usually works, but some containers need a helping hand.
-	if err := mime.AddExtensionType(".css", "text/css; charset=utf-8"); err != nil {
-		log.Fatal(err)
-	}
-
 	cfg, err := newConfig()
 	if err != nil {
 		fmt.Printf("%+v\n", err)

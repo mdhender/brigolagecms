@@ -1,4 +1,4 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/pkg/storage/memory/repository.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -28,37 +28,15 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package main
+package memory
 
-import (
-	"net"
-	"net/http"
-)
+import "github.com/mdhender/brigolage/pkg/version"
 
-type server struct {
-	http.Server
-}
-
-// newServer returns an initialized server.
-// the main change from the default server is that we override the default timeouts.
-// see the following sources for an explanation of why:
-//   https://blog.cloudflare.com/exposing-go-on-the-internet/
-//   https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
-//   https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
-func newServer(cfg *config, options ...func(*server) error) (*server, error) {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
-
-	// allow caller to override the default values
-	for _, option := range options {
-		if err := option(srv); err != nil {
-			return nil, err
-		}
-	}
-
-	return srv, nil
+// GetVersion implements the version.Repository interface.
+func (m *Storage) GetVersion() (version.Version, error) {
+	return version.Version{
+		Major: "0",
+		Minor: "0",
+		Patch: "0",
+	}, nil
 }

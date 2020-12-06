@@ -1,4 +1,4 @@
-// brigolagecms/cmd/brigolagecms/server.go
+// brigolagecms/pkg/storage/memory/sequences.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -28,37 +28,23 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package main
+package memory
 
-import (
-	"net"
-	"net/http"
-)
-
-type server struct {
-	http.Server
+type sequence struct {
+	val int
 }
 
-// newServer returns an initialized server.
-// the main change from the default server is that we override the default timeouts.
-// see the following sources for an explanation of why:
-//   https://blog.cloudflare.com/exposing-go-on-the-internet/
-//   https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
-//   https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
-func newServer(cfg *config, options ...func(*server) error) (*server, error) {
-	srv := &server{}
-	srv.Addr = net.JoinHostPort(cfg.Server.Host, cfg.Server.Port)
-	srv.IdleTimeout = cfg.Server.Timeout.Idle
-	srv.ReadTimeout = cfg.Server.Timeout.Read
-	srv.WriteTimeout = cfg.Server.Timeout.Write
-	srv.MaxHeaderBytes = 1 << 20
+func newSequence(val int) *sequence {
+	return &sequence{val: val}
+}
 
-	// allow caller to override the default values
-	for _, option := range options {
-		if err := option(srv); err != nil {
-			return nil, err
-		}
-	}
+// curr returns the current value in the sequence.
+func (s *sequence) curr() int {
+	return s.val
+}
 
-	return srv, nil
+// next returns the next value in the sequence.
+func (s *sequence) next() int {
+	s.val = s.val + 1
+	return s.val
 }
