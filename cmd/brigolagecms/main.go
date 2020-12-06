@@ -32,13 +32,29 @@
 package main
 
 import (
+	crand "crypto/rand"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
+	"time"
 )
 
 func main() {
+	log.Println("######################################################################")
+	log.Println("[main] harvesting entropy")
+	start := time.Now()
+	var entropyBits int64
+	if err := binary.Read(crand.Reader, binary.LittleEndian, &entropyBits); err != nil {
+		log.Fatal(err)
+	}
+	rand.Seed(entropyBits)
+	fmt.Printf("[main] harvested entropy: %s\n", time.Since(start))
+
+	log.Println("######################################################################")
+	log.Println("[main] setting up configuration")
 	cfg, err := newConfig()
 	if err != nil {
 		fmt.Printf("%+v\n", err)
@@ -52,6 +68,8 @@ func main() {
 		log.Printf("[main] config %s\n", string(data))
 	}
 
+	log.Println("######################################################################")
+	log.Println("[main] starting application")
 	if err := run(cfg); err != nil {
 		fmt.Printf("%+v\n", err)
 		os.Exit(2)

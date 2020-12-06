@@ -49,7 +49,7 @@ type config struct {
 			Read  time.Duration
 			Write time.Duration
 		}
-		Root string
+		PublicRoot string
 	}
 }
 
@@ -66,7 +66,7 @@ func newConfig() (*config, error) {
 	cfg.Server.Timeout.Idle = 10 * time.Second
 	cfg.Server.Timeout.Read = 5 * time.Second
 	cfg.Server.Timeout.Write = 10 * time.Second
-	cfg.Server.Root = "D:/GoLand/brigolagecms/public"
+	cfg.Server.PublicRoot = "D:/GoLand/brigolagecms/cmd/brigolagecms/public"
 
 	var (
 		fs                 = flag.NewFlagSet("brigolagecms", flag.ExitOnError)
@@ -75,6 +75,7 @@ func newConfig() (*config, error) {
 		serverScheme       = fs.String("scheme", cfg.Server.Scheme, "http scheme, either 'http' or 'https'")
 		serverHost         = fs.String("host", cfg.Server.Host, "host name (or IP) to listen on")
 		serverPort         = fs.String("port", cfg.Server.Port, "port to listen on")
+		serverPublicRoot   = fs.String("public-root", cfg.Server.PublicRoot, "path to serve static files from")
 		serverTimeoutIdle  = fs.Duration("idle-timeout", cfg.Server.Timeout.Idle, "http idle timeout")
 		serverTimeoutRead  = fs.Duration("read-timeout", cfg.Server.Timeout.Read, "http read timeout")
 		serverTimeoutWrite = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
@@ -89,6 +90,7 @@ func newConfig() (*config, error) {
 	cfg.Server.Scheme = *serverScheme
 	cfg.Server.Host = *serverHost
 	cfg.Server.Port = *serverPort
+	cfg.Server.PublicRoot = *serverPublicRoot
 	cfg.Server.Timeout.Idle = *serverTimeoutIdle
 	cfg.Server.Timeout.Read = *serverTimeoutRead
 	cfg.Server.Timeout.Write = *serverTimeoutWrite

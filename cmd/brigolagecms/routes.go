@@ -33,15 +33,20 @@ package main
 import (
 	"errors"
 	"github.com/mdhender/brigolage/pkg/http/jsonapi"
-	"github.com/mdhender/brigolage/pkg/version"
+	"github.com/mdhender/brigolage/pkg/services/version"
 	"github.com/mdhender/brigolage/pkg/way"
 	"net/http"
 )
 
-func (s *server) routes(v version.Service) {
+func (s *server) routes(spa http.Handler, v version.Service) {
 	router := way.NewRouter()
 
 	router.Handle("GET", "/version", getVersion(v))
+
+	router.Handle("POST", "/login", postLogin())
+	router.Handle("POST", "/logout", postLogout())
+
+	router.NotFound = spa
 
 	s.Handler = router
 }
@@ -59,5 +64,19 @@ func getVersion(svc version.Service) http.HandlerFunc {
 			return
 		}
 		jsonapi.Ok(w, r, http.StatusOK, data)
+	}
+}
+
+// postLogin returns a handler for POST /login requests
+func postLogin() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		jsonapi.Ok(w, r, http.StatusOK, true)
+	}
+}
+
+// postLogout returns a handler for POST /logout requests
+func postLogout() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		jsonapi.Ok(w, r, http.StatusOK, true)
 	}
 }

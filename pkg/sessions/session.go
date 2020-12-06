@@ -1,4 +1,4 @@
-// brigolagecms/pkg/storage/memory/repository.go
+// brigolagecms/pkg/sessions/session.go
 //
 // Copyright (c) 2020, Michael D Henderson.
 // All rights reserved.
@@ -28,15 +28,59 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package memory
+package sessions
 
-import "github.com/mdhender/brigolage/pkg/services/version"
+import (
+	"time"
+)
 
-// GetVersion implements the version.Repository interface.
-func (s *Storage) GetVersion() (version.Version, error) {
-	return version.Version{
-		Major: "0",
-		Minor: "0",
-		Patch: "0",
-	}, nil
+// Session is
+type Session struct {
+	id            string
+	user          string
+	authenticated bool
+	roles         map[string]bool
+	createdAt     time.Time
+	expiresAt     time.Time
+}
+
+// CreatedAt returns the timestamp when the session was created.
+func (s Session) CreatedAt() time.Time {
+	return s.createdAt
+}
+
+// HasAll returns true only if the session has been assigned all of the roles.
+func (s Session) HasAll(roles ...string) bool {
+	hasAll := len(roles) != 0
+	for _, role := range roles {
+		if hasAll = hasAll && s.roles[role]; !hasAll {
+			return false
+		}
+	}
+	return hasAll
+}
+
+// HasAny returns true only if the session has been assigned at least one of the roles.
+func (s Session) HasAny(roles ...string) bool {
+	for _, role := range roles {
+		if s.roles[role] {
+			return true
+		}
+	}
+	return false
+}
+
+// IsActive returns true only if the session has not expired.
+func (s Session) IsActive() bool {
+	return time.Now().Before(s.expiresAt)
+}
+
+// IsAuthenticated returns true only if the session has been authenticated.
+func (s Session) IsAuthenticated() bool {
+	return s.authenticated
+}
+
+// User returns the user.
+func (s Session) User() string {
+	return s.user
 }

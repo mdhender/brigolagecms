@@ -32,10 +32,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/mdhender/brigolage/pkg/http/handlers"
+	"github.com/mdhender/brigolage/pkg/services/version"
 	"github.com/mdhender/brigolage/pkg/storage/memory"
-	"github.com/mdhender/brigolage/pkg/version"
 	"log"
 	"mime"
+	"net/http"
 )
 
 func run(cfg *config) error {
@@ -66,7 +68,7 @@ func run(cfg *config) error {
 	if err != nil {
 		return err
 	}
-	srv.routes(version.NewService(ds))
+	srv.routes(http.StripPrefix("/", handlers.SPA(cfg.Server.PublicRoot)), version.NewService(ds))
 
 	log.Printf("[server] listening on %s\n", srv.Addr)
 	return srv.ListenAndServe()
