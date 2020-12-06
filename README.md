@@ -47,15 +47,15 @@ It is licensed under the [3-clause BSD license](https://opensource.org/licenses/
         SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
 
 Please see
-[TheBricolageLicense](cmd/about/static/TheBricolageLicense)
+[TheBricolageLicense](cmd/bricolagecms/static/TheBricolageLicense)
 in this repository for a full list of the BricolageCMS contributors.
 
 ## Website
-There is a copy of the BricolageCMS website in the `cmd\about\public\` directory.
+There is a copy of the BricolageCMS website in the `cmd\bricolagecms\public\` directory.
 That website is copyright by the Bricolage Development Team and is licensed under the
 [Creative Commons Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0) license](https://creativecommons.org/licenses/by-nc/2.0/legalcode).
 
-The copy was created the evening of 2020/12/04 by using `wget` (see the `cmd\about\spider.sh` script) to mirror the site to local files.
+The copy was created the evening of 2020/12/04 by using `wget` (see the `cmd\bricolagecms\spider.sh` script) to mirror the site to local files.
 I'm sure it includes too much (and too little), but it's helpful for me during the conversion.
 
 ## Icons
