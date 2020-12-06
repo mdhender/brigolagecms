@@ -55,14 +55,30 @@ func (s *Storage) newAtType() *atType {
 	return &o
 }
 
+func (s *Storage) getAtType(id int) *atType {
+	if o, ok := s.tables.atType[id]; !ok {
+		return nil
+	} else {
+		return o
+	}
+}
+
 //  -----------------------------------------------------------------------------
-//  TABLE: elementTypeMember
+//  TABLE: atTypeMember
 //
 func (s *Storage) newAtTypeMember() *atTypeMember {
 	o := atTypeMember{
 		id: s.sequences.atTypeMember.next(), // seqAtTypeMember.NextVal(),
 	}
 	return &o
+}
+
+func (s *Storage) getAtTypeMember(id int) *atTypeMember {
+	if o, ok := s.tables.atTypeMember[id]; !ok {
+		return nil
+	} else {
+		return o
+	}
 }
 
 //  -----------------------------------------------------------------------------
