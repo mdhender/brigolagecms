@@ -34,10 +34,12 @@ import (
 	"fmt"
 	"github.com/mdhender/brigolage/pkg/http/handlers"
 	"github.com/mdhender/brigolage/pkg/services/version"
+	"github.com/mdhender/brigolage/pkg/sessions"
 	"github.com/mdhender/brigolage/pkg/storage/memory"
 	"log"
 	"mime"
 	"net/http"
+	"time"
 )
 
 func run(cfg *config) error {
@@ -63,12 +65,15 @@ func run(cfg *config) error {
 	if err != nil {
 		return err
 	}
+	sm := sessions.New(15*time.Hour, true, cfg.Server.Scheme == "https")
+	spa := http.StripPrefix("/", handlers.SPA(cfg.Server.PublicRoot))
 
 	srv, err := newServer(cfg)
 	if err != nil {
 		return err
 	}
-	srv.routes(http.StripPrefix("/", handlers.SPA(cfg.Server.PublicRoot)), version.NewService(ds))
+
+	srv.Handler = sm.Handle(srv.routes(sm, spa, version.NewService(ds)))
 
 	log.Printf("[server] listening on %s\n", srv.Addr)
 	return srv.ListenAndServe()

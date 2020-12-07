@@ -70,6 +70,14 @@ func (s Session) HasAny(roles ...string) bool {
 	return false
 }
 
+// Invalidate invalidates a session.
+func (s *Session) Invalidate() {
+	if s != nil {
+		var zero time.Time
+		s.expiresAt = zero
+	}
+}
+
 // IsActive returns true only if the session has not expired.
 func (s Session) IsActive() bool {
 	return time.Now().Before(s.expiresAt)

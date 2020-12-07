@@ -34,21 +34,19 @@ import (
 	"errors"
 	"github.com/mdhender/brigolage/pkg/http/jsonapi"
 	"github.com/mdhender/brigolage/pkg/services/version"
+	"github.com/mdhender/brigolage/pkg/sessions"
 	"github.com/mdhender/brigolage/pkg/way"
 	"net/http"
 )
 
-func (s *server) routes(spa http.Handler, v version.Service) {
+func (s *server) routes(sm *sessions.Manager, spa http.Handler, v version.Service) http.Handler {
 	router := way.NewRouter()
 
 	router.Handle("GET", "/version", getVersion(v))
 
-	router.Handle("POST", "/login", postLogin())
-	router.Handle("POST", "/logout", postLogout())
-
 	router.NotFound = spa
 
-	s.Handler = router
+	return router
 }
 
 // getVersion returns a handler for GET /version requests
@@ -68,15 +66,19 @@ func getVersion(svc version.Service) http.HandlerFunc {
 }
 
 // postLogin returns a handler for POST /login requests
-func postLogin() http.HandlerFunc {
+func postLogin(m *sessions.Manager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//m.AddCookie(w, m.New("mdhender", true, "person"))
 		jsonapi.Ok(w, r, http.StatusOK, true)
 	}
 }
 
 // postLogout returns a handler for POST /logout requests
-func postLogout() http.HandlerFunc {
+func postLogout(m *sessions.Manager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if s, ok := m.GetSession(r); ok {
+			m.InvalidateSession(s)
+		}
 		jsonapi.Ok(w, r, http.StatusOK, true)
 	}
 }

@@ -51,6 +51,10 @@ type config struct {
 		}
 		PublicRoot string
 	}
+	Cookies struct {
+		HttpOnly bool
+		Secure   bool
+	}
 }
 
 // newConfig returns a configuration.
@@ -69,16 +73,18 @@ func newConfig() (*config, error) {
 	cfg.Server.PublicRoot = "D:/GoLand/brigolagecms/cmd/brigolagecms/public"
 
 	var (
-		fs                 = flag.NewFlagSet("brigolagecms", flag.ExitOnError)
-		fileName           = fs.String("config", cfg.FileName, "config file (optional)")
-		debug              = fs.Bool("debug", cfg.Debug, "log debug information (optional)")
-		serverScheme       = fs.String("scheme", cfg.Server.Scheme, "http scheme, either 'http' or 'https'")
-		serverHost         = fs.String("host", cfg.Server.Host, "host name (or IP) to listen on")
-		serverPort         = fs.String("port", cfg.Server.Port, "port to listen on")
-		serverPublicRoot   = fs.String("public-root", cfg.Server.PublicRoot, "path to serve static files from")
-		serverTimeoutIdle  = fs.Duration("idle-timeout", cfg.Server.Timeout.Idle, "http idle timeout")
-		serverTimeoutRead  = fs.Duration("read-timeout", cfg.Server.Timeout.Read, "http read timeout")
-		serverTimeoutWrite = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
+		fs                    = flag.NewFlagSet("brigolagecms", flag.ExitOnError)
+		fileName              = fs.String("config", cfg.FileName, "config file (optional)")
+		debug                 = fs.Bool("debug", cfg.Debug, "log debug information (optional)")
+		serverCookiesHttpOnly = fs.Bool("cookies-http-only", cfg.Cookies.HttpOnly, "set HttpOnly flag on cookies")
+		serverCookiesSecure   = fs.Bool("cookies-secure", cfg.Cookies.Secure, "set Secure flag on cookies")
+		serverScheme          = fs.String("scheme", cfg.Server.Scheme, "http scheme, either 'http' or 'https'")
+		serverHost            = fs.String("host", cfg.Server.Host, "host name (or IP) to listen on")
+		serverPort            = fs.String("port", cfg.Server.Port, "port to listen on")
+		serverPublicRoot      = fs.String("public-root", cfg.Server.PublicRoot, "path to serve static files from")
+		serverTimeoutIdle     = fs.Duration("idle-timeout", cfg.Server.Timeout.Idle, "http idle timeout")
+		serverTimeoutRead     = fs.Duration("read-timeout", cfg.Server.Timeout.Read, "http read timeout")
+		serverTimeoutWrite    = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
 	)
 
 	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("BRIGOLAGECMS"), ff.WithConfigFileFlag("config"), ff.WithConfigFileParser(ff.JSONParser)); err != nil {
@@ -87,6 +93,8 @@ func newConfig() (*config, error) {
 
 	cfg.Debug = *debug
 	cfg.FileName = *fileName
+	cfg.Cookies.HttpOnly = *serverCookiesHttpOnly
+	cfg.Cookies.Secure = *serverCookiesSecure
 	cfg.Server.Scheme = *serverScheme
 	cfg.Server.Host = *serverHost
 	cfg.Server.Port = *serverPort
