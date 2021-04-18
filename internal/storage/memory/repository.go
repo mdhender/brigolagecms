@@ -30,7 +30,7 @@
 
 package memory
 
-import "github.com/mdhender/brigolage/pkg/services/version"
+import "github.com/mdhender/brigolage/internal/services/version"
 
 // GetVersion implements the version.Repository interface.
 func (s *Storage) GetVersion() (version.Version, error) {

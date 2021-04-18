@@ -1,32 +1,27 @@
-// brigolagecms/cmd/brigolagecms/config.go
-//
-// Copyright (c) 2020, Michael D Henderson.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-//  1. Redistributions of source code must retain the above copyright notice, this
-//     list of conditions and the following disclaimer.
-//
-//  2. Redistributions in binary form must reproduce the above copyright notice,
-//     this list of conditions and the following disclaimer in the documentation
-//     and/or other materials provided with the distribution.
-//
-//  3. Neither the name of the copyright holder nor the names of its
-//     contributors may be used to endorse or promote products derived from
-//     this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/*
+ * brigolagecms - a reimagining of Bricolage CMS
+ *
+ * Copyright (c) 2021, Michael D Henderson.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package main
 
@@ -55,13 +50,19 @@ type config struct {
 		HttpOnly bool
 		Secure   bool
 	}
+	Database struct {
+		Host     string
+		Schema   string
+		User     string
+		Password string
+	}
 }
 
 // newConfig returns a configuration.
 // It accepts an optional configuration file name.
 // If provided, the file must contain a valid JSON object.
 //
-// The command line overrides environment variables overides configuration file override default values.
+// The command line overrides environment variables overrides configuration file override default values.
 func newConfig() (*config, error) {
 	var cfg config
 	cfg.Server.Scheme = "http"
@@ -70,10 +71,14 @@ func newConfig() (*config, error) {
 	cfg.Server.Timeout.Idle = 10 * time.Second
 	cfg.Server.Timeout.Read = 5 * time.Second
 	cfg.Server.Timeout.Write = 10 * time.Second
-	cfg.Server.PublicRoot = "D:/GoLand/brigolagecms/cmd/brigolagecms/public"
+	cfg.Server.PublicRoot = "D:/GoLand/brigolagecms/cmd/brigolage/public"
+	cfg.Database.Host = "localhost"
+	cfg.Database.Schema = "brigolage_cms"
+	cfg.Database.User = "brigolage"
+	cfg.Database.Password = "daisies.are.crunchy"
 
 	var (
-		fs                    = flag.NewFlagSet("brigolagecms", flag.ExitOnError)
+		fs                    = flag.NewFlagSet("brigolage", flag.ExitOnError)
 		fileName              = fs.String("config", cfg.FileName, "config file (optional)")
 		debug                 = fs.Bool("debug", cfg.Debug, "log debug information (optional)")
 		serverCookiesHttpOnly = fs.Bool("cookies-http-only", cfg.Cookies.HttpOnly, "set HttpOnly flag on cookies")
@@ -87,7 +92,7 @@ func newConfig() (*config, error) {
 		serverTimeoutWrite    = fs.Duration("write-timeout", cfg.Server.Timeout.Write, "http write timeout")
 	)
 
-	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("BRIGOLAGECMS"), ff.WithConfigFileFlag("config"), ff.WithConfigFileParser(ff.JSONParser)); err != nil {
+	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("BRIGOLAGE"), ff.WithConfigFileFlag("config"), ff.WithConfigFileParser(ff.JSONParser)); err != nil {
 		return nil, err
 	}
 
