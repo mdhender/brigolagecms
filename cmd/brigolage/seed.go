@@ -26,57 +26,27 @@
 package main
 
 import (
+	crand "crypto/rand"
+	"encoding/binary"
 	"fmt"
-	"github.com/mdhender/brigolage/internal/http/handlers"
-	"github.com/mdhender/brigolage/internal/services/version"
-	"github.com/mdhender/brigolage/internal/sessions"
-	"github.com/mdhender/brigolage/internal/storage/memory"
 	"log"
-	"mime"
-	"net/http"
+	"math/rand"
 	"time"
 )
 
-func run(cfg *config) error {
-	// go depends on the operating system to associate extensions with mime-types.
-	// the default usually works, but some containers need a helping hand.
-	for _, content := range []struct{ ext, typ string }{
-		{".css", "text/css; charset=utf-8"},
-		{".json", "application/json"},
-	} {
-		if err := mime.AddExtensionType(content.ext, content.typ); err != nil {
-			return fmt.Errorf("adding mime type %q %w", content.ext, err)
-		}
+func seed(quiet bool) error {
+	if !quiet {
+		log.Println("######################################################################")
+		log.Println("[seed] harvesting entropy")
 	}
-
-	if cfg == nil {
-		return fmt.Errorf("assert(cfg != nil)")
-	}
-	if cfg.Server.Scheme == "https" {
-		return fmt.Errorf("assert(http.Scheme != https)")
-	}
-
-	if cfg.Random.DoSeed {
-		if err := seed(false); err != nil {
-			return err
-		}
-	}
-
-
-	ds, err := memory.New()
-	if err != nil {
+	start := time.Now()
+	var entropyBits int64
+	if err := binary.Read(crand.Reader, binary.LittleEndian, &entropyBits); err != nil {
 		return err
 	}
-	sm := sessions.New(15*time.Hour, true, cfg.Server.Scheme == "https")
-	spa := http.StripPrefix("/", handlers.SPA(cfg.Server.PublicRoot))
-
-	srv, err := newServer(cfg)
-	if err != nil {
-		return err
+	rand.Seed(entropyBits)
+	if !quiet {
+		fmt.Printf("[seed] harvested entropy: %s\n", time.Since(start))
 	}
-
-	srv.Handler = sm.Handle(srv.routes(sm, spa, version.NewService(ds)))
-
-	log.Printf("[server] listening on %s\n", srv.Addr)
-	return srv.ListenAndServe()
+	return nil
 }

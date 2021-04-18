@@ -56,6 +56,9 @@ type config struct {
 		User     string
 		Password string
 	}
+	Random struct {
+		DoSeed bool
+	}
 }
 
 // newConfig returns a configuration.
